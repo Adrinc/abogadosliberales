@@ -1,0 +1,260 @@
+🌐 Estructura completa de la Landing Page
+1️⃣ Navbar (sticky)
+
+Objetivo: navegación clara, elegante y minimalista.
+Estilo:
+
+Fondo transparente sobre el video (con blur o degradado negro/azul de 40 %).
+
+Logo a la izquierda (versión blanca del logo).
+
+Menú compacto a la derecha:
+
+Inicio
+
+Nosotros
+
+Programa
+
+Ponentes
+
+Inscripción
+
+Contacto
+
+Botón destacado: “Adquirir entrada” → scroll a la sección de compra o modal.
+
+Scroll → cambia a fondo Azul 700 (#020266) sólido con sombra suave.
+
+2️⃣ Hero (video background)
+
+Objetivo: captar atención y transmitir identidad.
+
+Contenido visual:
+
+Video de fondo en loop (muted) mostrando:
+
+Tomas del congreso anterior (auditorio, público, ponentes).
+
+Planos detalle: libros, balanza, luz dorada, banderas, abogados saludando, etc.
+
+Paleta cálida (azul oscuro + reflejos dorados).
+
+Superposición de color: gradiente rgba(2,2,102,0.55) → rgba(0,0,0,0.8) para mejorar legibilidad.
+
+Texto centrado:
+
+Título grande (blanco):
+“Congreso Nacional de Amparo y Derechos Humanos 2025”
+
+Subtítulo (dorado 500):
+“14–15 de noviembre · Ciudad de México”
+
+Texto breve:
+“Dos días de conferencias, debates y talleres sobre litigio estratégico y justicia constitucional.”
+
+Botones:
+
+🟦 Comprar Entrada — $1,990 MXN (Azul 700, texto blanco, hover dorado)
+
+⚪ Ver Programa (outline blanco)
+
+CTA secundaria: “Certificado oficial de participación · Cupo limitado”
+
+3️⃣ Sección “Sobre el evento”
+
+Objetivo: explicar de qué trata y por qué es relevante.
+
+Layout:
+
+Fondo blanco o #F8FAFC.
+
+Grid 2 columnas:
+
+Izquierda: texto descriptivo.
+
+Derecha: imagen o video corto del congreso anterior.
+
+Contenido textual:
+
+Título: “La justicia como derecho humano”
+
+Párrafo:
+“El Congreso Nacional de Amparo y Derechos Humanos 2025 reúne a magistrados, litigantes, académicos y defensores de derechos humanos para analizar los desafíos del amparo y su papel en la protección de las libertades.”
+
+Subbloques con íconos:
+
+🎓 Formación de excelencia
+
+⚖️ Perspectiva humanista
+
+🤝 Red de abogados comprometidos
+
+4️⃣ Sección “Ponentes principales”
+
+Objetivo: mostrar credibilidad y generar interés.
+
+Layout:
+
+Fondo Azul 700, texto blanco.
+
+Cards horizontales o grid 3x2.
+
+Cada card:
+
+Foto circular del ponente.
+
+Nombre, cargo, institución.
+
+Tema de ponencia.
+
+Animación suave al hover (elevación + dorado en borde inferior).
+
+CTA: “Ver lista completa de ponentes →”
+
+5️⃣ Sección “Programa”
+
+Objetivo: mostrar estructura y valor del evento.
+
+Layout:
+
+Fondo blanco.
+
+Timeline vertical o tabs (Día 1 / Día 2).
+
+Cards con hora, título de ponencia, ponente, tipo de sesión.
+
+Al final:
+
+“Entrega de constancias de participación.”
+
+“Networking y clausura.”
+
+CTA:
+
+Botón “Descargar programa PDF” (outline Azul 700).
+
+6️⃣ Sección “Inscripción” (Pricing/CTA principal)
+
+Objetivo: convertir visitantes en asistentes.
+
+Layout:
+
+Fondo gradiente Azul 700 → Azul midnight (#0B0B2B).
+
+Card central con borde dorado (brillante, elegante).
+
+Contenido:
+
+“Adquiere tu acceso ahora”
+
+Precio grande: $1,990.00 MXN
+
+Incluye:
+
+Acceso a conferencias
+
+Material digital
+
+Certificado de participación
+
+Coffee break y networking
+
+Botón principal (dorado brillante):
+“Registrar mi lugar”
+
+Pequeño texto debajo:
+“Descuento exclusivo para miembros de la Barra Mexicana de Abogados Liberales.”
+
+7️⃣ Sección “Testimonios / Edición anterior”
+
+Objetivo: validar calidad y confianza.
+
+Layout:
+
+Fondo #F4F6FF.
+
+Carrusel de citas con foto y nombre:
+
+“Un espacio académico serio y humano. — Dra. Laura Ramírez”
+“La mejor capacitación jurídica del año. — Mtro. Hernández Cruz”
+
+Debajo: video corto del congreso anterior (30s).
+
+8️⃣ Sección “Sobre la organización”
+
+Objetivo: mostrar quiénes son sin saturar.
+
+Layout:
+
+Fondo blanco, dos columnas:
+
+Logo y texto sobre la Barra Mexicana de Abogados Liberales.
+
+Listado breve:
+
+Justicia social
+
+Ética profesional
+
+Derechos humanos
+
+CTA: “Conoce más sobre nosotros → /nosotros”
+
+9️⃣ Sección “Preguntas frecuentes”
+
+Objetivo: resolver dudas antes del registro.
+
+Formato acordeón:
+
+¿Cómo obtengo mi constancia?
+
+¿Habrá transmisión en línea?
+
+¿Puedo pagar en dos exhibiciones?
+
+¿Hay descuento por grupo?
+
+🔟 Footer
+
+Objetivo: cierre institucional.
+
+Layout:
+
+Fondo Azul 800 (#05054F), texto blanco.
+
+Tres columnas:
+
+Logo + lema: “¡Que la luz de la razón brille en la justicia!”
+
+Enlaces rápidos (Inicio, Nosotros, Código Ético, Contacto).
+
+Redes sociales (Facebook, Instagram, X, LinkedIn, YouTube).
+
+Franja inferior dorada 2 px.
+
+Copyright © 2025 Barra Mexicana de Abogados Liberales.
+
+🎨 Estilo visual general
+Elemento	Estilo
+Paleta principal	Azul 700 #020266, Dorado 500 #EECB00, Blanco #FFFFFF, Gris claro #F8FAFC
+Tipografía títulos	Merriweather o EB Garamond (serif elegante)
+Tipografía cuerpo	Inter o Source Sans 3
+Botones	Redondeados (radius 0.75rem), sombra sutil, micro-animación al hover
+Cards	Bordes suaves (radius 1.5rem), sombra rgba(2,2,102,0.1)
+Iconos	Lineales (lucide-react), color Azul 700 o Dorado 500
+Animaciones	Fade-in + slide suave (Framer Motion), 250–300 ms
+Video hero overlay	Degradado Azul 700 → Negro con opacidad 55 % para legibilidad
+🧭 Flujo de usuario ideal
+
+Llega → Hero (video) lo impacta.
+
+Escanea “Sobre el evento” → entiende de qué trata.
+
+Revisa “Ponentes” y “Programa” → confía.
+
+Ve “Precio” y “Testimonios” → se convence.
+
+Clic en “Registrar mi lugar”.
+
+Termina leyendo “Sobre la organización” → refuerza credibilidad.
