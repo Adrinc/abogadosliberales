@@ -179,7 +179,11 @@ const NavBar = () => {
       
       {/* Logo con efecto de hover mejorado */}
       <div className={styles.logopic}>
-        <img src="/logo_nh_b.png" alt="NetHive Logo" />
+        <img src="/favicon.jpg" alt="Barra Mexicana de Abogados Liberales" />
+        <div className={styles.logoText}>
+          <div className={styles.logoTitle}>Abogados Liberales</div>
+          <div className={styles.logoSubtitle}>Lux Iustitia</div>
+        </div>
         <div className={styles.logoGlow}></div>
       </div>
 
@@ -224,26 +228,26 @@ const NavBar = () => {
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/funcionalidades" 
-            className={`${styles.navLink} ${isActiveLink("/funcionalidades") ? styles.activeLink : ""}`}
+            href="/congreso" 
+            className={`${styles.navLink} ${isActiveLink("/congreso") ? styles.activeLink : ""}`}
           >
-            {textosNavbar.funcionalidades}
+            Congreso 2025
           </a>
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/precios" 
-            className={`${styles.navLink} ${isActiveLink("/precios") ? styles.activeLink : ""}`}
+            href="/nosotros" 
+            className={`${styles.navLink} ${isActiveLink("/nosotros") ? styles.activeLink : ""}`}
           >
-            {textosNavbar.precios}
+            {textosNavbar.nosotros || "Nosotros"}
           </a>
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/soporte" 
-            className={`${styles.navLink} ${isActiveLink("/soporte") ? styles.activeLink : ""}`}
+            href="/membresia" 
+            className={`${styles.navLink} ${isActiveLink("/membresia") ? styles.activeLink : ""}`}
           >
-            {textosNavbar.soporte}
+            Membresía
           </a>
         </li>
         <li className={styles.navItem}>
@@ -257,8 +261,8 @@ const NavBar = () => {
         
         {/* Botón de login separado para móvil */}
         <li className={`${styles.navItem} ${styles.mobileLoginItem} ${styles.mobileOnly}`}>
-          <a className={`${styles.buyButton} ${styles.mobileLoginButton}`} href="#registrarse">
-            <span className={styles.buttonText}>{textosNavbar.iniciarSesion}</span>
+          <a className={`${styles.buyButton} ${styles.mobileLoginButton}`} href="#inscripcion">
+            <span className={styles.buttonText}>Adquirir entrada</span>
             <div className={styles.buttonShine}></div>
           </a>
         </li>
@@ -266,24 +270,28 @@ const NavBar = () => {
 
       {/* Grupo de íconos sociales con efectos mejorados */}
       <div className={styles.socialIconsGroup}>
-        <a href="https://www.linkedin.com/company/nethive" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <img src="/icons/linkedin.svg" alt="LinkedIn" className={styles.icon} />
+        <a href="https://www.facebook.com/BarraMexicanaAbogadosLiberales" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+          <img src="/icons/facebook.svg" alt="Facebook" className={styles.icon} />
           <div className={styles.iconRipple}></div>
         </a>
-        <a href="https://twitter.com/nethive" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+        <a href="https://www.instagram.com/abogadosliberalesmx" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+          <img src="/icons/insta.svg" alt="Instagram" className={styles.icon} />
+          <div className={styles.iconRipple}></div>
+        </a>
+        <a href="https://twitter.com/BarraMexAbogLib" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
           <img src="/icons/twitter.svg" alt="Twitter" className={styles.icon} />
           <div className={styles.iconRipple}></div>
         </a>
-        <a href="mailto:info@nethive.com" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
-          <img src="/icons/email.svg" alt="Email" className={styles.icon} />
+        <a href="https://www.linkedin.com/company/barra-mexicana-abogados-liberales" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+          <img src="/icons/linkedin.svg" alt="LinkedIn" className={styles.icon} />
           <div className={styles.iconRipple}></div>
         </a>
       </div>
 
       {/* Botón de contacto con efectos premium */}
       <div className={styles.desktopOnly}>
-        <a className={styles.buyButton} href="#registrarse">
-          <span className={styles.buttonText}>{textosNavbar.iniciarSesion}</span>
+        <a className={styles.buyButton} href="#inscripcion">
+          <span className={styles.buttonText}>Adquirir entrada</span>
           <div className={styles.buttonShine}></div>
         </a>
       </div>

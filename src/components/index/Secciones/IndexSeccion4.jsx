@@ -1,124 +1,168 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { isEnglish } from '../../../data/variables';
 import { useStore } from '@nanostores/react';
-import styles from "../css/indexSeccion4.module.css";
+import { translationsIndex } from '../../../data/translationsIndex';
+import styles from "../css/indexSec4.module.css";
 
-const HomeSeccion4 = () => {
+const IndexSeccion4 = () => {
   const ingles = useStore(isEnglish);
+  const t = ingles ? translationsIndex.en.programa : translationsIndex.es.programa;
+  const [isVisible, setIsVisible] = useState(false);
+  const [activeDay, setActiveDay] = useState('day1');
+  const sectionRef = useRef(null);
 
-  const content = {
-    es: {
-      title: "Características Principales",
-      subtitle: "Todo lo que necesitas para gestionar tu infraestructura de red de manera eficiente",
-      features: [
-        {
-          icon: "📋",
-          title: "Inventario Detallado",
-          description: "Control completo de componentes con seguimiento en tiempo real de cada elemento de tu infraestructura.",
-          status: { type: "active", text: "Actualizado" }
-        },
-        {
-          icon: "🌐",
-          title: "Topología Visual",
-          description: "Visualiza la distribución completa de MDF e IDF con mapeo interactivo de conexiones.",
-          status: { type: "active", text: "En vivo" }
-        },
-        {
-          icon: "🔌",
-          title: "Gestión de Conexiones",
-          description: "Administra y monitorea todas las conexiones entre equipos con histórico de cambios.",
-          status: { type: "active", text: "Conectado" }
-        },
-        {
-          icon: "🚨",
-          title: "Alertas Inteligentes",
-          description: "Sistema de alertas automáticas para cambios no autorizados y problemas de conexión.",
-          status: { type: "alert", text: "Monitoreando" }
-        },
-        {
-          icon: "👥",
-          title: "Control de Acceso",
-          description: "Gestión de permisos por rol: administradores, técnicos y auditores con diferentes niveles de acceso.",
-          status: { type: "active", text: "Seguro" }
-        },
-        {
-          icon: "📊",
-          title: "Reportes Avanzados",
-          description: "Generación de informes detallados exportables en PDF y Excel para análisis y auditoría.",
-          status: { type: "active", text: "Disponible" }
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
         }
-      ]
-    },
-    en: {
-      title: "Core Features",
-      subtitle: "Everything you need to efficiently manage your network infrastructure",
-      features: [
-        {
-          icon: "📋",
-          title: "Detailed Inventory",
-          description: "Complete component control with real-time tracking of every element in your infrastructure.",
-          status: { type: "active", text: "Updated" }
-        },
-        {
-          icon: "🌐",
-          title: "Visual Topology",
-          description: "Visualize complete MDF and IDF distribution with interactive connection mapping.",
-          status: { type: "active", text: "Live" }
-        },
-        {
-          icon: "🔌",
-          title: "Connection Management",
-          description: "Manage and monitor all equipment connections with change history.",
-          status: { type: "active", text: "Connected" }
-        },
-        {
-          icon: "🚨",
-          title: "Smart Alerts",
-          description: "Automatic alert system for unauthorized changes and connection issues.",
-          status: { type: "alert", text: "Monitoring" }
-        },
-        {
-          icon: "👥",
-          title: "Access Control",
-          description: "Role-based permission management: administrators, technicians, and auditors with different access levels.",
-          status: { type: "active", text: "Secure" }
-        },
-        {
-          icon: "📊",
-          title: "Advanced Reports",
-          description: "Generate detailed reports exportable in PDF and Excel for analysis and auditing.",
-          status: { type: "active", text: "Available" }
-        }
-      ]
+      },
+      { threshold: 0.15, rootMargin: '0px' }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
     }
+
+    return () => {
+      if (sectionRef.current) {
+        observer.unobserve(sectionRef.current);
+      }
+    };
+  }, []);
+
+  // Función para obtener el ícono según el tipo de actividad
+  const getActivityIcon = (type) => {
+    if (type.includes('Conferencia')) return '🎤';
+    if (type.includes('Panel')) return '💬';
+    if (type.includes('Taller')) return '🎓';
+    if (type.includes('Intermedio')) return '☕';
+    if (type.includes('Q&A')) return '❓';
+    if (type.includes('protocolar')) return '🏛️';
+    return '📋';
   };
 
-  const textos = ingles ? content.en : content.es;
+  const currentDayData = t.days[activeDay];
 
   return (
-    <section className={styles.section}>
+    <section 
+      id="programa"
+      className={`${styles.section} ${isVisible ? styles.visible : ''}`} 
+      ref={sectionRef}
+    >
       <div className={styles.container}>
+        
+        {/* Header */}
         <div className={styles.header}>
-          <h2 className={styles.title}>{textos.title}</h2>
-          <p className={styles.subtitle}>{textos.subtitle}</p>
+          <div className={styles.label}>{t.label}</div>
+          <h2 className={styles.title}>{t.title}</h2>
+          <p className={styles.description}>{t.description}</p>
         </div>
-        <div className={styles.featuresGrid}>
-          {textos.features.map((feature, index) => (
-            <div key={index} className={styles.featureCard}>
-              <div className={styles.featureIcon}>
-                <span>{feature.icon}</span>
-              </div>
-              <h3 className={styles.featureTitle}>{feature.title}</h3>
-              <p className={styles.featureDescription}>{feature.description}</p>
-              <span className={`${styles.statusIndicator} ${styles['status' + feature.status.type.charAt(0).toUpperCase() + feature.status.type.slice(1)]}`}>
-                {feature.status.text}
-              </span>
+
+        {/* Tabs de días */}
+        <div className={styles.dayTabs}>
+          <button
+            className={`${styles.dayTab} ${activeDay === 'day1' ? styles.active : ''}`}
+            onClick={() => setActiveDay('day1')}
+          >
+            <div className={styles.dayNumber}>1</div>
+            <div className={styles.dayInfo}>
+              <span className={styles.dayName}>Día 1</span>
+              <span className={styles.dayDate}>Jueves 14 nov</span>
             </div>
-          ))}
+          </button>
+          <button
+            className={`${styles.dayTab} ${activeDay === 'day2' ? styles.active : ''}`}
+            onClick={() => setActiveDay('day2')}
+          >
+            <div className={styles.dayNumber}>2</div>
+            <div className={styles.dayInfo}>
+              <span className={styles.dayName}>Día 2</span>
+              <span className={styles.dayDate}>Viernes 15 nov</span>
+            </div>
+          </button>
         </div>
+
+        {/* Timeline de sesiones */}
+        <div className={styles.timeline}>
+          <h3 className={styles.dayTitle}>{currentDayData.title}</h3>
+          
+          <div className={styles.sessionsContainer}>
+            {currentDayData.sessions.map((session, index) => (
+              <div 
+                key={index} 
+                className={`${styles.sessionCard} ${session.type.includes('Intermedio') ? styles.intermedio : ''}`}
+                style={{ animationDelay: `${index * 0.08}s` }}
+              >
+                {/* Línea conectora */}
+                {index < currentDayData.sessions.length - 1 && (
+                  <div className={styles.connector}></div>
+                )}
+
+                {/* Dot del timeline */}
+                <div className={styles.timelineDot}>
+                  <div className={styles.dotInner}></div>
+                </div>
+
+                {/* Contenido de la sesión */}
+                <div className={styles.sessionContent}>
+                  
+                  {/* Hora */}
+                  <div className={styles.sessionTime}>
+                    <svg className={styles.clockIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>{session.time}</span>
+                  </div>
+
+                  {/* Main info */}
+                  <div className={styles.sessionMain}>
+                    <div className={styles.sessionHeader}>
+                      <div className={styles.activityIcon}>
+                        {getActivityIcon(session.type)}
+                      </div>
+                      <div className={styles.sessionTitleGroup}>
+                        <h4 className={styles.sessionTitle}>{session.title}</h4>
+                        <div className={styles.sessionMeta}>
+                          <span className={styles.sessionType}>{session.type}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Speaker */}
+                    {session.speaker && (
+                      <div className={styles.sessionSpeaker}>
+                        <svg className={styles.speakerIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <span>{session.speaker}</span>
+                      </div>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div className={styles.ctaWrapper}>
+          <a href="#inscripcion" className={styles.ctaButton}>
+            <span>{t.cta}</span>
+            <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+        </div>
+
       </div>
     </section>
   );
 };
 
-export default HomeSeccion4;
+export default IndexSeccion4;

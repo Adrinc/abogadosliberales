@@ -1,0 +1,561 @@
+/* ========================================
+   INDEX SECCIÓN 4 - PROGRAMA DEL CONGRESO
+   Timeline vertical con tabs de días
+   ======================================== */
+
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section.visible .header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: rgba(238, 203, 0, 0.1);
+  color: #EECB00;
+  border: 1px solid rgba(238, 203, 0, 0.3);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #020266;
+  line-height: 1.25;
+  margin: 0 0 1rem 0;
+}
+
+.description {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #4A5568;
+  margin: 0;
+}
+
+/* Tabs de días */
+.dayTabs {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.section.visible .dayTabs {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dayTab {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 2rem;
+  background: white;
+  border: 2px solid rgba(2, 2, 102, 0.1);
+  border-radius: 16px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.05);
+  min-width: 220px;
+}
+
+.dayTab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(2, 2, 102, 0.1);
+  border-color: rgba(238, 203, 0, 0.3);
+}
+
+.dayTab.active {
+  background: linear-gradient(135deg, #020266, #05054F);
+  border-color: #020266;
+  box-shadow: 
+    0 6px 20px rgba(2, 2, 102, 0.2),
+    0 0 40px rgba(238, 203, 0, 0.1);
+}
+
+.dayNumber {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(238, 203, 0, 0.15);
+  color: #020266;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  transition: all 0.3s ease;
+}
+
+.dayTab.active .dayNumber {
+  background: #EECB00;
+  color: #020266;
+  box-shadow: 0 0 20px rgba(238, 203, 0, 0.4);
+}
+
+.dayInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.dayName {
+  font-weight: 700;
+  font-size: 1.125rem;
+  color: #020266;
+  transition: color 0.3s ease;
+}
+
+.dayTab.active .dayName {
+  color: white;
+}
+
+.dayDate {
+  font-size: 0.875rem;
+  color: #4A5568;
+  transition: color 0.3s ease;
+}
+
+.dayTab.active .dayDate {
+  color: rgba(238, 203, 0, 0.9);
+}
+
+/* Timeline */
+.timeline {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+.section.visible .timeline {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.dayTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #020266;
+  text-align: center;
+  margin: 0 0 2.5rem 0;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid rgba(238, 203, 0, 0.3);
+}
+
+.sessionsContainer {
+  position: relative;
+  padding-left: 60px;
+}
+
+/* Session card */
+.sessionCard {
+  position: relative;
+  margin-bottom: 2rem;
+  opacity: 0;
+  transform: translateX(-20px);
+  animation: sessionSlideIn 0.5s ease forwards;
+}
+
+.section.visible .sessionCard {
+  animation-play-state: running;
+}
+
+@keyframes sessionSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Línea conectora vertical */
+.connector {
+  position: absolute;
+  left: -36px;
+  top: 48px;
+  width: 2px;
+  height: calc(100% + 2rem);
+  background: linear-gradient(180deg, rgba(238, 203, 0, 0.4), rgba(2, 2, 102, 0.2));
+  z-index: 0;
+}
+
+/* Dot del timeline */
+.timelineDot {
+  position: absolute;
+  left: -44px;
+  top: 24px;
+  width: 18px;
+  height: 18px;
+  background: white;
+  border: 3px solid #EECB00;
+  border-radius: 50%;
+  box-shadow: 
+    0 0 0 6px rgba(238, 203, 0, 0.1),
+    0 2px 8px rgba(2, 2, 102, 0.2);
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.sessionCard:hover .timelineDot {
+  transform: scale(1.3);
+  box-shadow: 
+    0 0 0 8px rgba(238, 203, 0, 0.15),
+    0 4px 12px rgba(2, 2, 102, 0.3);
+}
+
+.dotInner {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: #EECB00;
+}
+
+/* Contenido de la sesión */
+.sessionContent {
+  background: white;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+  border-left: 4px solid transparent;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sessionCard:hover .sessionContent {
+  transform: translateX(4px);
+  box-shadow: 0 8px 20px rgba(2, 2, 102, 0.12);
+  border-left-color: #EECB00;
+}
+
+/* Sesiones intermedias (coffee, comida) */
+.sessionCard.intermedio .sessionContent {
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.05));
+  border-left-color: rgba(238, 203, 0, 0.3);
+}
+
+.sessionCard.intermedio .timelineDot {
+  border-color: rgba(238, 203, 0, 0.5);
+}
+
+/* Hora */
+.sessionTime {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(2, 2, 102, 0.1);
+}
+
+.clockIcon {
+  width: 18px;
+  height: 18px;
+  color: #EECB00;
+  stroke-width: 2.5;
+  flex-shrink: 0;
+}
+
+.sessionTime span {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #020266;
+  letter-spacing: 0.02em;
+}
+
+/* Main info */
+.sessionMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sessionHeader {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.activityIcon {
+  font-size: 2rem;
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.08), rgba(238, 203, 0, 0.12));
+  border-radius: 12px;
+  border: 1px solid rgba(238, 203, 0, 0.2);
+}
+
+.sessionTitleGroup {
+  flex: 1;
+}
+
+.sessionTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #020266;
+  line-height: 1.4;
+  margin: 0 0 0.5rem 0;
+}
+
+.sessionMeta {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.sessionType {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  background: rgba(238, 203, 0, 0.12);
+  color: #020266;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* Speaker */
+.sessionSpeaker {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.05));
+  border-radius: 8px;
+  margin-top: 0.5rem;
+}
+
+.speakerIcon {
+  width: 18px;
+  height: 18px;
+  color: #020266;
+  stroke-width: 2;
+  flex-shrink: 0;
+}
+
+.sessionSpeaker span {
+  font-size: 0.95rem;
+  color: #4A5568;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+/* CTA */
+.ctaWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+}
+
+.section.visible .ctaWrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.125rem 2.25rem;
+  background: #EECB00;
+  color: #020266;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 16px rgba(238, 203, 0, 0.3),
+    0 0 40px rgba(238, 203, 0, 0.15);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #F4D672, #EECB00);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ctaButton:hover::before {
+  opacity: 1;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(238, 203, 0, 0.4),
+    0 0 60px rgba(238, 203, 0, 0.25);
+}
+
+.ctaButton span,
+.ctaIcon {
+  position: relative;
+  z-index: 1;
+}
+
+.ctaIcon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaIcon {
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .section {
+    padding: 4rem 1.5rem;
+  }
+
+  .dayTabs {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .dayTab {
+    min-width: auto;
+    width: 100%;
+    padding: 1rem 1.5rem;
+  }
+
+  .sessionsContainer {
+    padding-left: 40px;
+  }
+
+  .connector {
+    left: -26px;
+  }
+
+  .timelineDot {
+    left: -34px;
+    width: 16px;
+    height: 16px;
+  }
+
+  .sessionContent {
+    padding: 1.25rem;
+  }
+
+  .sessionHeader {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .activityIcon {
+    width: 40px;
+    height: 40px;
+    font-size: 1.5rem;
+  }
+
+  .sessionTitle {
+    font-size: 1rem;
+  }
+
+  .title {
+    font-size: 1.875rem;
+  }
+
+  .dayTitle {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .sessionsContainer {
+    padding-left: 30px;
+  }
+
+  .connector {
+    left: -21px;
+  }
+
+  .timelineDot {
+    left: -29px;
+    width: 14px;
+    height: 14px;
+  }
+
+  .sessionContent {
+    padding: 1rem;
+  }
+
+  .sessionCard {
+    margin-bottom: 1.5rem;
+  }
+
+  .dayNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+  }
+
+  .ctaButton {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .dayTabs,
+  .timeline,
+  .sessionCard,
+  .ctaWrapper {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+}

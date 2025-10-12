@@ -1,13 +1,13 @@
-/* Variables CSS para consistencia */
+/* Variables CSS para consistencia - ABOGADOS LIBERALES */
 :root {
-  --primary-blue: #2563eb;
-  --primary-green: #7ae582;
-  --accent-orange: #ffb454;
+  --primary-blue: #020266;
+  --primary-green: #EECB00;
+  --accent-orange: #EECB00;
   --text-light: #f5f7fa;
-  --text-dark: #22292f;
-  --bg-dark: rgba(15, 15, 20, 0.95);
+  --text-dark: #020266;
+  --bg-dark: rgba(2, 2, 102, 0.95);
   --bg-glass: rgba(255, 255, 255, 0.1);
-  --shadow-light: 0 4px 32px rgba(37, 99, 235, 0.15);
+  --shadow-light: 0 4px 32px rgba(2, 2, 102, 0.15);
   --shadow-heavy: 0 20px 60px rgba(0, 0, 0, 0.3);
   --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   --transition-fast: all 0.2s ease-out;
@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 1rem 2rem;
-  background: var(--bg-dark);
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.95) 0%, rgba(0, 0, 20, 0.98) 100%);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
   color: var(--text-light);
@@ -28,8 +28,8 @@
   left: 0;
   right: 0;
   z-index: 1000;
-  border-bottom: 1px solid rgba(37, 99, 235, 0.3);
-  box-shadow: var(--shadow-light);
+  border-bottom: 1px solid rgba(238, 203, 0, 0.3);
+  box-shadow: 0 4px 32px rgba(2, 2, 102, 0.2), 0 0 80px rgba(238, 203, 0, 0.05);
   max-height: 80px;
   transition: var(--transition-smooth);
   -webkit-tap-highlight-color: transparent;
@@ -38,11 +38,11 @@
 
 /* Efecto cuando se hace scroll */
 .navbar.scrolled {
-  background: rgba(10, 10, 15, 0.98);
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.98) 0%, rgba(0, 0, 30, 1) 100%);
   backdrop-filter: blur(25px) saturate(200%);
   -webkit-backdrop-filter: blur(25px) saturate(200%);
-  box-shadow: var(--shadow-heavy);
-  border-bottom-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 8px 40px rgba(2, 2, 102, 0.3), 0 0 100px rgba(238, 203, 0, 0.08);
+  border-bottom-color: rgba(238, 203, 0, 0.5);
 }
 
 /* Overlay para móvil */
@@ -58,43 +58,109 @@
   animation: fadeIn 0.3s ease-out;
 }
 
-/* Logo mejorado con efectos */
+/* Logo mejorado con efectos modernos */
 .logopic {
   position: relative;
-  width: 160px;
-  height: 3.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   z-index: 2;
   cursor: pointer;
   transition: var(--transition-smooth);
 }
 
 .logopic:hover {
-  transform: scale(1.05);
+  transform: scale(1.02);
 }
 
+/* Contenedor circular del logo */
 .logopic img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 8px rgba(37, 99, 235, 0.3));
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-green);
+  box-shadow: 
+    0 0 20px rgba(238, 203, 0, 0.4),
+    0 4px 12px rgba(2, 2, 102, 0.3),
+    inset 0 0 20px rgba(255, 255, 255, 0.1);
   transition: var(--transition-smooth);
+  background: white;
+  padding: 2px;
+}
+
+.logopic:hover img {
+  border-color: #F4D672;
+  box-shadow: 
+    0 0 30px rgba(238, 203, 0, 0.6),
+    0 6px 18px rgba(2, 2, 102, 0.4),
+    inset 0 0 30px rgba(255, 255, 255, 0.15);
+  transform: rotate(5deg) scale(1.05);
+}
+
+/* Texto del logo - Solo visible en desktop */
+.logoText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.logoTitle {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary-green);
+  letter-spacing: 0.02em;
+  text-shadow: 
+    0 0 10px rgba(238, 203, 0, 0.3),
+    0 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  background: linear-gradient(135deg, #EECB00 0%, #F4D672 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: var(--transition-smooth);
+}
+
+.logoSubtitle {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: rgba(238, 203, 0, 0.7);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.logopic:hover .logoTitle {
+  text-shadow: 
+    0 0 15px rgba(238, 203, 0, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4);
 }
 
 .logoGlow {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 30px;
   transform: translate(-50%, -50%) scale(0);
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%);
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.3) 0%, transparent 70%);
   border-radius: 50%;
   transition: var(--transition-smooth);
   pointer-events: none;
 }
 
 .logopic:hover .logoGlow {
-  transform: translate(-50%, -50%) scale(1);
+  transform: translate(-50%, -50%) scale(1.5);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 /* Menú de navegación con efectos premium */
@@ -162,7 +228,7 @@
   transform: translateX(-50%);
   width: 0;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+  background: linear-gradient(90deg, var(--primary-green), #F4D672);
   border-radius: 3px;
   transition: var(--transition-smooth);
 }
@@ -180,7 +246,7 @@
 .activeLink {
   color: var(--primary-green) !important;
   background: var(--bg-glass);
-  border: 1px solid rgba(122, 229, 130, 0.3);
+  border: 1px solid rgba(238, 203, 0, 0.3);
 }
 
 .activeLink::after {
@@ -209,9 +275,9 @@
 /* Efectos hover mejorados */
 .hamburger:hover {
   background: var(--bg-glass);
-  border-color: rgba(122, 229, 130, 0.3);
+  border-color: rgba(238, 203, 0, 0.3);
   transform: scale(1.05);
-  box-shadow: 0 4px 15px rgba(122, 229, 130, 0.2);
+  box-shadow: 0 4px 15px rgba(238, 203, 0, 0.2);
 }
 
 /* Glow effect en hover */
@@ -223,7 +289,7 @@
   transform: translate(-50%, -50%) scale(0);
   width: 120%;
   height: 120%;
-  background: radial-gradient(circle, rgba(122, 229, 130, 0.15) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.15) 0%, transparent 70%);
   border-radius: 50%;
   transition: var(--transition-smooth);
   pointer-events: none;
@@ -249,7 +315,7 @@
 /* Efectos hover en las barras individualmente */
 .hamburger:hover .bar {
   background: var(--primary-green);
-  box-shadow: 0 0 8px rgba(122, 229, 130, 0.4);
+  box-shadow: 0 0 8px rgba(238, 203, 0, 0.4);
 }
 
 .hamburger:hover .bar:nth-child(1) {
@@ -282,14 +348,14 @@
 
 /* Estado activo con hover - efectos combinados */
 .hamburger.active:hover {
-  background: rgba(122, 229, 130, 0.1);
-  border-color: rgba(122, 229, 130, 0.5);
+  background: rgba(238, 203, 0, 0.1);
+  border-color: rgba(238, 203, 0, 0.5);
   transform: scale(1.1);
-  box-shadow: 0 6px 20px rgba(122, 229, 130, 0.3);
+  box-shadow: 0 6px 20px rgba(238, 203, 0, 0.3);
 }
 
 .hamburger.active:hover .bar {
-  box-shadow: 0 0 12px rgba(122, 229, 130, 0.6);
+  box-shadow: 0 0 12px rgba(238, 203, 0, 0.6);
 }
 
 /* Animación de pulso sutil cuando está cerrado - CORREGIDA */
@@ -353,9 +419,9 @@
 
 .socialLink:hover {
   transform: translateY(-3px) scale(1.05);
-  background: rgba(37, 99, 235, 0.2);
-  border-color: var(--primary-blue);
-  box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
+  background: rgba(238, 203, 0, 0.2);
+  border-color: var(--primary-green);
+  box-shadow: 0 8px 25px rgba(238, 203, 0, 0.3);
 }
 
 .icon {
@@ -367,7 +433,7 @@
 }
 
 .socialLink:hover .icon {
-  filter: brightness(0) saturate(100%) invert(88%) sepia(11%) saturate(1188%) hue-rotate(93deg) brightness(97%) contrast(88%);
+  filter: brightness(0) saturate(100%) invert(82%) sepia(58%) saturate(511%) hue-rotate(359deg) brightness(103%) contrast(101%);
 }
 
 .iconRipple {
@@ -377,7 +443,7 @@
   transform: translate(-50%, -50%) scale(0);
   width: 100%;
   height: 100%;
-  background: radial-gradient(circle, rgba(122, 229, 130, 0.3) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.3) 0%, transparent 70%);
   border-radius: 50%;
   transition: var(--transition-smooth);
   pointer-events: none;
@@ -427,8 +493,8 @@
 
 .active {
   border-color: var(--primary-green);
-  background: rgba(122, 229, 130, 0.1);
-  box-shadow: 0 0 20px rgba(122, 229, 130, 0.3);
+  background: rgba(238, 203, 0, 0.1);
+  box-shadow: 0 0 20px rgba(238, 203, 0, 0.3);
 }
 
 .active .switchIcon {
@@ -446,7 +512,7 @@
   transform: translateX(-50%);
   width: 20px;
   height: 3px;
-  background: linear-gradient(90deg, var(--primary-blue), var(--primary-green));
+  background: linear-gradient(90deg, var(--primary-green), #F4D672);
   border-radius: 3px;
   transition: var(--transition-smooth);
 }
@@ -539,19 +605,30 @@
     padding: 1rem 1.5rem;
   }
 
+  /* Ocultar texto del logo en móvil */
+  .logoText {
+    display: none;
+  }
+
+  .logopic img {
+    width: 50px;
+    height: 50px;
+    border-width: 2px;
+  }
+
   .navMenu {
     position: fixed;
     top: 80px;
     left: 0;
     right: 0;
-    background: rgba(10, 10, 15, 0.98);
+    background: linear-gradient(180deg, rgba(2, 2, 102, 0.98) 0%, rgba(0, 0, 30, 1) 100%);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
     flex-direction: column;
     width: 100%;
     display: none;
     padding: 2rem 1.5rem;
-    border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+    border-bottom: 1px solid rgba(238, 203, 0, 0.3);
     box-shadow: var(--shadow-heavy);
     height: auto;
     max-height: calc(100vh - 80px);
@@ -636,7 +713,7 @@
   .mobileLoginItem {
     margin-top: 1.5rem;
     padding-top: 1.5rem !important;
-    border-top: 1px solid rgba(122, 229, 130, 0.2) !important;
+    border-top: 1px solid rgba(238, 203, 0, 0.2) !important;
     border-bottom: none !important;
   }
 
@@ -662,9 +739,9 @@
     padding: 0.75rem 1rem;
   }
 
-  .logopic {
-    width: 100px;
-    height: 2.5rem;
+  .logopic img {
+    width: 45px;
+    height: 45px;
   }
 
   .navMenu {

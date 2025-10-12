@@ -1,3 +1,7 @@
+/* ============================================
+   INDEX SECCION 1 - HERO CAROUSEL ORIGINAL
+   ============================================ */
+
 .sections {
   position: relative;
   display: flex;
@@ -268,5 +272,346 @@
   .scrollIcon {
     width: 20px;
     height: 20px;
+  }
+}
+/* Botón secundario (outline) */
+.btnSecondary {
+  position: relative;
+  background: transparent;
+  color: #FFFFFF;
+  padding: 1.1rem 2.5rem;
+  border-radius: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.btnSecondary:hover {
+  transform: translateY(-4px);
+  border-color: #EECB00;
+  color: #EECB00;
+  background: rgba(238, 203, 0, 0.1);
+  box-shadow: 0 8px 25px rgba(238, 203, 0, 0.3);
+}
+
+.btnIcon {
+  font-size: 1.2rem;
+}
+
+/* Trust signals */
+.trustSignals {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(238, 203, 0, 0.2);
+}
+
+.trustItem {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 500;
+}
+
+.trustIcon {
+  color: #EECB00;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.trustSeparator {
+  color: rgba(238, 203, 0, 0.4);
+  font-size: 1.2rem;
+}
+
+/* Shapes flotantes decorativas */
+.floatingShape1,
+.floatingShape2,
+.floatingShape3 {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.15;
+  pointer-events: none;
+}
+
+.floatingShape1 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, #EECB00, transparent);
+  top: 10%;
+  left: -10%;
+  animation: float1 15s ease-in-out infinite;
+}
+
+.floatingShape2 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, #020266, transparent);
+  bottom: 15%;
+  right: -8%;
+  animation: float2 18s ease-in-out infinite;
+}
+
+.floatingShape3 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, #F4D672, transparent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: float3 20s ease-in-out infinite;
+}
+
+@keyframes float1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(60px, 80px) scale(1.1); }
+}
+
+@keyframes float2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-70px, -60px) scale(1.15); }
+}
+
+@keyframes float3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); }
+  50% { transform: translate(-50%, -50%) scale(1.2) rotate(45deg); }
+}
+
+/* Indicador de scroll */
+.scrollIndicator {
+  position: absolute;
+  bottom: 3rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: scrollBounce 2s ease-in-out infinite;
+}
+
+.scrollText {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.scrollIcon {
+  width: 24px;
+  height: 40px;
+  border: 2px solid rgba(238, 203, 0, 0.6);
+  border-radius: 20px;
+  position: relative;
+}
+
+.scrollIcon::before {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 4px;
+  height: 8px;
+  background: #EECB00;
+  border-radius: 2px;
+  animation: scrollDot 2s ease-in-out infinite;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(12px); }
+}
+
+@keyframes scrollDot {
+  0% { top: 8px; opacity: 1; }
+  100% { top: 24px; opacity: 0; }
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .glassCard {
+    padding: 2.5rem 2rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.8rem, 4.5vw, 3rem);
+  }
+
+  .heroSubtitle {
+    font-size: clamp(1.1rem, 2.5vw, 1.7rem);
+  }
+
+  .priceAmount {
+    font-size: 1.7rem;
+  }
+
+  .ctaButtons {
+    gap: 1rem;
+  }
+
+  .btnPrimary {
+    padding: 1rem 2.5rem;
+    font-size: 1rem;
+  }
+
+  .btnSecondary {
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .trustSignals {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .trustSeparator {
+    display: none;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .heroSection {
+    min-height: 100svh; /* Mejor soporte para móviles */
+  }
+
+  .heroContent {
+    width: 95%;
+    padding: 1.5rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 1.2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .glassCard {
+    padding: 2rem 1.5rem;
+    border-radius: 18px;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.5rem, 6vw, 2.2rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .heroSubtitle {
+    font-size: clamp(1rem, 4vw, 1.4rem);
+    margin-bottom: 1.25rem;
+  }
+
+  .dateContainer {
+    padding: 0.6rem 1.2rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .dateIcon {
+    font-size: 1.3rem;
+  }
+
+  .dateText {
+    font-size: 0.95rem;
+  }
+
+  .heroDescription {
+    font-size: clamp(0.9rem, 3vw, 1.05rem);
+    margin-bottom: 1.5rem;
+  }
+
+  .priceTag {
+    padding: 0.6rem 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .priceLabel {
+    font-size: 0.85rem;
+  }
+
+  .priceAmount {
+    font-size: 1.5rem;
+  }
+
+  .ctaButtons {
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+    padding: 1rem 2rem;
+    font-size: 0.95rem;
+  }
+
+  .trustItem {
+    font-size: 0.8rem;
+  }
+
+  .floatingShape1,
+  .floatingShape2,
+  .floatingShape3 {
+    opacity: 0.08;
+  }
+
+  .scrollIndicator {
+    bottom: 2rem;
+  }
+
+  .scrollText {
+    font-size: 0.8rem;
+  }
+}
+
+/* Mobile pequeño */
+@media (max-width: 480px) {
+  .glassCard {
+    padding: 1.75rem 1.25rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.3rem, 7vw, 1.9rem);
+  }
+
+  .heroSubtitle {
+    font-size: clamp(0.9rem, 5vw, 1.2rem);
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.4rem 1rem;
+  }
+
+  .dateText {
+    font-size: 0.85rem;
+  }
+
+  .priceAmount {
+    font-size: 1.3rem;
+  }
+
+  .trustItem {
+    font-size: 0.75rem;
   }
 }

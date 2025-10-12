@@ -1,0 +1,413 @@
+/* ========================================
+   INDEX SECCIÓN 3 - PONENTES MAGISTRALES
+   Grid de speakers con cards institucionales
+   ======================================== */
+
+.section {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  padding: 8rem 2rem;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #F8FAFC 100%);
+  overflow: hidden;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Header de la sección */
+.header {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.section.visible .header {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  background: rgba(238, 203, 0, 0.1);
+  color: #EECB00;
+  border: 1px solid rgba(238, 203, 0, 0.3);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 700;
+  color: #020266;
+  line-height: 1.25;
+  margin: 0 0 1rem 0;
+}
+
+.description {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: #4A5568;
+  margin: 0;
+}
+
+/* Grid de ponentes */
+.speakersGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+/* Card individual de ponente */
+.speakerCard {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.08),
+    0 2px 4px rgba(2, 2, 102, 0.04);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: cardFadeIn 0.6s ease forwards;
+}
+
+.section.visible .speakerCard {
+  animation-play-state: running;
+}
+
+@keyframes cardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.speakerCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 12px 28px rgba(2, 2, 102, 0.12),
+    0 4px 12px rgba(238, 203, 0, 0.1);
+  border-bottom: 4px solid #EECB00;
+}
+
+/* Imagen del ponente */
+.imageWrapper {
+  position: relative;
+  width: 140px;
+  height: 140px;
+  margin: 0 auto 1.5rem;
+}
+
+.imagePlaceholder {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.1), rgba(238, 203, 0, 0.15));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px solid #EECB00;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.imagePlaceholder svg {
+  width: 60px;
+  height: 60px;
+  color: #020266;
+  opacity: 0.4;
+}
+
+/* Borde dorado animado */
+.imageBorder {
+  position: absolute;
+  inset: -4px;
+  background: linear-gradient(135deg, #EECB00, #F4D672, #EECB00);
+  border-radius: 50%;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.speakerCard:hover .imageBorder {
+  opacity: 1;
+  animation: borderRotate 3s linear infinite;
+}
+
+@keyframes borderRotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Glow dorado */
+.imageGlow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(circle at center, rgba(238, 203, 0, 0.3), transparent 60%);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.speakerCard:hover .imageGlow {
+  opacity: 1;
+}
+
+/* Badge de categoría */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.4rem 0.9rem;
+  background: rgba(238, 203, 0, 0.12);
+  border: 1px solid rgba(238, 203, 0, 0.3);
+  border-radius: 999px;
+  color: #020266;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  letter-spacing: 0.02em;
+}
+
+/* Info del ponente */
+.speakerInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.speakerName {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #020266;
+  margin: 0;
+  line-height: 1.3;
+}
+
+.speakerRole {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #4A5568;
+  margin: 0;
+}
+
+.speakerInstitution {
+  font-size: 0.875rem;
+  color: #718096;
+  margin: 0;
+  line-height: 1.4;
+  min-height: 2.8em;
+}
+
+/* Tag de tema */
+.topicTag {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.05));
+  border-radius: 10px;
+  margin-top: 0.75rem;
+  text-align: left;
+}
+
+.topicIcon {
+  width: 18px;
+  height: 18px;
+  color: #EECB00;
+  flex-shrink: 0;
+  margin-top: 2px;
+  stroke-width: 2.5;
+}
+
+.topicTag span {
+  font-size: 0.85rem;
+  color: #4A5568;
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* CTA */
+.ctaWrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+}
+
+.section.visible .ctaWrapper {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.ctaButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem;
+  background: #020266;
+  color: white;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 
+    0 4px 16px rgba(2, 2, 102, 0.3),
+    0 0 40px rgba(2, 2, 102, 0.1);
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #020266, #05054F);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.ctaButton:hover::before {
+  opacity: 1;
+}
+
+.ctaButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(2, 2, 102, 0.4),
+    0 0 60px rgba(238, 203, 0, 0.15);
+}
+
+.ctaButton span,
+.ctaIcon {
+  position: relative;
+  z-index: 1;
+}
+
+.ctaIcon {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaIcon {
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .speakersGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  .section {
+    padding: 6rem 2rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .speakersGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .section {
+    padding: 4rem 1.5rem;
+  }
+
+  .header {
+    margin-bottom: 3rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .description {
+    font-size: 1rem;
+  }
+
+  .imageWrapper {
+    width: 120px;
+    height: 120px;
+  }
+
+  .speakerCard {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .speakerName {
+    font-size: 1.125rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 3rem 1rem;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .imageWrapper {
+    width: 100px;
+    height: 100px;
+  }
+
+  .speakerCard {
+    padding: 1.25rem 1rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.35rem 0.75rem;
+  }
+
+  .ctaButton {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  .header,
+  .speakerCard,
+  .ctaWrapper {
+    animation: none;
+    transition-duration: 0.01ms;
+  }
+
+  .imageBorder {
+    animation: none;
+  }
+}
