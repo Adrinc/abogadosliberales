@@ -4,12 +4,138 @@ import { isEnglish } from '../../../data/variables';
 import { translationsIndex } from '../../../data/translationsIndex';
 import styles from '../css/indexSec9.module.css';
 
+// Componente de mapa dinámico (carga solo en cliente)
+const MapComponent = ({ position, venueName }) => {
+  const [mapComponents, setMapComponents] = useState(null);
+  
+  useEffect(() => {
+    // Importación dinámica de react-leaflet y leaflet
+    const loadMap = async () => {
+      try {
+        const leafletModule = await import('leaflet');
+        const reactLeafletModule = await import('react-leaflet');
+        
+        // Importar CSS de Leaflet
+        await import('leaflet/dist/leaflet.css');
+        
+        setMapComponents({
+          L: leafletModule.default,
+          MapContainer: reactLeafletModule.MapContainer,
+          TileLayer: reactLeafletModule.TileLayer,
+          Marker: reactLeafletModule.Marker,
+          Popup: reactLeafletModule.Popup
+        });
+      } catch (error) {
+        console.error('Error cargando el mapa:', error);
+      }
+    };
+    
+    loadMap();
+  }, []);
+
+  if (!mapComponents) {
+    return (
+      <div style={{ 
+        height: '450px', 
+        width: '100%', 
+        borderRadius: '16px', 
+        background: 'linear-gradient(135deg, #F8FAFC, #E2E8F0)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: '#4A5568',
+        fontSize: '1.125rem',
+        fontWeight: '600'
+      }}>
+        🗺️ Cargando mapa interactivo...
+      </div>
+    );
+  }
+
+  const { L, MapContainer, TileLayer, Marker, Popup } = mapComponents;
+
+  const icon = L.divIcon({
+    className: 'custom-marker',
+    html: `
+      <div style="
+        position: relative;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <div style="
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          background: rgba(238, 203, 0, 0.3);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        "></div>
+        <div style="
+          position: absolute;
+          width: 30px;
+          height: 30px;
+          background: rgba(238, 203, 0, 0.6);
+          border-radius: 50%;
+        "></div>
+        <div style="
+          position: absolute;
+          width: 18px;
+          height: 18px;
+          background: linear-gradient(135deg, #EECB00, #F4D672);
+          border-radius: 50%;
+          border: 2px solid #020266;
+          box-shadow: 0 4px 12px rgba(238, 203, 0, 0.6);
+        "></div>
+      </div>
+    `,
+    iconSize: [50, 50],
+    iconAnchor: [25, 25],
+    popupAnchor: [0, -25]
+  });
+
+  return (
+    <MapContainer
+      center={position}
+      zoom={16}
+      scrollWheelZoom={false}
+      className={styles.leafletMap}
+      style={{ height: '450px', width: '100%', borderRadius: '16px' }}
+    >
+      <TileLayer
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+      />
+      <Marker position={position} icon={icon}>
+        <Popup className={styles.customPopup}>
+          <div style={{ textAlign: 'center', padding: '8px' }}>
+            <strong style={{ color: '#020266', fontSize: '1.125rem' }}>
+              {venueName}
+            </strong>
+            <p style={{ color: '#4A5568', fontSize: '0.9rem', marginTop: '6px' }}>
+              📍 Teatro Legaria (IMSS)
+            </p>
+            <p style={{ color: '#4A5568', fontSize: '0.85rem', marginTop: '4px' }}>
+              📅 14-15 Nov 2025 · 09:00-18:00 hrs
+            </p>
+          </div>
+        </Popup>
+      </Marker>
+    </MapContainer>
+  );
+};
+
 const IndexSeccion9 = () => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsIndex.en.ubicacion : translationsIndex.es.ubicacion;
   
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+
+  // Coordenadas del Teatro Legaria (IMSS)
+  const venuePosition = [19.45282, -99.19866];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -117,72 +243,11 @@ const IndexSeccion9 = () => {
             </h3>
             
             <div className={styles.mapContainer}>
-              {/* Placeholder de mapa SVG */}
-              <svg 
-                className={styles.mapPlaceholder} 
-                viewBox="0 0 600 400" 
-                xmlns="http://www.w3.org/2000/svg"
-                preserveAspectRatio="xMidYMid slice"
-              >
-                <defs>
-                  <linearGradient id="mapGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#F8FAFC" />
-                    <stop offset="100%" stopColor="#E2E8F0" />
-                  </linearGradient>
-                </defs>
-                
-                {/* Fondo */}
-                <rect width="600" height="400" fill="url(#mapGradient)"/>
-                
-                {/* Calles decorativas */}
-                <line x1="0" y1="150" x2="600" y2="150" stroke="#CBD5E0" strokeWidth="3"/>
-                <line x1="0" y1="250" x2="600" y2="250" stroke="#CBD5E0" strokeWidth="3"/>
-                <line x1="200" y1="0" x2="200" y2="400" stroke="#CBD5E0" strokeWidth="3"/>
-                <line x1="400" y1="0" x2="400" y2="400" stroke="#CBD5E0" strokeWidth="3"/>
-                
-                {/* Bloques decorativos */}
-                <rect x="50" y="50" width="120" height="80" fill="#E2E8F0" rx="4"/>
-                <rect x="430" y="50" width="120" height="80" fill="#E2E8F0" rx="4"/>
-                <rect x="50" y="270" width="120" height="80" fill="#E2E8F0" rx="4"/>
-                <rect x="430" y="270" width="120" height="80" fill="#E2E8F0" rx="4"/>
-                
-                {/* Marcador principal (venue) */}
-                <circle cx="300" cy="200" r="50" fill="rgba(238, 203, 0, 0.3)"/>
-                <circle cx="300" cy="200" r="30" fill="rgba(238, 203, 0, 0.5)"/>
-                <circle cx="300" cy="200" r="15" fill="#EECB00"/>
-                <path 
-                  d="M 300 185 L 300 215 M 285 200 L 315 200" 
-                  stroke="#020266" 
-                  strokeWidth="3" 
-                  strokeLinecap="round"
-                />
-                
-                {/* Texto del venue */}
-                <text 
-                  x="300" 
-                  y="240" 
-                  fontSize="16" 
-                  fontWeight="700" 
-                  fill="#020266" 
-                  textAnchor="middle"
-                >
-                  Sede del Congreso
-                </text>
-                
-                {/* Indicador Metro */}
-                <circle cx="250" cy="150" r="12" fill="#FF6B35"/>
-                <text x="250" y="135" fontSize="12" fontWeight="600" fill="#1A202C" textAnchor="middle">
-                  M
-                </text>
-              </svg>
-
-              {/* Nota para reemplazar con iframe real */}
-              <div className={styles.mapNote}>
-                <p>
-                  💡 <strong>Nota:</strong> Mapa interactivo disponible próximamente. 
-                  Por ahora, usa la dirección arriba para ubicar la sede en Google Maps.
-                </p>
-              </div>
+              {/* Mapa interactivo con Leaflet (solo cliente) */}
+              <MapComponent 
+                position={venuePosition}
+                venueName={t.venue.name}
+              />
             </div>
           </div>
 

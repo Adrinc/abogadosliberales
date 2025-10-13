@@ -348,39 +348,39 @@ export const translationsIndex = {
     ubicacion: {
       label: "SEDE DEL EVENTO",
       title: "Cómo llegar",
-      subtitle: "El congreso se realizará en el corazón de la Ciudad de México",
+      subtitle: "El congreso se realizará en el Teatro Legaria (IMSS), Ciudad de México",
       venue: {
-        name: "Auditorio [Nombre por definir]",
-        address: "Av. Reforma [Número] · Col. Juárez · Cuauhtémoc · 06600 CDMX",
-        directions: "A 5 minutos del Metro Hidalgo (Líneas 2 y 3) y 10 minutos del Metrobús Reforma."
+        name: "Teatro Legaria (IMSS)",
+        address: "Calzada Legaria s/n, esquina Lago Gran Oso · Col. Pensil Norte · Miguel Hidalgo · C.P. 11430 · CDMX",
+        directions: "Metro más cercano: Legaria (Línea 7) · A 10 minutos caminando del Eje Central Lázaro Cárdenas"
       },
       mapTitle: "Ubicación exacta",
       hotelsTitle: "Hoteles recomendados cercanos",
       hotels: [
         {
-          name: "Hotel Ejecutivo",
-          distance: "300 metros (3 min caminando)",
+          name: "Hotel City Express Legaria",
+          distance: "1.2 km (15 min caminando)",
+          price: "Desde $850/noche",
+          rating: "4.0 estrellas",
+          phone: "+52 55 5399 1010"
+        },
+        {
+          name: "City Express Plus Polanco",
+          distance: "3.5 km (8 min en auto)",
           price: "Desde $1,200/noche",
           rating: "4.2 estrellas",
-          phone: "+52 55 1234 5678"
+          phone: "+52 55 5280 1818"
         },
         {
-          name: "City Express Reforma",
-          distance: "500 metros (6 min caminando)",
-          price: "Desde $950/noche",
-          rating: "4.0 estrellas",
-          phone: "+52 55 8765 4321"
-        },
-        {
-          name: "Hotel Boutique Juárez",
-          distance: "800 metros (10 min caminando)",
-          price: "Desde $1,500/noche",
+          name: "NH Collection México Reforma",
+          distance: "5 km (12 min en auto)",
+          price: "Desde $1,800/noche",
           rating: "4.5 estrellas",
-          phone: "+52 55 9876 5432"
+          phone: "+52 55 5061 3000"
         }
       ],
-      parkingInfo: "Estacionamiento disponible en el edificio con costo de $60/día.",
-      accessibilityInfo: "El auditorio cuenta con acceso para personas con discapacidad motriz."
+      parkingInfo: "El teatro cuenta con estacionamiento limitado. Se recomienda uso de transporte público.",
+      accessibilityInfo: "El Teatro Legaria cuenta con acceso para personas con discapacidad motriz."
     },
 
     // SECCIÓN 10: CTA FINAL
@@ -751,39 +751,39 @@ export const translationsIndex = {
     ubicacion: {
       label: "EVENT VENUE",
       title: "How to get there",
-      subtitle: "The congress will take place in the heart of Mexico City",
+      subtitle: "The congress will take place at Teatro Legaria (IMSS), Mexico City",
       venue: {
-        name: "Auditorium [Name TBD]",
-        address: "Av. Reforma [Number] · Col. Juárez · Cuauhtémoc · 06600 CDMX",
-        directions: "5 minutes from Hidalgo Metro (Lines 2 and 3) and 10 minutes from Reforma Metrobus."
+        name: "Teatro Legaria (IMSS)",
+        address: "Calzada Legaria s/n, corner Lago Gran Oso · Col. Pensil Norte · Miguel Hidalgo · ZIP 11430 · CDMX",
+        directions: "Nearest Metro: Legaria (Line 7) · 10 min walk from Eje Central Lázaro Cárdenas"
       },
       mapTitle: "Exact location",
       hotelsTitle: "Recommended nearby hotels",
       hotels: [
         {
-          name: "Hotel Ejecutivo",
-          distance: "300 meters (3 min walk)",
+          name: "Hotel City Express Legaria",
+          distance: "1.2 km (15 min walk)",
+          price: "From $850/night",
+          rating: "4.0 stars",
+          phone: "+52 55 5399 1010"
+        },
+        {
+          name: "City Express Plus Polanco",
+          distance: "3.5 km (8 min by car)",
           price: "From $1,200/night",
           rating: "4.2 stars",
-          phone: "+52 55 1234 5678"
+          phone: "+52 55 5280 1818"
         },
         {
-          name: "City Express Reforma",
-          distance: "500 meters (6 min walk)",
-          price: "From $950/night",
-          rating: "4.0 stars",
-          phone: "+52 55 8765 4321"
-        },
-        {
-          name: "Hotel Boutique Juárez",
-          distance: "800 meters (10 min walk)",
-          price: "From $1,500/night",
+          name: "NH Collection México Reforma",
+          distance: "5 km (12 min by car)",
+          price: "From $1,800/night",
           rating: "4.5 stars",
-          phone: "+52 55 9876 5432"
+          phone: "+52 55 5061 3000"
         }
       ],
-      parkingInfo: "Parking available in the building at $60/day.",
-      accessibilityInfo: "The auditorium has access for people with mobility disabilities."
+      parkingInfo: "The theater has limited parking. Public transportation is recommended.",
+      accessibilityInfo: "Teatro Legaria has access for people with mobility disabilities."
     },
 
     // SECTION 10: FINAL CTA

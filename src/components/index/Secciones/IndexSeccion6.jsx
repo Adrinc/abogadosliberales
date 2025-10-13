@@ -18,6 +18,10 @@ const IndexSeccion6 = () => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
+            // Autoplay del video cuando la sección es visible
+            setTimeout(() => {
+              setPlayingVideo(true);
+            }, 800); // Delay de 800ms para que el usuario vea la animación
           }
         });
       },
@@ -34,6 +38,13 @@ const IndexSeccion6 = () => {
       }
     };
   }, []);
+
+  // Mapeo de imágenes reales de testimonios
+  const testimonialImages = [
+    '/image/testimonials/laura_testimonio.png',   // María -> Laura
+    '/image/testimonials/carlos_testimonio.png',  // Carlos -> Carlos
+    '/image/testimonials/ana_testimonio.png'     // Ana -> Ana
+  ];
 
   const renderStars = (rating) => {
     return Array(5).fill(0).map((_, index) => (
@@ -79,21 +90,12 @@ const IndexSeccion6 = () => {
               {/* Avatar y info */}
               <div className={styles.testimonialHeader}>
                 <div className={styles.avatarWrapper}>
-                  <svg 
-                    className={styles.avatar} 
-                    viewBox="0 0 100 100" 
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <defs>
-                      <linearGradient id={`avatarGradient${index}`} x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#020266" />
-                        <stop offset="100%" stopColor="#05054F" />
-                      </linearGradient>
-                    </defs>
-                    <circle cx="50" cy="50" r="48" fill={`url(#avatarGradient${index})`} stroke="#EECB00" strokeWidth="3"/>
-                    <circle cx="50" cy="40" r="18" fill="#FFFFFF" opacity="0.9"/>
-                    <path d="M 25 75 Q 50 85 75 75" fill="#FFFFFF" opacity="0.9"/>
-                  </svg>
+                  {/* Imagen real del testimonio */}
+                  <img 
+                    src={testimonialImages[index]} 
+                    alt={testimonial.name}
+                    className={styles.avatar}
+                  />
                 </div>
                 
                 <div className={styles.testimonialInfo}>
@@ -176,9 +178,9 @@ const IndexSeccion6 = () => {
               </div>
             ) : (
               <div className={styles.videoIframe}>
-                {/* Video de Facebook - formato vertical */}
+                {/* Video de Facebook - formato vertical con autoplay */}
                 <iframe
-                  src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1363765995300224%2F&show_text=false&width=267&t=0"
+                  src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1363765995300224%2F&show_text=false&width=267&t=0&autoplay=1"
                   style={{ border: 'none', width: '100%', height: '100%' }}
                   scrolling="no"
                   frameBorder="0"
