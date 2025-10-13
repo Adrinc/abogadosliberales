@@ -1,0 +1,539 @@
+/* ============================================
+   INDEXSECCIÓN6 - TESTIMONIOS
+   Diseño institucional con cards elegantes + video destacado
+   ============================================ */
+
+.section {
+  position: relative;
+  padding: 120px 0;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F4F6FF 100%);
+  overflow: hidden;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(2, 2, 102, 0.05) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  bottom: 20%;
+  right: 0;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.06) 0%, transparent 70%);
+  transform: translate(50%, 50%);
+  pointer-events: none;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visible .container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.labelWrapper {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #020266;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.1), rgba(238, 203, 0, 0.1));
+  padding: 8px 24px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(2, 2, 102, 0.2);
+  text-transform: uppercase;
+}
+
+.headerWrapper {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto 4rem;
+}
+
+.title {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: #020266;
+  margin-bottom: 1rem;
+}
+
+.subtitle {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  color: #4A5568;
+  line-height: 1.6;
+}
+
+/* ============================================
+   GRID DE TESTIMONIOS
+   ============================================ */
+
+.testimonialsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  margin-bottom: 5rem;
+}
+
+.testimonialCard {
+  position: relative;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  border: 2px solid rgba(2, 2, 102, 0.1);
+  box-shadow: 
+    0 8px 24px rgba(2, 2, 102, 0.08),
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.visible .testimonialCard {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.testimonialCard:hover {
+  transform: translateY(-8px);
+  border-color: rgba(238, 203, 0, 0.4);
+  box-shadow: 
+    0 16px 40px rgba(2, 2, 102, 0.12),
+    0 0 0 1px rgba(238, 203, 0, 0.3) inset,
+    0 0 40px rgba(238, 203, 0, 0.15);
+}
+
+/* Quote icon decorativo */
+.quoteIcon {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  font-size: 4rem;
+  font-family: Georgia, serif;
+  color: rgba(238, 203, 0, 0.15);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ============================================
+   HEADER DEL TESTIMONIO
+   ============================================ */
+
+.testimonialHeader {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.avatarWrapper {
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  filter: drop-shadow(0 4px 12px rgba(2, 2, 102, 0.2));
+  transition: all 0.3s ease;
+}
+
+.testimonialCard:hover .avatar {
+  filter: drop-shadow(0 6px 20px rgba(238, 203, 0, 0.4));
+  transform: scale(1.05);
+}
+
+.testimonialInfo {
+  flex: 1;
+}
+
+.testimonialName {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #020266;
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+}
+
+.testimonialRole {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #4A5568;
+  margin-bottom: 0.25rem;
+}
+
+.testimonialLocation {
+  font-size: 0.875rem;
+  color: #718096;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* ============================================
+   TEXTO Y RATING
+   ============================================ */
+
+.testimonialText {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: #1A202C;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+  position: relative;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(238, 203, 0, 0.3);
+}
+
+.ratingWrapper {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-start;
+}
+
+.star {
+  font-size: 1.5rem;
+  color: #E2E8F0;
+  transition: all 0.3s ease;
+}
+
+.star.filled {
+  color: #EECB00;
+  filter: drop-shadow(0 2px 4px rgba(238, 203, 0, 0.3));
+}
+
+.testimonialCard:hover .star.filled {
+  color: #F4D672;
+  transform: scale(1.1);
+}
+
+/* ============================================
+   VIDEO SECTION
+   ============================================ */
+
+.videoSection {
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.videoTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 700;
+  color: #020266;
+  margin-bottom: 2.5rem;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.1), rgba(2, 2, 102, 0.05));
+  border-radius: 16px;
+  border: 2px solid rgba(238, 203, 0, 0.3);
+}
+
+.videoIcon {
+  font-size: 2rem;
+  filter: drop-shadow(0 2px 8px rgba(238, 203, 0, 0.4));
+}
+
+.videoWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  aspect-ratio: 9 / 16; /* Formato vertical para video de Facebook */
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 
+    0 12px 40px rgba(2, 2, 102, 0.15),
+    0 0 0 3px rgba(238, 203, 0, 0.2);
+  transition: all 0.4s ease;
+}
+
+.videoWrapper:hover {
+  box-shadow: 
+    0 16px 56px rgba(2, 2, 102, 0.2),
+    0 0 0 4px rgba(238, 203, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+/* ============================================
+   VIDEO THUMBNAIL
+   ============================================ */
+
+.videoThumbnail {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #0B0B2B;
+}
+
+.thumbnailBackground {
+  width: 100%;
+  height: 100%;
+}
+
+.thumbnailOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 2, 102, 0.3),
+    rgba(0, 0, 0, 0.6)
+  );
+  transition: background 0.3s ease;
+}
+
+.thumbnailOverlay:hover {
+  background: linear-gradient(
+    to bottom,
+    rgba(2, 2, 102, 0.4),
+    rgba(0, 0, 0, 0.7)
+  );
+}
+
+/* ============================================
+   PLAY BUTTON
+   ============================================ */
+
+.playButton {
+  width: 100px;
+  height: 100px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 2rem;
+}
+
+.playButton:hover {
+  transform: scale(1.15);
+}
+
+.playButton:active {
+  transform: scale(0.95);
+}
+
+.playIcon {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 8px 24px rgba(238, 203, 0, 0.5));
+  transition: all 0.4s ease;
+}
+
+.playButton:hover .playIcon {
+  filter: drop-shadow(0 12px 32px rgba(238, 203, 0, 0.7));
+}
+
+.playIcon circle {
+  transition: all 0.3s ease;
+}
+
+.playButton:hover .playIcon circle {
+  fill: rgba(244, 214, 114, 0.98);
+}
+
+/* ============================================
+   VIDEO BADGE
+   ============================================ */
+
+.videoBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(238, 203, 0, 0.15);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(238, 203, 0, 0.6);
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.badgeIcon {
+  font-size: 0.875rem;
+  color: #EECB00;
+}
+
+/* ============================================
+   VIDEO IFRAME
+   ============================================ */
+
+.videoIframe {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000000;
+}
+
+.videoIframe iframe {
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  border: none;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .testimonialsGrid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .testimonialsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+
+  .testimonialCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .testimonialHeader {
+    gap: 1rem;
+  }
+
+  .avatar {
+    width: 70px;
+    height: 70px;
+  }
+
+  .testimonialName {
+    font-size: 1.125rem;
+  }
+
+  .quoteIcon {
+    font-size: 3rem;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .videoTitle {
+    font-size: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .playButton {
+    width: 80px;
+    height: 80px;
+  }
+
+  .videoWrapper {
+    max-width: 350px;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .testimonialCard {
+    padding: 1.5rem 1rem;
+  }
+
+  .testimonialHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .avatar {
+    width: 60px;
+    height: 60px;
+  }
+
+  .testimonialText {
+    font-size: 0.9375rem;
+  }
+
+  .star {
+    font-size: 1.25rem;
+  }
+
+  .videoTitle {
+    flex-direction: column;
+    gap: 8px;
+    font-size: 1.25rem;
+    padding: 0.75rem 1rem;
+  }
+
+  .playButton {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 1.5rem;
+  }
+
+  .videoBadge {
+    font-size: 0.875rem;
+    padding: 8px 16px;
+  }
+
+  .videoWrapper {
+    max-width: 300px;
+  }
+}

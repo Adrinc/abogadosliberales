@@ -51,7 +51,7 @@ const IndexSeccion2 = () => {
           <div className={`${styles.imageColumn} ${isVisible ? styles.fadeInLeft : ''}`}>
             <div className={styles.imageWrapper}>
               <img 
-                src="/image/global/plano.jpg" 
+                src="/image/global/justicia2.webp" 
                 alt="Congreso Nacional de Amparo y Derechos Humanos"
                 className={styles.mainImage}
               />

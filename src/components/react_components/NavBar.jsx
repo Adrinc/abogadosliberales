@@ -270,7 +270,7 @@ const NavBar = () => {
 
       {/* Grupo de íconos sociales con efectos mejorados */}
       <div className={styles.socialIconsGroup}>
-        <a href="https://www.facebook.com/BarraMexicanaAbogadosLiberales" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+        <a href="https://www.facebook.com/p/Barra-Mexicana-de-Abogados-Liberales-61564196123876/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
           <img src="/icons/facebook.svg" alt="Facebook" className={styles.icon} />
           <div className={styles.iconRipple}></div>
         </a>

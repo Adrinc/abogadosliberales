@@ -1,0 +1,411 @@
+/* ============================================
+   INDEXSECCIÓN10 - CTA FINAL
+   Hero final con llamado a la acción
+   ============================================ */
+
+.section {
+  position: relative;
+  padding: 100px 0;
+  background: linear-gradient(135deg, #020266 0%, #05054F 50%, #0B0B2B 100%);
+  overflow: hidden;
+  color: #FFFFFF;
+}
+
+.section::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1200px;
+  height: 1200px;
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.15) 0%, transparent 70%);
+  pointer-events: none;
+  animation: pulseGiant 12s ease-in-out infinite;
+}
+
+@keyframes pulseGiant {
+  0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(1); }
+  50% { opacity: 0.7; transform: translate(-50%, -50%) scale(1.2); }
+}
+
+.section::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #EECB00, transparent);
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visible .container {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================
+   BADGE
+   ============================================ */
+
+.badgeWrapper {
+  margin-bottom: 2rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.2), rgba(238, 203, 0, 0.1));
+  border: 2px solid #EECB00;
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #EECB00;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  box-shadow: 0 4px 20px rgba(238, 203, 0, 0.3);
+  animation: pulseBadgeLarge 2.5s ease-in-out infinite;
+}
+
+@keyframes pulseBadgeLarge {
+  0%, 100% { 
+    transform: scale(1); 
+    box-shadow: 0 4px 20px rgba(238, 203, 0, 0.3);
+  }
+  50% { 
+    transform: scale(1.08); 
+    box-shadow: 0 8px 32px rgba(238, 203, 0, 0.5);
+  }
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+
+.headerWrapper {
+  max-width: 800px;
+  margin: 0 auto 3rem;
+}
+
+.title {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  line-height: 1.15;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 4px 20px rgba(238, 203, 0, 0.4);
+}
+
+.subtitle {
+  font-size: clamp(1.125rem, 1.75vw, 1.5rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+}
+
+.description {
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ============================================
+   CTAs
+   ============================================ */
+
+.ctaWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 20px 50px;
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  color: #020266;
+  font-size: 1.25rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  box-shadow: 
+    0 12px 32px rgba(238, 203, 0, 0.4),
+    0 0 0 3px rgba(2, 2, 102, 0.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaPrimary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.ctaPrimary:hover::before {
+  left: 100%;
+}
+
+.ctaPrimary:hover {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 16px 48px rgba(238, 203, 0, 0.6),
+    0 0 0 4px rgba(238, 203, 0, 0.3);
+}
+
+.ctaPrimary:active {
+  transform: translateY(-2px) scale(1.02);
+}
+
+.ctaArrow {
+  font-size: 1.75rem;
+  transition: transform 0.3s ease;
+}
+
+.ctaPrimary:hover .ctaArrow {
+  transform: translateX(6px);
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 40px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  color: #FFFFFF;
+  font-size: 1.125rem;
+  font-weight: 600;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-radius: 12px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.ctaSecondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: #EECB00;
+  color: #EECB00;
+  transform: translateY(-2px);
+}
+
+.whatsappIcon {
+  font-size: 1.5rem;
+}
+
+/* ============================================
+   TRUST SIGNALS
+   ============================================ */
+
+.trustSignals {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  padding: 2.5rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  margin-bottom: 3rem;
+}
+
+.trustSignal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  border: 1px solid rgba(238, 203, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.trustSignal:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(238, 203, 0, 0.4);
+  transform: translateY(-4px);
+}
+
+.trustIcon {
+  font-size: 2.5rem;
+  filter: drop-shadow(0 4px 12px rgba(238, 203, 0, 0.4));
+}
+
+.trustText {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* ============================================
+   NEWSLETTER
+   ============================================ */
+
+.newsletterWrapper {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(15px);
+  border-radius: 16px;
+  border: 1px solid rgba(238, 203, 0, 0.2);
+}
+
+.newsletterTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #EECB00;
+  margin-bottom: 1.5rem;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.newsletterInput {
+  flex: 1;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  color: #FFFFFF;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.newsletterInput::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.newsletterInput:focus {
+  outline: none;
+  border-color: #EECB00;
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(238, 203, 0, 0.2);
+}
+
+.newsletterButton {
+  padding: 14px 28px;
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  color: #020266;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.newsletterButton:hover {
+  background: linear-gradient(135deg, #F4D672, #EECB00);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(238, 203, 0, 0.4);
+}
+
+.newsletterPrivacy {
+  font-size: 0.8125rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .section {
+    padding: 80px 0;
+  }
+
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .ctaPrimary {
+    width: 100%;
+    padding: 18px 40px;
+    font-size: 1.125rem;
+  }
+
+  .ctaSecondary {
+    width: 100%;
+    padding: 14px 32px;
+  }
+
+  .trustSignals {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .newsletterForm {
+    flex-direction: column;
+  }
+
+  .newsletterButton {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .section {
+    padding: 60px 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .title {
+    font-size: 1.875rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.9375rem;
+  }
+
+  .ctaPrimary {
+    padding: 16px 32px;
+    font-size: 1rem;
+  }
+
+  .newsletterWrapper {
+    padding: 2rem 1.5rem;
+  }
+
+  .newsletterTitle {
+    font-size: 1.25rem;
+  }
+}

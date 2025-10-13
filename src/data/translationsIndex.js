@@ -48,52 +48,66 @@ export const translationsIndex = {
 
     // SECCIÓN 3: PONENTES PRINCIPALES
     ponentes: {
-      label: "EXPERTOS NACIONALES",
-      title: "Ponentes principales",
-      description: "Magistrados, académicos y litigantes de prestigio que han marcado precedentes en la protección de derechos humanos.",
-      cta: "Ver programa detallado",
+      label: "MESA DIRECTIVA 2024-2026",
+      title: "Nuestros líderes institucionales",
+      description: "El Directorio de la Barra Mexicana de Abogados Liberales comprometido con la excelencia jurídica y la defensa de los derechos humanos.",
+      cta: "Conoce más sobre nosotros",
       speakers: [
         {
-          name: "Magistrado [Nombre]",
-          role: "Magistrado de Circuito",
-          institution: "Poder Judicial de la Federación",
-          topic: "Criterios jurisprudenciales en amparo directo",
-          image: "/image/ponentes/magistrado1.jpg" // Placeholder
+          name: "Armando Hernández Cruz",
+          role: "Primer Vicepresidente",
+          institution: "Consejo Directivo BMAL",
+          topic: "Liderazgo institucional y gobernanza",
+          image: "/image/abogadosliberales/Armando.webp"
         },
         {
-          name: "Dra. [Nombre]",
-          role: "Catedrática de Derecho Constitucional",
-          institution: "UNAM",
-          topic: "Control de convencionalidad y DDHH",
-          image: "/image/ponentes/academica1.jpg"
+          name: "Omar Fuentes Cerdán",
+          role: "Comisario de Ética y Calificación",
+          institution: "Consejo Directivo BMAL",
+          topic: "Supervisión ética y deontología profesional",
+          image: "/image/abogadosliberales/OmarFuentesCerdan.webp"
         },
         {
-          name: "Mtro. [Nombre]",
-          role: "Litigante Especializado",
-          institution: "Barra Mexicana de Abogados Liberales",
-          topic: "Casos paradigmáticos ante la SCJN",
-          image: "/image/ponentes/litigante1.jpg"
+          name: "José Javier Medel González",
+          role: "Comisario Contralor",
+          institution: "Consejo Directivo BMAL",
+          topic: "Control interno y transparencia institucional",
+          image: "/image/abogadosliberales/josejavier.webp"
         },
         {
-          name: "Magistrada [Nombre]",
-          role: "Magistrada de Circuito",
-          institution: "Tribunal Colegiado en Materia Civil",
-          topic: "Amparo indirecto en materia familiar",
-          image: "/image/ponentes/magistrada2.jpg"
+          name: "Daniel Hernández González",
+          role: "Segundo Vicepresidente",
+          institution: "Consejo Directivo BMAL",
+          topic: "Coordinación académica y formación continua",
+          image: "/image/abogadosliberales/DanielHernandez.webp"
         },
         {
-          name: "Dr. [Nombre]",
-          role: "Investigador Constitucional",
-          institution: "Instituto de Investigaciones Jurídicas UNAM",
-          topic: "Evolución del juicio de amparo en México",
-          image: "/image/ponentes/academico2.jpg"
+          name: "Carlos A. Montejano Becerra",
+          role: "Secretario de la Comisión de Vinculación Social",
+          institution: "Consejo Directivo BMAL",
+          topic: "Filantropía jurídica y servicio comunitario",
+          image: "/image/abogadosliberales/CarlosM.webp"
         },
         {
-          name: "Lic. [Nombre]",
-          role: "Defensor de Derechos Humanos",
-          institution: "CNDH",
-          topic: "Litigio estratégico en comunidades vulnerables",
-          image: "/image/ponentes/defensor1.jpg"
+          name: "Carlos Quintanilla Yerena",
+          role: "Patrono de Relaciones Públicas",
+          institution: "Junta de Patronos BMAL",
+          topic: "Comunicación institucional y networking profesional",
+          image: "/image/abogadosliberales/Carlos-Quintanilla.webp"
+        },
+        {
+          name: "Arturo Feria Ortiz",
+          role: "Patrono de Gestión Administrativa",
+          institution: "Junta de Patronos BMAL",
+          topic: "Administración estratégica y planificación",
+          image: "/image/abogadosliberales/Arturo-Feria.webp"
+        },
+        {
+          name: "Álvaro Jiménez Martínez",
+          role: "Presidente de la Comisión Instructora de Arbitraje Profesional",
+          institution: "Órgano Colegiado BMAL",
+          topic: "Mediación y resolución alternativa de conflictos",
+          image: "/image/abogadosliberales/Alvaro-Jimenez.webp"
         }
       ]
     },
@@ -435,54 +449,68 @@ export const translationsIndex = {
       cta: "Learn more about the Bar"
     },
 
-    // SECTION 3: MAIN SPEAKERS
+    // SECTION 3: BOARD OF DIRECTORS
     ponentes: {
-      label: "NATIONAL EXPERTS",
-      title: "Main speakers",
-      description: "Prestigious magistrates, academics and litigators who have set precedents in human rights protection.",
-      cta: "View detailed program",
+      label: "BOARD OF DIRECTORS 2024-2026",
+      title: "Our institutional leaders",
+      description: "The Board of the Mexican Bar of Liberal Lawyers committed to legal excellence and the defense of human rights.",
+      cta: "Learn more about us",
       speakers: [
         {
-          name: "Magistrate [Name]",
-          role: "Circuit Magistrate",
-          institution: "Federal Judicial Branch",
-          topic: "Jurisprudential criteria in direct amparo",
-          image: "/image/ponentes/magistrado1.jpg"
+          name: "Armando Hernández Cruz",
+          role: "First Vice President",
+          institution: "BMAL Board of Directors",
+          topic: "Institutional leadership and governance",
+          image: "/image/abogadosliberales/Armando.webp"
         },
         {
-          name: "Dr. [Name]",
-          role: "Constitutional Law Professor",
-          institution: "UNAM",
-          topic: "Conventionality control and human rights",
-          image: "/image/ponentes/academica1.jpg"
+          name: "Omar Fuentes Cerdán",
+          role: "Ethics and Qualification Commissioner",
+          institution: "BMAL Board of Directors",
+          topic: "Ethical supervision and professional ethics",
+          image: "/image/abogadosliberales/OmarFuentesCerdan.webp"
         },
         {
-          name: "Mtro. [Name]",
-          role: "Specialized Litigator",
-          institution: "Mexican Bar of Liberal Lawyers",
-          topic: "Landmark cases before SCJN",
-          image: "/image/ponentes/litigante1.jpg"
+          name: "José Javier Medel González",
+          role: "Comptroller Commissioner",
+          institution: "BMAL Board of Directors",
+          topic: "Internal control and institutional transparency",
+          image: "/image/abogadosliberales/josejavier.webp"
         },
         {
-          name: "Magistrate [Name]",
-          role: "Circuit Magistrate",
-          institution: "Collegiate Court in Civil Matters",
-          topic: "Indirect amparo in family matters",
-          image: "/image/ponentes/magistrada2.jpg"
+          name: "Daniel Hernández González",
+          role: "Second Vice President",
+          institution: "BMAL Board of Directors",
+          topic: "Academic coordination and continuing education",
+          image: "/image/abogadosliberales/DanielHernandez.webp"
         },
         {
-          name: "Dr. [Name]",
-          role: "Constitutional Researcher",
-          institution: "UNAM Legal Research Institute",
-          topic: "Evolution of amparo lawsuit in Mexico",
-          image: "/image/ponentes/academico2.jpg"
+          name: "Carlos A. Montejano Becerra",
+          role: "Secretary of the Social Engagement Commission",
+          institution: "BMAL Board of Directors",
+          topic: "Legal philanthropy and community service",
+          image: "/image/abogadosliberales/CarlosM.webp"
         },
         {
-          name: "Lic. [Name]",
-          role: "Human Rights Defender",
-          institution: "CNDH",
-          topic: "Strategic litigation in vulnerable communities",
-          image: "/image/ponentes/defensor1.jpg"
+          name: "Carlos Quintanilla Yerena",
+          role: "Public Relations Patron",
+          institution: "BMAL Board of Patrons",
+          topic: "Institutional communication and professional networking",
+          image: "/image/abogadosliberales/Carlos-Quintanilla.webp"
+        },
+        {
+          name: "Arturo Feria Ortiz",
+          role: "Administrative Management Patron",
+          institution: "BMAL Board of Patrons",
+          topic: "Strategic administration and planning",
+          image: "/image/abogadosliberales/Arturo-Feria.webp"
+        },
+        {
+          name: "Álvaro Jiménez Martínez",
+          role: "President of the Professional Arbitration Instructional Commission",
+          institution: "BMAL Collegiate Body",
+          topic: "Mediation and alternative dispute resolution",
+          image: "/image/abogadosliberales/Alvaro-Jimenez.webp"
         }
       ]
     },

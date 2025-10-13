@@ -6,7 +6,7 @@
 .section {
   position: relative;
   width: 100%;
-  min-height: 100vh;
+/*   min-height: 100vh; */
   padding: 8rem 2rem;
   background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
   overflow: hidden;
@@ -59,7 +59,7 @@
 .imageWrapper img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 20px;
 }
 

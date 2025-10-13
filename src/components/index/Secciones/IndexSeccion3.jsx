@@ -31,8 +31,24 @@ const IndexSeccion3 = () => {
     };
   }, []);
 
-  // Mostrar solo los primeros 6 ponentes para la landing
-  const featuredSpeakers = t.speakers.slice(0, 6);
+  // Determinar el icono del badge según el rol
+  const getBadgeIcon = (role) => {
+    if (role.includes('Vicepresidente')) return '👔';
+    if (role.includes('Comisario')) return '⚖️';
+    if (role.includes('Secretario')) return '📋';
+    if (role.includes('Patrono')) return '🎖️';
+    if (role.includes('Presidente')) return '🏆';
+    return '💼';
+  };
+
+  const getBadgeText = (role) => {
+    if (role.includes('Vicepresidente')) return 'Vicepresidente';
+    if (role.includes('Comisario')) return 'Comisario';
+    if (role.includes('Secretario')) return 'Secretario';
+    if (role.includes('Patrono')) return 'Patrono';
+    if (role.includes('Presidente')) return 'Presidente';
+    return 'Directivo';
+  };
 
   return (
     <section className={`${styles.section} ${isVisible ? styles.visible : ''}`} ref={sectionRef}>
@@ -45,9 +61,9 @@ const IndexSeccion3 = () => {
           <p className={styles.description}>{t.description}</p>
         </div>
 
-        {/* Grid de ponentes */}
+        {/* Grid de mesa directiva - 8 personas */}
         <div className={styles.speakersGrid}>
-          {featuredSpeakers.map((speaker, index) => (
+          {t.speakers.map((speaker, index) => (
             <div 
               key={index} 
               className={styles.speakerCard}
@@ -55,22 +71,19 @@ const IndexSeccion3 = () => {
             >
               {/* Foto con borde dorado */}
               <div className={styles.imageWrapper}>
-                <div className={styles.imagePlaceholder}>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                  </svg>
-                </div>
+                <img 
+                  src={speaker.image} 
+                  alt={speaker.name}
+                  className={styles.speakerImage}
+                  loading="lazy"
+                />
                 <div className={styles.imageBorder}></div>
                 <div className={styles.imageGlow}></div>
               </div>
 
               {/* Badge de categoría */}
               <div className={styles.badge}>
-                {speaker.role.includes('Magistrad') ? '⚖️ Magistrado' : 
-                 speaker.role.includes('Doctor') || speaker.role.includes('Dra') ? '🎓 Doctor' :
-                 speaker.role.includes('Maestr') || speaker.role.includes('Mtr') ? '📚 Maestro' :
-                 '💼 Experto'}
+                {getBadgeIcon(speaker.role)} {getBadgeText(speaker.role)}
               </div>
 
               {/* Info del ponente */}
@@ -93,7 +106,7 @@ const IndexSeccion3 = () => {
 
         {/* CTA */}
         <div className={styles.ctaWrapper}>
-          <a href="#programa" className={styles.ctaButton}>
+          <a href="#nosotros" className={styles.ctaButton}>
             <span>{t.cta}</span>
             <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="5" y1="12" x2="19" y2="12"></line>

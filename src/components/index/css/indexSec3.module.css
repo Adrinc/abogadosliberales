@@ -64,7 +64,7 @@
   margin: 0;
 }
 
-/* Grid de ponentes */
+/* Grid de ponentes - optimizado para 8 miembros de Mesa Directiva (3 columnas = 3-3-2) */
 .speakersGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -115,6 +115,25 @@
   margin: 0 auto 1.5rem;
 }
 
+/* Imagen real del miembro de la Mesa Directiva */
+.speakerImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center;
+  border: 3px solid #EECB00;
+  position: relative;
+  z-index: 1;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.1), rgba(238, 203, 0, 0.15));
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.speakerCard:hover .speakerImage {
+  transform: scale(1.05);
+}
+
+/* Placeholder SVG (fallback - mantener por compatibilidad) */
 .imagePlaceholder {
   width: 100%;
   height: 100%;

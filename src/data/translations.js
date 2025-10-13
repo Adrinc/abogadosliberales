@@ -194,8 +194,8 @@ export const translations = {
       error_email_short: "El correo debe tener al menos 4 caracteres antes del @."
     },
     contactoSeccion: {
-      title: "¡Hablemos!",
-      description: "Nos encantaría conocerte y descubrir cómo podemos impulsar tu negocio juntos."
+      title: "¡Contáctanos!",
+      description: "Que la luz de la razón brille en la justicia."
     },
     funcionalidades: {
       hero: {
@@ -806,8 +806,8 @@ export const translations = {
       error_email_short: "Email must have at least 4 characters before the @."
     },
     contactoSeccion: {
-      title: "Let's talk!",
-      description: "We'd love to meet you and discover how we can boost your business together."
+      title: "Contact Us!",
+      description: "May the light of reason shine in justice."
     },
     funcionalidades: {
       hero: {
