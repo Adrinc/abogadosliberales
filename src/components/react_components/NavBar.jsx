@@ -217,6 +217,18 @@ const NavBar = () => {
       </div>
 
       {/* Menú de navegación con indicadores activos */}
+      {/* 
+        TEMPORAL (BETA): Los siguientes enlaces apuntan a secciones de la landing
+        hasta que se creen las páginas completas:
+        - "Inscripción" → /#inscripcion (Sección 5)
+        - "Nosotros" → /#mesa-directiva (Sección 3)
+        - "Programa" → /#programa (Sección 4)
+        
+        TODO: Restaurar a enlaces originales cuando las páginas estén listas:
+        - "Congreso 2025" → /congreso
+        - "Nosotros" → /nosotros
+        - "Membresía" → /membresia
+      */}
       <ul className={`${styles.navMenu} ${isOpen ? styles.active : ""}`} ref={menuRef}>
         <li className={styles.navItem}>
           <a 
@@ -228,26 +240,26 @@ const NavBar = () => {
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/congreso" 
-            className={`${styles.navLink} ${isActiveLink("/congreso") ? styles.activeLink : ""}`}
+            href="/#inscripcion" 
+            className={styles.navLink}
           >
-            Congreso 2025
+            Inscripción
           </a>
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/nosotros" 
-            className={`${styles.navLink} ${isActiveLink("/nosotros") ? styles.activeLink : ""}`}
+            href="/#mesa-directiva" 
+            className={styles.navLink}
           >
             {textosNavbar.nosotros || "Nosotros"}
           </a>
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/membresia" 
-            className={`${styles.navLink} ${isActiveLink("/membresia") ? styles.activeLink : ""}`}
+            href="/#programa" 
+            className={styles.navLink}
           >
-            Membresía
+            Programa
           </a>
         </li>
         <li className={styles.navItem}>
@@ -261,8 +273,8 @@ const NavBar = () => {
         
         {/* Botón de login separado para móvil */}
         <li className={`${styles.navItem} ${styles.mobileLoginItem} ${styles.mobileOnly}`}>
-          <a className={`${styles.buyButton} ${styles.mobileLoginButton}`} href="#inscripcion">
-            <span className={styles.buttonText}>Adquirir entrada</span>
+          <a className={`${styles.buyButton} ${styles.mobileLoginButton}`} href="/registro">
+            <span className={styles.buttonText}>{textosNavbar.adquirirEntrada}</span>
             <div className={styles.buttonShine}></div>
           </a>
         </li>
@@ -290,8 +302,8 @@ const NavBar = () => {
 
       {/* Botón de contacto con efectos premium */}
       <div className={styles.desktopOnly}>
-        <a className={styles.buyButton} href="#inscripcion">
-          <span className={styles.buttonText}>Adquirir entrada</span>
+        <a className={styles.buyButton} href="/registro">
+          <span className={styles.buttonText}>{textosNavbar.adquirirEntrada}</span>
           <div className={styles.buttonShine}></div>
         </a>
       </div>

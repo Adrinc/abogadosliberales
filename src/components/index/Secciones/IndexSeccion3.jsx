@@ -51,7 +51,11 @@ const IndexSeccion3 = () => {
   };
 
   return (
-    <section className={`${styles.section} ${isVisible ? styles.visible : ''}`} ref={sectionRef}>
+    <section 
+      className={`${styles.section} ${isVisible ? styles.visible : ''}`} 
+      ref={sectionRef}
+      id="mesa-directiva"
+    >
       <div className={styles.container}>
         
         {/* Header */}

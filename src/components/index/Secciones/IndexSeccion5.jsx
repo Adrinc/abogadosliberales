@@ -35,11 +35,8 @@ const IndexSeccion5 = () => {
   }, []);
 
   const handlePrimaryClick = () => {
-    // Scroll a datos bancarios
-    const paymentSection = document.getElementById('payment-info');
-    if (paymentSection) {
-      paymentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+    // Redirigir a la página de registro
+    window.location.href = '/registro';
   };
 
   return (

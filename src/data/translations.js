@@ -13,7 +13,9 @@ export const translations = {
       contacto: "Contacto",
       soporte: "Soporte",
       iniciarSesion: "Iniciar Sesión",
-      registrarse: "Registrarse"
+      registrarse: "Registrarse",
+      adquirirEntrada: "Adquirir entrada",
+      nosotros: "Nosotros"
     },
     home: {
       soluciones: {
@@ -625,7 +627,9 @@ export const translations = {
       contacto: "Contact",
       soporte: "Support",
       iniciarSesion: "Login",
-      registrarse: "Sign Up"
+      registrarse: "Sign Up",
+      adquirirEntrada: "Get Ticket",
+      nosotros: "About Us"
     },
     home: {
       soluciones: {

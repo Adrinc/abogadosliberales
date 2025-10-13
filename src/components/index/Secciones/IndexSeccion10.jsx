@@ -42,10 +42,8 @@ const IndexSeccion10 = () => {
   };
 
   const scrollToInscripcion = () => {
-    const inscripcionSection = document.getElementById('inscripcion');
-    if (inscripcionSection) {
-      inscripcionSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+    // Redirigir a la página de registro
+    window.location.href = '/registro';
   };
 
   return (
