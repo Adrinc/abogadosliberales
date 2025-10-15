@@ -271,6 +271,11 @@
   border-top-color: rgba(238, 203, 0, 0.3) !important;
 }
 
+/* Ocultar el attribution de OpenStreetMap */
+:global(.leaflet-control-attribution) {
+  display: none !important;
+}
+
 /* ============================================
    RESPONSIVE
    ============================================ */

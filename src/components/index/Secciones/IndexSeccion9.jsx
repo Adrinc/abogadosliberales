@@ -103,9 +103,9 @@ const MapComponent = ({ position, venueName }) => {
       scrollWheelZoom={false}
       className={styles.leafletMap}
       style={{ height: '450px', width: '100%', borderRadius: '16px' }}
+      attributionControl={false}
     >
       <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       <Marker position={position} icon={icon}>
