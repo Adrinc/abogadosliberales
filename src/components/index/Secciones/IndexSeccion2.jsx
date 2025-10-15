@@ -39,9 +39,11 @@ const IndexSeccion2 = () => {
     <section className={styles.section} ref={sectionRef}>
       <div className={styles.container}>
         
-        {/* Label superior */}
-        <div className={`${styles.label} ${isVisible ? styles.fadeInUp : ''}`}>
-          {t.label}
+        {/* Label superior centrado */}
+        <div className={styles.labelWrapper}>
+          <div className={`${styles.label} ${isVisible ? styles.fadeInUp : ''}`}>
+            {t.label}
+          </div>
         </div>
 
         {/* Grid asimétrico: imagen + contenido */}
@@ -51,7 +53,7 @@ const IndexSeccion2 = () => {
           <div className={`${styles.imageColumn} ${isVisible ? styles.fadeInLeft : ''}`}>
             <div className={styles.imageWrapper}>
               <img 
-                src="/image/global/justicia2.webp" 
+                src="/image/global/balanza.webp" 
                 alt="Congreso Nacional de Amparo y Derechos Humanos"
                 className={styles.mainImage}
               />

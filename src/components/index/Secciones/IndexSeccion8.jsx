@@ -11,6 +11,7 @@ const IndexSeccion8 = () => {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [openIndex, setOpenIndex] = useState(null);
+  const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -35,6 +36,20 @@ const IndexSeccion8 = () => {
     };
   }, []);
 
+  // Parallax effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollProgress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight));
+        setScrollY(scrollProgress * 40); // Movimiento máximo de 40px
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
@@ -44,6 +59,9 @@ const IndexSeccion8 = () => {
       ref={sectionRef} 
       className={`${styles.section} ${isVisible ? styles.visible : ''}`}
       id="faqs"
+      style={{
+        backgroundPositionY: `${scrollY}px`
+      }}
     >
       <div className={styles.container}>
         

@@ -3,29 +3,168 @@
    Diseño institucional con card central glassmórfica
    ============================================ */
 
+/* ============================================
+   INDEXSECCIÓN5 - INSCRIPCIÓN Y PRICING
+   Diseño institucional premium con fondos sofisticados
+   ============================================ */
+
 .section {
   position: relative;
   padding: 120px 0;
-  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 50%, #F4F6FF 100%);
+  /* Fondo degradado azul-dorado suave con noise texture */
+  background: 
+    radial-gradient(ellipse at top left, rgba(238, 203, 0, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at top right, rgba(2, 2, 102, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(2, 2, 102, 0.05) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom right, rgba(238, 203, 0, 0.06) 0%, transparent 50%),
+    linear-gradient(180deg, 
+      #F8FAFC 0%, 
+      #F1F5F9 25%, 
+      #EEF2FF 50%, 
+      #E8ECFF 75%, 
+      #F1F5F9 100%
+    );
   overflow: hidden;
+  border-top: 1px solid rgba(238, 203, 0, 0.2);
+  border-bottom: 1px solid rgba(2, 2, 102, 0.1);
 }
 
+/* Orb luminoso dorado superior */
 .section::before {
   content: '';
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(238, 203, 0, 0.08) 0%, transparent 70%);
+  top: -200px;
+  right: 10%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(
+    circle, 
+    rgba(238, 203, 0, 0.15) 0%, 
+    rgba(238, 203, 0, 0.08) 30%,
+    transparent 70%
+  );
+  filter: blur(60px);
   pointer-events: none;
-  animation: pulseGlow 8s ease-in-out infinite;
+  animation: floatOrb1 15s ease-in-out infinite;
+  z-index: 0;
 }
 
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
-  50% { opacity: 1; transform: translateX(-50%) scale(1.1); }
+@keyframes floatOrb1 {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1); 
+    opacity: 0.6; 
+  }
+  33% { 
+    transform: translate(-30px, 40px) scale(1.1); 
+    opacity: 0.8; 
+  }
+  66% { 
+    transform: translate(40px, -30px) scale(0.95); 
+    opacity: 0.7; 
+  }
+}
+
+/* Orb luminoso azul (elemento adicional) */
+.orbBlue {
+  position: absolute;
+  bottom: -150px;
+  left: 5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle, 
+    rgba(2, 2, 102, 0.12) 0%, 
+    rgba(2, 2, 102, 0.06) 30%,
+    transparent 70%
+  );
+  filter: blur(80px);
+  pointer-events: none;
+  animation: floatOrb2 18s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes floatOrb2 {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1); 
+    opacity: 0.5; 
+  }
+  40% { 
+    transform: translate(50px, -40px) scale(1.15); 
+    opacity: 0.7; 
+  }
+  80% { 
+    transform: translate(-40px, 30px) scale(0.9); 
+    opacity: 0.6; 
+  }
+}
+
+/* Partículas flotantes decorativas */
+.particles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: radial-gradient(circle, rgba(238, 203, 0, 0.6), transparent);
+  border-radius: 50%;
+  filter: blur(1px);
+  opacity: 0;
+  animation: floatParticle linear infinite;
+}
+
+.particle:nth-child(1) {
+  left: 20%;
+  animation-duration: 15s;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  left: 40%;
+  animation-duration: 18s;
+  animation-delay: 3s;
+}
+
+.particle:nth-child(3) {
+  left: 60%;
+  animation-duration: 20s;
+  animation-delay: 6s;
+}
+
+.particle:nth-child(4) {
+  left: 80%;
+  animation-duration: 16s;
+  animation-delay: 2s;
+}
+
+.particle:nth-child(5) {
+  left: 50%;
+  animation-duration: 22s;
+  animation-delay: 5s;
+}
+
+@keyframes floatParticle {
+  0% {
+    bottom: -10px;
+    opacity: 0;
+    transform: translateX(0) scale(0.5);
+  }
+  10% {
+    opacity: 0.6;
+  }
+  90% {
+    opacity: 0.4;
+  }
+  100% {
+    bottom: 110%;
+    opacity: 0;
+    transform: translateX(calc(-50px + 100px)) scale(1.2);
+  }
 }
 
 .container {
@@ -35,6 +174,8 @@
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
 }
 
 .visible .container {
@@ -107,16 +248,32 @@
   position: relative;
   width: 100%;
   padding: 2rem 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(244, 246, 255, 0.95));
-  backdrop-filter: blur(20px);
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.98), 
+    rgba(248, 250, 252, 0.98)
+  );
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
   border-radius: 24px;
-  border: 2px solid rgba(238, 203, 0, 0.3);
+  border: 2px solid rgba(238, 203, 0, 0.4);
   box-shadow: 
-    0 12px 40px rgba(2, 2, 102, 0.12),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
-    0 0 60px rgba(238, 203, 0, 0.2);
+    0 20px 60px rgba(2, 2, 102, 0.15),
+    0 8px 24px rgba(238, 203, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset,
+    0 0 80px rgba(238, 203, 0, 0.15);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.pricingCard:hover {
+  transform: translateY(-6px);
+  border-color: rgba(238, 203, 0, 0.6);
+  box-shadow: 
+    0 24px 80px rgba(2, 2, 102, 0.2),
+    0 12px 32px rgba(238, 203, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 1) inset,
+    0 0 100px rgba(238, 203, 0, 0.25);
 }
 
 .pricingCard::before {
@@ -431,13 +588,33 @@
 .paymentInfoCard {
   width: 100%;
   padding: 2.5rem;
-  background: linear-gradient(135deg, rgba(2, 2, 102, 0.98), rgba(5, 5, 79, 0.98));
+  background: linear-gradient(
+    135deg, 
+    rgba(2, 2, 102, 0.98), 
+    rgba(5, 5, 79, 0.98)
+  );
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 20px;
-  border: 2px solid rgba(238, 203, 0, 0.3);
-  box-shadow: 0 12px 40px rgba(2, 2, 102, 0.3);
+  border: 2px solid rgba(238, 203, 0, 0.4);
+  box-shadow: 
+    0 20px 60px rgba(2, 2, 102, 0.35),
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 0 80px rgba(238, 203, 0, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
   position: sticky;
   top: 100px;
   height: fit-content;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paymentInfoCard:hover {
+  border-color: rgba(238, 203, 0, 0.6);
+  box-shadow: 
+    0 24px 80px rgba(2, 2, 102, 0.4),
+    0 12px 32px rgba(0, 0, 0, 0.25),
+    0 0 100px rgba(238, 203, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
 .paymentTitle {
@@ -564,11 +741,32 @@
   .pricingCard {
     order: 1; /* Pricing card va primero en móvil */
   }
+
+  /* Reducir blur de orbs en tablets para mejor performance */
+  .section::before {
+    filter: blur(50px);
+  }
+
+  .orbBlue {
+    filter: blur(60px);
+  }
 }
 
 @media (max-width: 768px) {
   .section {
     padding: 80px 0;
+  }
+
+  /* Ocultar partículas en móvil (mejor performance) */
+  .particles {
+    display: none;
+  }
+
+  /* Reducir más el blur en móviles */
+  .section::before,
+  .orbBlue {
+    filter: blur(40px);
+    opacity: 0.6;
   }
 
   .twoColumnGrid {
@@ -646,5 +844,27 @@
 
   .paymentInfoCard {
     padding: 1.5rem 1rem;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD - REDUCE MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .section::before,
+  .orbBlue,
+  .particles {
+    animation: none;
+  }
+
+  .particle {
+    display: none;
   }
 }

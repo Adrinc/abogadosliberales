@@ -117,6 +117,7 @@ export const translationsIndex = {
       label: "PROGRAMA ACADÉMICO",
       title: "Agenda del congreso",
       description: "Dos días intensivos de conferencias magistrales, paneles de discusión y talleres prácticos.",
+      cta: "Adquirir entrada",
       downloadCta: "Descargar programa completo (PDF)",
       days: {
         day1: {
@@ -520,6 +521,7 @@ export const translationsIndex = {
       label: "ACADEMIC PROGRAM",
       title: "Congress agenda",
       description: "Two intensive days of keynote speeches, discussion panels and practical workshops.",
+      cta: "Get Ticket",
       downloadCta: "Download full program (PDF)",
       days: {
         day1: {

@@ -1,20 +1,134 @@
 /* ========================================
    INDEX SECCIÓN 4 - PROGRAMA DEL CONGRESO
-   Timeline vertical con tabs de días
+   Timeline vertical con tabs de días + Parallax
    ======================================== */
 
 .section {
   position: relative;
   width: 100%;
-  min-height: 100vh;
   padding: 8rem 2rem;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  overflow: hidden;
+  background: #020266; /* Fallback azul oscuro */
+}
+
+/* Fondo parallax con imagen */
+.section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url('/image/backgrounds/bg_banner1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; /* Parallax effect */
+  opacity: 0.15;
+  z-index: 0;
+  transition: transform 0.3s ease-out;
+}
+
+/* Overlay institucional azul-dorado */
+.section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(2, 2, 102, 0.92) 0%,
+    rgba(5, 5, 79, 0.88) 50%,
+    rgba(11, 11, 43, 0.92) 100%
+  );
+  z-index: 0;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+/* Borde superior decorativo dorado */
+.section {
+  border-top: 6px solid transparent;
+  border-image: linear-gradient(
+    90deg,
+    transparent 0%,
+    #EECB00 20%,
+    #F4D672 50%,
+    #EECB00 80%,
+    transparent 100%
+  ) 1;
+  border-image-slice: 1 0 0 0;
+}
+
+/* Borde inferior decorativo dorado */
+.section {
+  box-shadow: 
+    inset 0 6px 0 0 rgba(238, 203, 0, 0.3),
+    inset 0 -6px 0 0 rgba(238, 203, 0, 0.3);
+}
+
+/* Bordes decorativos mejorados con glow */
+.topBorder,
+.bottomBorder {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6px;
+  z-index: 10;
   overflow: hidden;
 }
 
+.topBorder {
+  top: 0;
+}
+
+.bottomBorder {
+  bottom: 0;
+}
+
+.borderLine {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(238, 203, 0, 0.3) 10%,
+    #EECB00 30%,
+    #F4D672 50%,
+    #EECB00 70%,
+    rgba(238, 203, 0, 0.3) 90%,
+    transparent 100%
+  );
+}
+
+.borderGlow {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(238, 203, 0, 0.6) 50%,
+    transparent 100%
+  );
+  filter: blur(8px);
+  animation: borderPulse 3s ease-in-out infinite;
+}
+
+@keyframes borderPulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
 .container {
-  max-width: 1080px;
+  max-width: 1200px;
   margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.labelWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 3rem;
 }
 
 /* Header */
@@ -36,32 +150,65 @@
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1.25rem;
-  background: rgba(238, 203, 0, 0.1);
-  color: #EECB00;
-  border: 1px solid rgba(238, 203, 0, 0.3);
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #EECB00 0%, #F4D672 100%);
+  color: #020266;
+  border: none;
   border-radius: 999px;
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  margin-bottom: 1.5rem;
+  box-shadow: 
+    0 4px 20px rgba(238, 203, 0, 0.5),
+    0 2px 8px rgba(238, 203, 0, 0.3),
+    0 0 40px rgba(238, 203, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.label:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 24px rgba(238, 203, 0, 0.6),
+    0 3px 10px rgba(238, 203, 0, 0.4),
+    0 0 50px rgba(238, 203, 0, 0.3);
 }
 
 .title {
   font-family: var(--al-font-headline, 'Merriweather', serif);
-  font-size: clamp(2rem, 4vw, 3rem);
-  font-weight: 700;
-  color: #020266;
-  line-height: 1.25;
+  font-size: clamp(2.25rem, 4vw, 3rem);
+  font-weight: 800;
+  color: white;
+  line-height: 1.2;
   margin: 0 0 1rem 0;
+  position: relative;
+  display: inline-block;
+  text-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 4px 16px rgba(238, 203, 0, 0.2);
+}
+
+.title::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 4px;
+  background: linear-gradient(90deg, #EECB00 0%, #F4D672 100%);
+  border-radius: 2px;
+  box-shadow: 0 0 20px rgba(238, 203, 0, 0.6);
 }
 
 .description {
   font-size: 1.125rem;
-  line-height: 1.7;
-  color: #4A5568;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.9);
   margin: 0;
+  font-weight: 400;
+  margin-top: 1.25rem;
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Tabs de días */
@@ -69,7 +216,7 @@
   display: flex;
   gap: 1rem;
   justify-content: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2.5rem;
   opacity: 0;
   transform: translateY(20px);
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
@@ -84,28 +231,34 @@
   display: flex;
   align-items: center;
   gap: 1rem;
-  padding: 1.25rem 2rem;
-  background: white;
-  border: 2px solid rgba(2, 2, 102, 0.1);
+  padding: 1rem 1.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 2px solid rgba(255, 255, 255, 0.8);
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.05);
-  min-width: 220px;
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.08),
+    0 2px 4px rgba(2, 2, 102, 0.04);
+  min-width: 200px;
 }
 
 .dayTab:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(2, 2, 102, 0.1);
-  border-color: rgba(238, 203, 0, 0.3);
+  box-shadow: 
+    0 6px 20px rgba(2, 2, 102, 0.12),
+    0 3px 8px rgba(238, 203, 0, 0.15);
+  border-color: rgba(238, 203, 0, 0.5);
 }
 
 .dayTab.active {
-  background: linear-gradient(135deg, #020266, #05054F);
+  background: linear-gradient(135deg, #020266 0%, #05054F 100%);
   border-color: #020266;
   box-shadow: 
-    0 6px 20px rgba(2, 2, 102, 0.2),
-    0 0 40px rgba(238, 203, 0, 0.1);
+    0 8px 24px rgba(2, 2, 102, 0.25),
+    0 4px 12px rgba(238, 203, 0, 0.2);
 }
 
 .dayNumber {
@@ -156,7 +309,7 @@
   color: rgba(238, 203, 0, 0.9);
 }
 
-/* Timeline */
+/* Timeline - CONTENEDOR CON SCROLL */
 .timeline {
   opacity: 0;
   transform: translateY(20px);
@@ -168,39 +321,169 @@
   transform: translateY(0);
 }
 
+.timelineWrapper {
+  background: rgba(255, 255, 255, 0.98);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-radius: 24px;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 
+    0 12px 40px rgba(2, 2, 102, 0.15),
+    0 6px 16px rgba(2, 2, 102, 0.08),
+    0 0 60px rgba(238, 203, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 1);
+  overflow: hidden;
+  position: relative;
+}
+
+.timelineWrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, 
+    #EECB00 0%, 
+    #F4D672 25%, 
+    #EECB00 50%, 
+    #F4D672 75%, 
+    #EECB00 100%
+  );
+  z-index: 2;
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
 .dayTitle {
   font-family: var(--al-font-headline, 'Merriweather', serif);
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
   color: #020266;
   text-align: center;
-  margin: 0 0 2.5rem 0;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid rgba(238, 203, 0, 0.3);
+  margin: 0;
+  padding: 1.75rem 2rem 1.5rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.12), rgba(255, 255, 255, 0.95));
+  border-bottom: 2px solid rgba(238, 203, 0, 0.4);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.1),
+    inset 0 -1px 0 rgba(238, 203, 0, 0.3);
 }
 
 .sessionsContainer {
   position: relative;
-  padding-left: 60px;
+  padding: 2rem 2rem 1.5rem 60px;
+  max-height: 600px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+.sessionsContainer::-webkit-scrollbar {
+  width: 8px;
+}
+
+.sessionsContainer::-webkit-scrollbar-track {
+  background: rgba(2, 2, 102, 0.05);
+  border-radius: 10px;
+  margin: 8px 0;
+}
+
+.sessionsContainer::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #EECB00, #F4D672);
+  border-radius: 10px;
+  transition: background 0.3s ease;
+}
+
+.sessionsContainer::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #F4D672, #EECB00);
+}
+
+/* Scroll indicators (fade gradients) - MEJORADO */
+.timelineWrapper::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, 
+    rgba(255, 255, 255, 0.98) 0%, 
+    rgba(255, 255, 255, 0.7) 40%,
+    transparent 100%
+  );
+  pointer-events: none;
+  z-index: 5;
+}
+
+/* Indicador de scroll visual (dorado pulsante) */
+.sessionsContainer::before {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #EECB00, transparent);
+  border-radius: 2px;
+  z-index: 6;
+  animation: pulseScroll 2s ease-in-out infinite;
+}
+
+@keyframes pulseScroll {
+  0%, 100% {
+    opacity: 0.4;
+    transform: translateX(-50%) scaleX(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(-50%) scaleX(1.2);
+  }
 }
 
 /* Session card */
 .sessionCard {
   position: relative;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   opacity: 0;
   transform: translateX(-20px);
   animation: sessionSlideIn 0.5s ease forwards;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.sessionCard:last-child {
+  margin-bottom: 0;
 }
 
 .section.visible .sessionCard {
   animation-play-state: running;
 }
 
+/* Efecto de aparición más dramático */
 @keyframes sessionSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px) scale(0.95);
+  }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateX(0) scale(1);
   }
 }
 
@@ -208,10 +491,13 @@
 .connector {
   position: absolute;
   left: -36px;
-  top: 48px;
+  top: 40px;
   width: 2px;
-  height: calc(100% + 2rem);
-  background: linear-gradient(180deg, rgba(238, 203, 0, 0.4), rgba(2, 2, 102, 0.2));
+  height: calc(100% + 1.5rem);
+  background: linear-gradient(180deg, 
+    rgba(238, 203, 0, 0.5), 
+    rgba(2, 2, 102, 0.3)
+  );
   z-index: 0;
 }
 
@@ -219,23 +505,23 @@
 .timelineDot {
   position: absolute;
   left: -44px;
-  top: 24px;
+  top: 20px;
   width: 18px;
   height: 18px;
   background: white;
   border: 3px solid #EECB00;
   border-radius: 50%;
   box-shadow: 
-    0 0 0 6px rgba(238, 203, 0, 0.1),
+    0 0 0 6px rgba(238, 203, 0, 0.15),
     0 2px 8px rgba(2, 2, 102, 0.2);
   z-index: 1;
   transition: all 0.3s ease;
 }
 
 .sessionCard:hover .timelineDot {
-  transform: scale(1.3);
+  transform: scale(1.4);
   box-shadow: 
-    0 0 0 8px rgba(238, 203, 0, 0.15),
+    0 0 0 10px rgba(238, 203, 0, 0.2),
     0 4px 12px rgba(2, 2, 102, 0.3);
 }
 
@@ -248,18 +534,27 @@
 
 /* Contenido de la sesión */
 .sessionContent {
-  background: white;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-radius: 16px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
-  border-left: 4px solid transparent;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.08),
+    0 2px 4px rgba(2, 2, 102, 0.04);
+  border-left: 3px solid transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .sessionCard:hover .sessionContent {
-  transform: translateX(4px);
-  box-shadow: 0 8px 20px rgba(2, 2, 102, 0.12);
-  border-left-color: #EECB00;
+  transform: translateX(6px);
+  box-shadow: 
+    0 12px 32px rgba(2, 2, 102, 0.18),
+    0 6px 16px rgba(238, 203, 0, 0.25),
+    inset 0 0 0 1px rgba(238, 203, 0, 0.4);
+  border-left: 4px solid #EECB00;
+  border-color: rgba(238, 203, 0, 0.5);
 }
 
 /* Sesiones intermedias (coffee, comida) */
@@ -398,39 +693,44 @@
   display: inline-flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1.125rem 2.25rem;
-  background: #EECB00;
-  color: #020266;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, #020266 0%, #05054F 100%);
+  color: white;
+  border: 2px solid #020266;
   border-radius: 12px;
   font-weight: 700;
-  font-size: 1.05rem;
+  font-size: 1rem;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
-    0 4px 16px rgba(238, 203, 0, 0.3),
-    0 0 40px rgba(238, 203, 0, 0.15);
   position: relative;
   overflow: hidden;
+  box-shadow: 
+    0 4px 16px rgba(2, 2, 102, 0.25),
+    0 2px 6px rgba(2, 2, 102, 0.15);
 }
 
 .ctaButton::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, #F4D672, #EECB00);
-  opacity: 0;
-  transition: opacity 0.3s ease;
+  background: linear-gradient(135deg, #EECB00 0%, #F4D672 100%);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
 
 .ctaButton:hover::before {
-  opacity: 1;
+  transform: scaleX(1);
 }
 
 .ctaButton:hover {
+  color: #020266;
+  border-color: #EECB00;
   transform: translateY(-2px);
   box-shadow: 
-    0 8px 24px rgba(238, 203, 0, 0.4),
-    0 0 60px rgba(238, 203, 0, 0.25);
+    0 8px 24px rgba(238, 203, 0, 0.35),
+    0 4px 12px rgba(238, 203, 0, 0.2);
 }
 
 .ctaButton span,
@@ -455,6 +755,12 @@
     padding: 4rem 1.5rem;
   }
 
+  /* Desactivar parallax en móvil (mejor performance) */
+  .section::before {
+    background-attachment: scroll;
+    opacity: 0.1;
+  }
+
   .dayTabs {
     flex-direction: column;
     gap: 0.75rem;
@@ -467,7 +773,8 @@
   }
 
   .sessionsContainer {
-    padding-left: 40px;
+    padding: 1.5rem 1.5rem 1.25rem 40px;
+    max-height: 500px;
   }
 
   .connector {
@@ -505,6 +812,17 @@
 
   .dayTitle {
     font-size: 1.25rem;
+    padding: 1.5rem 1.5rem 1.25rem;
+  }
+
+  /* Bordes más sutiles en móvil */
+  .topBorder,
+  .bottomBorder {
+    height: 4px;
+  }
+
+  .borderGlow {
+    display: none; /* Mejor performance en móvil */
   }
 }
 
@@ -514,7 +832,8 @@
   }
 
   .sessionsContainer {
-    padding-left: 30px;
+    padding: 1.25rem 1rem 1rem 30px;
+    max-height: 450px;
   }
 
   .connector {
@@ -532,7 +851,7 @@
   }
 
   .sessionCard {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .dayNumber {
@@ -545,6 +864,10 @@
     width: 100%;
     justify-content: center;
     padding: 1rem 1.5rem;
+  }
+
+  .dayTitle {
+    padding: 1.25rem 1rem 1rem;
   }
 }
 

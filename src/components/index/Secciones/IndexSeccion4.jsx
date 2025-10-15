@@ -9,6 +9,7 @@ const IndexSeccion4 = () => {
   const t = ingles ? translationsIndex.en.programa : translationsIndex.es.programa;
   const [isVisible, setIsVisible] = useState(false);
   const [activeDay, setActiveDay] = useState('day1');
+  const [scrollY, setScrollY] = useState(0);
   const sectionRef = useRef(null);
 
   useEffect(() => {
@@ -32,6 +33,20 @@ const IndexSeccion4 = () => {
     };
   }, []);
 
+  // Parallax effect suave
+  useEffect(() => {
+    const handleScroll = () => {
+      if (sectionRef.current) {
+        const rect = sectionRef.current.getBoundingClientRect();
+        const scrollProgress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight));
+        setScrollY(scrollProgress * 50); // Movimiento máximo de 50px
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   // Función para obtener el ícono según el tipo de actividad
   const getActivityIcon = (type) => {
     if (type.includes('Conferencia')) return '🎤';
@@ -50,12 +65,23 @@ const IndexSeccion4 = () => {
       id="programa"
       className={`${styles.section} ${isVisible ? styles.visible : ''}`} 
       ref={sectionRef}
+      style={{
+        backgroundPositionY: `${scrollY}px`
+      }}
     >
+      {/* Borde decorativo superior dorado */}
+      <div className={styles.topBorder}>
+        <div className={styles.borderLine}></div>
+        <div className={styles.borderGlow}></div>
+      </div>
+
       <div className={styles.container}>
         
         {/* Header */}
         <div className={styles.header}>
-          <div className={styles.label}>{t.label}</div>
+          <div className={styles.labelWrapper}>
+            <div className={styles.label}>{t.label}</div>
+          </div>
           <h2 className={styles.title}>{t.title}</h2>
           <p className={styles.description}>{t.description}</p>
         </div>
@@ -86,10 +112,11 @@ const IndexSeccion4 = () => {
 
         {/* Timeline de sesiones */}
         <div className={styles.timeline}>
-          <h3 className={styles.dayTitle}>{currentDayData.title}</h3>
-          
-          <div className={styles.sessionsContainer}>
-            {currentDayData.sessions.map((session, index) => (
+          <div className={styles.timelineWrapper}>
+            <h3 className={styles.dayTitle}>{currentDayData.title}</h3>
+            
+            <div className={styles.sessionsContainer}>
+              {currentDayData.sessions.map((session, index) => (
               <div 
                 key={index} 
                 className={`${styles.sessionCard} ${session.type.includes('Intermedio') ? styles.intermedio : ''}`}
@@ -146,6 +173,7 @@ const IndexSeccion4 = () => {
                 </div>
               </div>
             ))}
+            </div>
           </div>
         </div>
 
@@ -160,6 +188,12 @@ const IndexSeccion4 = () => {
           </a>
         </div>
 
+      </div>
+
+      {/* Borde decorativo inferior dorado */}
+      <div className={styles.bottomBorder}>
+        <div className={styles.borderLine}></div>
+        <div className={styles.borderGlow}></div>
       </div>
     </section>
   );

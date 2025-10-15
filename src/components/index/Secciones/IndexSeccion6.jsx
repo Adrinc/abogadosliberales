@@ -63,6 +63,9 @@ const IndexSeccion6 = () => {
       className={`${styles.section} ${isVisible ? styles.visible : ''}`}
       id="testimonios"
     >
+      {/* Orb central luminoso (elemento adicional) */}
+      <div className={styles.orbCenter}></div>
+      
       <div className={styles.container}>
         
         {/* Label superior */}

@@ -1,37 +1,119 @@
 /* ============================================
    INDEXSECCIÓN6 - TESTIMONIOS
-   Diseño institucional con cards elegantes + video destacado
+   Diseño institucional premium con mesh gradient
    ============================================ */
 
 .section {
   position: relative;
   padding: 120px 0;
-  background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #F4F6FF 100%);
+  /* Mesh gradient suave con múltiples capas */
+  background: 
+    radial-gradient(ellipse at top right, rgba(238, 203, 0, 0.06) 0%, transparent 45%),
+    radial-gradient(ellipse at bottom left, rgba(2, 2, 102, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at center, rgba(238, 203, 0, 0.04) 0%, transparent 60%),
+    linear-gradient(
+      180deg, 
+      #E8ECFF 0%, 
+      #F1F5F9 30%, 
+      #EEF2FF 60%,
+      #F8FAFC 100%
+    );
   overflow: hidden;
+  border-top: 1px solid rgba(2, 2, 102, 0.15);
+  border-bottom: 1px solid rgba(238, 203, 0, 0.2);
 }
 
+/* Orb luminoso azul superior izquierdo */
 .section::before {
   content: '';
   position: absolute;
-  top: 50%;
-  left: 0;
-  width: 400px;
-  height: 400px;
-  background: radial-gradient(circle, rgba(2, 2, 102, 0.05) 0%, transparent 70%);
-  transform: translate(-50%, -50%);
+  top: 5%;
+  left: -5%;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(
+    circle, 
+    rgba(2, 2, 102, 0.12) 0%, 
+    rgba(2, 2, 102, 0.06) 30%,
+    transparent 70%
+  );
+  filter: blur(70px);
   pointer-events: none;
+  animation: floatOrbTestimonial1 20s ease-in-out infinite;
+  z-index: 0;
 }
 
+/* Orb luminoso dorado inferior derecho */
 .section::after {
   content: '';
   position: absolute;
-  bottom: 20%;
-  right: 0;
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(238, 203, 0, 0.06) 0%, transparent 70%);
-  transform: translate(50%, 50%);
+  bottom: 10%;
+  right: -5%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(
+    circle, 
+    rgba(238, 203, 0, 0.15) 0%, 
+    rgba(238, 203, 0, 0.08) 30%,
+    transparent 70%
+  );
+  filter: blur(80px);
   pointer-events: none;
+  animation: floatOrbTestimonial2 16s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes floatOrbTestimonial1 {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1); 
+    opacity: 0.6; 
+  }
+  50% { 
+    transform: translate(40px, -50px) scale(1.1); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes floatOrbTestimonial2 {
+  0%, 100% { 
+    transform: translate(0, 0) scale(1); 
+    opacity: 0.5; 
+  }
+  50% { 
+    transform: translate(-50px, 40px) scale(1.15); 
+    opacity: 0.75; 
+  }
+}
+
+/* Orb central luminoso (elemento adicional para más depth) */
+.orbCenter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 700px;
+  height: 700px;
+  background: radial-gradient(
+    circle, 
+    rgba(238, 203, 0, 0.08) 0%, 
+    rgba(2, 2, 102, 0.06) 30%,
+    transparent 70%
+  );
+  filter: blur(90px);
+  pointer-events: none;
+  animation: pulseOrbCenter 12s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes pulseOrbCenter {
+  0%, 100% { 
+    opacity: 0.4; 
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% { 
+    opacity: 0.7; 
+    transform: translate(-50%, -50%) scale(1.2);
+  }
 }
 
 .container {
@@ -41,6 +123,8 @@
   opacity: 0;
   transform: translateY(30px);
   transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 1;
 }
 
 .visible .container {
@@ -105,30 +189,39 @@
 .testimonialCard {
   position: relative;
   padding: 2.5rem 2rem;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
-  backdrop-filter: blur(10px);
+  background: linear-gradient(
+    135deg, 
+    rgba(255, 255, 255, 0.98), 
+    rgba(248, 250, 252, 0.98)
+  );
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
   border-radius: 20px;
-  border: 2px solid rgba(2, 2, 102, 0.1);
+  border: 2px solid rgba(2, 2, 102, 0.12);
   box-shadow: 
-    0 8px 24px rgba(2, 2, 102, 0.08),
-    0 0 0 1px rgba(255, 255, 255, 0.8) inset;
+    0 12px 32px rgba(2, 2, 102, 0.1),
+    0 4px 12px rgba(2, 2, 102, 0.06),
+    0 0 0 1px rgba(255, 255, 255, 0.9) inset;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: 0;
-  transform: translateY(30px);
+  transform: translateY(30px) rotateX(8deg);
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .visible .testimonialCard {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) rotateX(0deg);
 }
 
 .testimonialCard:hover {
-  transform: translateY(-8px);
-  border-color: rgba(238, 203, 0, 0.4);
+  transform: translateY(-12px) rotateX(2deg) scale(1.02);
+  border-color: rgba(238, 203, 0, 0.5);
   box-shadow: 
-    0 16px 40px rgba(2, 2, 102, 0.12),
-    0 0 0 1px rgba(238, 203, 0, 0.3) inset,
-    0 0 40px rgba(238, 203, 0, 0.15);
+    0 20px 56px rgba(2, 2, 102, 0.15),
+    0 8px 20px rgba(238, 203, 0, 0.12),
+    0 0 0 1px rgba(238, 203, 0, 0.4) inset,
+    0 0 60px rgba(238, 203, 0, 0.2);
 }
 
 /* Quote icon decorativo */
@@ -275,19 +368,23 @@
   max-width: 500px;
   margin: 0 auto;
   aspect-ratio: 9 / 16; /* Formato vertical para video de Facebook */
-  border-radius: 20px;
+  border-radius: 24px;
   overflow: hidden;
   box-shadow: 
-    0 12px 40px rgba(2, 2, 102, 0.15),
-    0 0 0 3px rgba(238, 203, 0, 0.2);
-  transition: all 0.4s ease;
+    0 20px 60px rgba(2, 2, 102, 0.2),
+    0 8px 24px rgba(2, 2, 102, 0.12),
+    0 0 0 3px rgba(238, 203, 0, 0.3),
+    0 0 80px rgba(238, 203, 0, 0.15);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .videoWrapper:hover {
   box-shadow: 
-    0 16px 56px rgba(2, 2, 102, 0.2),
-    0 0 0 4px rgba(238, 203, 0, 0.4);
-  transform: translateY(-4px);
+    0 24px 80px rgba(2, 2, 102, 0.25),
+    0 12px 32px rgba(2, 2, 102, 0.15),
+    0 0 0 4px rgba(238, 203, 0, 0.5),
+    0 0 100px rgba(238, 203, 0, 0.25);
+  transform: translateY(-6px) scale(1.02);
 }
 
 /* ============================================
@@ -427,11 +524,44 @@
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
   }
+
+  /* Reducir blur de orbs en tablets */
+  .section::before,
+  .section::after,
+  .orbCenter {
+    filter: blur(50px);
+  }
 }
 
 @media (max-width: 768px) {
   .section {
     padding: 80px 0;
+  }
+
+  /* Reducir intensidad de orbs en móvil */
+  .section::before,
+  .section::after {
+    filter: blur(40px);
+    opacity: 0.5;
+  }
+
+  .orbCenter {
+    filter: blur(60px);
+    opacity: 0.3;
+  }
+
+  /* Desactivar efecto 3D en móvil (mejor performance) */
+  .testimonialCard {
+    transform-style: flat;
+    perspective: none;
+  }
+
+  .visible .testimonialCard {
+    transform: translateY(0);
+  }
+
+  .testimonialCard:hover {
+    transform: translateY(-8px);
   }
 
   .testimonialsGrid {
@@ -538,5 +668,36 @@
 
   .videoWrapper {
     max-width: 300px;
+  }
+}
+
+/* ============================================
+   ACCESIBILIDAD - REDUCE MOTION
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .section::before,
+  .section::after,
+  .orbCenter {
+    animation: none;
+  }
+
+  .testimonialCard {
+    transform-style: flat;
+    perspective: none;
+  }
+
+  .visible .testimonialCard {
+    transform: translateY(0);
+  }
+
+  .testimonialCard:hover {
+    transform: translateY(-4px);
   }
 }

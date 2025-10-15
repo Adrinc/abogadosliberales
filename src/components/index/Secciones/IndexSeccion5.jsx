@@ -45,6 +45,18 @@ const IndexSeccion5 = () => {
       className={`${styles.section} ${isVisible ? styles.visible : ''}`}
       id="inscripcion"
     >
+      {/* Orb luminoso azul inferior (pseudo-elemento adicional) */}
+      <div className={styles.orbBlue}></div>
+      
+      {/* Partículas flotantes decorativas */}
+      <div className={styles.particles}>
+        <div className={styles.particle}></div>
+        <div className={styles.particle}></div>
+        <div className={styles.particle}></div>
+        <div className={styles.particle}></div>
+        <div className={styles.particle}></div>
+      </div>
+      
       <div className={styles.container}>
         
         {/* Label superior */}

@@ -36,7 +36,7 @@ const MapComponent = ({ position, venueName }) => {
   if (!mapComponents) {
     return (
       <div style={{ 
-        height: '450px', 
+        height: '550px', 
         width: '100%', 
         borderRadius: '16px', 
         background: 'linear-gradient(135deg, #F8FAFC, #E2E8F0)',
@@ -102,7 +102,7 @@ const MapComponent = ({ position, venueName }) => {
       zoom={16}
       scrollWheelZoom={false}
       className={styles.leafletMap}
-      style={{ height: '450px', width: '100%', borderRadius: '16px' }}
+      style={{ height: '550px', width: '100%', borderRadius: '16px' }}
       attributionControl={false}
     >
       <TileLayer
@@ -166,6 +166,9 @@ const IndexSeccion9 = () => {
       className={`${styles.section} ${isVisible ? styles.visible : ''}`}
       id="ubicacion"
     >
+      {/* Orb azul inferior derecho (elemento adicional) */}
+      <div className={styles.orbBlue}></div>
+      
       <div className={styles.container}>
         
         {/* Label superior */}
