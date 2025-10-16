@@ -1,0 +1,282 @@
+/* ========================================
+   BANNER COMPACTO - FONDO BLANCO
+   ======================================== */
+
+.bannerSection {
+  width: 100%;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F4F6FF 100%);
+  border-bottom: 1px solid rgba(238, 203, 0, 0.2);
+  padding: 2rem 0;
+  margin-top: 80px;
+}
+
+.bannerContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.bannerContent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* ============================================
+   BANNER LEFT - Icono + Texto
+   ============================================ */
+
+.bannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex: 1;
+}
+
+.iconCircle {
+  width: 56px;
+  height: 56px;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.15), rgba(238, 203, 0, 0.05));
+  border: 2px solid #EECB00;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bannerText {
+  flex: 1;
+}
+
+.bannerTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  line-height: 1.25;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #020266, #05054F);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.bannerLema {
+  font-size: 0.875rem;
+  color: var(--al-gold-primary, #EECB00);
+  margin: 0;
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: 0.3px;
+}
+
+.bannerSubtitle {
+  font-size: 0.9375rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0;
+  font-weight: 500;
+}
+
+/* ============================================
+   BANNER RIGHT - Precio + CTA
+   ============================================ */
+
+.bannerRight {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.priceBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-right: 1.5rem;
+  border-right: 2px solid #E2E8F0;
+}
+
+.priceLabel {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.priceAmount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+}
+
+.ctaButton {
+  padding: 0.875rem 2rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: linear-gradient(135deg, var(--al-blue-primary, #020266) 0%, #05054F 100%);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.15);
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.ctaButton:hover {
+  background: linear-gradient(135deg, var(--al-gold-primary, #EECB00) 0%, #F4D672 100%);
+  color: var(--al-blue-primary, #020266);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(238, 203, 0, 0.4);
+  letter-spacing: 0.5px;
+}
+
+.ctaButton:hover::before {
+  left: 100%;
+}
+
+.ctaButton:active {
+  transform: translateY(0);
+}
+
+.ctaButtonText {
+  font-weight: 600;
+}
+
+.ctaButtonIcon {
+  transition: transform 0.3s ease;
+}
+
+.ctaButton:hover .ctaButtonIcon {
+  transform: translateX(2px);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .bannerContent {
+    gap: 1.5rem;
+  }
+  
+  .priceBox {
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .bannerSection {
+    padding: 1.5rem 0;
+    background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+  }
+
+  .bannerContainer {
+    padding: 0 1.5rem;
+  }
+
+  .bannerContent {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.25rem;
+  }
+
+  .bannerLeft {
+    width: 100%;
+  }
+
+  .bannerRight {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .priceBox {
+    align-items: flex-start;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    border-right: none;
+    border-bottom: 2px solid #E2E8F0;
+  }
+
+  .ctaButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .iconCircle {
+    width: 48px;
+    height: 48px;
+  }
+
+  .bannerTitle {
+    font-size: clamp(1.125rem, 3vw, 1.25rem);
+  }
+
+  .bannerLema {
+    font-size: 0.8125rem;
+  }
+
+  .priceAmount {
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .bannerSection {
+    padding: 1.25rem 0;
+  }
+
+  .bannerContainer {
+    padding: 0 1rem;
+  }
+
+  .bannerLeft {
+    gap: 1rem;
+  }
+
+  .iconCircle {
+    width: 44px;
+    height: 44px;
+  }
+
+  .bannerTitle {
+    font-size: 1.125rem;
+  }
+
+  .bannerLema {
+    font-size: 0.75rem;
+  }
+
+  .ctaButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .priceAmount {
+    font-size: 1.25rem;
+  }
+}

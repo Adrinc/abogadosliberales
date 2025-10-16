@@ -1,16 +1,62 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../data/variables';
 import { translationsRegistro } from '../../data/translationsRegistro';
 import styles from './resumenRegistro.module.css';
 
-const ResumenRegistro = () => {
+const ResumenRegistro = ({ leadData = null, selectedPaymentMethod = null }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
+  
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
+  const toggleCollapse = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+  const getPaymentButtonText = () => {
+    if (!leadData) return null;
+    
+    // Mapear los valores del tab a los valores esperados
+    const methodMap = {
+      'paypal': 'paypal',
+      'creditCard': 'ippay',
+      'bankTransfer': 'transfer'
+    };
+    
+    const mappedMethod = methodMap[selectedPaymentMethod] || selectedPaymentMethod;
+    
+    switch(mappedMethod) {
+      case 'paypal':
+        return ingles ? 'Ready to pay with PayPal' : 'Listo para pagar con PayPal';
+      case 'ippay':
+        return ingles ? 'Ready to pay with card' : 'Listo para pagar con tarjeta';
+      case 'transfer':
+        return ingles ? 'View bank details' : 'Ver datos bancarios';
+      default:
+        return ingles ? 'Select payment method' : 'Seleccione método de pago';
+    }
+  };
 
   return (
-    <div className={styles.summaryContainer}>
-      <div className={styles.summaryCard}>
+    <div className={`${styles.summaryContainer} ${isCollapsed ? styles.collapsed : ''}`}>
+      
+      {/* Toggle button (solo móvil, controlado por CSS) */}
+      <button 
+        className={styles.toggleButton} 
+        onClick={toggleCollapse}
+        aria-label={isCollapsed ? 'Mostrar resumen' : 'Ocultar resumen'}
+      >
+        <span className={styles.toggleIcon}>{isCollapsed ? '▼' : '▲'}</span>
+        <span className={styles.toggleText}>
+          {isCollapsed 
+            ? (ingles ? 'Show Summary' : 'Ver Resumen') 
+            : (ingles ? 'Hide Summary' : 'Ocultar Resumen')}
+        </span>
+        <span className={styles.togglePrice}>${t.price.amount}</span>
+      </button>
+
+      <div className={`${styles.summaryCard} ${isCollapsed ? styles.hidden : ''}`}>
         
         {/* Logo/Badge */}
         <div className={styles.badgeWrapper}>
@@ -28,6 +74,27 @@ const ResumenRegistro = () => {
           <div className={styles.priceAmount}>{t.price.amount}</div>
           <div className={styles.priceNote}>{t.price.note}</div>
         </div>
+
+        {/* Datos del Lead (si existen) */}
+        {leadData && (
+          <div className={styles.leadDataSection}>
+            <h3 className={styles.leadDataTitle}>
+              {ingles ? 'Your Registration' : 'Tu Registro'}
+            </h3>
+            <div className={styles.leadDataItem}>
+              <span className={styles.leadDataLabel}>{ingles ? 'Name:' : 'Nombre:'}</span>
+              <span className={styles.leadDataValue}>{leadData.name}</span>
+            </div>
+            <div className={styles.leadDataItem}>
+              <span className={styles.leadDataLabel}>{ingles ? 'Email:' : 'Correo:'}</span>
+              <span className={styles.leadDataValue}>{leadData.email}</span>
+            </div>
+            <div className={styles.leadDataItem}>
+              <span className={styles.leadDataLabel}>{ingles ? 'Phone:' : 'Teléfono:'}</span>
+              <span className={styles.leadDataValue}>{leadData.phone}</span>
+            </div>
+          </div>
+        )}
 
         {/* Detalles del evento */}
         <div className={styles.detailsSection}>
@@ -68,12 +135,45 @@ const ResumenRegistro = () => {
           <ul className={styles.benefitsList}>
             {t.benefits.items.map((benefit, index) => (
               <li key={index} className={styles.benefitItem}>
-                <span className={styles.checkIcon}>✓</span>
+        
                 <span>{benefit}</span>
               </li>
             ))}
           </ul>
         </div>
+
+        {/* Payment Status (si hay leadData y método seleccionado) */}
+        {leadData && selectedPaymentMethod && (
+          <div className={styles.paymentStatus}>
+            <div className={styles.paymentStatusIcon}>
+              {(selectedPaymentMethod === 'paypal') && '💳'}
+              {(selectedPaymentMethod === 'creditCard') && '💰'}
+              {(selectedPaymentMethod === 'bankTransfer') && '🏦'}
+            </div>
+            <p className={styles.paymentStatusText}>{getPaymentButtonText()}</p>
+            
+            {selectedPaymentMethod === 'bankTransfer' && (
+              <div className={styles.bankInstructions}>
+                <small>
+                  {ingles 
+                    ? 'Complete the form below to upload your receipt' 
+                    : 'Complete el formulario para subir su comprobante'}
+                </small>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* CTA si no hay leadData */}
+        {!leadData && (
+          <div className={styles.ctaSection}>
+            <p className={styles.ctaText}>
+              {ingles 
+                ? 'Complete the form to continue with payment' 
+                : 'Complete el formulario para continuar con el pago'}
+            </p>
+          </div>
+        )}
 
       </div>
     </div>

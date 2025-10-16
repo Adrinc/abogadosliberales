@@ -1,0 +1,245 @@
+/* ========================================
+   REGISTRO SECCION 2 - FONDO BLANCO LIMPIO
+   ======================================== */
+
+.registroSection {
+  width: 100%;
+  background: #FFFFFF;
+  padding: 4rem 0;
+  min-height: calc(100vh - 200px);
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 3rem;
+  align-items: start;
+}
+
+/* ============================================
+   TABS DE PAGO - LIMPIO Y MODERNO
+   ============================================ */
+
+.tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.tab {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1.5rem 1rem;
+  background: #FFFFFF;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+
+.tab:hover {
+  border-color: var(--al-blue-primary, #020266);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+  transform: translateY(-2px);
+}
+
+.tabActive {
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.05), rgba(238, 203, 0, 0.05));
+  border-color: var(--al-gold-primary, #EECB00);
+  box-shadow: 
+    0 4px 16px rgba(2, 2, 102, 0.12),
+    inset 0 0 0 1px rgba(238, 203, 0, 0.2);
+}
+
+.tabIcon {
+  font-size: 2rem;
+  filter: grayscale(1) opacity(0.5);
+  transition: filter 0.3s ease;
+}
+
+.tabActive .tabIcon {
+  filter: grayscale(0) opacity(1);
+}
+
+.tabLabel {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--al-text-secondary, #4A5568);
+  transition: color 0.3s ease;
+}
+
+.tabActive .tabLabel {
+  color: var(--al-blue-primary, #020266);
+}
+
+/* ============================================
+   CONTENIDO DE FORMULARIOS Y PAGO
+   ============================================ */
+
+.mainContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.sectionHeader {
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #E2E8F0;
+}
+
+.sectionTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.sectionIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--al-gold-primary, #EECB00);
+}
+
+.formCard,
+.paymentCard {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* ============================================
+   RESUMEN (SIDEBAR)
+   ============================================ */
+
+.summary {
+  position: sticky;
+  top: 2rem;
+}
+
+/* ============================================
+   ANIMACIONES
+   ============================================ */
+
+.fadeIn {
+  opacity: 1;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 1024px) {
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .summary {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .registroSection {
+    padding: 3rem 0;
+  }
+
+  .container {
+    padding: 0 1.5rem;
+  }
+
+  .tabs {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+
+  .tab {
+    flex-direction: row;
+    justify-content: flex-start;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .tabIcon {
+    font-size: 1.5rem;
+  }
+
+  .formCard,
+  .paymentCard {
+    padding: 1.5rem;
+  }
+
+  .sectionTitle {
+    font-size: clamp(1.25rem, 4vw, 1.5rem);
+  }
+
+  .sectionIcon {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .registroSection {
+    padding: 2rem 0;
+  }
+
+  .container {
+    padding: 0 1rem;
+  }
+
+  .mainContent {
+    gap: 1.5rem;
+  }
+
+  .tab {
+    padding: 1rem 1.25rem;
+  }
+
+  .tabLabel {
+    font-size: 0.875rem;
+  }
+
+  .formCard,
+  .paymentCard {
+    padding: 1.25rem;
+    border-radius: 10px;
+  }
+
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .sectionIcon {
+    width: 24px;
+    height: 24px;
+  }
+}

@@ -271,7 +271,7 @@ const IndexSeccion9 = () => {
     <section 
       ref={sectionRef} 
       className={`${styles.section} ${isVisible ? styles.visible : ''}`}
-      id="ubicacion"
+      id="como-llegar"
     >
       {/* Orb azul inferior derecho (elemento adicional) */}
       <div className={styles.orbBlue}></div>

@@ -10,6 +10,8 @@ const NavBar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [currentPath, setCurrentPath] = useState("");
+  const [currentHash, setCurrentHash] = useState("");
+  const [activeSection, setActiveSection] = useState(""); // Nueva: sección activa por scroll
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
   const country = useStore(selectedCountry);
@@ -18,13 +20,57 @@ const NavBar = () => {
   const textosNavbar = ingles ? translations.en.navbar : translations.es.navbar;
 
   useEffect(() => {
-    // Detectar scroll para efectos de navbar
+    // Detectar scroll para efectos de navbar Y detección de secciones
     const handleScroll = () => {
       const scrollPosition = window.scrollY;
       setIsScrolled(scrollPosition > 20);
       
       if (isOpen) {
         setIsOpen(false);
+      }
+
+      // Detectar sección activa por scroll (solo en página principal)
+      if (window.location.pathname === "/") {
+        // Lista de IDs de secciones en orden EXACTO de aparición en index.astro
+        const sections = [
+          'programa',        // Sección 4 - primera con ID
+          'inscripcion',     // Sección 5
+          'testimonios',     // Sección 6
+          'sobre-barra',     // Sección 7
+          'como-llegar',     // Sección 9
+          'cta-final',       // Sección 10
+          'faqs'             // Sección 8 - última
+        ];
+
+        // Si estamos en el tope de la página (primeros 100px), marcar "inicio"
+        if (scrollPosition < 100) {
+          setActiveSection("");
+          setCurrentHash("");
+          return;
+        }
+
+        // Buscar la sección visible actual
+        let currentSection = "";
+        
+        for (const sectionId of sections) {
+          const element = document.getElementById(sectionId);
+          if (element) {
+            const rect = element.getBoundingClientRect();
+            // Si la sección está visible en el viewport (con offset de navbar)
+            if (rect.top <= 100 && rect.bottom >= 100) {
+              currentSection = sectionId;
+              break;
+            }
+          }
+        }
+
+        if (currentSection) {
+          setActiveSection(currentSection);
+          // No actualizar el hash real para no afectar el historial
+        } else if (scrollPosition >= 100) {
+          // Si no hay sección específica pero no estamos en el tope
+          setActiveSection("");
+        }
       }
     };
 
@@ -39,8 +85,19 @@ const NavBar = () => {
     // Detectar cambios en la URL (navegación)
     const handleLocationChange = () => {
       const newPath = window.location.pathname;
+      const newHash = window.location.hash;
 
       setCurrentPath(newPath);
+      setCurrentHash(newHash);
+      
+      // Si hay hash, actualizar también activeSection
+      if (newHash) {
+        const sectionId = newHash.replace('#', '');
+        setActiveSection(sectionId);
+      } else if (newPath === "/") {
+        setActiveSection("");
+      }
+      
       // Cerrar el menú móvil al navegar
       if (isOpen) {
         setIsOpen(false);
@@ -49,6 +106,13 @@ const NavBar = () => {
 
     // Detectar la página actual inicialmente
     setCurrentPath(window.location.pathname);
+    setCurrentHash(window.location.hash);
+    
+    // Detectar sección activa inicial si hay hash
+    if (window.location.hash) {
+      const sectionId = window.location.hash.replace('#', '');
+      setActiveSection(sectionId);
+    }
 
     // Event listeners
     const handleClickOutside = (event) => {
@@ -106,11 +170,25 @@ const NavBar = () => {
     // Polling como fallback para casos edge
     const pathCheckInterval = setInterval(() => {
       const newPath = window.location.pathname;
-      if (newPath !== currentPath) {
-
+      const newHash = window.location.hash;
+      if (newPath !== currentPath || newHash !== currentHash) {
         handleLocationChange();
       }
     }, 100);
+
+    // Listener para detectar cambios en el hash específicamente
+    const handleHashChange = () => {
+      const newHash = window.location.hash;
+      setCurrentHash(newHash);
+      
+      // Actualizar activeSection cuando cambia el hash
+      if (newHash) {
+        const sectionId = newHash.replace('#', '');
+        setActiveSection(sectionId);
+      } else {
+        setActiveSection("");
+      }
+    };
 
     if (isOpen) {
       document.addEventListener('mousedown', handleClickOutside);
@@ -123,6 +201,7 @@ const NavBar = () => {
     window.addEventListener('scroll', handleScroll);
     window.addEventListener('resize', handleResize);
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handleHashChange);
     
     // Listeners específicos para Astro
     document.addEventListener('astro:before-swap', handleAstroBeforeSwap);
@@ -134,6 +213,7 @@ const NavBar = () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handleHashChange);
       document.removeEventListener('astro:before-swap', handleAstroBeforeSwap);
       document.removeEventListener('astro:after-swap', handleAstroAfterSwap);
       document.body.style.overflow = '';
@@ -146,7 +226,7 @@ const NavBar = () => {
       history.pushState = originalPushState;
       history.replaceState = originalReplaceState;
     };
-  }, [isOpen, currentPath]); // Agregar currentPath como dependencia
+  }, [isOpen, currentPath, currentHash, activeSection]); // Agregar activeSection como dependencia
 
   // Función para alternar el menú en móviles
   const toggleMenu = () => {
@@ -167,8 +247,33 @@ const NavBar = () => {
 
   // Función para verificar si el enlace está activo
   const isActiveLink = (href) => {
-    if (href === "/" && currentPath === "/") return true;
-    if (href !== "/" && currentPath.startsWith(href)) return true;
+    // Caso 1: Enlace a la página principal "/"
+    if (href === "/") {
+      // "Inicio" está activo SOLO si:
+      // - Estamos en la página principal Y
+      // - NO hay hash activo Y
+      // - NO hay sección activa por scroll
+      return currentPath === "/" && !currentHash && !activeSection;
+    }
+    
+    // Caso 2: Enlaces a otras páginas completas (sin hash)
+    if (!href.includes("#")) {
+      return currentPath.startsWith(href);
+    }
+    
+    // Caso 3: Enlaces a secciones ancladas (con hash)
+    const hrefHash = href.includes("#") ? href.split("#")[1] : "";
+    
+    // Si estamos en la misma página, verificar si la sección está activa
+    if (currentPath === "/" || currentPath === href.split("#")[0]) {
+      // Priorizar activeSection (detección por scroll) sobre currentHash
+      if (activeSection) {
+        return activeSection === hrefHash;
+      }
+      // Fallback al hash en la URL
+      return currentHash === `#${hrefHash}`;
+    }
+    
     return false;
   };
 
@@ -220,13 +325,12 @@ const NavBar = () => {
       {/* 
         TEMPORAL (BETA): Los siguientes enlaces apuntan a secciones de la landing
         hasta que se creen las páginas completas:
-        - "Inscripción" → /#inscripcion (Sección 5)
-        - "Nosotros" → /#mesa-directiva (Sección 3)
         - "Programa" → /#programa (Sección 4)
+        - "Inscripción" → /#inscripcion (Sección 5)
+        - "Cómo llegar" → /#como-llegar (Sección con ubicación/mapa)
         
         TODO: Restaurar a enlaces originales cuando las páginas estén listas:
         - "Congreso 2025" → /congreso
-        - "Nosotros" → /nosotros
         - "Membresía" → /membresia
       */}
       <ul className={`${styles.navMenu} ${isOpen ? styles.active : ""}`} ref={menuRef}>
@@ -240,26 +344,26 @@ const NavBar = () => {
         </li>
         <li className={styles.navItem}>
           <a 
+            href="/#programa" 
+            className={`${styles.navLink} ${isActiveLink("/#programa") ? styles.activeLink : ""}`}
+          >
+            Programa
+          </a>
+        </li>
+        <li className={styles.navItem}>
+          <a 
             href="/#inscripcion" 
-            className={styles.navLink}
+            className={`${styles.navLink} ${isActiveLink("/#inscripcion") ? styles.activeLink : ""}`}
           >
             Inscripción
           </a>
         </li>
         <li className={styles.navItem}>
           <a 
-            href="/#mesa-directiva" 
-            className={styles.navLink}
+            href="/#como-llegar" 
+            className={`${styles.navLink} ${isActiveLink("/#como-llegar") ? styles.activeLink : ""}`}
           >
-            {textosNavbar.nosotros || "Nosotros"}
-          </a>
-        </li>
-        <li className={styles.navItem}>
-          <a 
-            href="/#programa" 
-            className={styles.navLink}
-          >
-            Programa
+            {textosNavbar.comoLlegar}
           </a>
         </li>
         <li className={styles.navItem}>

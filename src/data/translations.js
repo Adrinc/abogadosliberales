@@ -15,7 +15,8 @@ export const translations = {
       iniciarSesion: "Iniciar Sesión",
       registrarse: "Registrarse",
       adquirirEntrada: "Adquirir entrada",
-      nosotros: "Nosotros"
+      nosotros: "Nosotros",
+      comoLlegar: "Cómo llegar"
     },
     home: {
       soluciones: {
@@ -629,7 +630,8 @@ export const translations = {
       iniciarSesion: "Login",
       registrarse: "Sign Up",
       adquirirEntrada: "Get Ticket",
-      nosotros: "About Us"
+      nosotros: "About Us",
+      comoLlegar: "Directions"
     },
     home: {
       soluciones: {

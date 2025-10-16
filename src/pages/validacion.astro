@@ -1,0 +1,28 @@
+---
+import LayoutBasic from '../layouts/LayoutBasic.astro';
+import ConfirmacionSeccion from '../components/confirmacion/ConfirmacionSeccion.jsx';
+
+// Obtener query params
+const url = Astro.url;
+const receiptId = url.searchParams.get('receipt_id');
+const leadId = url.searchParams.get('lead_id');
+
+// Para validación, siempre es transfer y pending
+const paymentMethod = 'transfer';
+const status = 'pending';
+const hasData = receiptId && leadId;
+---
+
+<LayoutBasic 
+  title="Comprobante Recibido - Congreso Nacional de Amparo 2025" 
+  showFooter={true}
+>
+  <ConfirmacionSeccion 
+    client:only="react"
+    transactionId={receiptId}
+    leadId={leadId}
+    paymentMethod={paymentMethod}
+    status={status}
+    hasData={hasData}
+  />
+</LayoutBasic>

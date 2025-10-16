@@ -1,0 +1,28 @@
+---
+import LayoutBasic from '../layouts/LayoutBasic.astro';
+import ConfirmacionSeccion from '../components/confirmacion/ConfirmacionSeccion.jsx';
+
+// Obtener query params
+const url = Astro.url;
+const transactionId = url.searchParams.get('transaction_id') || url.searchParams.get('receipt_id');
+const leadId = url.searchParams.get('lead_id');
+const paymentMethod = url.searchParams.get('method') || 'unknown';
+const status = url.searchParams.get('status') || 'confirmed';
+
+// Verificar si tenemos los datos necesarios
+const hasData = transactionId && leadId;
+---
+
+<LayoutBasic 
+  title="Confirmación de Registro - Congreso Nacional de Amparo 2025" 
+  showFooter={true}
+>
+  <ConfirmacionSeccion 
+    client:only="react"
+    transactionId={transactionId}
+    leadId={leadId}
+    paymentMethod={paymentMethod}
+    status={status}
+    hasData={hasData}
+  />
+</LayoutBasic>
