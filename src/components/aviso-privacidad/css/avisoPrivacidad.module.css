@@ -1,0 +1,424 @@
+/* avisoPrivacidad.module.css - Diseño institucional Abogados Liberales */
+
+.avisoContainer {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
+  padding-top: 80px; /* Espacio para navbar fijo */
+}
+
+/* ============================================
+   HEADER SECTION
+   ============================================ */
+
+.headerSection {
+  position: relative;
+  background: linear-gradient(135deg, #020266 0%, #05054F 100%);
+  padding: 4rem 2rem 3rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.headerSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 50%, rgba(238, 203, 0, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 50%, rgba(238, 203, 0, 0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.goldenBar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #EECB00, #F4D672, #EECB00);
+  box-shadow: 0 2px 12px rgba(238, 203, 0, 0.5);
+}
+
+.headerContent {
+  position: relative;
+  z-index: 1;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.logoContainer {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+.logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 3px solid #EECB00;
+  box-shadow: 
+    0 0 30px rgba(238, 203, 0, 0.4),
+    0 8px 20px rgba(0, 0, 0, 0.3);
+  background: white;
+  padding: 3px;
+}
+
+.mainTitle {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.subtitle {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+
+.motto {
+  font-size: 1rem;
+  color: #F4D672;
+  font-style: italic;
+  font-weight: 500;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(238, 203, 0, 0.3);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
+   CONTENT WRAPPER
+   ============================================ */
+
+.contentWrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2rem;
+}
+
+.mainContent {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 
+    0 4px 24px rgba(2, 2, 102, 0.08),
+    0 2px 8px rgba(2, 2, 102, 0.04);
+  padding: 3rem;
+  border: 1px solid rgba(2, 2, 102, 0.1);
+}
+
+/* ============================================
+   SECTIONS
+   ============================================ */
+
+.section {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 1px solid rgba(2, 2, 102, 0.1);
+}
+
+.section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 2rem;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sectionNumber {
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  color: #020266;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(238, 203, 0, 0.3);
+}
+
+.sectionTitle {
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  color: #020266;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.sectionSubtitle {
+  font-size: 1rem;
+  color: #4A5568;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.sectionContent {
+  padding-left: calc(48px + 1.5rem); /* Alinear con el título */
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.75;
+  color: #1A202C;
+  margin-bottom: 1.25rem;
+  text-align: justify;
+}
+
+.paragraph:last-child {
+  margin-bottom: 0;
+}
+
+/* ============================================
+   HIGHLIGHT BOXES
+   ============================================ */
+
+.highlightBox {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.08), rgba(238, 203, 0, 0.04));
+  border-left: 4px solid #EECB00;
+  padding: 1.25rem 1.5rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  box-shadow: 0 2px 8px rgba(238, 203, 0, 0.1);
+}
+
+.emailIcon,
+.webIcon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+}
+
+.emailLink,
+.webLink {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #020266;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  word-break: break-all;
+}
+
+.emailLink:hover,
+.webLink:hover {
+  color: #EECB00;
+  text-decoration: underline;
+}
+
+/* ============================================
+   CONTACT SECTION
+   ============================================ */
+
+.contactSection {
+  margin-top: 3rem;
+  padding: 2.5rem;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.03));
+  border-radius: 12px;
+  border: 1px solid rgba(2, 2, 102, 0.1);
+}
+
+.contactTitle {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #020266;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.contactCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(2, 2, 102, 0.06);
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+  box-shadow: 0 4px 16px rgba(2, 2, 102, 0.12);
+  transform: translateY(-2px);
+}
+
+.contactIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(238, 203, 0, 0.1);
+  border-radius: 8px;
+}
+
+.contactLabel {
+  font-size: 0.875rem;
+  color: #4A5568;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.contactValue {
+  font-size: 1rem;
+  color: #1A202C;
+  line-height: 1.5;
+}
+
+.contactEmail {
+  font-size: 1rem;
+  color: #020266;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.contactEmail:hover {
+  color: #EECB00;
+  text-decoration: underline;
+}
+
+/* ============================================
+   PAGE FOOTER
+   ============================================ */
+
+.pageFooter {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid rgba(2, 2, 102, 0.1);
+  text-align: center;
+}
+
+.lastUpdated {
+  font-size: 0.875rem;
+  color: #4A5568;
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.copyright {
+  font-size: 0.9375rem;
+  color: #1A202C;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.rights {
+  font-size: 0.875rem;
+  color: #4A5568;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .avisoContainer {
+    padding-top: 70px;
+  }
+
+  .headerSection {
+    padding: 3rem 1.5rem 2rem;
+  }
+
+  .logo {
+    width: 70px;
+    height: 70px;
+  }
+
+  .contentWrapper {
+    padding: 2rem 1rem;
+  }
+
+  .mainContent {
+    padding: 2rem 1.5rem;
+    border-radius: 12px;
+  }
+
+  .sectionHeader {
+    gap: 1rem;
+  }
+
+  .sectionNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+
+  .sectionContent {
+    padding-left: 0;
+    margin-top: 1rem;
+  }
+
+  .paragraph {
+    text-align: left;
+  }
+
+  .highlightBox {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 1rem;
+  }
+
+  .contactSection {
+    padding: 1.5rem;
+  }
+
+  .contactItem {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .headerSection {
+    padding: 2.5rem 1rem 1.5rem;
+  }
+
+  .logo {
+    width: 60px;
+    height: 60px;
+  }
+
+  .mainContent {
+    padding: 1.5rem 1rem;
+  }
+
+  .section {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .emailLink,
+  .webLink {
+    font-size: 0.9375rem;
+  }
+}

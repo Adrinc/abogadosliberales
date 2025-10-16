@@ -1,0 +1,11 @@
+---
+import LayoutBasic from '../layouts/LayoutBasic.astro';
+import AvisoPrivacidadSeccion from '../components/aviso-privacidad/Secciones/AvisoPrivacidadSeccion.jsx';
+---
+
+<LayoutBasic 
+  title="Aviso de Privacidad - Barra Mexicana de Abogados Liberales"
+  showFooter={true}
+>
+  <AvisoPrivacidadSeccion transition:persist client:only/>
+</LayoutBasic>
