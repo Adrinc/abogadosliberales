@@ -605,15 +605,31 @@
     padding: 1rem 1.5rem;
   }
 
-  /* Ocultar texto del logo en móvil */
+  /* Mantener título principal, ocultar solo subtítulo en móvil */
   .logoText {
-    display: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+  }
+
+  .logoTitle {
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+
+  .logoSubtitle {
+    display: none; /* Ocultar "Lux Iustitia" en móvil */
   }
 
   .logopic img {
     width: 50px;
     height: 50px;
     border-width: 2px;
+  }
+
+  .logopic {
+    gap: 0.5rem;
   }
 
   .navMenu {
@@ -739,9 +755,18 @@
     padding: 0.75rem 1rem;
   }
 
+  /* En pantallas muy pequeñas, ocultar texto completamente */
+  .logoText {
+    display: none;
+  }
+
   .logopic img {
     width: 45px;
     height: 45px;
+  }
+
+  .logopic {
+    gap: 0;
   }
 
   .navMenu {

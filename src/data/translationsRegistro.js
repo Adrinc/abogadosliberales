@@ -127,7 +127,7 @@ export const translationsRegistro = {
     footer: {
       note: "Los campos con * son obligatorios",
       contact: "¿Necesitas ayuda? Contáctanos:",
-      email: "congreso@abogadosliberales.mx",
+      email: "secretariageneral@abogadosliberales.mx",
       whatsapp: "+52 55 1234 5678"
     }
   },
@@ -258,7 +258,7 @@ export const translationsRegistro = {
     footer: {
       note: "Fields with * are required",
       contact: "Need help? Contact us:",
-      email: "congreso@abogadosliberales.mx",
+      email: "secretariageneral@abogadosliberales.mx",
       whatsapp: "+52 55 1234 5678"
     }
   }

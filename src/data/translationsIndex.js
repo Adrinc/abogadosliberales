@@ -338,7 +338,7 @@ export const translationsIndex = {
         },
         {
           question: "¿Ofrecen descuentos para grupos o estudiantes?",
-          answer: "Sí. Grupos de 3 o más personas obtienen 10% de descuento. Estudiantes de licenciatura con credencial vigente obtienen 20% de descuento. Para aplicar descuentos, contacta directamente a: congreso@abogadosliberales.mx antes de realizar el pago."
+          answer: "Sí. Grupos de 3 o más personas obtienen 10% de descuento. Estudiantes de licenciatura con credencial vigente obtienen 20% de descuento. Para aplicar descuentos, contacta directamente a: secretariageneral@abogadosliberales.mx antes de realizar el pago."
         },
         {
           question: "¿Qué formas de pago aceptan además de transferencia bancaria?",
@@ -727,7 +727,7 @@ export const translationsIndex = {
         },
         {
           question: "Do you offer discounts for groups or students?",
-          answer: "Yes. Groups of 3 or more people get 10% discount. Undergraduate students with valid ID get 20% discount. To apply discounts, contact directly: congreso@abogadosliberales.mx before making payment."
+          answer: "Yes. Groups of 3 or more people get 10% discount. Undergraduate students with valid ID get 20% discount. To apply discounts, contact directly: secretariageneral@abogadosliberales.mx before making payment."
         },
         {
           question: "What payment methods do you accept besides bank transfer?",

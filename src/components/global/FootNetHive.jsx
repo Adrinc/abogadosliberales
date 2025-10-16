@@ -20,44 +20,12 @@ const FootNetHive = () => {
         title: "Contacto",
         address: "Ciudad de México, México",
         email: "contacto@abogadosliberales.mx",
-        emailCongreso: "congreso@abogadosliberales.mx",
+        emailCongreso: "secretariageneral@abogadosliberales.mx",
         phone: "Contacto vía email"
       },
-      links: {
-        organization: {
-          title: "Organización",
-          items: [
-            { text: "Nosotros", url: "/nosotros" },
-            { text: "Mesa Directiva", url: "#mesa-directiva" },
-            { text: "Código Ético", url: "/codigo-etico" },
-            { text: "Capítulos", url: "/capitulos" }
-          ]
-        },
-        services: {
-          title: "Servicios",
-          items: [
-            { text: "Congresos", url: "/congresos" },
-            { text: "Membresías", url: "/membresias" },
-            { text: "Programa Excellentium", url: "/excellentium" },
-            { text: "Asesoría Pro Bono", url: "/pro-bono" }
-          ]
-        },
-        legal: {
-          title: "Legal",
-          items: [
-            { text: "Aviso de Privacidad", url: "/aviso-privacidad" },
-            { text: "Términos y Condiciones", url: "/terminos" },
-            { text: "Política de Cookies", url: "/cookies" }
-          ]
-        },
-        support: {
-          title: "Recursos",
-          items: [
-            { text: "Preguntas Frecuentes", url: "#faqs" },
-            { text: "Blog Jurídico", url: "/blog" },
-            { text: "Calendario de Eventos", url: "/eventos" }
-          ]
-        }
+      privacyLink: {
+        text: "Aviso de Privacidad",
+        url: "/aviso-privacidad"
       },
       copyright: "© 2025 Barra Mexicana de Abogados Liberales. Todos los derechos reservados.",
       motto: "Que la luz de la razón brille en la justicia"
@@ -68,44 +36,12 @@ const FootNetHive = () => {
         title: "Contact",
         address: "Mexico City, Mexico",
         email: "contact@abogadosliberales.mx",
-        emailCongreso: "congress@abogadosliberales.mx",
+        emailCongreso: "secretariageneral@abogadosliberales.mx",
         phone: "Contact via email"
       },
-      links: {
-        organization: {
-          title: "Organization",
-          items: [
-            { text: "About Us", url: "/nosotros" },
-            { text: "Board of Directors", url: "#mesa-directiva" },
-            { text: "Code of Ethics", url: "/codigo-etico" },
-            { text: "Chapters", url: "/capitulos" }
-          ]
-        },
-        services: {
-          title: "Services",
-          items: [
-            { text: "Congresses", url: "/congresos" },
-            { text: "Memberships", url: "/membresias" },
-            { text: "Excellentium Program", url: "/excellentium" },
-            { text: "Pro Bono Counseling", url: "/pro-bono" }
-          ]
-        },
-        legal: {
-          title: "Legal",
-          items: [
-            { text: "Privacy Policy", url: "/aviso-privacidad" },
-            { text: "Terms and Conditions", url: "/terminos" },
-            { text: "Cookie Policy", url: "/cookies" }
-          ]
-        },
-        support: {
-          title: "Resources",
-          items: [
-            { text: "FAQs", url: "#faqs" },
-            { text: "Legal Blog", url: "/blog" },
-            { text: "Events Calendar", url: "/eventos" }
-          ]
-        }
+      privacyLink: {
+        text: "Privacy Policy",
+        url: "/aviso-privacidad"
       },
       copyright: "© 2025 Mexican Bar of Liberal Lawyers. All rights reserved.",
       motto: "May the light of reason shine in justice"
@@ -134,9 +70,9 @@ const FootNetHive = () => {
         </svg>
       </button>
       <div className={styles.container}>
-        <div className={styles.grid}>
+        <div className={styles.gridSimple}>
           
-          {/* Columna 1: Logo + Descripción + Lema */}
+          {/* Columna única centrada: Logo + Descripción + Lema + Contacto + Redes */}
           <div className={styles.logoSection}>
             <div className={styles.logoWrapper}>
               <img 
@@ -222,55 +158,13 @@ const FootNetHive = () => {
             </div>
           </div>
 
-          {/* Columna 2: Organización */}
-          <div className={styles.linkSection}>
-            <h3 className={styles.linkTitle}>{textos.links.organization.title}</h3>
-            <ul className={styles.linkList}>
-              {textos.links.organization.items.map((item, index) => (
-                <li key={index}>
-                  <a href={item.url} className={styles.link}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Columna 3: Servicios */}
-          <div className={styles.linkSection}>
-            <h3 className={styles.linkTitle}>{textos.links.services.title}</h3>
-            <ul className={styles.linkList}>
-              {textos.links.services.items.map((item, index) => (
-                <li key={index}>
-                  <a href={item.url} className={styles.link}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Columna 4: Legal + Recursos */}
-          <div className={styles.linkSection}>
-            <h3 className={styles.linkTitle}>{textos.links.legal.title}</h3>
-            <ul className={styles.linkList}>
-              {textos.links.legal.items.map((item, index) => (
-                <li key={index}>
-                  <a href={item.url} className={styles.link}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-            
-            <h3 className={`${styles.linkTitle} ${styles.linkTitleMargin}`}>{textos.links.support.title}</h3>
-            <ul className={styles.linkList}>
-              {textos.links.support.items.map((item, index) => (
-                <li key={index}>
-                  <a href={item.url} className={styles.link}>{item.text}</a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
         </div>
 
         <div className={styles.bottom}>
           <p className={styles.copyright}>{textos.copyright}</p>
+          <a href={textos.privacyLink.url} className={styles.privacyLink}>
+            {textos.privacyLink.text}
+          </a>
         </div>
       </div>
     </footer>

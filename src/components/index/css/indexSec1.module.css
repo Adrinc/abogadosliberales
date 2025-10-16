@@ -455,9 +455,15 @@
     font-size: 0.7rem;
     padding: 0.4rem 1rem;
   }
+  .heroSection {
+    margin-top: 60px;
+  }
 }
 
 @media (max-width: 480px) {
+    .heroSection {
+    margin-top: 75px;
+  }
   .heroContainer {
     padding: 1rem;
   }

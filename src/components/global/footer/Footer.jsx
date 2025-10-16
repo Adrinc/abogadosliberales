@@ -31,7 +31,7 @@ const Footer = () => {
         },
         contact: {
           title: "Contacto",
-          email: "congreso@abogadosliberales.mx",
+          email: "secretariageneral@abogadosliberales.mx",
           phone: "+52 55 1234 5678",
           address: "Ciudad de México"
         }
@@ -62,7 +62,7 @@ const Footer = () => {
         },
         contact: {
           title: "Contact",
-          email: "congreso@abogadosliberales.mx",
+          email: "secretariageneral@abogadosliberales.mx",
           phone: "+52 55 1234 5678",
           address: "Mexico City"
         }
