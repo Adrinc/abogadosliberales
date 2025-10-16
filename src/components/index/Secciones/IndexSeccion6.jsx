@@ -121,10 +121,10 @@ const IndexSeccion6 = () => {
 
         {/* Video destacado */}
         <div className={styles.videoSection}>
-          <h3 className={styles.videoTitle}>
+        {/*   <h3 className={styles.videoTitle}>
             <span className={styles.videoIcon}>🎬</span>
             {t.videoTitle}
-          </h3>
+          </h3> */}
 
           <div className={styles.videoWrapper}>
             {!playingVideo ? (

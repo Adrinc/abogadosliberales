@@ -119,7 +119,9 @@
   border-radius: 16px;
   display: flex;
   gap: 1rem;
-  align-items: flex-start;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 
     0 4px 16px rgba(238, 203, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -183,6 +185,11 @@
   color: #1A202C;
   margin: 0;
   font-weight: 400;
+}
+
+.description strong {
+  font-weight: 700;
+  color: #020266;
 }
 
 .itemsGrid {

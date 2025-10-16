@@ -5,7 +5,7 @@ import { translationsIndex } from '../../../data/translationsIndex';
 import styles from '../css/indexSec9.module.css';
 
 // Componente de mapa dinámico (carga solo en cliente)
-const MapComponent = ({ position, venueName }) => {
+const MapComponent = ({ position, venueName, parkingPosition }) => {
   const [mapComponents, setMapComponents] = useState(null);
   
   useEffect(() => {
@@ -54,8 +54,60 @@ const MapComponent = ({ position, venueName }) => {
 
   const { L, MapContainer, TileLayer, Marker, Popup } = mapComponents;
 
-  const icon = L.divIcon({
-    className: 'custom-marker',
+  // Icono del evento (isotipo con borde dorado)
+  const venueIcon = L.divIcon({
+    className: 'custom-marker-venue',
+    html: `
+      <div style="
+        position: relative;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      ">
+        <div style="
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          background: rgba(238, 203, 0, 0.3);
+          border-radius: 50%;
+          animation: pulse 2s infinite;
+        "></div>
+        <div style="
+          position: absolute;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          border: 3px solid #EECB00;
+          background: white;
+          box-shadow: 0 4px 16px rgba(238, 203, 0, 0.6);
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        ">
+          <img 
+            src="/favicon.jpg" 
+            alt="Barra Mexicana de Abogados Liberales"
+            style="
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              border-radius: 50%;
+            "
+          />
+        </div>
+      </div>
+    `,
+    iconSize: [60, 60],
+    iconAnchor: [30, 30],
+    popupAnchor: [0, -30]
+  });
+
+  // Icono del estacionamiento (P azul prominente)
+  const parkingIcon = L.divIcon({
+    className: 'custom-marker-parking',
     html: `
       <div style="
         position: relative;
@@ -69,26 +121,28 @@ const MapComponent = ({ position, venueName }) => {
           position: absolute;
           width: 50px;
           height: 50px;
-          background: rgba(238, 203, 0, 0.3);
+          background: rgba(59, 130, 246, 0.2);
           border-radius: 50%;
-          animation: pulse 2s infinite;
+          animation: pulsePark 2.5s infinite;
         "></div>
         <div style="
-          position: absolute;
-          width: 30px;
-          height: 30px;
-          background: rgba(238, 203, 0, 0.6);
-          border-radius: 50%;
-        "></div>
-        <div style="
-          position: absolute;
-          width: 18px;
-          height: 18px;
-          background: linear-gradient(135deg, #EECB00, #F4D672);
-          border-radius: 50%;
-          border: 2px solid #020266;
-          box-shadow: 0 4px 12px rgba(238, 203, 0, 0.6);
-        "></div>
+          position: relative;
+          width: 40px;
+          height: 40px;
+          background: linear-gradient(135deg, #3B82F6, #2563EB);
+          border-radius: 8px;
+          border: 3px solid white;
+          box-shadow: 0 4px 16px rgba(59, 130, 246, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          font-weight: 900;
+          color: white;
+          font-family: Arial, sans-serif;
+        ">
+          P
+        </div>
       </div>
     `,
     iconSize: [50, 50],
@@ -99,7 +153,7 @@ const MapComponent = ({ position, venueName }) => {
   return (
     <MapContainer
       center={position}
-      zoom={16}
+      zoom={17}
       scrollWheelZoom={false}
       className={styles.leafletMap}
       style={{ height: '550px', width: '100%', borderRadius: '16px' }}
@@ -108,7 +162,9 @@ const MapComponent = ({ position, venueName }) => {
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={position} icon={icon}>
+      
+      {/* Marcador del evento */}
+      <Marker position={position} icon={venueIcon}>
         <Popup className={styles.customPopup}>
           <div style={{ textAlign: 'center', padding: '8px' }}>
             <strong style={{ color: '#020266', fontSize: '1.125rem' }}>
@@ -120,6 +176,54 @@ const MapComponent = ({ position, venueName }) => {
             <p style={{ color: '#4A5568', fontSize: '0.85rem', marginTop: '4px' }}>
               📅 14-15 Nov 2025 · 09:00-18:00 hrs
             </p>
+          </div>
+        </Popup>
+      </Marker>
+
+      {/* Marcador del estacionamiento */}
+      <Marker position={parkingPosition} icon={parkingIcon}>
+        <Popup className={styles.customPopup}>
+          <div style={{ textAlign: 'center', padding: '10px', maxWidth: '280px' }}>
+            <strong style={{ color: '#3B82F6', fontSize: '1.125rem', display: 'flex', alignItems: 'center', gap: '8px', justifyContent: 'center' }}>
+              🅿️ Estacionamiento
+            </strong>
+            
+            {/* Imagen del estacionamiento */}
+            <div style={{ 
+              marginTop: '10px', 
+              borderRadius: '10px', 
+              overflow: 'hidden',
+              border: '2px solid #3B82F6',
+              boxShadow: '0 4px 12px rgba(59, 130, 246, 0.2)'
+            }}>
+              <img 
+                src="/image/global/estacionamiento.png" 
+                alt="Estacionamiento Centro Comercial"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block'
+                }}
+              />
+            </div>
+
+            <p style={{ color: '#4A5568', fontSize: '0.9rem', marginTop: '10px', lineHeight: '1.5' }}>
+              Centro Comercial a un costado del evento
+            </p>
+            <div style={{ 
+              marginTop: '10px', 
+              padding: '10px 12px', 
+              background: 'rgba(238, 203, 0, 0.15)', 
+              borderRadius: '8px',
+              borderLeft: '3px solid #EECB00'
+            }}>
+              <p style={{ color: '#020266', fontSize: '0.875rem', fontWeight: '600', margin: '0' }}>
+                💰 $15 MXN / 3 horas
+              </p>
+              <p style={{ color: '#4A5568', fontSize: '0.8rem', margin: '4px 0 0 0' }}>
+                +$15 por hora adicional
+              </p>
+            </div>
           </div>
         </Popup>
       </Marker>
@@ -136,6 +240,9 @@ const IndexSeccion9 = () => {
 
   // Coordenadas del Teatro Legaria (IMSS)
   const venuePosition = [19.45282, -99.19866];
+  
+  // Coordenadas del estacionamiento del centro comercial
+  const parkingPosition = [19.453280029640993, -99.19760244912051];
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -199,7 +306,7 @@ const IndexSeccion9 = () => {
               </div>
               
               <div className={styles.detailItem}>
-                <span className={styles.detailIcon}>🚇</span>
+                <span className={styles.detailIcon}>📍</span>
                 <p className={styles.detailText}>{t.venue.directions}</p>
               </div>
 
@@ -217,25 +324,6 @@ const IndexSeccion9 = () => {
                 </p>
               </div>
             </div>
-
-            {/* Hoteles recomendados */}
-            {t.hotels && t.hotels.length > 0 && (
-              <div className={styles.hotelsSection}>
-                <h4 className={styles.hotelsTitle}>
-                  <span className={styles.hotelIcon}>🏨</span>
-                  {t.hotelsTitle}
-                </h4>
-                <ul className={styles.hotelsList}>
-                  {t.hotels.map((hotel, index) => (
-                    <li key={index} className={styles.hotelItem}>
-                      <strong>{hotel.name}</strong>
-                      <span className={styles.hotelDistance}>{hotel.distance}</span>
-                      <span className={styles.hotelPrice}>{hotel.price}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
 
           {/* Columna derecha: Mapa */}
@@ -250,8 +338,17 @@ const IndexSeccion9 = () => {
               <MapComponent 
                 position={venuePosition}
                 venueName={t.venue.name}
+                parkingPosition={parkingPosition}
               />
             </div>
+
+            {/* Nota de estacionamiento */}
+            {t.parkingNote && (
+              <div className={styles.parkingNote}>
+                <span className={styles.parkingIcon}>🅿️</span>
+                <p className={styles.parkingText}>{t.parkingNote}</p>
+              </div>
+            )}
           </div>
 
         </div>

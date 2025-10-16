@@ -76,7 +76,7 @@ const IndexSeccion5 = () => {
           {/* COLUMNA IZQUIERDA: Información de pago */}
           <div className={styles.paymentInfoCard} id="payment-info">
             <h3 className={styles.paymentTitle}>
-              <span className={styles.paymentIcon}>�</span>
+              <span className={styles.paymentIcon}>💳</span>
               {t.paymentInfo.title}
             </h3>
             
@@ -124,7 +124,7 @@ const IndexSeccion5 = () => {
             
             {/* Badge de descuento */}
             <div className={styles.badgeDiscount}>
-              <span className={styles.badgeIcon}>�</span>
+              <span className={styles.badgeIcon}>⚡</span>
               <span>{t.badgeDiscount}</span>
             </div>
 
@@ -164,7 +164,7 @@ const IndexSeccion5 = () => {
                 <span className={styles.ctaArrow}>→</span>
               </button>
               <a 
-                href="mailto:congreso@abogadosliberales.mx?subject=Consulta descuento grupos" 
+                href="mailto:secretariageneral@abogadosliberales.mx?subject=Consulta descuento grupos" 
                 className={styles.ctaSecondary}
               >
                 {t.ctaSecondary}
@@ -174,12 +174,8 @@ const IndexSeccion5 = () => {
             {/* Trust badges */}
             <div className={styles.trustBadges}>
               <div className={styles.trustBadge}>
-                <span className={styles.trustIcon}>🏆</span>
-                <span className={styles.trustText}>Certificado oficial</span>
-              </div>
-              <div className={styles.trustBadge}>
                 <span className={styles.trustIcon}>🎓</span>
-                <span className={styles.trustText}>Avalado por magistrados</span>
+                <span className={styles.trustText}>Impartido por magistrados</span>
               </div>
               <div className={styles.trustBadge}>
                 <span className={styles.trustIcon}>⏳</span>

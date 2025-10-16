@@ -40,11 +40,6 @@ const IndexSeccion1 = () => {
             {t.title}
           </h1>
 
-          {/* Subtítulo */}
-          <h2 className={styles.heroSubtitle}>
-            {t.subtitle}
-          </h2>
-
           {/* Fecha y ubicación */}
           <div className={styles.eventInfo}>
             <div className={styles.infoItem}>

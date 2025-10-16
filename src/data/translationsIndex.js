@@ -6,16 +6,15 @@ export const translationsIndex = {
     // SECCIÓN 1: HERO
     hero: {
       badge: "EVENTO PRESENCIAL · CUPO LIMITADO",
-      title: "Congreso Nacional de Litigio Estratégico en Amparo",
-      subtitle: "Protección de los Derechos Humanos 2025",
+      title: "Congreso Nacional de Litigio Estratégico en Amparo y Protección de los Derechos Humanos 2025",
       date: "14 y 15 de noviembre · Ciudad de México",
       description: "Dos días de formación de excelencia con magistrados, litigantes y académicos líderes en la defensa constitucional de derechos fundamentales.",
       ctaPrimary: "Adquirir entrada",
       ctaSecondary: "Ver programa completo",
       price: "$1,990 MXN",
       trustSignals: {
-        certification: "Certificado oficial de participación",
-        attendees: "200+ asistentes edición 2024",
+        certification: "Impartido por magistrados",
+        attendees: "200+ asistentes edición 2025",
         experts: "12 ponentes especializados"
       }
     },
@@ -24,8 +23,8 @@ export const translationsIndex = {
     sobreEvento: {
       label: "SOBRE EL CONGRESO",
       title: "La justicia como derecho humano",
-      description: "El Congreso Nacional de Litigio Estratégico en Amparo y Protección de los Derechos Humanos 2025 reúne a los principales expertos en justicia constitucional de México. Un espacio de formación especializada para abogados comprometidos con la defensa estratégica de garantías fundamentales.",
-      highlightText: "La razón como luz que guía la justicia",
+      description: "El <strong>Congreso Nacional de Litigio Estratégico en Amparo y Protección de los Derechos Humanos 2025</strong> reúne a los principales expertos en justicia constitucional de México. Un espacio de formación especializada <strong>para abogados comprometidos</strong> con la defensa estratégica de garantías fundamentales.",
+      highlightText: "¡Que la luz de la razón brille en la justicia!",
       items: [
         {
           icon: "🎓",
@@ -48,7 +47,7 @@ export const translationsIndex = {
 
     // SECCIÓN 3: PONENTES PRINCIPALES
     ponentes: {
-      label: "MESA DIRECTIVA 2024-2026",
+      label: "MESA DIRECTIVA 2025-2026",
       title: "Nuestros líderes institucionales",
       description: "El Directorio de la Barra Mexicana de Abogados Liberales comprometido con la excelencia jurídica y la defensa de los derechos humanos.",
       cta: "Conoce más sobre nosotros",
@@ -116,101 +115,113 @@ export const translationsIndex = {
     programa: {
       label: "PROGRAMA ACADÉMICO",
       title: "Agenda del congreso",
-      description: "Dos días intensivos de conferencias magistrales, paneles de discusión y talleres prácticos.",
+      description: "Dos días intensivos de conferencias magistrales, paneles de discusión y talleres prácticos de litigio estratégico en amparo y derechos humanos.",
       cta: "Adquirir entrada",
       downloadCta: "Descargar programa completo (PDF)",
       days: {
         day1: {
-          title: "Día 1 - Jueves 14 de noviembre",
+          title: "Día 1 - Viernes 14 de noviembre",
           sessions: [
             {
-              time: "09:00 - 10:00",
-              title: "Registro y bienvenida",
+              time: "09:00",
+              title: "Mesa de Bienvenida y Honores a la Bandera",
               type: "Acto protocolario",
               speaker: "Mesa Directiva BMAL"
             },
             {
-              time: "10:00 - 11:30",
-              title: "Conferencia magistral: El amparo como garantía constitucional",
+              time: "10:00",
+              title: "Litigación de la Responsabilidad Patrimonial del Estado desde la Perspectiva de los Derechos Humanos",
               type: "Conferencia",
-              speaker: "Magistrado [Nombre] - Tribunal Colegiado"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Magistrado de Circuito en Materia Administrativa"
             },
             {
-              time: "11:30 - 12:00",
-              title: "Receso - Coffee break",
+              time: "11:00",
+              title: "Estrategias de Defensa Jurídica ante los Actos Administrativos como Pilar Fundamental de los Derechos Humanos",
+              type: "Conferencia",
+              speaker: "Mtra. Diana Elda Pérez Medina - Magistrada de Circuito en Materia Administrativa"
+            },
+            {
+              time: "12:00",
+              title: "Litigación Estratégica en Materia Contenciosa Administrativa y Amparo Administrativo",
+              type: "Conferencia",
+              speaker: "Mtro. Octavio Martínez Quijada - Magistrado de la Sala Superior del Tribunal de Justicia Administrativa del Estado de México"
+            },
+            {
+              time: "13:00 - 14:30",
+              title: "Comida y Espacio de Convivencia",
               type: "Intermedio",
               speaker: ""
             },
             {
-              time: "12:00 - 14:00",
-              title: "Panel: Criterios recientes de la SCJN en materia de DDHH",
-              type: "Panel de discusión",
-              speaker: "3 magistrados de circuito"
+              time: "14:30",
+              title: "Técnicas de Litigio Estratégico en Amparo",
+              type: "Conferencia",
+              speaker: "Dr. Ricardo Garduño Pasten - Magistrado de Circuito en Materia Penal"
             },
             {
-              time: "14:00 - 15:30",
-              title: "Comida - Networking",
-              type: "Intermedio",
-              speaker: ""
-            },
-            {
-              time: "15:30 - 17:30",
-              title: "Taller práctico: Redacción de demandas de amparo indirecto",
+              time: "15:30",
+              title: "Ofrecimiento y Cuestionarios en la Prueba Pericial sobre Medios Tecnológicos",
               type: "Taller",
-              speaker: "Mtro. [Nombre] - Litigante especializado"
+              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos"
             },
             {
-              time: "17:30 - 18:00",
-              title: "Sesión de preguntas y respuestas",
-              type: "Q&A",
-              speaker: "Todos los ponentes"
+              time: "16:30",
+              title: "Estrategias de Litigación en Casos Graves de Derechos Humanos",
+              type: "Conferencia",
+              speaker: "Dr. Arturo Robles Feria - Defensor Público Federal"
+            },
+            {
+              time: "17:30",
+              title: "Brindis y Espacio de Convivencia",
+              type: "Intermedio",
+              speaker: ""
             }
           ]
         },
         day2: {
-          title: "Día 2 - Viernes 15 de noviembre",
+          title: "Día 2 - Sábado 15 de noviembre",
           sessions: [
             {
-              time: "09:00 - 10:30",
-              title: "Conferencia: Control de convencionalidad y derechos humanos",
+              time: "09:00",
+              title: "Litigio Estratégico en la Protección Reforzada de Grupos de Atención Prioritaria",
               type: "Conferencia",
-              speaker: "Dra. [Nombre] - UNAM"
+              speaker: "Dr. Armando Hernández Cruz - Profesor de Posgrado de la Facultad de Derecho de la UNAM"
             },
             {
-              time: "10:30 - 11:00",
-              title: "Receso - Coffee break",
+              time: "10:00",
+              title: "Operatividad del Interés Legítimo en el Juicio de Amparo",
+              type: "Conferencia",
+              speaker: "Mtro. Juan Pablo Vázquez Calvo - Magistrado de Circuito en Materia Civil"
+            },
+            {
+              time: "11:00 - 11:30",
+              title: "Receso",
               type: "Intermedio",
               speaker: ""
             },
             {
-              time: "11:00 - 13:00",
-              title: "Panel: Casos paradigmáticos de amparo en protección de DDHH",
-              type: "Panel de discusión",
-              speaker: "4 litigantes con casos ante SCJN"
+              time: "11:30",
+              title: "Técnicas Estratégicas de Sustentación con Jurisprudencia en el Amparo",
+              type: "Conferencia",
+              speaker: "Dr. Omar Fuentes Cerdán - Secretario de Tribunal Colegiado con 20 años de experiencia en la Función Jurisdiccional"
             },
             {
-              time: "13:00 - 14:30",
-              title: "Comida - Networking",
-              type: "Intermedio",
-              speaker: ""
-            },
-            {
-              time: "14:30 - 16:30",
-              title: "Taller: Litigio estratégico en comunidades vulnerables",
+              time: "12:30",
+              title: "Recursos Tecnológicos en el Litigio Estratégico",
               type: "Taller",
-              speaker: "Lic. [Nombre] - CNDH"
+              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos"
             },
             {
-              time: "16:30 - 17:30",
-              title: "Conferencia de clausura: El futuro del amparo en México",
-              type: "Conferencia",
-              speaker: "Dr. [Nombre] - IIJ UNAM"
+              time: "13:30",
+              title: "Debate Abierto para la Presentación de Propuestas de Proyectos de Reforma",
+              type: "Panel de discusión",
+              speaker: "Moderador: Dr. José Jacob Juárez Osorio"
             },
             {
-              time: "17:30 - 18:00",
-              title: "Entrega de constancias y despedida",
-              type: "Acto protocolario",
-              speaker: "Mesa Directiva BMAL"
+              time: "14:15",
+              title: "Brindis y Espacio de Comida para Convivencia",
+              type: "Intermedio",
+              speaker: ""
             }
           ]
         }
@@ -230,9 +241,8 @@ export const translationsIndex = {
         title: "Tu registro incluye:",
         items: [
           "Acceso completo a las 2 jornadas del congreso",
-          "Certificado oficial de participación avalado por la Barra",
           "Material didáctico digital (memorias del congreso)",
-          "Coffee breaks y comida de ambos días",
+          "Coffee breaks",
           "Networking con ponentes y asistentes",
           "Acceso a grupo exclusivo de seguimiento post-congreso"
         ]
@@ -244,7 +254,7 @@ export const translationsIndex = {
         bank: "INBURSA",
         clabe: "036180500731081928",
         accountName: "BARRA MEXICANA DE CIENCIAS JURIDICAS Y PROFESIONALES LIBERALES DEL DERECHO A.C.",
-        instructions: "Envía tu comprobante de pago a: congreso@abogadosliberales.mx",
+        instructions: "Envía tu comprobante de pago a: secretariageneral@abogadosliberales.mx",
         note: "Cupo limitado a 250 asistentes. Los lugares se asignan por orden de pago confirmado."
       }
     },
@@ -287,7 +297,7 @@ export const translationsIndex = {
     sobreBarra: {
       label: "NUESTRA INSTITUCIÓN",
       title: "Barra Mexicana de Abogados Liberales",
-      subtitle: "Comunidad comprometida con la justicia social y la excelencia jurídica",
+      subtitle: "Comunidad comprometida con la excelencia jurídica",
       description: "Fundada el 12 de julio de 2024, la Barra Mexicana de Abogados Liberales es una asociación civil que promueve la defensa estratégica de derechos humanos, la ética profesional y la filantropía jurídica. Somos una red de abogados comprometidos con los valores del liberalismo jurídico: razón, justicia y dignidad.",
       motto: "¡Que la luz de la razón brille en la justicia!",
       mottoLatin: "Lux Iustitia Excellentium",
@@ -353,35 +363,10 @@ export const translationsIndex = {
       venue: {
         name: "Teatro Legaria (IMSS)",
         address: "Calzada Legaria s/n, esquina Lago Gran Oso · Col. Pensil Norte · Miguel Hidalgo · C.P. 11430 · CDMX",
-        directions: "Metro más cercano: Legaria (Línea 7) · A 10 minutos caminando del Eje Central Lázaro Cárdenas"
+        directions: "A 10 minutos de distancia de Polanco"
       },
       mapTitle: "Ubicación exacta",
-      hotelsTitle: "Hoteles recomendados cercanos",
-      hotels: [
-        {
-          name: "Hotel City Express Legaria",
-          distance: "1.2 km (15 min caminando)",
-          price: "Desde $850/noche",
-          rating: "4.0 estrellas",
-          phone: "+52 55 5399 1010"
-        },
-        {
-          name: "City Express Plus Polanco",
-          distance: "3.5 km (8 min en auto)",
-          price: "Desde $1,200/noche",
-          rating: "4.2 estrellas",
-          phone: "+52 55 5280 1818"
-        },
-        {
-          name: "NH Collection México Reforma",
-          distance: "5 km (12 min en auto)",
-          price: "Desde $1,800/noche",
-          rating: "4.5 estrellas",
-          phone: "+52 55 5061 3000"
-        }
-      ],
-      parkingInfo: "El teatro cuenta con estacionamiento limitado. Se recomienda uso de transporte público.",
-      accessibilityInfo: "El Teatro Legaria cuenta con acceso para personas con discapacidad motriz."
+      parkingNote: "A un costado del evento se encuentra un centro comercial que tiene estacionamiento con precios preferentes de $15 MXN por 3 horas y $15 la hora adicional."
     },
 
     // SECCIÓN 10: CTA FINAL
@@ -410,16 +395,15 @@ export const translationsIndex = {
     // SECTION 1: HERO
     hero: {
       badge: "IN-PERSON EVENT · LIMITED CAPACITY",
-      title: "National Congress on Strategic Amparo Litigation",
-      subtitle: "Human Rights Protection 2025",
+      title: "National Congress on Strategic Amparo Litigation and Human Rights Protection 2025",
       date: "November 14-15 · Mexico City",
       description: "Two days of excellence training with leading magistrates, litigators and academics in constitutional defense of fundamental rights.",
       ctaPrimary: "Get Ticket",
       ctaSecondary: "View Full Program",
       price: "$1,990 MXN",
       trustSignals: {
-        certification: "Official participation certificate",
-        attendees: "200+ attendees 2024 edition",
+        certification: "Taught by magistrates",
+        attendees: "200+ attendees 2025 edition",
         experts: "12 specialized speakers"
       }
     },
@@ -428,8 +412,8 @@ export const translationsIndex = {
     sobreEvento: {
       label: "ABOUT THE CONGRESS",
       title: "Justice as a human right",
-      description: "The National Congress on Strategic Amparo Litigation and Human Rights Protection 2025 brings together Mexico's leading experts in constitutional justice. A specialized training space for lawyers committed to strategic defense of fundamental guarantees.",
-      highlightText: "Reason as the light that guides justice",
+      description: "The <strong>National Congress on Strategic Amparo Litigation and Human Rights Protection 2025</strong> brings together Mexico's leading experts in constitutional justice. A specialized training space <strong>for lawyers committed</strong> to strategic defense of fundamental guarantees.",
+      highlightText: "May the light of reason shine on justice!",
       items: [
         {
           icon: "🎓",
@@ -452,7 +436,7 @@ export const translationsIndex = {
 
     // SECTION 3: BOARD OF DIRECTORS
     ponentes: {
-      label: "BOARD OF DIRECTORS 2024-2026",
+      label: "BOARD OF DIRECTORS 2025-2026",
       title: "Our institutional leaders",
       description: "The Board of the Mexican Bar of Liberal Lawyers committed to legal excellence and the defense of human rights.",
       cta: "Learn more about us",
@@ -520,101 +504,113 @@ export const translationsIndex = {
     programa: {
       label: "ACADEMIC PROGRAM",
       title: "Congress agenda",
-      description: "Two intensive days of keynote speeches, discussion panels and practical workshops.",
+      description: "Two intensive days of keynote conferences, discussion panels and practical workshops on strategic amparo litigation and human rights.",
       cta: "Get Ticket",
       downloadCta: "Download full program (PDF)",
       days: {
         day1: {
-          title: "Day 1 - Thursday, November 14",
+          title: "Day 1 - Friday, November 14",
           sessions: [
             {
-              time: "09:00 - 10:00",
-              title: "Registration and welcome",
+              time: "09:00",
+              title: "Welcome Ceremony and National Anthem Honors",
               type: "Protocol act",
               speaker: "BMAL Board of Directors"
             },
             {
-              time: "10:00 - 11:30",
-              title: "Keynote: Amparo as constitutional guarantee",
+              time: "10:00",
+              title: "State Patrimonial Liability Litigation from a Human Rights Perspective",
               type: "Conference",
-              speaker: "Magistrate [Name] - Collegiate Court"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Circuit Magistrate in Administrative Matters"
             },
             {
-              time: "11:30 - 12:00",
-              title: "Break - Coffee break",
+              time: "11:00",
+              title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
+              type: "Conference",
+              speaker: "Mtra. Diana Elda Pérez Medina - Circuit Magistrate in Administrative Matters"
+            },
+            {
+              time: "12:00",
+              title: "Strategic Litigation in Administrative Contentious Matters and Administrative Amparo",
+              type: "Conference",
+              speaker: "Mtro. Octavio Martínez Quijada - Magistrate of the Superior Chamber of the Administrative Justice Court of the State of Mexico"
+            },
+            {
+              time: "13:00 - 14:30",
+              title: "Lunch and Networking Space",
               type: "Intermission",
               speaker: ""
             },
             {
-              time: "12:00 - 14:00",
-              title: "Panel: Recent SCJN criteria on human rights",
-              type: "Discussion panel",
-              speaker: "3 circuit magistrates"
+              time: "14:30",
+              title: "Strategic Amparo Litigation Techniques",
+              type: "Conference",
+              speaker: "Dr. Ricardo Garduño Pasten - Circuit Magistrate in Criminal Matters"
             },
             {
-              time: "14:00 - 15:30",
-              title: "Lunch - Networking",
-              type: "Intermission",
-              speaker: ""
-            },
-            {
-              time: "15:30 - 17:30",
-              title: "Workshop: Drafting indirect amparo lawsuits",
+              time: "15:30",
+              title: "Expert Evidence Offering and Questionnaires on Technological Media",
               type: "Workshop",
-              speaker: "Mtro. [Name] - Specialized litigator"
+              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media"
             },
             {
-              time: "17:30 - 18:00",
-              title: "Q&A session",
-              type: "Q&A",
-              speaker: "All speakers"
+              time: "16:30",
+              title: "Litigation Strategies in Serious Human Rights Cases",
+              type: "Conference",
+              speaker: "Dr. Arturo Robles Feria - Federal Public Defender"
+            },
+            {
+              time: "17:30",
+              title: "Toast and Networking Space",
+              type: "Intermission",
+              speaker: ""
             }
           ]
         },
         day2: {
-          title: "Day 2 - Friday, November 15",
+          title: "Day 2 - Saturday, November 15",
           sessions: [
             {
-              time: "09:00 - 10:30",
-              title: "Conference: Conventionality control and human rights",
+              time: "09:00",
+              title: "Strategic Litigation in Reinforced Protection of Priority Attention Groups",
               type: "Conference",
-              speaker: "Dr. [Name] - UNAM"
+              speaker: "Dr. Armando Hernández Cruz - Postgraduate Professor at UNAM Faculty of Law"
             },
             {
-              time: "10:30 - 11:00",
-              title: "Break - Coffee break",
+              time: "10:00",
+              title: "Operability of Legitimate Interest in Amparo Lawsuits",
+              type: "Conference",
+              speaker: "Mtro. Juan Pablo Vázquez Calvo - Circuit Magistrate in Civil Matters"
+            },
+            {
+              time: "11:00 - 11:30",
+              title: "Break",
               type: "Intermission",
               speaker: ""
             },
             {
-              time: "11:00 - 13:00",
-              title: "Panel: Landmark amparo cases in human rights protection",
-              type: "Discussion panel",
-              speaker: "4 litigators with SCJN cases"
+              time: "11:30",
+              title: "Strategic Argumentation Techniques with Jurisprudence in Amparo",
+              type: "Conference",
+              speaker: "Dr. Omar Fuentes Cerdán - Collegiate Court Secretary with 20 years of experience in Jurisdictional Function"
             },
             {
-              time: "13:00 - 14:30",
-              title: "Lunch - Networking",
-              type: "Intermission",
-              speaker: ""
-            },
-            {
-              time: "14:30 - 16:30",
-              title: "Workshop: Strategic litigation in vulnerable communities",
+              time: "12:30",
+              title: "Technological Resources in Strategic Litigation",
               type: "Workshop",
-              speaker: "Lic. [Name] - CNDH"
+              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media"
             },
             {
-              time: "16:30 - 17:30",
-              title: "Closing conference: The future of amparo in Mexico",
-              type: "Conference",
-              speaker: "Dr. [Name] - IIJ UNAM"
+              time: "13:30",
+              title: "Open Debate for Presentation of Reform Project Proposals",
+              type: "Discussion panel",
+              speaker: "Moderator: Dr. José Jacob Juárez Osorio"
             },
             {
-              time: "17:30 - 18:00",
-              title: "Certificate delivery and farewell",
-              type: "Protocol act",
-              speaker: "BMAL Board of Directors"
+              time: "14:15",
+              title: "Toast and Lunch Networking Space",
+              type: "Intermission",
+              speaker: ""
             }
           ]
         }
@@ -634,9 +630,8 @@ export const translationsIndex = {
         title: "Your registration includes:",
         items: [
           "Full access to the 2-day congress",
-          "Official participation certificate endorsed by the Bar",
           "Digital educational material (congress proceedings)",
-          "Coffee breaks and meals for both days",
+          "Coffee breaks",
           "Networking with speakers and attendees",
           "Access to exclusive post-congress follow-up group"
         ]
@@ -648,7 +643,7 @@ export const translationsIndex = {
         bank: "INBURSA",
         clabe: "036180500731081928",
         accountName: "BARRA MEXICANA DE CIENCIAS JURIDICAS Y PROFESIONALES LIBERALES DEL DERECHO A.C.",
-        instructions: "Send your payment receipt to: congreso@abogadosliberales.mx",
+        instructions: "Send your payment receipt to: secretariageneral@abogadosliberales.mx",
         note: "Limited capacity to 250 attendees. Spots are assigned by confirmed payment order."
       }
     },
@@ -658,7 +653,7 @@ export const translationsIndex = {
       label: "VOICES OF OUR ATTENDEES",
       title: "What past attendees say",
       subtitle: "Testimonials from lawyers who experienced last year's congress",
-      videoTitle: "Relive the best moments of Congress 2024",
+      videoTitle: "Relive the best moments of Congress 2025",
       testimonials: [
         {
           name: "Lic. María Fernández García",
@@ -691,7 +686,7 @@ export const translationsIndex = {
     sobreBarra: {
       label: "OUR INSTITUTION",
       title: "Mexican Bar of Liberal Lawyers",
-      subtitle: "Community committed to social justice and legal excellence",
+      subtitle: "Community committed to legal excellence",
       description: "Founded on July 12, 2024, the Mexican Bar of Liberal Lawyers is a civil association that promotes strategic defense of human rights, professional ethics and legal philanthropy. We are a network of lawyers committed to the values of legal liberalism: reason, justice and dignity.",
       motto: "May the light of reason shine on justice!",
       mottoLatin: "Lux Iustitia Excellentium",
@@ -757,35 +752,10 @@ export const translationsIndex = {
       venue: {
         name: "Teatro Legaria (IMSS)",
         address: "Calzada Legaria s/n, corner Lago Gran Oso · Col. Pensil Norte · Miguel Hidalgo · ZIP 11430 · CDMX",
-        directions: "Nearest Metro: Legaria (Line 7) · 10 min walk from Eje Central Lázaro Cárdenas"
+        directions: "10 minutes away from Polanco"
       },
       mapTitle: "Exact location",
-      hotelsTitle: "Recommended nearby hotels",
-      hotels: [
-        {
-          name: "Hotel City Express Legaria",
-          distance: "1.2 km (15 min walk)",
-          price: "From $850/night",
-          rating: "4.0 stars",
-          phone: "+52 55 5399 1010"
-        },
-        {
-          name: "City Express Plus Polanco",
-          distance: "3.5 km (8 min by car)",
-          price: "From $1,200/night",
-          rating: "4.2 stars",
-          phone: "+52 55 5280 1818"
-        },
-        {
-          name: "NH Collection México Reforma",
-          distance: "5 km (12 min by car)",
-          price: "From $1,800/night",
-          rating: "4.5 stars",
-          phone: "+52 55 5061 3000"
-        }
-      ],
-      parkingInfo: "The theater has limited parking. Public transportation is recommended.",
-      accessibilityInfo: "Teatro Legaria has access for people with mobility disabilities."
+      parkingNote: "Next to the event venue there is a shopping center with preferential parking rates of $15 MXN for 3 hours and $15 per additional hour."
     },
 
     // SECTION 10: FINAL CTA

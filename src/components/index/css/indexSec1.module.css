@@ -130,12 +130,13 @@
 /* Título principal */
 .heroTitle {
   font-family: var(--al-font-headline, 'Merriweather', serif);
-  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-size: clamp(1.875rem, 4.5vw, 3.25rem);
   font-weight: 800;
-  line-height: 1.15;
+  line-height: 1.2;
   color: #FFFFFF;
   text-align: center;
-  margin: 0 0 1rem 0;
+  margin: 0 0 2rem 0;
+  max-width: 1100px;
   text-shadow: 
     0 2px 12px rgba(0, 0, 0, 0.4),
     0 0 40px rgba(238, 203, 0, 0.15);
@@ -153,25 +154,12 @@
   }
 }
 
-/* Subtítulo */
-.heroSubtitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
-  font-size: clamp(1.25rem, 3vw, 1.875rem);
-  font-weight: 400;
-  font-style: italic;
-  line-height: 1.4;
-  color: rgba(238, 203, 0, 0.95);
-  text-align: center;
-  margin: 0 0 1.5rem 0;
-  animation: titleFadeIn 1s ease-out 0.5s both;
-}
-
 /* Info de evento */
 .eventInfo {
   display: flex;
   justify-content: center;
   margin-bottom: 1.5rem;
-  animation: titleFadeIn 1s ease-out 0.7s both;
+  animation: titleFadeIn 1s ease-out 0.5s both;
 }
 
 .infoItem {
@@ -207,7 +195,7 @@
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
-  animation: titleFadeIn 1s ease-out 0.9s both;
+  animation: titleFadeIn 1s ease-out 0.7s both;
 }
 
 /* Grupo de CTAs */
@@ -216,7 +204,7 @@
   gap: 1rem;
   justify-content: center;
   margin-bottom: 2rem;
-  animation: titleFadeIn 1s ease-out 1.1s both;
+  animation: titleFadeIn 1s ease-out 0.9s both;
 }
 
 /* CTA Primario */
@@ -307,7 +295,7 @@
   border: 1px solid rgba(238, 203, 0, 0.25);
   border-radius: 12px;
   margin-bottom: 1.5rem;
-  animation: titleFadeIn 1s ease-out 1.3s both;
+  animation: titleFadeIn 1s ease-out 1.1s both;
 }
 
 .priceLabel {
@@ -331,7 +319,7 @@
   gap: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  animation: titleFadeIn 1s ease-out 1.5s both;
+  animation: titleFadeIn 1s ease-out 1.3s both;
 }
 
 .trustItem {
@@ -479,11 +467,9 @@
   }
 
   .heroTitle {
-    font-size: 1.75rem;
-  }
-
-  .heroSubtitle {
-    font-size: 1.125rem;
+    font-size: 1.5rem;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
   }
 
   .heroDescription {

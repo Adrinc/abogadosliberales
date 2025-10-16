@@ -94,8 +94,8 @@ const IndexSeccion4 = () => {
           >
             <div className={styles.dayNumber}>1</div>
             <div className={styles.dayInfo}>
-              <span className={styles.dayName}>Día 1</span>
-              <span className={styles.dayDate}>Jueves 14 nov</span>
+              <span className={styles.dayName}>{ingles ? "Day 1" : "Día 1"}</span>
+              <span className={styles.dayDate}>{ingles ? "Fri Nov 14" : "Vie 14 nov"}</span>
             </div>
           </button>
           <button
@@ -104,8 +104,8 @@ const IndexSeccion4 = () => {
           >
             <div className={styles.dayNumber}>2</div>
             <div className={styles.dayInfo}>
-              <span className={styles.dayName}>Día 2</span>
-              <span className={styles.dayDate}>Viernes 15 nov</span>
+              <span className={styles.dayName}>{ingles ? "Day 2" : "Día 2"}</span>
+              <span className={styles.dayDate}>{ingles ? "Sat Nov 15" : "Sáb 15 nov"}</span>
             </div>
           </button>
         </div>

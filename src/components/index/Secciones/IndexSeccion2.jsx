@@ -75,7 +75,10 @@ const IndexSeccion2 = () => {
             <h2 className={styles.title}>{t.title}</h2>
             
             {/* Descripción */}
-            <p className={styles.description}>{t.description}</p>
+            <p 
+              className={styles.description}
+              dangerouslySetInnerHTML={{ __html: t.description }}
+            />
 
             {/* 3 bloques con íconos institucionales */}
             <div className={styles.itemsGrid}>
