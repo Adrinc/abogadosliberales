@@ -5,6 +5,7 @@ import { translationsRegistro } from '../../../data/translationsRegistro';
 import FormularioLead from '../components/FormularioLead';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayForm from '../components/IPPayForm';
+import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 import ResumenRegistro from '../ResumenRegistro';
 import styles from '../css/registroSeccion2.module.css';
@@ -126,7 +127,7 @@ const RegistroSeccion2 = () => {
                   )}
                   
                   {selectedMethod === 'creditCard' && (
-                    <IPPayForm leadId={leadId} leadData={leadData} />
+                    <IPPayTemporaryMessage />
                   )}
                   
                   {selectedMethod === 'bankTransfer' && (
