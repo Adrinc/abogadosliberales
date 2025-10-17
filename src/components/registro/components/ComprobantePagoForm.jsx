@@ -210,30 +210,60 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
     setErrorMessage('');
 
     try {
-      // Convertir archivo a base64
-      const base64File = await fileToBase64(file);
+      console.log('📤 Starting receipt upload process...');
       
-      // Preparar payload para webhook n8n
+      // Convertir archivo a base64
+      console.log('🔄 Converting file to base64...');
+      const base64File = await fileToBase64(file);
+      console.log('✅ File converted to base64');
+      
+      // Preparar payload según el nuevo formato
       const webhookPayload = {
-        lead_id: parseInt(leadId),
+        customer_id: parseInt(leadId),
         event_id: EVENT_ID,
-        receipt_file: base64File,
-        file_name: file.name,
-        file_type: file.type,
+        reference_number: referenceNumber.trim(),
         amount: parseFloat(AMOUNT),
-        currency: CURRENCY,
-        reference_number: referenceNumber,
         payment_date: new Date(paymentDate).toISOString(),
-        timestamp: new Date().toISOString()
+        file: {
+          file_name: `receipt_${EVENT_ID}_${leadId}`,
+          file_bucket: "event",
+          file_route: `${EVENT_ID}/receipts/${leadId}`,
+          file_title: ingles 
+            ? `Payment Receipt - Event ${EVENT_ID}` 
+            : `Comprobante de Pago - Evento ${EVENT_ID}`,
+          file_description: ingles 
+            ? "Payment receipt uploaded by customer" 
+            : "Comprobante de pago subido por el cliente",
+          metadata_json: {
+            event_id: EVENT_ID,
+            customer_id: parseInt(leadId),
+            upload_source: "landing_page",
+            original_file_name: file.name,
+            file_type: file.type,
+            file_size: file.size,
+            uploaded_at: new Date().toISOString()
+          },
+          media_category_id: 2, // Categoría de comprobantes
+          file: base64File // Base64 content
+        }
       };
 
-      console.log('Uploading receipt...', {
-        fileName: file.name,
-        fileSize: file.size,
-        fileType: file.type,
-        referenceNumber,
-        paymentDate
+      console.log('📋 Payload prepared:', {
+        customer_id: webhookPayload.customer_id,
+        event_id: webhookPayload.event_id,
+        reference_number: webhookPayload.reference_number,
+        amount: webhookPayload.amount,
+        payment_date: webhookPayload.payment_date,
+        file_info: {
+          file_name: webhookPayload.file.file_name,
+          file_bucket: webhookPayload.file.file_bucket,
+          file_route: webhookPayload.file.file_route,
+          media_category_id: webhookPayload.file.media_category_id,
+          metadata: webhookPayload.file.metadata_json
+        }
       });
+
+      console.log('📤 Sending to webhook:', WEBHOOK_URL);
 
       const webhookResponse = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -243,21 +273,35 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
         body: JSON.stringify(webhookPayload)
       });
 
+      console.log('📬 Webhook response status:', webhookResponse.status);
+
       if (!webhookResponse.ok) {
+        const errorText = await webhookResponse.text();
+        console.error('❌ Webhook error response:', errorText);
         throw new Error(`Webhook error: ${webhookResponse.status}`);
       }
+
+      const webhookResult = await webhookResponse.json();
+      console.log('✅ Webhook response:', webhookResult);
 
       // Éxito
       setUploadStatus('success');
       setIsUploading(false);
 
+      console.log('🎉 Receipt uploaded successfully! Redirecting...');
+
       // Redirigir después de 3 segundos
       setTimeout(() => {
-        window.location.href = `/validacion?receipt_id=${referenceNumber}&lead_id=${leadId}`;
+        window.location.href = `/validacion?receipt_id=${webhookResult.data?.receipt_id || referenceNumber}&lead_id=${leadId}&method=transfer&status=pending`;
       }, 3000);
 
     } catch (error) {
-      console.error('Error uploading receipt:', error);
+      console.error('❌ Error uploading receipt:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
       setUploadStatus('error');
       setErrorMessage(ingles 
         ? 'Failed to upload receipt. Please try again or contact support.'

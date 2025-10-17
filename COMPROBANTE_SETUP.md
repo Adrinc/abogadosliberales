@@ -1,4 +1,12 @@
-# 🏦 Configuración de Comprobante Bancario - Abogados Liberales
+# Configuración de Comprobante de Pago - Formato Actualizado (v2.0)
+
+## ⚠️ ACTUALIZACIÓN IMPORTANTE (17 de octubre de 2025)
+
+Se actualizó el payload del formulario de comprobante de pago para usar el **nuevo formato estructurado** que coincide con el workflow n8n documentado en `/public/referencias/n8n_receipt_workflow.md`.
+
+---
+
+# Configuración de Comprobante de Pago
 
 ## ✅ Implementación Completada (FASE 6)
 
