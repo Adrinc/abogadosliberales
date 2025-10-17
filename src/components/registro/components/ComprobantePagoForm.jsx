@@ -189,7 +189,12 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
   const fileToBase64 = (file) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
+      reader.onload = () => {
+        // Remover el prefijo data:image/png;base64, o data:application/pdf;base64,
+        const base64String = reader.result;
+        const base64Data = base64String.split(',')[1]; // Solo obtener la parte después de la coma
+        resolve(base64Data);
+      };
       reader.onerror = reject;
       reader.readAsDataURL(file);
     });
