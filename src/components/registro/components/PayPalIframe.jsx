@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
 import styles from '../css/paypalIframe.module.css';
+import supabase from '../../../lib/supabaseClient';
 
 const PayPalIframe = ({ leadId, leadData }) => {
   const ingles = useStore(isEnglish);
@@ -21,6 +22,62 @@ const PayPalIframe = ({ leadId, leadData }) => {
   const AMOUNT = '1990.00'; // MXN
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_paypal_payment';
+
+  // Obtener o crear customer en Supabase y devolver customer_id
+  const getOrCreateCustomer = async () => {
+    try {
+      if (leadId) return parseInt(leadId);
+
+      const email = leadData?.email || null;
+      if (!email) return null;
+
+      console.log('🔎 Looking up customer by email in Supabase:', email);
+      const { data: existing, error: selectError } = await supabase
+        .from('customer')
+        .select('customer_id')
+        .eq('email', email)
+        .limit(1)
+        .maybeSingle();
+
+      if (selectError) {
+        console.warn('⚠️ Supabase select error (non-fatal):', selectError.message || selectError);
+      }
+
+      if (existing && existing.customer_id) {
+        console.log('✅ Found existing customer_id:', existing.customer_id);
+        return existing.customer_id;
+      }
+
+      const insertPayload = {
+        first_name: leadData?.first_name || null,
+        last_name: leadData?.last_name || null,
+        email: email,
+        mobile_phone: leadData?.mobile_phone || null,
+        status: 'pending',
+        customer_parent_id: leadData?.customer_parent_id || null,
+        customer_category_fk: leadData?.customer_category_fk || null,
+        organization_fk: leadData?.organization_fk || null
+      };
+
+      console.log('📥 Inserting new customer in Supabase:', { email });
+      const { data: inserted, error: insertError } = await supabase
+        .from('customer')
+        .insert(insertPayload)
+        .select('customer_id')
+        .single();
+
+      if (insertError) {
+        console.warn('⚠️ Supabase insert error (continuing without lead_id):', insertError.message || insertError);
+        return null;
+      }
+
+      console.log('✅ New customer created with customer_id:', inserted.customer_id);
+      return inserted.customer_id;
+    } catch (err) {
+      console.error('❌ Unexpected Supabase error:', err);
+      return null;
+    }
+  };
 
   useEffect(() => {
     // Cargar PayPal SDK (solo una vez)
@@ -61,7 +118,7 @@ const PayPalIframe = ({ leadId, leadData }) => {
       // Crear script nuevo solo si no existe
       console.log('Loading PayPal SDK...');
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=AWc8tEOJfCnQv2IX4DlIkHCYX4u6jxdQFICl8JlV-sMGSqkRbK_2o10dufkhJvbT-vWYj9NsxDQDHqZd&currency=${CURRENCY}&locale=${ingles ? 'en_US' : 'es_MX'}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=AaR78V8aUXFNaBMKCFJxOsWK0WYRmORxlwTuODbZxwapYwvGYxGFn-9ucNIqHgrFxpE6dJpOB-vA3pA3&currency=${CURRENCY}&locale=${ingles ? 'en_US' : 'es_MX'}`;
       script.addEventListener('load', () => {
         console.log('PayPal SDK loaded successfully');
         setIsLoading(false);
@@ -138,18 +195,83 @@ const PayPalIframe = ({ leadId, leadData }) => {
         // Aprobar pago
         onApprove: async (data, actions) => {
           console.log('🎉 Payment approved! Order ID:', data.orderID);
-          // Indicamos que estamos procesando para mostrar el spinner
           setIsProcessing(true);
 
           try {
-            // 1. Capturar los detalles de la orden. Esto llama al Orders API de PayPal para obtener el
-            //    resultado definitivo del pago. El objeto resultante incluye la información de la captura,
-            //    el monto pagado, la moneda, el correo del pagador y el estado final del pago.
+            // 1. Intentar capturar con timeout de 15 segundos
             console.log('💳 Capturing order details via PayPal API...');
-            const orderDetails = await actions.order.capture();
-            console.log('📦 Order details captured:', orderDetails);
+            
+            const capturePromise = actions.order.capture();
+            const timeoutPromise = new Promise((_, reject) => 
+              setTimeout(() => reject(new Error('Capture timeout')), 15000)
+            );
 
-            // 2. Extraer datos relevantes. PayPal puede devolver varias capturas, pero normalmente hay una sola.
+            let orderDetails;
+            try {
+              // Race entre captura y timeout
+              orderDetails = await Promise.race([capturePromise, timeoutPromise]);
+              console.log('📦 Order details captured:', orderDetails);
+            } catch (captureError) {
+              // Si falla la captura (window closed o timeout), usar solo el orderID
+              console.warn('⚠️ Capture failed, but order was approved:', captureError.message);
+              console.log('📋 Using orderID only for webhook:', data.orderID);
+              
+              // Construir payload mínimo con solo orderID
+              const webhookPayload = {
+                lead_id: parseInt(leadId),
+                event_id: EVENT_ID,
+                paypal_order_id: data.orderID, // Order ID de PayPal (único campo necesario)
+                amount: parseFloat(AMOUNT),
+                currency: CURRENCY,
+                payer_email: null, // Backend lo obtendrá
+                payer_info: null,
+                payment_status: 'APPROVED', // Sabemos que fue aprobado
+                timestamp: new Date().toISOString(),
+                capture_failed: true // Flag para que backend capture manualmente
+              };
+
+              console.log('📤 Sending minimal webhook to n8n:', webhookPayload);
+
+              // Enviar webhook con datos mínimos
+              try {
+                // Resolver o crear customer antes de enviar webhook
+                const resolvedCustomerId = await getOrCreateCustomer();
+                const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
+                const minimalPayload = { ...webhookPayload, lead_id: effectiveLeadId };
+
+                const webhookResponse = await fetch(WEBHOOK_URL, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify(minimalPayload)
+                });
+
+                console.log('Webhook response status:', webhookResponse.status);
+              
+                if (webhookResponse.ok) {
+                  console.log('✅ Webhook processed successfully (minimal data)');
+                  setPaymentStatus('success');
+                  setTransactionId(data.orderID);
+                  setIsProcessing(false);
+                
+                  setTimeout(() => {
+                    window.location.href = `/confirmacion?transaction_id=${data.orderID}&lead_id=${effectiveLeadId || ''}&method=paypal&status=pending_capture`;
+                  }, 3000);
+                  return; // Salir exitosamente
+                }
+              } catch (webhookError) {
+                console.error('❌ Webhook failed:', webhookError);
+              }
+
+              // Si llegamos aquí, mostrar error al usuario pero con OrderID
+              throw new Error(
+                (ingles 
+                  ? 'Payment approved but could not be processed. Please contact support with Order ID: ' 
+                  : 'Pago aprobado pero no se pudo procesar. Por favor contacte a soporte con Order ID: '
+                ) + data.orderID
+              );
+            }
+
+            // 2. Si la captura fue exitosa, procesar normalmente
             const capture = orderDetails.purchase_units?.[0]?.payments?.captures?.[0];
             const transactionID = capture?.id;
             const paymentAmount = capture?.amount?.value;
@@ -166,21 +288,17 @@ const PayPalIframe = ({ leadId, leadData }) => {
               paymentStatus
             });
 
-            // Guardar transactionID para que el usuario lo vea si ocurre un error
             if (transactionID) setTransactionId(transactionID);
 
-            // 3. Construir el payload para el webhook de n8n. El backend necesita:
-            //    - lead_id y event_id para relacionar el pago con el registro y el evento.
-            //    - paypal_order_id (data.orderID) y paypal_transaction_id (capture.id) para conciliar con PayPal.
-            //    - amount y currency para validar montos.
-            //    - payer_email e información adicional del pagador.
-            //    - payment_status para saber si está COMPLETED, PENDING, etc.
-            //    - timestamp para trazabilidad.
+            // 3. Construir payload completo
+            // Resolver o crear customer antes de enviar webhook
+            const resolvedCustomerId = await getOrCreateCustomer();
+            const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
+
             const webhookPayload = {
-              lead_id: parseInt(leadId),
+              lead_id: effectiveLeadId,
               event_id: EVENT_ID,
-              paypal_order_id: data.orderID,
-              paypal_transaction_id: transactionID,
+              paypal_order_id: data.orderID, // Order ID de PayPal (único campo necesario)
               amount: paymentAmount ? parseFloat(paymentAmount) : parseFloat(AMOUNT),
               currency: paymentCurrency || CURRENCY,
               payer_email: payerEmail,
@@ -190,25 +308,24 @@ const PayPalIframe = ({ leadId, leadData }) => {
                 payer_id: payerId
               },
               payment_status: paymentStatus,
-              timestamp: new Date().toISOString()
+              timestamp: new Date().toISOString(),
+              capture_failed: false
             };
 
             console.log('📤 Sending webhook to n8n:', webhookPayload);
 
-            // 4. Enviar al webhook de n8n. Si el webhook no existe todavía o está en desarrollo,
-            //    esta llamada puede fallar por CORS o por que no hay servidor. Controlamos ese error abajo.
+            // 4. Enviar webhook
             let webhookOk = false;
             try {
               const webhookResponse = await fetch(WEBHOOK_URL, {
                 method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(webhookPayload)
               });
 
               console.log('📬 Webhook response status:', webhookResponse.status);
               webhookOk = webhookResponse.ok;
+              
               if (webhookResponse.ok) {
                 const webhookResult = await webhookResponse.json().catch(() => null);
                 console.log('✅ Webhook processed successfully:', webhookResult);
@@ -220,28 +337,24 @@ const PayPalIframe = ({ leadId, leadData }) => {
               console.warn('⚠️ Webhook not reachable or failed:', webErr);
             }
 
-            // 5. Consideramos el flujo del cliente exitoso; el backend se encargará de validar y capturar la orden.
+            // 5. Marcar como exitoso y redirigir
             setPaymentStatus('success');
             setIsProcessing(false);
-            console.log('🎉 Payment completed on client. Redirecting...');
+            console.log('🎉 Payment completed successfully');
 
-            // 6. Redirigir después de un pequeño retraso. Incluimos transaction_id (o orderID si no hay capture) y lead_id
-            //    para que la página de confirmación pueda mostrarlos. También pasamos un status que permita distinguir
-            //    si el webhook se procesó correctamente o no.
             setTimeout(() => {
               const txId = transactionID || data.orderID;
               const statusParam = webhookOk ? 'confirmed' : 'pending_webhook';
               window.location.href = `/confirmacion?transaction_id=${txId}&lead_id=${leadId}&method=paypal&status=${statusParam}`;
-            }, 7000);
+            }, 3000);
 
           } catch (error) {
-            // En caso de cualquier excepción (captura, construcción o fetch), notificamos al usuario
             console.error('❌ Error during PayPal approval handling:', error);
             setPaymentStatus('error');
-            setErrorMessage(ingles 
-              ? 'The payment was approved, but an error occurred while processing your registration. Please try again later or contact support.'
-              : 'El pago fue aprobado, pero se produjo un error al procesar su registro. Por favor intente de nuevo más tarde o contacte a soporte.'
-            );
+            setErrorMessage(error.message || (ingles 
+              ? 'An error occurred while processing your payment. Please contact support.'
+              : 'Ocurrió un error al procesar su pago. Por favor contacte a soporte.'
+            ));
             setIsProcessing(false);
           }
         },

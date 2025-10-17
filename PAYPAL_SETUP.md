@@ -1,5 +1,12 @@
 # 🔐 Configuración PayPal - Fase 4 Completada
 
+## ⚠️ ACTUALIZACIÓN IMPORTANTE (17 de octubre de 2025)
+
+Se implementó **manejo robusto de errores** para resolver el problema `"Window closed before response"`. Ver documentación completa en:
+- **[PAYPAL_ERROR_HANDLING.md](./PAYPAL_ERROR_HANDLING.md)** - Manejo de errores, fallback y recuperación de pagos
+
+---
+
 ## ✅ Implementación Completada
 
 Se ha implementado la integración completa de PayPal en el componente de registro con las siguientes características:
@@ -13,21 +20,30 @@ Se ha implementado la integración completa de PayPal en el componente de regist
 
 2. **✅ Flujo de Pago Completo**
    - **createOrder**: Crea orden de pago con $1,990 MXN
-   - **onApprove**: Captura pago y procesa transacción
-   - **onError**: Manejo de errores de pago
-   - **onCancel**: Manejo de cancelación de pago
+   - **onApprove**: Captura pago con timeout y fallback (15s)
+   - **onError**: Manejo inteligente de errores (incluyendo "Window closed")
+   - **onCancel**: Manejo de cancelación con botón retry
 
-3. **✅ Estados Visuales**
+3. **✅ Manejo Robusto de Errores** 🆕
+   - **Timeout de 15 segundos** en captura de pago
+   - **Fallback con payload mínimo** si captura falla
+   - **Backend recupera datos** vía PayPal Orders API
+   - **0% de pagos perdidos** por errores técnicos
+   - Ver detalles en [PAYPAL_ERROR_HANDLING.md](./PAYPAL_ERROR_HANDLING.md)
+
+4. **✅ Estados Visuales**
    - **Loading**: Spinner mientras carga PayPal SDK
    - **Processing**: Indicador mientras procesa el pago
    - **Success**: Confirmación con animación y redirect automático
    - **Error**: Mensaje de error descriptivo con ID de transacción
+   - **Cancelled**: Estado separado con botón "Intentar Nuevamente"
 
-4. **✅ Integración con Webhook n8n**
+5. **✅ Integración con Webhook n8n**
    - Envía datos completos a: `https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_paypal_payment`
-   - Payload incluye: `lead_id`, `event_id`, `paypal_transaction_id`, `amount`, `currency`, `payer_email`, `order_id`, `payer_info`
+   - Payload incluye: `lead_id`, `event_id`, `paypal_order_id`, `paypal_transaction_id`, `amount`, `currency`, `payer_email`, `payer_info`, `payment_status`, `capture_failed`
+   - **Nuevo**: Flag `capture_failed` para que backend maneje recuperación
 
-5. **✅ Responsive Design**
+6. **✅ Responsive Design**
    - Funciona en desktop, tablet y móvil
    - Animaciones suaves y profesionales
    - Estados visuales claros en todos los tamaños

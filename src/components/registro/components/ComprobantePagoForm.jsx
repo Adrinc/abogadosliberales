@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
 import styles from '../css/comprobantePagoForm.module.css';
+import supabase from '../../../lib/supabaseClient';
 
 const ComprobantePagoForm = ({ leadId, leadData }) => {
   const ingles = useStore(isEnglish);
@@ -199,6 +200,64 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
       reader.readAsDataURL(file);
     });
   };
+  // Intentar obtener o crear un customer en Supabase y devolver su customer_id
+  const getOrCreateCustomer = async () => {
+    try {
+      // Si ya tenemos leadId (prop), usarlo
+      if (leadId) return parseInt(leadId);
+
+      // Intentar buscar por email si está disponible en leadData
+      const email = leadData?.email || null;
+      if (!email) return null;
+
+      console.log('🔎 Looking up customer by email in Supabase:', email);
+      const { data: existing, error: selectError } = await supabase
+        .from('customer')
+        .select('customer_id')
+        .eq('email', email)
+        .limit(1)
+        .maybeSingle();
+
+      if (selectError) {
+        console.warn('⚠️ Supabase select error (non-fatal):', selectError.message || selectError);
+      }
+
+      if (existing && existing.customer_id) {
+        console.log('✅ Found existing customer_id:', existing.customer_id);
+        return existing.customer_id;
+      }
+
+      // Si no existe, insertar nuevo cliente
+      const insertPayload = {
+        first_name: leadData?.first_name || null,
+        last_name: leadData?.last_name || null,
+        email: email,
+        mobile_phone: leadData?.mobile_phone || null,
+        status: 'pending',
+        customer_parent_id: leadData?.customer_parent_id || null,
+        customer_category_fk: leadData?.customer_category_fk || null,
+        organization_fk: leadData?.organization_fk || null
+      };
+
+      console.log('📥 Inserting new customer in Supabase:', { email });
+      const { data: inserted, error: insertError } = await supabase
+        .from('customer')
+        .insert(insertPayload)
+        .select('customer_id')
+        .single();
+
+      if (insertError) {
+        console.warn('⚠️ Supabase insert error (continuing without lead_id):', insertError.message || insertError);
+        return null;
+      }
+
+      console.log('✅ New customer created with customer_id:', inserted.customer_id);
+      return inserted.customer_id;
+    } catch (err) {
+      console.error('❌ Unexpected Supabase error:', err);
+      return null;
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -213,26 +272,30 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
 
     setIsUploading(true);
     setErrorMessage('');
-
     try {
       console.log('📤 Starting receipt upload process...');
-      
+
+      // Obtener o crear customer en Supabase (lead_id)
+      const resolvedCustomerId = await getOrCreateCustomer();
+      const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
+      console.log('📋 Effective lead/customer id to use:', effectiveLeadId);
+
       // Convertir archivo a base64
       console.log('🔄 Converting file to base64...');
       const base64File = await fileToBase64(file);
       console.log('✅ File converted to base64');
-      
+
       // Preparar payload según el nuevo formato
       const webhookPayload = {
-        customer_id: parseInt(leadId),
+        customer_id: effectiveLeadId,
         event_id: EVENT_ID,
         reference_number: referenceNumber.trim(),
         amount: parseFloat(AMOUNT),
         payment_date: new Date(paymentDate).toISOString(),
         file: {
-          file_name: `receipt_${EVENT_ID}_${leadId}`,
+          file_name: `receipt_${EVENT_ID}_${effectiveLeadId || 'anon'}`,
           file_bucket: "event",
-          file_route: `${EVENT_ID}/receipts/${leadId}`,
+          file_route: `${EVENT_ID}/receipts/${effectiveLeadId || 'anon'}`,
           file_title: ingles 
             ? `Payment Receipt - Event ${EVENT_ID}` 
             : `Comprobante de Pago - Evento ${EVENT_ID}`,
@@ -241,7 +304,7 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
             : "Comprobante de pago subido por el cliente",
           metadata_json: {
             event_id: EVENT_ID,
-            customer_id: parseInt(leadId),
+            customer_id: effectiveLeadId,
             upload_source: "landing_page",
             original_file_name: file.name,
             file_type: file.type,
@@ -249,7 +312,7 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
             uploaded_at: new Date().toISOString()
           },
           media_category_id: 2, // Categoría de comprobantes
-          file: base64File // Base64 content
+          file: base64File // Base64 content (sin prefijo)
         }
       };
 
@@ -297,7 +360,7 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
 
       // Redirigir después de 3 segundos
       setTimeout(() => {
-        window.location.href = `/validacion?receipt_id=${webhookResult.data?.receipt_id || referenceNumber}&lead_id=${leadId}&method=transfer&status=pending`;
+        window.location.href = `/validacion?receipt_id=${webhookResult.data?.receipt_id || referenceNumber}&lead_id=${effectiveLeadId || ''}&method=transfer&status=pending`;
       }, 3000);
 
     } catch (error) {

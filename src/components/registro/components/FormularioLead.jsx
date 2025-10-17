@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
 import styles from '../css/formularioLead.module.css';
+import supabase from '../../../lib/supabaseClient';
 
 const FormularioLead = ({ onSubmit, isCompleted }) => {
   const ingles = useStore(isEnglish);
@@ -66,22 +67,103 @@ const FormularioLead = ({ onSubmit, isCompleted }) => {
 
     setIsSubmitting(true);
 
-    // TODO: Enviar a Supabase API (Fase 10)
-    // Por ahora, simulamos con un timeout
-    setTimeout(() => {
-      const mockLeadId = Math.floor(Math.random() * 10000); // ID simulado
+    try {
+      console.log('📤 Submitting lead to Supabase...');
+      
+      // 1. Verificar si el email ya existe
+      const { data: existingCustomer, error: selectError } = await supabase
+        .from('customer')
+        .select('customer_id, email, status')
+        .eq('email', formData.email)
+        .limit(1)
+        .maybeSingle();
+
+      if (selectError) {
+        console.warn('⚠️ Error checking existing customer (non-fatal):', selectError.message);
+      }
+
+      let customerId = null;
+
+      if (existingCustomer) {
+        // Cliente ya existe, usar su ID
+        console.log('✅ Customer already exists:', existingCustomer.customer_id);
+        customerId = existingCustomer.customer_id;
+
+        // Opcional: actualizar datos si han cambiado
+        const { error: updateError } = await supabase
+          .from('customer')
+          .update({
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            mobile_phone: formData.mobile_phone,
+            status: 'Lead' // Mantener o actualizar status
+          })
+          .eq('customer_id', customerId);
+
+        if (updateError) {
+          console.warn('⚠️ Error updating customer (non-fatal):', updateError.message);
+        } else {
+          console.log('✅ Customer data updated');
+        }
+      } else {
+        // Cliente no existe, crear nuevo
+        const customerPayload = {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          email: formData.email,
+          mobile_phone: formData.mobile_phone,
+          status: 'Lead',
+          customer_parent_id: null,
+          customer_category_fk: null,
+          organization_fk: null
+        };
+
+        console.log('📥 Inserting new customer:', { email: formData.email });
+
+        const { data: newCustomer, error: insertError } = await supabase
+          .from('customer')
+          .insert(customerPayload)
+          .select('customer_id')
+          .single();
+
+        if (insertError) {
+          console.error('❌ Error creating customer:', insertError.message);
+          throw new Error(ingles 
+            ? 'Failed to create customer. Please try again.' 
+            : 'Error al crear el cliente. Por favor intente nuevamente.'
+          );
+        }
+
+        customerId = newCustomer.customer_id;
+        console.log('✅ New customer created with ID:', customerId);
+      }
+
+      // 2. Preparar datos del lead para el componente padre
       const leadDataToSubmit = {
         ...formData,
         status: 'Lead',
-        event_id: 1 // Hardcoded por ahora
+        event_id: 1, // Congreso Nacional de Amparo
+        customer_id: customerId
       };
 
-      console.log('📤 Lead data (simulado):', leadDataToSubmit);
-      console.log('🆔 Lead ID (simulado):', mockLeadId);
+      console.log('🎉 Lead submission successful!');
+      console.log('📋 Lead data:', leadDataToSubmit);
+      console.log('🆔 Customer ID:', customerId);
 
-      onSubmit(leadDataToSubmit, mockLeadId);
+      // 3. Notificar al componente padre (RegistroSeccion2)
+      onSubmit(leadDataToSubmit, customerId);
+
+    } catch (error) {
+      console.error('❌ Error during lead submission:', error);
+      
+      // Mostrar error al usuario (podrías agregar un estado para esto)
+      alert(error.message || (ingles 
+        ? 'An error occurred. Please try again.' 
+        : 'Ocurrió un error. Por favor intente nuevamente.'
+      ));
+    } finally {
       setIsSubmitting(false);
-    }, 1500);
+    }
   };
 
   if (isCompleted) {
