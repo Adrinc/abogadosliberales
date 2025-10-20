@@ -14,7 +14,7 @@ export const translations = {
       soporte: "Soporte",
       iniciarSesion: "Iniciar Sesión",
       registrarse: "Registrarse",
-      adquirirEntrada: "Adquirir entrada",
+      adquirirEntrada: "Adquirir mi acceso",
       nosotros: "Nosotros",
       comoLlegar: "Cómo llegar"
     },

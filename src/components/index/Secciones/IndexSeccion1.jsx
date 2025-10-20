@@ -40,6 +40,11 @@ const IndexSeccion1 = () => {
             {t.title}
           </h1>
 
+            {/* Descripción */}
+          <p className={styles.heroDescription}>
+            {t.description}
+          </p>
+
           {/* Fecha y ubicación */}
           <div className={styles.eventInfo}>
             <div className={styles.infoItem}>
@@ -53,10 +58,7 @@ const IndexSeccion1 = () => {
             </div>
           </div>
 
-          {/* Descripción */}
-          <p className={styles.heroDescription}>
-            {t.description}
-          </p>
+        
 
           {/* CTAs */}
           <div className={styles.ctaGroup}>

@@ -6,10 +6,10 @@ export const translationsIndex = {
     // SECCIÓN 1: HERO
     hero: {
       badge: "EVENTO PRESENCIAL · CUPO LIMITADO",
-      title: "Congreso Nacional de Litigio Estratégico en Amparo y Protección de los Derechos Humanos 2025",
+      title: "Ponte un paso adelante en las estrategias, la jurisprudencia y las nuevas reformas al Juicio de Amparo",
       date: "14 y 15 de noviembre · Ciudad de México",
-      description: "Dos días de formación de excelencia con magistrados, litigantes y académicos líderes en la defensa constitucional de derechos fundamentales.",
-      ctaPrimary: "Adquirir entrada",
+      description: "Es una oportunidad única para obtener la guía de los magistrados que marcará la diferencia en tus casos",
+      ctaPrimary: "Adquirir mi acceso",
       ctaSecondary: "Ver programa completo",
       price: "$1,990 MXN",
       trustSignals: {
@@ -116,7 +116,7 @@ export const translationsIndex = {
       label: "PROGRAMA ACADÉMICO",
       title: "Agenda del congreso",
       description: "Dos días intensivos de conferencias magistrales, paneles de discusión y talleres prácticos de litigio estratégico en amparo y derechos humanos.",
-      cta: "Adquirir entrada",
+      cta: "Adquirir mi acceso",
       downloadCta: "Descargar programa completo (PDF)",
       days: {
         day1: {
@@ -395,9 +395,9 @@ export const translationsIndex = {
     // SECTION 1: HERO
     hero: {
       badge: "IN-PERSON EVENT · LIMITED CAPACITY",
-      title: "National Congress on Strategic Amparo Litigation and Human Rights Protection 2025",
+      title: "Stay ahead of the curve on strategies, jurisprudence, and new reforms to the Amparo Trial",
       date: "November 14-15 · Mexico City",
-      description: "Two days of excellence training with leading magistrates, litigators and academics in constitutional defense of fundamental rights.",
+      description: "It is a unique opportunity to obtain the guidance of the judges that will make a difference in your cases.",
       ctaPrimary: "Get Ticket",
       ctaSecondary: "View Full Program",
       price: "$1,990 MXN",

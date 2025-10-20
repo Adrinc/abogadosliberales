@@ -247,7 +247,7 @@ export const translationsRegistro = {
       price: {
         label: "Precio",
         amount: "$1,990 MXN",
-        note: "Pago único - Incluye certificado"
+        note: "Pago único"
       },
       dates: {
         label: "Fechas",

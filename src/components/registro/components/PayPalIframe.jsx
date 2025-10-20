@@ -118,7 +118,7 @@ const PayPalIframe = ({ leadId, leadData }) => {
       // Crear script nuevo solo si no existe
       console.log('Loading PayPal SDK...');
       const script = document.createElement('script');
-      script.src = `https://www.paypal.com/sdk/js?client-id=AaR78V8aUXFNaBMKCFJxOsWK0WYRmORxlwTuODbZxwapYwvGYxGFn-9ucNIqHgrFxpE6dJpOB-vA3pA3&currency=${CURRENCY}&locale=${ingles ? 'en_US' : 'es_MX'}`;
+      script.src = `https://www.paypal.com/sdk/js?client-id=AYiTUA_65en3x6x3c0GpJyKUVB4DShID2iGOnPU8JMRPU19bUMHcsFMOFGPGVfmcswpA9GCJqobcL99b&currency=${CURRENCY}&locale=${ingles ? 'en_US' : 'es_MX'}`;
       script.addEventListener('load', () => {
         console.log('PayPal SDK loaded successfully');
         setIsLoading(false);

@@ -130,7 +130,7 @@
 /* Título principal */
 .heroTitle {
   font-family: var(--al-font-headline, 'Merriweather', serif);
-  font-size: clamp(1.875rem, 4.5vw, 3.25rem);
+ font-size: clamp(1.8rem, 3vw, 2.375rem);
   font-weight: 800;
   line-height: 1.2;
   color: #FFFFFF;
@@ -187,14 +187,17 @@
 
 /* Descripción */
 .heroDescription {
-  font-size: 1.05rem;
+  font-family: 'Inter', sans-serif; /* Font sans-serif limpio para contrastar con título serif */
+  font-size: 1.2rem; /* Aumentado de 1.05rem a 1.2rem */
+  font-weight: 400;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.85);
+  color: rgba(255, 255, 255, 0.9); /* Ligeramente más opaco para mejor legibilidad */
   text-align: center;
   margin: 0 0 2rem 0;
   max-width: 700px;
   margin-left: auto;
   margin-right: auto;
+  letter-spacing: 0.01em; /* Tracking ligero para elegancia */
   animation: titleFadeIn 1s ease-out 0.7s both;
 }
 
@@ -479,7 +482,7 @@
   }
 
   .heroDescription {
-    font-size: 0.95rem;
+    font-size: 1.05rem; /* Ajustado para móviles pequeños, manteniendo proporción */
   }
 
   .eventInfo {
