@@ -189,6 +189,8 @@ const IndexSeccion6 = () => {
                   frameBorder="0"
                   allowFullScreen={true}
                   allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                  loading="lazy"
+                  title="Video del Congreso 2024 - Abogados Liberales"
                 ></iframe>
               </div>
             )}

@@ -121,12 +121,6 @@ const IndexSeccion5 = () => {
 
           {/* COLUMNA DERECHA: Card principal de pricing */}
           <div className={styles.pricingCard}>
-            
-            {/* Badge de descuento */}
-            <div className={styles.badgeDiscount}>
-              <span className={styles.badgeIcon}>⚡</span>
-              <span>{t.badgeDiscount}</span>
-            </div>
 
             {/* Precio destacado */}
             <div className={styles.priceWrapper}>
