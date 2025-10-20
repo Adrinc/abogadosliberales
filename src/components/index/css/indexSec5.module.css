@@ -24,7 +24,7 @@
       #E8ECFF 75%, 
       #F1F5F9 100%
     );
-  overflow-x: hidden; /* Cambiado de overflow: hidden a overflow-x: hidden */
+  overflow: hidden; /* Previene scroll horizontal y vertical en la sección */
   border-top: 1px solid rgba(238, 203, 0, 0.2);
   border-bottom: 1px solid rgba(2, 2, 102, 0.1);
 }
