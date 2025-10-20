@@ -67,7 +67,7 @@ const IndexSeccion1 = () => {
                 <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
             </a>
-            <a href="#programa" className={styles.ctaSecondary}>
+            <a href="/#programa" className={styles.ctaSecondary}>
               <span>{t.ctaSecondary}</span>
             </a>
           </div>
