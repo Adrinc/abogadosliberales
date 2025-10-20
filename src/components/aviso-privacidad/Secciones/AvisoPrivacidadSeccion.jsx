@@ -165,7 +165,7 @@ const AvisoPrivacidadSeccion = () => {
             <div className={styles.contactCard}>
               <div className={styles.contactItem}>
                 <div className={styles.contactIcon}>🏢</div>
-                <div>
+                <div style={{ flex: 1, minWidth: 0 }}> {/* Añadido minWidth: 0 para forzar contención */}
                   <p className={styles.contactLabel}>{ingles ? "Organization" : "Organización"}</p>
                   <p className={styles.contactValue}>{t.contact.organization}</p>
                 </div>
@@ -173,7 +173,7 @@ const AvisoPrivacidadSeccion = () => {
               
               <div className={styles.contactItem}>
                 <div className={styles.contactIcon}>📍</div>
-                <div>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <p className={styles.contactLabel}>{ingles ? "Address" : "Dirección"}</p>
                   <p className={styles.contactValue}>{t.contact.address}</p>
                 </div>
@@ -181,7 +181,7 @@ const AvisoPrivacidadSeccion = () => {
               
               <div className={styles.contactItem}>
                 <div className={styles.contactIcon}>✉️</div>
-                <div>
+                <div style={{ flex: 1, minWidth: 0 }}>
                   <p className={styles.contactLabel}>{ingles ? "Email" : "Correo Electrónico"}</p>
                   <a href={`mailto:${t.contact.email}`} className={styles.contactEmail}>
                     {t.contact.email}

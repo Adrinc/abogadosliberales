@@ -4,6 +4,8 @@
   min-height: 100vh;
   background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
   padding-top: 80px; /* Espacio para navbar fijo */
+  width: 100%;
+  overflow-x: hidden; /* Prevenir scroll horizontal */
 }
 
 /* ============================================
@@ -102,6 +104,8 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 4rem 2rem;
+  width: 100%;
+  box-sizing: border-box; /* Incluir padding en el ancho total */
 }
 
 .mainContent {
@@ -112,6 +116,9 @@
     0 2px 8px rgba(2, 2, 102, 0.04);
   padding: 3rem;
   border: 1px solid rgba(2, 2, 102, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevenir desbordamiento */
 }
 
 /* ============================================
@@ -196,6 +203,9 @@
   border-radius: 8px;
   margin-top: 1.5rem;
   box-shadow: 0 2px 8px rgba(238, 203, 0, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevenir desbordamiento */
 }
 
 .emailIcon,
@@ -211,7 +221,11 @@
   color: #020266;
   text-decoration: none;
   transition: all 0.3s ease;
-  word-break: break-all;
+  word-wrap: break-word; /* Permitir quiebre de palabras largas */
+  overflow-wrap: break-word;
+  word-break: break-word; /* Forzar quiebre si es necesario */
+  max-width: 100%;
+  display: inline-block;
 }
 
 .emailLink:hover,
@@ -230,6 +244,9 @@
   background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.03));
   border-radius: 12px;
   border: 1px solid rgba(2, 2, 102, 0.1);
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevenir desbordamiento */
 }
 
 .contactTitle {
@@ -244,6 +261,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: 1.5rem;
+  width: 100%;
 }
 
 .contactItem {
@@ -255,6 +273,9 @@
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(2, 2, 102, 0.06);
   transition: all 0.3s ease;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden; /* Prevenir que el contenido se desborde */
 }
 
 .contactItem:hover {
@@ -281,12 +302,17 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
+  word-wrap: break-word; /* Permitir quiebre de palabras largas */
+  overflow-wrap: break-word;
 }
 
 .contactValue {
   font-size: 1rem;
   color: #1A202C;
   line-height: 1.5;
+  word-wrap: break-word; /* Permitir quiebre de palabras largas */
+  overflow-wrap: break-word;
+  max-width: 100%; /* Asegurar que no exceda el contenedor */
 }
 
 .contactEmail {
@@ -295,6 +321,10 @@
   font-weight: 600;
   text-decoration: none;
   transition: all 0.3s ease;
+  word-wrap: break-word; /* Permitir quiebre de emails largos */
+  overflow-wrap: break-word;
+  display: inline-block;
+  max-width: 100%;
 }
 
 .contactEmail:hover {
@@ -352,6 +382,7 @@
 
   .contentWrapper {
     padding: 2rem 1rem;
+    max-width: 100%;
   }
 
   .mainContent {
@@ -376,12 +407,20 @@
 
   .paragraph {
     text-align: left;
+    font-size: 0.9375rem;
   }
 
   .highlightBox {
     flex-direction: column;
     align-items: flex-start;
     padding: 1rem;
+    gap: 0.75rem;
+  }
+
+  .emailLink,
+  .webLink {
+    font-size: 0.9375rem;
+    word-break: break-all; /* En móviles forzar quiebre más agresivo */
   }
 
   .contactSection {
@@ -390,6 +429,18 @@
 
   .contactItem {
     padding: 1rem;
+    flex-direction: column; /* Stack en móvil para mejor legibilidad */
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .contactValue {
+    font-size: 0.9375rem;
+  }
+
+  .contactEmail {
+    font-size: 0.9375rem;
+    word-break: break-all;
   }
 }
 
@@ -403,8 +454,13 @@
     height: 60px;
   }
 
+  .contentWrapper {
+    padding: 1.5rem 0.75rem;
+  }
+
   .mainContent {
     padding: 1.5rem 1rem;
+    border-radius: 8px;
   }
 
   .section {
@@ -417,8 +473,54 @@
     align-items: flex-start;
   }
 
+  .sectionTitle {
+    font-size: 1.25rem;
+  }
+
+  .paragraph {
+    font-size: 0.875rem;
+  }
+
+  .highlightBox {
+    padding: 0.875rem;
+  }
+
   .emailLink,
   .webLink {
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
+    word-break: break-all;
+  }
+
+  .contactSection {
+    padding: 1.25rem 1rem;
+  }
+
+  .contactTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .contactItem {
+    padding: 0.875rem;
+    gap: 0.625rem;
+  }
+
+  .contactIcon {
+    width: 36px;
+    height: 36px;
+    font-size: 1.25rem;
+  }
+
+  .contactLabel {
+    font-size: 0.75rem;
+  }
+
+  .contactValue {
+    font-size: 0.875rem;
+    word-break: break-all;
+  }
+
+  .contactEmail {
+    font-size: 0.875rem;
   }
 }
