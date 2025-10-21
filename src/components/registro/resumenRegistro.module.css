@@ -448,6 +448,7 @@
     height: 18px;
   }
 
+
   .detailLabel {
     font-size: 0.75rem;
   }
@@ -461,3 +462,99 @@
     margin-bottom: 0.75rem;
   }
 }
+
+/* ============================================
+   ELEMENTOS ACADÉMICOS
+   ============================================ */
+
+.academicBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.2), rgba(238, 203, 0, 0.1));
+  border: 1px solid var(--al-gold-primary, #EECB00);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  animation: slideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.academicBadgeIcon {
+  font-size: 1rem;
+}
+
+.academicBadgeText {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--al-blue-primary, #020266);
+  letter-spacing: 0.02em;
+}
+
+.msiInfo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.625rem 1rem;
+  background: rgba(2, 2, 102, 0.05);
+  border-radius: 8px;
+  animation: fadeIn 0.5s ease;
+}
+
+.msiLabel {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+  font-weight: 500;
+}
+
+.msiAmount {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Responsive para badges académicos */
+@media (max-width: 480px) {
+  .academicBadge {
+    gap: 0.375rem;
+    padding: 0.375rem 0.75rem;
+  }
+
+  .academicBadgeText {
+    font-size: 0.75rem;
+  }
+
+  .msiInfo {
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+  }
+
+  .msiLabel,
+  .msiAmount {
+    font-size: 0.8125rem;
+  }
+}
+
