@@ -160,7 +160,7 @@ const IndexSeccion4 = () => {
                             <line x1="12" y1="16" x2="12" y2="12"></line>
                             <line x1="12" y1="8" x2="12.01" y2="8"></line>
                           </svg>
-                          <span>{ingles ? 'View profile' : 'Ver perfil'}</span>
+                          <span className={styles.labelprofile}>{ingles ? 'View profile' : 'Ver perfil'}</span>
                         </button>
                       </div>
                     ) : (
