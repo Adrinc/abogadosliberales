@@ -532,7 +532,7 @@
   background: #EECB00;
 }
 
-/* Contenido de la sesión */
+/* Contenido de la sesión (TARJETA BLANCA - contenedor principal) */
 .sessionContent {
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.98));
   backdrop-filter: blur(8px);
@@ -649,14 +649,150 @@
 }
 
 /* Speaker */
+/* ========================================
+   GRID DE SESIÓN: Imagen | Contenido
+   ======================================== */
+
+.sessionGrid {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1.5rem;
+  width: 100%;
+}
+
+/* Grid SIEMPRE en 2 columnas (imagen/ícono + contenido) */
+/* NO auto-ajuste, siempre mostrar ambas columnas */
+
+/* Columna de imagen del expositor */
+.expositorColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.expositorImage {
+  width: 120px;
+  height: 120px;
+  border-radius: 12px;
+  object-fit: cover;
+  border: 3px solid #EECB00;
+  box-shadow: 
+    0 6px 16px rgba(2, 2, 102, 0.2),
+    0 0 30px rgba(238, 203, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.sessionCard:hover .expositorImage {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: 
+    0 10px 24px rgba(2, 2, 102, 0.25),
+    0 0 40px rgba(238, 203, 0, 0.4);
+}
+
+.viewProfileBtnCompact {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.12), rgba(238, 203, 0, 0.18));
+  border: 1.5px solid rgba(238, 203, 0, 0.5);
+  border-radius: 8px;
+  color: #020266;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+
+.viewProfileBtnCompact svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.viewProfileBtnCompact:hover {
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  border-color: #EECB00;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(238, 203, 0, 0.35);
+}
+
+/* Columna de ícono para sesiones sin expositor */
+.iconColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding-top: 0.5rem;
+}
+
+.activityIconLarge {
+  width: 90px;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.75rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.08), rgba(238, 203, 0, 0.12));
+  border: 2px solid rgba(238, 203, 0, 0.25);
+  border-radius: 14px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+}
+
+.sessionCard:hover .activityIconLarge {
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(238, 203, 0, 0.15);
+  border-color: rgba(238, 203, 0, 0.4);
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.12), rgba(238, 203, 0, 0.18));
+}
+
+/* Contenido de la sesión (columna derecha) */
+.sessionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  flex: 1;
+}
+
 .sessionSpeaker {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding: 0.75rem;
   background: linear-gradient(135deg, rgba(2, 2, 102, 0.03), rgba(238, 203, 0, 0.05));
   border-radius: 8px;
   margin-top: 0.5rem;
+}
+
+.speakerNameWrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.speakerAvatar {
+  width: 72px;
+  height: 72px;
+  min-width: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #EECB00;
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.15),
+    0 0 20px rgba(238, 203, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.sessionSpeaker:hover .speakerAvatar {
+  transform: scale(1.1);
+  box-shadow: 
+    0 6px 16px rgba(2, 2, 102, 0.2),
+    0 0 30px rgba(238, 203, 0, 0.3);
 }
 
 .speakerIcon {
@@ -665,6 +801,41 @@
   color: #020266;
   stroke-width: 2;
   flex-shrink: 0;
+}
+
+.speakerInfo {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.speakerName {
+  font-size: 0.95rem;
+  color: #4A5568;
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.viewProfileBtn {
+  align-self: flex-start;
+  padding: 0.375rem 0.875rem;
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.1), rgba(238, 203, 0, 0.15));
+  border: 1px solid rgba(238, 203, 0, 0.4);
+  border-radius: 8px;
+  color: #020266;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.viewProfileBtn:hover {
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  border-color: #EECB00;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(238, 203, 0, 0.3);
 }
 
 .sessionSpeaker span {
@@ -815,6 +986,48 @@
     padding: 1.5rem 1.5rem 1.25rem;
   }
 
+  /* Speaker responsive */
+  .sessionGrid {
+    grid-template-columns: 110px 1fr;
+    gap: 1rem;
+  }
+
+  .expositorImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .activityIconLarge {
+    width: 70px;
+    height: 70px;
+    font-size: 2.25rem;
+  }
+
+  .viewProfileBtnCompact {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+
+  .viewProfileBtnCompact svg {
+    width: 12px;
+    height: 12px;
+  }
+
+  .speakerAvatar {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+  }
+
+  .speakerName {
+    font-size: 0.875rem;
+  }
+
+  .viewProfileBtn {
+    padding: 0.3125rem 0.75rem;
+    font-size: 0.75rem;
+  }
+
   /* Bordes más sutiles en móvil */
   .topBorder,
   .bottomBorder {
@@ -834,6 +1047,24 @@
   .sessionsContainer {
     padding: 1.25rem 1rem 1rem 30px;
     max-height: 450px;
+  }
+
+  /* Grid más compacto en móvil muy pequeño */
+  .sessionGrid {
+    grid-template-columns: 85px 1fr;
+    gap: 0.875rem;
+  }
+
+  .expositorImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .activityIconLarge {
+    width: 60px;
+    height: 60px;
+    font-size: 1.875rem;
+    border-radius: 10px;
   }
 
   .connector {
@@ -864,6 +1095,62 @@
     width: 100%;
     justify-content: center;
     padding: 1rem 1.5rem;
+  }
+
+  /* Speaker ultra responsive */
+  .sessionGrid {
+    grid-template-columns: 1fr;
+    gap: 0.875rem;
+  }
+
+  .expositorColumn {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.875rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid rgba(238, 203, 0, 0.2);
+  }
+
+  .expositorImage {
+    width: 80px;
+    height: 80px;
+    border-width: 2px;
+  }
+
+  .viewProfileBtnCompact {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+
+  .viewProfileBtnCompact span {
+    display: none;
+  }
+
+  .viewProfileBtnCompact svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .sessionSpeaker {
+    gap: 0.75rem;
+    padding: 0.625rem;
+  }
+
+  .speakerAvatar {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    border-width: 2px;
+  }
+
+  .speakerName {
+    font-size: 0.8125rem;
+  }
+
+  .viewProfileBtn {
+    padding: 0.25rem 0.625rem;
+    font-size: 0.6875rem;
   }
 
   .dayTitle {

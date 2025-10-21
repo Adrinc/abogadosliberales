@@ -132,43 +132,50 @@ export const translationsIndex = {
               time: "10:00",
               title: "Litigación de la Responsabilidad Patrimonial del Estado desde la Perspectiva de los Derechos Humanos",
               type: "Conferencia",
-              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Magistrado de Circuito en Materia Administrativa"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Magistrado de Circuito en Materia Administrativa",
+              expositorId: "mtro_cristobal_arredondo"
             },
             {
               time: "11:00",
               title: "Estrategias de Defensa Jurídica ante los Actos Administrativos como Pilar Fundamental de los Derechos Humanos",
               type: "Conferencia",
-              speaker: "Mtra. Diana Elda Pérez Medina - Magistrada de Circuito en Materia Administrativa"
+              speaker: "Mtra. Diana Elda Pérez Medina - Magistrada de Circuito en Materia Administrativa",
+              expositorId: "mtra_diana_perez"
             },
             {
               time: "12:00",
               title: "Litigación Estratégica en Materia Contenciosa Administrativa y Amparo Administrativo",
               type: "Conferencia",
-              speaker: "Mtro. Octavio Martínez Quijada - Magistrado de la Sala Superior del Tribunal de Justicia Administrativa del Estado de México"
+              speaker: "Mtro. Octavio Martínez Quijada - Magistrado de la Sala Superior del Tribunal de Justicia Administrativa del Estado de México",
+              expositorId: "mtro_octavio_martinez"
             },
             {
               time: "13:00 - 14:30",
               title: "Comida y Espacio de Convivencia",
               type: "Intermedio",
-              speaker: ""
+              speaker: "",
+              expositorId: null
             },
             {
               time: "14:30",
               title: "Técnicas de Litigio Estratégico en Amparo",
               type: "Conferencia",
-              speaker: "Dr. Ricardo Garduño Pasten - Magistrado de Circuito en Materia Penal"
+              speaker: "Dr. Ricardo Garduño Pasten - Magistrado de Circuito en Materia Penal",
+              expositorId: "dr_ricardo_garduno"
             },
             {
               time: "15:30",
               title: "Ofrecimiento y Cuestionarios en la Prueba Pericial sobre Medios Tecnológicos",
               type: "Taller",
-              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos"
+              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos",
+              expositorId: "dr_jose_garcia"
             },
             {
               time: "16:30",
               title: "Estrategias de Litigación en Casos Graves de Derechos Humanos",
               type: "Conferencia",
-              speaker: "Dr. Arturo Robles Feria - Defensor Público Federal"
+              speaker: "Dr. Arturo Robles Feria - Defensor Público Federal",
+              expositorId: "dr_arturo_robles"
             },
             {
               time: "17:30",
@@ -185,31 +192,36 @@ export const translationsIndex = {
               time: "09:00",
               title: "Litigio Estratégico en la Protección Reforzada de Grupos de Atención Prioritaria",
               type: "Conferencia",
-              speaker: "Dr. Armando Hernández Cruz - Profesor de Posgrado de la Facultad de Derecho de la UNAM"
+              speaker: "Dr. Armando Hernández Cruz - Profesor de Posgrado de la Facultad de Derecho de la UNAM",
+              expositorId: "mtro_armando_hernandez"
             },
             {
               time: "10:00",
               title: "Operatividad del Interés Legítimo en el Juicio de Amparo",
               type: "Conferencia",
-              speaker: "Mtro. Juan Pablo Vázquez Calvo - Magistrado de Circuito en Materia Civil"
+              speaker: "Mtro. Juan Pablo Vázquez Calvo - Magistrado de Circuito en Materia Civil",
+              expositorId: "mtro_juan_pablo_vasquez"
             },
             {
               time: "11:00 - 11:30",
               title: "Receso",
               type: "Intermedio",
-              speaker: ""
+              speaker: "",
+              expositorId: null
             },
             {
               time: "11:30",
               title: "Técnicas Estratégicas de Sustentación con Jurisprudencia en el Amparo",
               type: "Conferencia",
-              speaker: "Dr. Omar Fuentes Cerdán - Secretario de Tribunal Colegiado con 20 años de experiencia en la Función Jurisdiccional"
+              speaker: "Dr. Omar Fuentes Cerdán - Secretario de Tribunal Colegiado con 20 años de experiencia en la Función Jurisdiccional",
+              expositorId: "dr_omar_fuentes"
             },
             {
               time: "12:30",
               title: "Recursos Tecnológicos en el Litigio Estratégico",
               type: "Taller",
-              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos"
+              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos",
+              expositorId: "dr_jose_garcia"
             },
             {
               time: "13:30",
@@ -521,43 +533,50 @@ export const translationsIndex = {
               time: "10:00",
               title: "State Patrimonial Liability Litigation from a Human Rights Perspective",
               type: "Conference",
-              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Circuit Magistrate in Administrative Matters"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Circuit Magistrate in Administrative Matters",
+              expositorId: "mtro_cristobal_arredondo"
             },
             {
               time: "11:00",
               title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
               type: "Conference",
-              speaker: "Mtra. Diana Elda Pérez Medina - Circuit Magistrate in Administrative Matters"
+              speaker: "Mtra. Diana Elda Pérez Medina - Circuit Magistrate in Administrative Matters",
+              expositorId: "mtra_diana_perez"
             },
             {
               time: "12:00",
               title: "Strategic Litigation in Administrative Contentious Matters and Administrative Amparo",
               type: "Conference",
-              speaker: "Mtro. Octavio Martínez Quijada - Magistrate of the Superior Chamber of the Administrative Justice Court of the State of Mexico"
+              speaker: "Mtro. Octavio Martínez Quijada - Magistrate of the Superior Chamber of the Administrative Justice Court of the State of Mexico",
+              expositorId: "mtro_octavio_martinez"
             },
             {
               time: "13:00 - 14:30",
               title: "Lunch and Networking Space",
               type: "Intermission",
-              speaker: ""
+              speaker: "",
+              expositorId: null
             },
             {
               time: "14:30",
               title: "Strategic Amparo Litigation Techniques",
               type: "Conference",
-              speaker: "Dr. Ricardo Garduño Pasten - Circuit Magistrate in Criminal Matters"
+              speaker: "Dr. Ricardo Garduño Pasten - Circuit Magistrate in Criminal Matters",
+              expositorId: "dr_ricardo_garduno"
             },
             {
               time: "15:30",
               title: "Expert Evidence Offering and Questionnaires on Technological Media",
               type: "Workshop",
-              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media"
+              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media",
+              expositorId: "dr_jose_garcia"
             },
             {
               time: "16:30",
               title: "Litigation Strategies in Serious Human Rights Cases",
               type: "Conference",
-              speaker: "Dr. Arturo Robles Feria - Federal Public Defender"
+              speaker: "Dr. Arturo Robles Feria - Federal Public Defender",
+              expositorId: "dr_arturo_robles"
             },
             {
               time: "17:30",
@@ -574,31 +593,36 @@ export const translationsIndex = {
               time: "09:00",
               title: "Strategic Litigation in Reinforced Protection of Priority Attention Groups",
               type: "Conference",
-              speaker: "Dr. Armando Hernández Cruz - Postgraduate Professor at UNAM Faculty of Law"
+              speaker: "Dr. Armando Hernández Cruz - Postgraduate Professor at UNAM Faculty of Law",
+              expositorId: "mtro_armando_hernandez"
             },
             {
               time: "10:00",
               title: "Operability of Legitimate Interest in Amparo Lawsuits",
               type: "Conference",
-              speaker: "Mtro. Juan Pablo Vázquez Calvo - Circuit Magistrate in Civil Matters"
+              speaker: "Mtro. Juan Pablo Vázquez Calvo - Circuit Magistrate in Civil Matters",
+              expositorId: "mtro_juan_pablo_vasquez"
             },
             {
               time: "11:00 - 11:30",
               title: "Break",
               type: "Intermission",
-              speaker: ""
+              speaker: "",
+              expositorId: null
             },
             {
               time: "11:30",
               title: "Strategic Argumentation Techniques with Jurisprudence in Amparo",
               type: "Conference",
-              speaker: "Dr. Omar Fuentes Cerdán - Collegiate Court Secretary with 20 years of experience in Jurisdictional Function"
+              speaker: "Dr. Omar Fuentes Cerdán - Collegiate Court Secretary with 20 years of experience in Jurisdictional Function",
+              expositorId: "dr_omar_fuentes"
             },
             {
               time: "12:30",
               title: "Technological Resources in Strategic Litigation",
               type: "Workshop",
-              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media"
+              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media",
+              expositorId: "dr_jose_garcia"
             },
             {
               time: "13:30",
