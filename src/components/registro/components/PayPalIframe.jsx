@@ -2,10 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
+import { formatPrice } from '../../../lib/academicPricing';
 import styles from '../css/paypalIframe.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const PayPalIframe = ({ leadId, leadData }) => {
+const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic = false }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
@@ -19,7 +20,13 @@ const PayPalIframe = ({ leadId, leadData }) => {
 
   // Constantes del evento
   const EVENT_ID = 1; // ID del Congreso Nacional de Amparo
-  const AMOUNT = '1990.00'; // MXN
+  
+  // Calcular monto dinámico (académico o general)
+  const finalAmount = academicPriceData && isAcademic 
+    ? academicPriceData.finalPrice 
+    : 1990;
+  
+  const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_paypal_payment';
 
@@ -452,7 +459,19 @@ const PayPalIframe = ({ leadId, leadData }) => {
       
       <div className={styles.amountBox}>
         <span className={styles.amountLabel}>{ingles ? 'Total amount:' : 'Monto total:'}</span>
-        <span className={styles.amount}>{t.paypal.amount}</span>
+        <span className={styles.amount}>{formatPrice(finalAmount)}</span>
+        
+        {/* Badge de descuento académico */}
+        {isAcademic && academicPriceData && academicPriceData.discount > 0 && (
+          <div className={styles.academicBadge}>
+            <span className={styles.academicBadgeIcon}>🎓</span>
+            <span className={styles.academicBadgeText}>
+              {ingles 
+                ? `${academicPriceData.discountPercentage}% Academic Discount Applied` 
+                : `${academicPriceData.discountPercentage}% Descuento Académico Aplicado`}
+            </span>
+          </div>
+        )}
       </div>
 
       <div className={styles.instructions}>

@@ -2,10 +2,11 @@ import React, { useState, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
+import { formatPrice } from '../../../lib/academicPricing';
 import styles from '../css/comprobantePagoForm.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const ComprobantePagoForm = ({ leadId, leadData }) => {
+const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAcademic = false }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
 
@@ -28,7 +29,13 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
 
   // Constantes
   const EVENT_ID = 1;
-  const AMOUNT = '1990.00';
+  
+  // Calcular monto dinámico (académico o general)
+  const finalAmount = academicPriceData && isAcademic 
+    ? academicPriceData.finalPrice 
+    : 1990;
+  
+  const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_receipt';
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
@@ -394,7 +401,19 @@ const ComprobantePagoForm = ({ leadId, leadData }) => {
       
       <div className={styles.amountBox}>
         <span className={styles.amountLabel}>{ingles ? 'Total amount:' : 'Monto total:'}</span>
-        <span className={styles.amount}>{t.bankTransfer.amount}</span>
+        <span className={styles.amount}>{formatPrice(finalAmount)}</span>
+        
+        {/* Badge de descuento académico */}
+        {isAcademic && academicPriceData && academicPriceData.discount > 0 && (
+          <div className={styles.academicBadge}>
+            <span className={styles.academicBadgeIcon}>🎓</span>
+            <span className={styles.academicBadgeText}>
+              {ingles 
+                ? `${academicPriceData.discountPercentage}% Academic Discount Applied` 
+                : `${academicPriceData.discountPercentage}% Descuento Académico Aplicado`}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Datos bancarios */}

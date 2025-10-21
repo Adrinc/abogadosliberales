@@ -172,7 +172,12 @@ const RegistroSeccion2 = () => {
                 {/* Renderizado condicional según método seleccionado */}
                 <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
                   {selectedMethod === 'paypal' && (
-                    <PayPalIframe leadId={leadId} leadData={leadData} />
+                    <PayPalIframe 
+                      leadId={leadId} 
+                      leadData={leadData}
+                      academicPriceData={academicPriceData}
+                      isAcademic={isAcademic}
+                    />
                   )}
                   
                   {selectedMethod === 'creditCard' && (
@@ -180,7 +185,12 @@ const RegistroSeccion2 = () => {
                   )}
                   
                   {selectedMethod === 'bankTransfer' && (
-                    <ComprobantePagoForm leadId={leadId} leadData={leadData} />
+                    <ComprobantePagoForm 
+                      leadId={leadId} 
+                      leadData={leadData}
+                      academicPriceData={academicPriceData}
+                      isAcademic={isAcademic}
+                    />
                   )}
                 </div>
               </>
