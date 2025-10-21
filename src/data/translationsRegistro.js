@@ -19,6 +19,158 @@ export const translationsRegistro = {
       activeMessage: "Accede a precios académicos especiales. Complete los datos adicionales a continuación."
     },
 
+    // Stepper Académico (4 pasos)
+    academicStepper: {
+      title: "Verificación académica",
+      subtitle: "Complete los siguientes pasos para acceder a precios especiales",
+      
+      // Paso 1: Universidad
+      step1: {
+        title: "Universidad",
+        subtitle: "Seleccione su institución educativa",
+        label: "Institución educativa",
+        placeholder: "Seleccione universidad",
+        required: true,
+        error: "Seleccione su universidad",
+        options: [
+          { value: "UNAM", label: "UNAM - Universidad Nacional Autónoma de México" },
+          { value: "UVM", label: "UVM - Universidad del Valle de México" },
+          { value: "UAM", label: "UAM - Universidad Autónoma Metropolitana" }
+        ]
+      },
+
+      // Paso 2: Rol académico
+      step2: {
+        title: "Rol académico",
+        subtitle: "Indique su posición en la institución",
+        label: "¿Cuál es su rol?",
+        required: true,
+        error: "Seleccione su rol académico",
+        options: [
+          { 
+            value: "profesor", 
+            label: "Profesor / Docente",
+            description: "Personal académico de tiempo completo o por asignatura",
+            price: "$1,691.50 MXN",
+            discount: "15% descuento"
+          },
+          { 
+            value: "posgrado", 
+            label: "Estudiante de Posgrado",
+            description: "Maestría, Doctorado o Especialidad",
+            price: "$1,691.50 MXN",
+            discount: "15% descuento"
+          },
+          { 
+            value: "licenciatura", 
+            label: "Estudiante de Licenciatura",
+            description: "Estudiante activo de pregrado",
+            price: "$995 MXN",
+            discount: "50% descuento"
+          }
+        ],
+        paquete11: {
+          label: "Paquete 11 Participantes",
+          description: "Solo para profesores y posgrado. Compra grupal.",
+          price: "$16,915 MXN",
+          discount: "22.7% descuento vs precio lista",
+          hint: "Esta opción genera una compra para 11 participantes"
+        }
+      },
+
+      // Paso 3: Verificación
+      step3: {
+        title: "Verificación de identidad",
+        subtitle: "Documente su afiliación académica",
+        
+        documentType: {
+          label: "Tipo de identificación",
+          placeholder: "Seleccione tipo",
+          required: true,
+          error: "Seleccione el tipo de documento",
+          options: [
+            { value: "credencial_escolar", label: "Credencial escolar vigente" },
+            { value: "ine", label: "INE / IFE" },
+            { value: "curp", label: "CURP" },
+            { value: "otro", label: "Otro documento oficial" }
+          ]
+        },
+
+        documentNumber: {
+          label: "Número de documento",
+          placeholder: "Ingrese el número",
+          required: true,
+          error: "Ingrese el número de documento"
+        },
+
+        studentId: {
+          label: "Matrícula o Número de empleado",
+          placeholder: "Ej: 318123456 (UNAM) o 123456 (UVM)",
+          required: true,
+          error: "Ingrese su matrícula o número de empleado",
+          hint: "Requerido para estudiantes y profesores"
+        },
+
+        proofFile: {
+          label: "Comprobante académico (opcional pero recomendado)",
+          hint: "Suba su credencial escolar, constancia de estudios o nombramiento. PDF, JPG o PNG hasta 5 MB.",
+          buttonText: "Seleccionar archivo",
+          selectedText: "Archivo seleccionado:",
+          errorSize: "El archivo no debe exceder 5 MB",
+          errorType: "Solo se permiten archivos PDF, JPG o PNG",
+          dragText: "Arrastre su archivo aquí o haga clic para seleccionar"
+        }
+      },
+
+      // Paso 4: Plan de pago
+      step4: {
+        title: "Plan de pago",
+        subtitle: "Elija cómo desea pagar",
+        
+        single: {
+          label: "Pago único",
+          description: "Pague el total ahora",
+          badge: "Recomendado"
+        },
+
+        msi: {
+          label: "Meses Sin Intereses (MSI)",
+          description: "Divida su pago en mensualidades",
+          options: {
+            3: "3 MSI",
+            6: "6 MSI",
+            12: "12 MSI"
+          },
+          hint: "Disponibilidad según rol académico"
+        },
+
+        summary: {
+          total: "Total a pagar:",
+          monthly: "Pago mensual:",
+          discount: "Descuento aplicado:",
+          savings: "Ahorras:"
+        }
+      },
+
+      // Navegación
+      navigation: {
+        next: "Continuar",
+        previous: "Atrás",
+        finish: "Finalizar verificación",
+        skip: "Omitir (no recomendado)"
+      },
+
+      // Mensajes de estado
+      messages: {
+        completing: "Verificando datos...",
+        success: "¡Verificación completada! Puede continuar con el pago.",
+        error: "Error al verificar. Por favor revise los datos.",
+        incomplete: "Complete todos los campos obligatorios",
+        fileUploading: "Subiendo archivo...",
+        fileUploaded: "Archivo subido correctamente"
+      }
+    },
+
     // Formulario de Lead (común a todos los métodos)
     leadForm: {
       title: "Información del participante",
@@ -329,6 +481,158 @@ export const translationsRegistro = {
       title: "Do you belong to an educational institution?",
       subtitle: "Get exclusive discounts from UNAM, UVM or UAM",
       activeMessage: "Access special academic pricing. Complete the additional information below."
+    },
+
+    // Academic Stepper (4 steps)
+    academicStepper: {
+      title: "Academic verification",
+      subtitle: "Complete the following steps to access special pricing",
+      
+      // Step 1: University
+      step1: {
+        title: "University",
+        subtitle: "Select your educational institution",
+        label: "Educational institution",
+        placeholder: "Select university",
+        required: true,
+        error: "Select your university",
+        options: [
+          { value: "UNAM", label: "UNAM - National Autonomous University of Mexico" },
+          { value: "UVM", label: "UVM - University of Valle de México" },
+          { value: "UAM", label: "UAM - Metropolitan Autonomous University" }
+        ]
+      },
+
+      // Step 2: Academic role
+      step2: {
+        title: "Academic role",
+        subtitle: "Indicate your position at the institution",
+        label: "What is your role?",
+        required: true,
+        error: "Select your academic role",
+        options: [
+          { 
+            value: "profesor", 
+            label: "Professor / Faculty",
+            description: "Full-time or adjunct academic staff",
+            price: "$1,691.50 MXN",
+            discount: "15% discount"
+          },
+          { 
+            value: "posgrado", 
+            label: "Graduate Student",
+            description: "Master's, PhD or Specialty",
+            price: "$1,691.50 MXN",
+            discount: "15% discount"
+          },
+          { 
+            value: "licenciatura", 
+            label: "Undergraduate Student",
+            description: "Active undergraduate student",
+            price: "$995 MXN",
+            discount: "50% discount"
+          }
+        ],
+        paquete11: {
+          label: "11 Participants Package",
+          description: "For professors and graduate students only. Group purchase.",
+          price: "$16,915 MXN",
+          discount: "22.7% discount vs list price",
+          hint: "This option generates a purchase for 11 participants"
+        }
+      },
+
+      // Step 3: Verification
+      step3: {
+        title: "Identity verification",
+        subtitle: "Document your academic affiliation",
+        
+        documentType: {
+          label: "Type of identification",
+          placeholder: "Select type",
+          required: true,
+          error: "Select document type",
+          options: [
+            { value: "credencial_escolar", label: "Valid student ID" },
+            { value: "ine", label: "INE / IFE" },
+            { value: "curp", label: "CURP" },
+            { value: "otro", label: "Other official document" }
+          ]
+        },
+
+        documentNumber: {
+          label: "Document number",
+          placeholder: "Enter number",
+          required: true,
+          error: "Enter document number"
+        },
+
+        studentId: {
+          label: "Student ID or Employee number",
+          placeholder: "E.g: 318123456 (UNAM) or 123456 (UVM)",
+          required: true,
+          error: "Enter your student ID or employee number",
+          hint: "Required for students and professors"
+        },
+
+        proofFile: {
+          label: "Academic proof (optional but recommended)",
+          hint: "Upload your student ID, enrollment certificate or appointment. PDF, JPG or PNG up to 5 MB.",
+          buttonText: "Select file",
+          selectedText: "Selected file:",
+          errorSize: "File must not exceed 5 MB",
+          errorType: "Only PDF, JPG or PNG files allowed",
+          dragText: "Drag your file here or click to select"
+        }
+      },
+
+      // Step 4: Payment plan
+      step4: {
+        title: "Payment plan",
+        subtitle: "Choose how you want to pay",
+        
+        single: {
+          label: "Single payment",
+          description: "Pay the total now",
+          badge: "Recommended"
+        },
+
+        msi: {
+          label: "Interest-Free Months (MSI)",
+          description: "Split your payment into installments",
+          options: {
+            3: "3 MSI",
+            6: "6 MSI",
+            12: "12 MSI"
+          },
+          hint: "Availability depends on academic role"
+        },
+
+        summary: {
+          total: "Total to pay:",
+          monthly: "Monthly payment:",
+          discount: "Discount applied:",
+          savings: "You save:"
+        }
+      },
+
+      // Navigation
+      navigation: {
+        next: "Continue",
+        previous: "Back",
+        finish: "Finish verification",
+        skip: "Skip (not recommended)"
+      },
+
+      // Status messages
+      messages: {
+        completing: "Verifying data...",
+        success: "Verification completed! You can continue with payment.",
+        error: "Verification error. Please check the data.",
+        incomplete: "Complete all required fields",
+        fileUploading: "Uploading file...",
+        fileUploaded: "File uploaded successfully"
+      }
     },
 
     // Header
