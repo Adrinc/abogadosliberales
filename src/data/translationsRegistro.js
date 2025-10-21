@@ -12,6 +12,13 @@ export const translationsRegistro = {
       subtitle: "Complete su registro y asegure su lugar en el evento jurídico del año. Elija su método de pago preferido: <strong>PayPal</strong>, <strong>tarjeta de crédito</strong> o <strong>transferencia bancaria</strong>."
     },
 
+    // Toggle Académico
+    academicToggle: {
+      title: "¿Perteneces a una institución educativa?",
+      subtitle: "Obtén descuentos exclusivos de UNAM, UVM o UAM",
+      activeMessage: "Accede a precios académicos especiales. Complete los datos adicionales a continuación."
+    },
+
     // Formulario de Lead (común a todos los métodos)
     leadForm: {
       title: "Información del participante",
@@ -307,6 +314,23 @@ export const translationsRegistro = {
   },
 
   en: {
+    // Header/Hero
+    hero: {
+      breadcrumb: {
+        home: "Home",
+        current: "Congress Registration"
+      },
+      title: "National Congress Registration 2025",
+      subtitle: "Complete your registration and secure your place at the legal event of the year. Choose your preferred payment method: <strong>PayPal</strong>, <strong>credit card</strong>, or <strong>bank transfer</strong>."
+    },
+
+    // Academic Toggle
+    academicToggle: {
+      title: "Do you belong to an educational institution?",
+      subtitle: "Get exclusive discounts from UNAM, UVM or UAM",
+      activeMessage: "Access special academic pricing. Complete the additional information below."
+    },
+
     // Header
     pageTitle: "Congress Registration",
     pageSubtitle: "Complete the following form to confirm your participation",

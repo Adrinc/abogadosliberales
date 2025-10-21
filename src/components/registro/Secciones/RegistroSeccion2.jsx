@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
+import AcademicToggle from '../components/AcademicToggle';
 import FormularioLead from '../components/FormularioLead';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayForm from '../components/IPPayForm';
@@ -19,6 +20,9 @@ const RegistroSeccion2 = () => {
   // Estado del lead (datos del participante)
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
+
+  // Estado académico
+  const [isAcademic, setIsAcademic] = useState(false);
 
   // Método de pago seleccionado
   const [selectedMethod, setSelectedMethod] = useState('paypal'); // 'paypal' | 'creditCard' | 'bankTransfer'
@@ -54,6 +58,17 @@ const RegistroSeccion2 = () => {
     setLeadId(id);
   };
 
+  // Handler para el toggle académico
+  const handleAcademicToggle = () => {
+    setIsAcademic(!isAcademic);
+    
+    // Si se desactiva, resetear datos académicos
+    if (isAcademic) {
+      // TODO: limpiar academicData cuando tengamos el stepper
+      console.log('Academic mode disabled - clearing academic data');
+    }
+  };
+
   return (
     <section 
       id="formulario-registro" 
@@ -68,6 +83,14 @@ const RegistroSeccion2 = () => {
           {/* Columna Izquierda: Formularios */}
           <div className={styles.formColumn}>
             
+            {/* TOGGLE ACADÉMICO */}
+            <div className={`${styles.academicToggleCard} ${isVisible ? styles.fadeInLeft : ''}`}>
+              <AcademicToggle 
+                isAcademic={isAcademic}
+                onToggle={handleAcademicToggle}
+              />
+            </div>
+
             {/* PASO 1: Formulario de Lead */}
             <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
               <FormularioLead 
