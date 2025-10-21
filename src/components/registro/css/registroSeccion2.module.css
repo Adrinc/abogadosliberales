@@ -118,7 +118,8 @@
    TARJETAS DE CONTENIDO
    ============================================ */
 
-.academicToggleCard {
+.academicToggleCard,
+.academicStepperCard {
   margin-bottom: 2rem;
   opacity: 0;
   transform: translateY(20px);

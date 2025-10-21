@@ -1,0 +1,700 @@
+/* ============================================
+   ACADEMIC STEPPER - 4 PASOS INSTITUCIONAL
+   ============================================ */
+
+.stepperContainer {
+  background: #FFFFFF;
+  border: 2px solid var(--al-border-light, #E2E8F0);
+  border-radius: 16px;
+  padding: 2.5rem;
+  margin-top: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.progressBar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.progressBar::before {
+  content: '';
+  position: absolute;
+  top: 20px;
+  left: 10%;
+  right: 10%;
+  height: 2px;
+  background: #E2E8F0;
+  z-index: 0;
+}
+
+.progressStep {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  position: relative;
+  z-index: 1;
+}
+
+.progressStepNumber {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 2px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  color: #A0AEC0;
+  transition: all 0.3s ease;
+}
+
+.progressStepActive .progressStepNumber {
+  border-color: var(--al-gold-primary, #EECB00);
+  background: linear-gradient(135deg, 
+    var(--al-gold-primary, #EECB00), 
+    var(--al-gold-light, #F4D672)
+  );
+  color: var(--al-blue-primary, #020266);
+  box-shadow: 0 4px 12px rgba(238, 203, 0, 0.3);
+}
+
+.progressStepCompleted .progressStepNumber {
+  border-color: #10B981;
+  background: #10B981;
+  color: #FFFFFF;
+}
+
+.progressStepLabel {
+  font-size: 0.75rem;
+  color: #A0AEC0;
+  font-weight: 600;
+  text-align: center;
+  transition: color 0.3s ease;
+}
+
+.progressStepActive .progressStepLabel {
+  color: var(--al-blue-primary, #020266);
+}
+
+.progressStepCompleted .progressStepLabel {
+  color: #10B981;
+}
+
+/* ============================================
+   STEP CONTENT
+   ============================================ */
+
+.stepContent {
+  min-height: 400px;
+  padding: 2rem 0;
+}
+
+.step {
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.stepTitle {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+}
+
+.stepSubtitle {
+  font-size: 0.9375rem;
+  color: var(--al-text-secondary, #4A5568);
+  text-align: center;
+  margin: 0 0 2rem 0;
+  line-height: 1.5;
+}
+
+/* ============================================
+   FORM FIELDS
+   ============================================ */
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-text-primary, #1A202C);
+  margin-bottom: 0.5rem;
+}
+
+.required {
+  color: #E53E3E;
+  margin-left: 0.25rem;
+}
+
+.input,
+.select {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid #E2E8F0;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  color: var(--al-text-primary, #1A202C);
+  background: #FFFFFF;
+  transition: all 0.3s ease;
+}
+
+.input:focus,
+.select:focus {
+  outline: none;
+  border-color: var(--al-gold-primary, #EECB00);
+  box-shadow: 0 0 0 3px rgba(238, 203, 0, 0.1);
+}
+
+.inputError {
+  border-color: #E53E3E;
+}
+
+.inputError:focus {
+  box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+}
+
+.errorText {
+  display: block;
+  font-size: 0.8125rem;
+  color: #E53E3E;
+  margin-top: 0.5rem;
+  font-weight: 500;
+}
+
+.hint {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* ============================================
+   ROLE OPTIONS (STEP 2)
+   ============================================ */
+
+.roleOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.roleCard {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.5rem;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.roleCard:hover {
+  border-color: var(--al-blue-primary, #020266);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+  transform: translateY(-2px);
+}
+
+.roleCardActive {
+  border-color: var(--al-gold-primary, #EECB00);
+  background: linear-gradient(135deg, 
+    rgba(238, 203, 0, 0.05), 
+    rgba(238, 203, 0, 0.02)
+  );
+  box-shadow: 
+    0 4px 16px rgba(238, 203, 0, 0.15),
+    inset 0 0 0 1px rgba(238, 203, 0, 0.2);
+}
+
+.roleCardSpecial {
+  border-color: var(--al-blue-primary, #020266);
+  background: linear-gradient(135deg, 
+    rgba(2, 2, 102, 0.03), 
+    rgba(238, 203, 0, 0.02)
+  );
+}
+
+.roleCardSpecial.roleCardActive {
+  border-color: var(--al-gold-primary, #EECB00);
+  background: linear-gradient(135deg, 
+    rgba(238, 203, 0, 0.08), 
+    rgba(2, 2, 102, 0.03)
+  );
+}
+
+.roleRadio {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin-top: 2px;
+  accent-color: var(--al-gold-primary, #EECB00);
+  cursor: pointer;
+}
+
+.roleContent {
+  flex: 1;
+}
+
+.roleHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.roleName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+}
+
+.roleDiscount {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, #10B981, #059669);
+  color: #FFFFFF;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.roleDescription {
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0 0 0.75rem 0;
+  line-height: 1.5;
+}
+
+.rolePrice {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0;
+}
+
+.roleHint {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0.5rem 0 0 0;
+  font-style: italic;
+}
+
+/* ============================================
+   FILE UPLOAD (STEP 3)
+   ============================================ */
+
+.fileUpload {
+  position: relative;
+}
+
+.fileInput {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+}
+
+.fileLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.25rem;
+  border: 2px dashed #CBD5E0;
+  border-radius: 10px;
+  background: #F8FAFC;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.fileLabel:hover {
+  border-color: var(--al-gold-primary, #EECB00);
+  background: rgba(238, 203, 0, 0.05);
+}
+
+.fileIcon {
+  width: 24px;
+  height: 24px;
+  color: var(--al-blue-primary, #020266);
+}
+
+.selectedFile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  margin-top: 0.75rem;
+  background: linear-gradient(135deg, 
+    rgba(16, 185, 129, 0.08), 
+    rgba(16, 185, 129, 0.03)
+  );
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  border-radius: 8px;
+}
+
+.fileName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #065F46;
+}
+
+.fileSize {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+}
+
+/* ============================================
+   PAYMENT OPTIONS (STEP 4)
+   ============================================ */
+
+.priceSummary {
+  background: linear-gradient(135deg, 
+    rgba(2, 2, 102, 0.05), 
+    rgba(238, 203, 0, 0.05)
+  );
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 2px solid var(--al-gold-primary, #EECB00);
+  margin-bottom: 2rem;
+}
+
+.priceSummaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.priceSummaryLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-text-secondary, #4A5568);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.priceSummaryAmount {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+}
+
+.priceSummaryDetail {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(2, 2, 102, 0.1);
+}
+
+.discountAmount {
+  font-weight: 700;
+  color: #10B981;
+}
+
+.paymentOptions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.paymentCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 2px solid #E2E8F0;
+  border-radius: 12px;
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.paymentCard:hover {
+  border-color: var(--al-blue-primary, #020266);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+}
+
+.paymentCardActive {
+  border-color: var(--al-gold-primary, #EECB00);
+  background: linear-gradient(135deg, 
+    rgba(238, 203, 0, 0.05), 
+    rgba(238, 203, 0, 0.02)
+  );
+  box-shadow: 
+    0 4px 16px rgba(238, 203, 0, 0.12),
+    inset 0 0 0 1px rgba(238, 203, 0, 0.2);
+}
+
+.paymentRadio {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  margin-top: 2px;
+  accent-color: var(--al-gold-primary, #EECB00);
+  cursor: pointer;
+}
+
+.paymentContent {
+  flex: 1;
+}
+
+.paymentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.paymentName {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+}
+
+.paymentBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: linear-gradient(135deg, 
+    var(--al-gold-primary, #EECB00), 
+    var(--al-gold-light, #F4D672)
+  );
+  color: var(--al-blue-primary, #020266);
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.paymentDescription {
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0 0 0.5rem 0;
+}
+
+.paymentPrice {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0;
+}
+
+.msiDivider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1.5rem 0 1rem 0;
+}
+
+.msiDivider::before,
+.msiDivider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #E2E8F0;
+}
+
+.msiDivider span {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-text-secondary, #4A5568);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-top: 2rem;
+  border-top: 2px solid #E2E8F0;
+  margin-top: 2rem;
+}
+
+.btnPrimary {
+  flex: 1;
+  padding: 1rem 2rem;
+  background: linear-gradient(135deg, 
+    var(--al-blue-primary, #020266), 
+    var(--al-blue-800, #05054F)
+  );
+  color: #FFFFFF;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.2);
+}
+
+.btnPrimary:hover:not(:disabled) {
+  background: linear-gradient(135deg, 
+    var(--al-gold-primary, #EECB00), 
+    var(--al-gold-light, #F4D672)
+  );
+  color: var(--al-blue-primary, #020266);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(238, 203, 0, 0.3);
+}
+
+.btnPrimary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btnSecondary {
+  padding: 1rem 2rem;
+  background: #FFFFFF;
+  color: var(--al-blue-primary, #020266);
+  border: 2px solid var(--al-blue-primary, #020266);
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btnSecondary:hover:not(:disabled) {
+  background: var(--al-blue-primary, #020266);
+  color: #FFFFFF;
+}
+
+.btnSecondary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .stepperContainer {
+    padding: 1.5rem;
+  }
+
+  .progressBar {
+    gap: 0.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .progressBar::before {
+    left: 5%;
+    right: 5%;
+  }
+
+  .progressStepNumber {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8125rem;
+  }
+
+  .progressStepLabel {
+    font-size: 0.625rem;
+  }
+
+  .stepContent {
+    min-height: 350px;
+    padding: 1.5rem 0;
+  }
+
+  .stepTitle {
+    font-size: 1.25rem;
+  }
+
+  .stepSubtitle {
+    font-size: 0.875rem;
+  }
+
+  .roleCard {
+    padding: 1.25rem;
+  }
+
+  .navigation {
+    flex-direction: column-reverse;
+  }
+
+  .btnPrimary,
+  .btnSecondary {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .stepperContainer {
+    padding: 1.25rem;
+  }
+
+  .progressStepLabel {
+    display: none;
+  }
+
+  .stepTitle {
+    font-size: 1.125rem;
+  }
+
+  .priceSummaryAmount {
+    font-size: 1.75rem;
+  }
+
+  .roleCard {
+    padding: 1rem;
+  }
+
+  .roleName {
+    font-size: 0.9375rem;
+  }
+
+  .rolePrice {
+    font-size: 1.125rem;
+  }
+}
