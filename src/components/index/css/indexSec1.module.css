@@ -129,7 +129,7 @@
 
 /* Título principal */
 .heroTitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+    font-family: 'Roboto', sans-serif;
  font-size: clamp(1.8rem, 3vw, 2.375rem);
   font-weight: 800;
   line-height: 1.2;

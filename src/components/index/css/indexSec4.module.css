@@ -3,6 +3,9 @@
    Timeline vertical con tabs de días + Parallax
    ======================================== */
 
+/* Importar Roboto font */
+*/
+
 .section {
   position: relative;
   width: 100%;
@@ -175,9 +178,9 @@
 }
 
 .title {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(2.25rem, 4vw, 3rem);
-  font-weight: 800;
+  font-weight: 900;
   color: white;
   line-height: 1.2;
   margin: 0 0 1rem 0;
@@ -228,50 +231,52 @@
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
 }
 
-.section.visible .dayTabs {
-  opacity: 1;
-  transform: translateY(0);
-}
-
 .dayTab {
   display: flex;
   align-items: center;
   gap: 1rem;
   padding: 1rem 1.75rem;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.9);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 2px solid rgba(255, 255, 255, 0.8);
+  border: 2px solid rgba(238, 203, 0, 0.2);
   border-radius: 16px;
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 
-    0 4px 12px rgba(2, 2, 102, 0.08),
-    0 2px 4px rgba(2, 2, 102, 0.04);
+    0 2px 8px rgba(2, 2, 102, 0.06),
+    0 1px 2px rgba(2, 2, 102, 0.02);
   min-width: 200px;
+  opacity: 0.7;
 }
 
 .dayTab:hover {
   transform: translateY(-2px);
+  opacity: 0.85;
   box-shadow: 
-    0 6px 20px rgba(2, 2, 102, 0.12),
-    0 3px 8px rgba(238, 203, 0, 0.15);
-  border-color: rgba(238, 203, 0, 0.5);
+    0 6px 16px rgba(2, 2, 102, 0.1),
+    0 2px 6px rgba(238, 203, 0, 0.1);
+  border-color: rgba(238, 203, 0, 0.3);
 }
 
 .dayTab.active {
   background: linear-gradient(135deg, #020266 0%, #05054F 100%);
-  border-color: #020266;
+  border: 2px solid #EECB00;
+  border-color: #EECB00;
   box-shadow: 
-    0 8px 24px rgba(2, 2, 102, 0.25),
-    0 4px 12px rgba(238, 203, 0, 0.2);
+    0 12px 36px rgba(2, 2, 102, 0.4),
+    0 6px 16px rgba(238, 203, 0, 0.5),
+    0 0 30px rgba(238, 203, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  transform: translateY(-4px) scale(1.05);
+  opacity: 1;
 }
 
 .dayNumber {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background: rgba(238, 203, 0, 0.15);
+  background: rgba(238, 203, 0, 0.1);
   color: #020266;
   display: flex;
   align-items: center;
@@ -279,13 +284,19 @@
   font-size: 1.5rem;
   font-weight: 700;
   font-family: var(--al-font-headline, 'Merriweather', serif);
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border: 2px solid rgba(238, 203, 0, 0.2);
 }
 
 .dayTab.active .dayNumber {
   background: #EECB00;
   color: #020266;
-  box-shadow: 0 0 20px rgba(238, 203, 0, 0.4);
+  box-shadow: 
+    0 0 30px rgba(238, 203, 0, 0.8),
+    0 0 60px rgba(238, 203, 0, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.5);
+  border: 2px solid #F4D672;
+  transform: scale(1.15);
 }
 
 .dayInfo {
@@ -297,22 +308,72 @@
 .dayName {
   font-weight: 700;
   font-size: 1.125rem;
-  color: #020266;
-  transition: color 0.3s ease;
+  color: #4A5568;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dayTab.active .dayName {
   color: white;
+  font-size: 1.25rem;
+  font-weight: 800;
 }
 
 .dayDate {
   font-size: 0.875rem;
-  color: #4A5568;
-  transition: color 0.3s ease;
+  color: #7A8FA1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dayTab.active .dayDate {
-  color: rgba(238, 203, 0, 0.9);
+  color: #F4D672;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+/* Fila que contiene tabs y CTA */
+.tabsCtaRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2.5rem;
+  position: relative;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+}
+
+.section.visible .tabsCtaRow {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.tabsCtaRow .dayTabs {
+  justify-content: center;
+  margin-bottom: 0;
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
+.section.visible .tabsCtaRow .dayTabs {
+  opacity: 1;
+  transform: none;
+}
+
+/* CTA alineado a la izquierda - posicionado absolutamente */
+.ctaWrapperInline {
+  display: flex;
+  position: absolute;
+  left: 0;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+}
+
+.section.visible .ctaWrapperInline {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Timeline - CONTENEDOR CON SCROLL */
@@ -371,7 +432,7 @@
 }
 
 .dayTitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: 1.5rem;
   font-weight: 800;
   color: #020266;
@@ -393,7 +454,7 @@
 .sessionsContainer {
   position: relative;
   padding: 2rem 2rem 1.5rem 60px;
-  max-height: 600px;
+  max-height: 800px;
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -939,6 +1000,27 @@
     opacity: 0.1;
   }
 
+  /* Reorganizar fila de tabs y CTA en columnas */
+  .tabsCtaRow {
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: center;
+    position: relative;
+  }
+
+  .ctaWrapperInline {
+    position: static;
+    width: 100%;
+    justify-content: center;
+    transform: none;
+    opacity: 1;
+  }
+
+  .section.visible .ctaWrapperInline {
+    opacity: 1;
+    transform: none;
+  }
+
   .dayTabs {
     flex-direction: column;
     gap: 0.75rem;
@@ -952,7 +1034,7 @@
 
   .sessionsContainer {
     padding: 1.5rem 1.5rem 1.25rem 40px;
-    max-height: 500px;
+    max-height: 700px;
   }
 
   .connector {
@@ -1053,7 +1135,7 @@
 
   .sessionsContainer {
     padding: 1.25rem 1rem 1rem 30px;
-    max-height: 450px;
+    max-height: 600px;
   }
 
   /* Grid más compacto en móvil muy pequeño */

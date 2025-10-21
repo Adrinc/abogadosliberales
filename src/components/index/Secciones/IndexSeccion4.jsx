@@ -89,28 +89,42 @@ const IndexSeccion4 = () => {
           <p className={styles.description}>{t.description}</p>
         </div>
 
-        {/* Tabs de días */}
-        <div className={styles.dayTabs}>
-          <button
-            className={`${styles.dayTab} ${activeDay === 'day1' ? styles.active : ''}`}
-            onClick={() => setActiveDay('day1')}
-          >
-            <div className={styles.dayNumber}>1</div>
-            <div className={styles.dayInfo}>
-              <span className={styles.dayName}>{ingles ? "Day 1" : "Día 1"}</span>
-              <span className={styles.dayDate}>{ingles ? "Fri Nov 14" : "Vie 14 nov"}</span>
-            </div>
-          </button>
-          <button
-            className={`${styles.dayTab} ${activeDay === 'day2' ? styles.active : ''}`}
-            onClick={() => setActiveDay('day2')}
-          >
-            <div className={styles.dayNumber}>2</div>
-            <div className={styles.dayInfo}>
-              <span className={styles.dayName}>{ingles ? "Day 2" : "Día 2"}</span>
-              <span className={styles.dayDate}>{ingles ? "Sat Nov 15" : "Sáb 15 nov"}</span>
-            </div>
-          </button>
+        {/* Tabs y CTA en la misma fila */}
+        <div className={styles.tabsCtaRow}>
+          {/* CTA alineado a la izquierda */}
+          <div className={styles.ctaWrapperInline}>
+            <a href="#inscripcion" className={styles.ctaButton}>
+              <span>{t.cta}</span>
+              <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
+
+          {/* Tabs centrados */}
+          <div className={styles.dayTabs}>
+            <button
+              className={`${styles.dayTab} ${activeDay === 'day1' ? styles.active : ''}`}
+              onClick={() => setActiveDay('day1')}
+            >
+              <div className={styles.dayNumber}>1</div>
+              <div className={styles.dayInfo}>
+                <span className={styles.dayName}>{ingles ? "Day 1" : "Día 1"}</span>
+                <span className={styles.dayDate}>{ingles ? "Fri Nov 14" : "Vie 14 nov"}</span>
+              </div>
+            </button>
+            <button
+              className={`${styles.dayTab} ${activeDay === 'day2' ? styles.active : ''}`}
+              onClick={() => setActiveDay('day2')}
+            >
+              <div className={styles.dayNumber}>2</div>
+              <div className={styles.dayInfo}>
+                <span className={styles.dayName}>{ingles ? "Day 2" : "Día 2"}</span>
+                <span className={styles.dayDate}>{ingles ? "Sat Nov 15" : "Sáb 15 nov"}</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         {/* Timeline de sesiones */}
@@ -215,17 +229,6 @@ const IndexSeccion4 = () => {
             ))}
             </div>
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className={styles.ctaWrapper}>
-          <a href="#inscripcion" className={styles.ctaButton}>
-            <span>{t.cta}</span>
-            <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
         </div>
 
       </div>
