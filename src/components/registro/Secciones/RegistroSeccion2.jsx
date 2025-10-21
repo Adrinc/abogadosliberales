@@ -122,6 +122,7 @@ const RegistroSeccion2 = () => {
               <FormularioLead 
                 onSubmit={handleLeadSubmit}
                 isCompleted={!!leadData}
+                isAcademic={isAcademic}
               />
             </div>
 

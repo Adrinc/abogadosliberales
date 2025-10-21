@@ -112,7 +112,10 @@ const ResumenRegistro = ({
             </div>
           )}
           
-          <div className={styles.priceNote}>{t.price.note}</div>
+          {/* Nota de precio (solo si NO hay MSI) */}
+          {!(isAcademic && monthlyPayment) && (
+            <div className={styles.priceNote}>{t.price.note}</div>
+          )}
         </div>
 
         {/* Datos del Lead (si existen) */}

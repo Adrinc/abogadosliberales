@@ -5,7 +5,7 @@ import { translationsRegistro } from '../../../data/translationsRegistro';
 import styles from '../css/formularioLead.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const FormularioLead = ({ onSubmit, isCompleted }) => {
+const FormularioLead = ({ onSubmit, isCompleted, isAcademic = false }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
 
@@ -49,11 +49,15 @@ const FormularioLead = ({ onSubmit, isCompleted }) => {
     if (!formData.mobile_phone.trim()) {
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
     }
-    if (!formData.document_type) {
-      newErrors.document_type = t.leadForm.documentType.error;
-    }
-    if (!formData.document_number.trim()) {
-      newErrors.document_number = t.leadForm.documentNumber.error;
+    
+    // Solo validar documento si NO es académico (los académicos lo llenan en el stepper)
+    if (!isAcademic) {
+      if (!formData.document_type) {
+        newErrors.document_type = t.leadForm.documentType.error;
+      }
+      if (!formData.document_number.trim()) {
+        newErrors.document_number = t.leadForm.documentNumber.error;
+      }
     }
 
     setErrors(newErrors);
@@ -255,45 +259,47 @@ const FormularioLead = ({ onSubmit, isCompleted }) => {
         <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>
       </div>
 
-      {/* Tipo de Documento y Número (Grid 2 columnas) */}
-      <div className={styles.gridRow}>
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="document_type">
-            {t.leadForm.documentType.label} <span className={styles.required}>*</span>
-          </label>
-          <select
-            id="document_type"
-            name="document_type"
-            value={formData.document_type}
-            onChange={handleChange}
-            className={`${styles.select} ${errors.document_type ? styles.inputError : ''}`}
-          >
-            <option value="">{t.leadForm.documentType.placeholder}</option>
-            {t.leadForm.documentType.options.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {errors.document_type && <span className={styles.errorText}>{errors.document_type}</span>}
-        </div>
+      {/* Tipo de Documento y Número (Grid 2 columnas) - OCULTO si es académico */}
+      {!isAcademic && (
+        <div className={styles.gridRow}>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="document_type">
+              {t.leadForm.documentType.label} <span className={styles.required}>*</span>
+            </label>
+            <select
+              id="document_type"
+              name="document_type"
+              value={formData.document_type}
+              onChange={handleChange}
+              className={`${styles.select} ${errors.document_type ? styles.inputError : ''}`}
+            >
+              <option value="">{t.leadForm.documentType.placeholder}</option>
+              {t.leadForm.documentType.options.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {errors.document_type && <span className={styles.errorText}>{errors.document_type}</span>}
+          </div>
 
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="document_number">
-            {t.leadForm.documentNumber.label} <span className={styles.required}>*</span>
-          </label>
-          <input
-            type="text"
-            id="document_number"
-            name="document_number"
-            value={formData.document_number}
-            onChange={handleChange}
-            placeholder={t.leadForm.documentNumber.placeholder}
-            className={`${styles.input} ${errors.document_number ? styles.inputError : ''}`}
-          />
-          {errors.document_number && <span className={styles.errorText}>{errors.document_number}</span>}
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="document_number">
+              {t.leadForm.documentNumber.label} <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="text"
+              id="document_number"
+              name="document_number"
+              value={formData.document_number}
+              onChange={handleChange}
+              placeholder={t.leadForm.documentNumber.placeholder}
+              className={`${styles.input} ${errors.document_number ? styles.inputError : ''}`}
+            />
+            {errors.document_number && <span className={styles.errorText}>{errors.document_number}</span>}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Organización (Opcional) */}
       <div className={styles.formGroup}>
