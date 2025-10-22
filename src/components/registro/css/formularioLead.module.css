@@ -9,7 +9,7 @@
 }
 
 .formTitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(1.5rem, 2.5vw, 1.875rem);
   font-weight: 700;
   color: var(--al-blue-primary, #020266);

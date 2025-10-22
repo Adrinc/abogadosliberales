@@ -90,7 +90,7 @@
 }
 
 .title {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(2.5rem, 4vw, 3.5rem);
   font-weight: 700;
   line-height: 1.2;
@@ -215,7 +215,7 @@
 
 .question {
   flex: 1;
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(1.125rem, 1.5vw, 1.25rem);
   font-weight: 700;
   color: #020266;

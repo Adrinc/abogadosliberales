@@ -7,7 +7,7 @@
 }
 
 .title {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: 1.375rem;
   font-weight: 700;
   color: var(--al-blue-primary, #020266);

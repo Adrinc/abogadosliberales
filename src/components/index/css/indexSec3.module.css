@@ -63,7 +63,7 @@
 }
 
 .title {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: clamp(2.25rem, 4vw, 3rem);
   font-weight: 800;
   color: #020266;
@@ -292,7 +292,7 @@
 }
 
 .speakerName {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: 'Roboto', sans-serif;
   font-size: 1.3rem;
   font-weight: 800;
   color: #020266;
