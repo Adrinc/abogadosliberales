@@ -12,7 +12,21 @@ import styles from '../css/academicStepper.module.css';
 
 const AcademicStepper = ({ onComplete, onPriceChange }) => {
   const ingles = useStore(isEnglish);
-  const t = ingles ? translationsRegistro.en.academicStepper : translationsRegistro.es.academicStepper;
+  // Fallback defensivo para evitar error si la traducción no existe
+  const t = (ingles && translationsRegistro.en && translationsRegistro.en.academicStepper)
+    ? translationsRegistro.en.academicStepper
+    : (translationsRegistro.es && translationsRegistro.es.academicStepper)
+      ? translationsRegistro.es.academicStepper
+      : {
+          step1: {
+            title: ingles ? "Step 1 missing" : "Paso 1 faltante",
+            subtitle: "Translation not found.",
+            label: "Translation not found.",
+            placeholder: "Translation not found.",
+            error: "Translation not found.",
+            options: []
+          }
+        };
 
   // Estado del stepper
   const [currentStep, setCurrentStep] = useState(1);

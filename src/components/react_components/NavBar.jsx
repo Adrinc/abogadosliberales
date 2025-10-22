@@ -293,7 +293,7 @@ const NavBar = () => {
       </div>
 
       {/* Switch de países mejorado */}
-      <div className={styles.countrySwitch}>
+ {/*      <div className={styles.countrySwitch}>
         <div
           className={`${styles.switchIconContainer} ${country === "mex" ? styles.active : styles.inactive}`}
           onClick={() => handleSwitch("mex")}
@@ -307,7 +307,7 @@ const NavBar = () => {
           <img src="/icons/icon_usa.webp" alt="USA" className={styles.switchIcon} />
         </div>
         <div className={styles.switchIndicator}></div>
-      </div>
+      </div> */}
 
       {/* Ícono de menú hamburguesa animado */}
       <div 
