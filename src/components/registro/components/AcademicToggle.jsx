@@ -6,7 +6,16 @@ import styles from '../css/academicToggle.module.css';
 
 const AcademicToggle = ({ isAcademic, onToggle }) => {
   const ingles = useStore(isEnglish);
-  const t = ingles ? translationsRegistro.en.academicToggle : translationsRegistro.es.academicToggle;
+  // Fallback defensivo para evitar error si la traducción no existe
+  const t = (ingles && translationsRegistro.en && translationsRegistro.en.academicToggle)
+    ? translationsRegistro.en.academicToggle
+    : (translationsRegistro.es && translationsRegistro.es.academicToggle)
+      ? translationsRegistro.es.academicToggle
+      : {
+          title: ingles ? "Academic toggle missing" : "Toggle académico faltante",
+          subtitle: "Translation not found.",
+          activeMessage: "Translation not found."
+        };
 
   return (
     <div className={styles.toggleContainer}>
