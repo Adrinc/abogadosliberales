@@ -5,7 +5,12 @@ import { translationsRegistro } from '../../../data/translationsRegistro';
 import styles from '../css/formularioLead.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const FormularioLead = React.forwardRef(({ onSubmit, isCompleted, hideSubmitButton = false }, ref) => {
+const FormularioLead = React.forwardRef(({ 
+  onSubmit, 
+  isCompleted, 
+  hideSubmitButton = false, 
+  customerCategoryFk = null  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
+}, ref) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
 
@@ -23,6 +28,14 @@ const FormularioLead = React.forwardRef(({ onSubmit, isCompleted, hideSubmitButt
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Expose an imperative submit method to parent components (e.g., steppers)
+  // IMPORTANTE: Este hook DEBE estar aquí, SIEMPRE, no dentro de un return temprano
+  useImperativeHandle(ref, () => ({
+    submit: () => {
+      handleSubmit({ preventDefault: () => {} });
+    }
+  }));
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -114,7 +127,7 @@ const FormularioLead = React.forwardRef(({ onSubmit, isCompleted, hideSubmitButt
           mobile_phone: formData.mobile_phone,
           status: 'Lead',
           customer_parent_id: null,
-          customer_category_fk: null,
+          customer_category_fk: customerCategoryFk || null,  // Mapeo académico: 5, 6, o 7
           organization_fk: null
         };
 
@@ -179,15 +192,6 @@ const FormularioLead = React.forwardRef(({ onSubmit, isCompleted, hideSubmitButt
       </div>
     );
   }
-
-  // Expose an imperative submit method to parent components (e.g., steppers)
-  useImperativeHandle(ref, () => ({
-    submit: () => {
-      // Trigger the form submission programmatically. Create a synthetic event
-      // with preventDefault to avoid page reload.
-      handleSubmit({ preventDefault: () => {} });
-    }
-  }));
 
   return (
     <form className={styles.form} onSubmit={handleSubmit}>

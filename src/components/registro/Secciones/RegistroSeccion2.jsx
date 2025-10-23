@@ -158,7 +158,9 @@ const RegistroSeccion2 = () => {
               <div className={`${styles.summaryCard} ${isVisible ? styles.fadeInRight : ''}`}>
                 <ResumenRegistro
                   leadData={leadData}
-                  selectedPaymentMethod={selectedMethod}
+                selectedPaymentMethod={selectedMethod}
+                academicPriceData={academicPriceData}
+                isAcademic={isAcademic}
                 />
               </div>
             </div>

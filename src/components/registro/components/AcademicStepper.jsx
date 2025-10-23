@@ -2,18 +2,16 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
-import { 
-  calculateAcademicPrice, 
-  getMSIOptions, 
+import {
+  calculateAcademicPrice,
+  getMSIOptions,
   canAccessPaquete11,
-  formatPrice 
+  formatPrice,
+  getCustomerCategoryFk,
 } from '../../../lib/academicPricing';
 import styles from '../css/academicStepper.module.css';
 
-// Import additional components for personal data and payment steps. These imports
-// are relative to the file structure of the project. They may need to be
-// adjusted based on your actual project layout. We import FormularioLead with
-// forwardRef support, and payment components for the final step.
+// Import additional components for personal data and payment steps.
 import FormularioLead from './FormularioLead.jsx';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
@@ -21,7 +19,9 @@ import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
 const AcademicStepper = ({ onComplete, onPriceChange }) => {
   const ingles = useStore(isEnglish);
-  const t = ingles ? translationsRegistro.en.academicStepper : translationsRegistro.es.academicStepper;
+  const t = ingles
+    ? translationsRegistro.en.academicStepper
+    : translationsRegistro.es.academicStepper;
 
   // Estado del stepper
   const [currentStep, setCurrentStep] = useState(1);
@@ -44,7 +44,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
     documentNumber: '',
     studentId: '',
     proofFile: null,
-    paymentPlan: 'single' // 'single' | 'msi3' | 'msi6' | 'msi12'
+    paymentPlan: 'single', // 'single' | 'msi3' | 'msi6' | 'msi12'
   });
 
   // Errores por paso
@@ -62,7 +62,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         university: academicData.university,
         role: academicData.role,
         isPaquete11: academicData.isPaquete11,
-        paymentPlan: academicData.paymentPlan
+        paymentPlan: academicData.paymentPlan,
       });
 
       // Notificar al padre del cambio de precio
@@ -70,7 +70,12 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         onPriceChange(priceData);
       }
     }
-  }, [academicData.university, academicData.role, academicData.isPaquete11, academicData.paymentPlan]);
+  }, [
+    academicData.university,
+    academicData.role,
+    academicData.isPaquete11,
+    academicData.paymentPlan,
+  ]);
 
   // Helper para obtener la etiqueta de cada paso en la barra de progreso.
   const getStepLabel = (step) => {
@@ -118,7 +123,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         break;
 
       case 4:
-        // Paso 4 corresponde a datos personales y será validado mediante el formulario
+        // Paso 4 corresponde a datos personales y se valida mediante el formulario
         break;
 
       default:
@@ -164,20 +169,22 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         university: academicData.university,
         role: academicData.role,
         isPaquete11: academicData.isPaquete11,
-        paymentPlan: academicData.paymentPlan
+        paymentPlan: academicData.paymentPlan,
       });
 
       // Notificar al padre
       if (onComplete) {
         onComplete({
           ...academicData,
-          priceData: finalPriceData
+          priceData: finalPriceData,
+          leadData: leadData,          // Incluir datos del lead (paso 4)
+          leadId: leadId,              // Incluir ID del lead
         });
       }
 
       console.log('✅ Academic verification completed:', {
         ...academicData,
-        finalPrice: finalPriceData.finalPrice
+        finalPrice: finalPriceData.finalPrice,
       });
     } catch (error) {
       console.error('❌ Error completing academic verification:', error);
@@ -217,28 +224,35 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
     setCurrentStep(5);
   };
 
-  // Obtener opciones MSI disponibles
+  // Obtener opciones MSI disponibles (no utilizadas en el flujo de pago simplificado, pero se mantiene por compatibilidad)
   const availableMSI = getMSIOptions(academicData.role, academicData.isPaquete11);
 
   // Calcular precio actual
-  const currentPrice = academicData.university && academicData.role
-    ? calculateAcademicPrice({
-        isAcademic: true,
-        university: academicData.university,
-        role: academicData.role,
-        isPaquete11: academicData.isPaquete11,
-        paymentPlan: academicData.paymentPlan
-      })
-    : null;
+  const currentPrice =
+    academicData.university && academicData.role
+      ? calculateAcademicPrice({
+          isAcademic: true,
+          university: academicData.university,
+          role: academicData.role,
+          isPaquete11: academicData.isPaquete11,
+          paymentPlan: academicData.paymentPlan,
+        })
+      : null;
 
   return (
     <div className={styles.stepperContainer}>
-      
       {/* Progress Bar */}
-      <div className={styles.progressBar}>
+      {/* Configuramos la barra de progreso para mostrar cinco pasos en una sola línea.
+          Para evitar que el quinto paso se desplace a otra línea, utilizamos flexbox y
+          asignamos un ancho fijo del 20% a cada paso. */}
+      <div
+        className={styles.progressBar}
+        style={{ display: 'flex', flexWrap: 'nowrap' }}
+      >
         {[1, 2, 3, 4, 5].map((step) => (
           <div
             key={step}
+            style={{ width: '20%' }}
             className={`${styles.progressStep} ${
               step <= currentStep ? styles.progressStepActive : ''
             } ${step < currentStep ? styles.progressStepCompleted : ''}`}
@@ -255,7 +269,6 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
 
       {/* Step Content */}
       <div className={styles.stepContent}>
-        
         {/* STEP 1: Universidad */}
         {currentStep === 1 && (
           <div className={styles.step}>
@@ -264,7 +277,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
 
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="university">
-                {t.step1.label} <span className={styles.required}>*</span>
+                {t.step1.label}{' '}
+                <span className={styles.required}>*</span>
               </label>
               <select
                 id="university"
@@ -273,7 +287,9 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                   setAcademicData({ ...academicData, university: e.target.value });
                   if (errors.university) setErrors({ ...errors, university: '' });
                 }}
-                className={`${styles.select} ${errors.university ? styles.inputError : ''}`}
+                className={`${styles.select} ${
+                  errors.university ? styles.inputError : ''
+                }`}
               >
                 <option value="">{t.step1.placeholder}</option>
                 {t.step1.options.map((option) => (
@@ -311,10 +327,10 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                     value={option.value}
                     checked={academicData.role === option.value && !academicData.isPaquete11}
                     onChange={(e) => {
-                      setAcademicData({ 
-                        ...academicData, 
+                      setAcademicData({
+                        ...academicData,
                         role: e.target.value,
-                        isPaquete11: false 
+                        isPaquete11: false,
                       });
                       if (errors.role) setErrors({ ...errors, role: '' });
                     }}
@@ -343,7 +359,10 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                     name="paquete11"
                     checked={academicData.isPaquete11}
                     onChange={() => {
-                      setAcademicData({ ...academicData, isPaquete11: !academicData.isPaquete11 });
+                      setAcademicData({
+                        ...academicData,
+                        isPaquete11: !academicData.isPaquete11,
+                      });
                     }}
                     className={styles.roleRadio}
                   />
@@ -360,9 +379,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               )}
             </div>
 
-            {errors.role && (
-              <span className={styles.errorText}>{errors.role}</span>
-            )}
+            {errors.role && <span className={styles.errorText}>{errors.role}</span>}
           </div>
         )}
 
@@ -375,7 +392,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
             {/* Tipo de documento */}
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="documentType">
-                {t.step3.documentType.label} <span className={styles.required}>*</span>
+                {t.step3.documentType.label}{' '}
+                <span className={styles.required}>*</span>
               </label>
               <select
                 id="documentType"
@@ -384,7 +402,9 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                   setAcademicData({ ...academicData, documentType: e.target.value });
                   if (errors.documentType) setErrors({ ...errors, documentType: '' });
                 }}
-                className={`${styles.select} ${errors.documentType ? styles.inputError : ''}`}
+                className={`${styles.select} ${
+                  errors.documentType ? styles.inputError : ''
+                }`}
               >
                 <option value="">{t.step3.documentType.placeholder}</option>
                 {t.step3.documentType.options.map((option) => (
@@ -401,7 +421,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
             {/* Número de documento */}
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="documentNumber">
-                {t.step3.documentNumber.label} <span className={styles.required}>*</span>
+                {t.step3.documentNumber.label}{' '}
+                <span className={styles.required}>*</span>
               </label>
               <input
                 type="text"
@@ -412,18 +433,21 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                   if (errors.documentNumber) setErrors({ ...errors, documentNumber: '' });
                 }}
                 placeholder={t.step3.documentNumber.placeholder}
-                className={`${styles.input} ${errors.documentNumber ? styles.inputError : ''}`}
+                className={`${styles.input} ${
+                  errors.documentNumber ? styles.inputError : ''
+                }`}
               />
               {errors.documentNumber && (
                 <span className={styles.errorText}>{errors.documentNumber}</span>
               )}
             </div>
 
-            {/* Matrícula (solo para estudiantes) */}
+            {/* Matrícula (solo para estudiantes y posgrado) */}
             {(academicData.role === 'licenciatura' || academicData.role === 'posgrado') && (
               <div className={styles.formGroup}>
                 <label className={styles.label} htmlFor="studentId">
-                  {t.step3.studentId.label} <span className={styles.required}>*</span>
+                  {t.step3.studentId.label}{' '}
+                  <span className={styles.required}>*</span>
                 </label>
                 <input
                   type="text"
@@ -434,7 +458,9 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                     if (errors.studentId) setErrors({ ...errors, studentId: '' });
                   }}
                   placeholder={t.step3.studentId.placeholder}
-                  className={`${styles.input} ${errors.studentId ? styles.inputError : ''}`}
+                  className={`${styles.input} ${
+                    errors.studentId ? styles.inputError : ''
+                  }`}
                 />
                 {errors.studentId && (
                   <span className={styles.errorText}>{errors.studentId}</span>
@@ -458,8 +484,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                 />
                 <label htmlFor="proofFile" className={styles.fileLabel}>
                   <svg className={styles.fileIcon} width="24" height="24" viewBox="0 0 24 24" fill="none">
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="2"/>
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2" />
+                    <path d="M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="2" />
                   </svg>
                   <span>{selectedFile ? t.step3.proofFile.selectedText : t.step3.proofFile.buttonText}</span>
                 </label>
@@ -472,9 +498,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                   </span>
                 </div>
               )}
-              {fileError && (
-                <span className={styles.errorText}>{fileError}</span>
-              )}
+              {fileError && <span className={styles.errorText}>{fileError}</span>}
               <span className={styles.hint}>{t.step3.proofFile.hint}</span>
             </div>
           </div>
@@ -488,7 +512,10 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               {(t.step4 && t.step4.title) || (ingles ? 'Datos personales' : 'Datos personales')}
             </h3>
             <p className={styles.stepSubtitle}>
-              {(t.step4 && t.step4.subtitle) || (ingles ? 'Por favor ingresa tus datos personales' : 'Por favor ingresa tus datos personales')}
+              {(t.step4 && t.step4.subtitle) ||
+                (ingles
+                  ? 'Por favor ingresa tus datos personales'
+                  : 'Por favor ingresa tus datos personales')}
             </p>
             {/* Formulario de datos personales */}
             <FormularioLead
@@ -496,6 +523,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               onSubmit={handleLeadSubmit}
               isCompleted={!!leadData}
               hideSubmitButton={true}
+              customerCategoryFk={getCustomerCategoryFk(academicData.role)}
             />
             {!leadData && (
               <p className={styles.hint}>
@@ -512,7 +540,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               {(t.step5 && t.step5.title) || (ingles ? 'Plan de pago' : 'Plan de pago')}
             </h3>
             <p className={styles.stepSubtitle}>
-              {(t.step5 && t.step5.subtitle) || (ingles ? 'Selecciona tu método de pago' : 'Selecciona tu método de pago')}
+              {(t.step5 && t.step5.subtitle) ||
+                (ingles ? 'Selecciona tu método de pago' : 'Selecciona tu método de pago')}
             </p>
             {leadData ? (
               <>
@@ -520,50 +549,69 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                 <div className={styles.paymentSection}>
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
-                      {(t.paymentMethods && t.paymentMethods.title) || (ingles ? 'Métodos de pago' : 'Métodos de pago')}
+                      {(t.paymentMethods && t.paymentMethods.title) ||
+                        (ingles ? 'Métodos de pago' : 'Métodos de pago')}
                     </h2>
                     <p className={styles.sectionSubtitle}>
-                      {(t.paymentMethods && t.paymentMethods.subtitle) || (ingles ? 'Elige cómo pagar' : 'Elige cómo pagar')}
+                      {(t.paymentMethods && t.paymentMethods.subtitle) ||
+                        (ingles ? 'Elige cómo pagar' : 'Elige cómo pagar')}
                     </p>
                   </div>
                   <div className={styles.tabs}>
                     <button
-                      className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
+                      className={`${styles.tab} ${
+                        selectedMethod === 'paypal' ? styles.tabActive : ''
+                      }`}
                       type="button"
                       onClick={() => setSelectedMethod('paypal')}
                     >
                       <div className={styles.tabIcon}>💳</div>
                       <span className={styles.tabLabel}>
-                        {(t.paymentMethods && t.paymentMethods.tabs && t.paymentMethods.tabs.paypal) || 'PayPal'}
+                        {(t.paymentMethods &&
+                          t.paymentMethods.tabs &&
+                          t.paymentMethods.tabs.paypal) || 'PayPal'}
                       </span>
                       <div className={styles.tabIndicator}></div>
                     </button>
                     <button
-                      className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
+                      className={`${styles.tab} ${
+                        selectedMethod === 'creditCard' ? styles.tabActive : ''
+                      }`}
                       type="button"
                       onClick={() => setSelectedMethod('creditCard')}
                     >
                       <div className={styles.tabIcon}>💰</div>
                       <span className={styles.tabLabel}>
-                        {(t.paymentMethods && t.paymentMethods.tabs && t.paymentMethods.tabs.creditCard) || 'Tarjeta'}
+                        {(t.paymentMethods &&
+                          t.paymentMethods.tabs &&
+                          t.paymentMethods.tabs.creditCard) || 'Tarjeta'}
                       </span>
                       <div className={styles.tabIndicator}></div>
                     </button>
                     <button
-                      className={`${styles.tab} ${selectedMethod === 'bankTransfer' ? styles.tabActive : ''}`}
+                      className={`${styles.tab} ${
+                        selectedMethod === 'bankTransfer' ? styles.tabActive : ''
+                      }`}
                       type="button"
                       onClick={() => setSelectedMethod('bankTransfer')}
                     >
                       <div className={styles.tabIcon}>🏦</div>
                       <span className={styles.tabLabel}>
-                        {(t.paymentMethods && t.paymentMethods.tabs && t.paymentMethods.tabs.bankTransfer) || 'Transferencia'}
+                        {(t.paymentMethods &&
+                          t.paymentMethods.tabs &&
+                          t.paymentMethods.tabs.bankTransfer) || 'Transferencia'}
                       </span>
                       <div className={styles.tabIndicator}></div>
                     </button>
                   </div>
                   <div className={styles.paymentFormCard}>
                     {selectedMethod === 'paypal' && (
-                      <PayPalIframe leadId={leadId} leadData={leadData} academicPriceData={currentPrice} isAcademic={true} />
+                      <PayPalIframe
+                        leadId={leadId}
+                        leadData={leadData}
+                        academicPriceData={currentPrice}
+                        isAcademic={true}
+                      />
                     )}
                     {selectedMethod === 'creditCard' && <IPPayTemporaryMessage />}
                     {selectedMethod === 'bankTransfer' && (
@@ -579,7 +627,9 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               </>
             ) : (
               <p className={styles.hint}>
-                {ingles ? 'Por favor completa tus datos personales primero' : 'Por favor completa tus datos personales primero'}
+                {ingles
+                  ? 'Por favor completa tus datos personales primero'
+                  : 'Por favor completa tus datos personales primero'}
               </p>
             )}
           </div>

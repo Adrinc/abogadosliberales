@@ -6,6 +6,11 @@
  * - Profesor/Posgrado: $1,691.50 MXN (15% desc) | 3 MSI → $563.83/mes
  * - Estudiante Licenciatura: $995 MXN (50% desc) | 3 MSI → $331.67/mes
  * - Paquete 11 (Profesor/Posgrado): $16,915 MXN | 3/6/12 MSI
+ * 
+ * Mapeo a customer_category_fk:
+ * 5 → Profesor
+ * 6 → Estudiante Posgrado
+ * 7 → Estudiante Licenciatura
  */
 
 // Precios base
@@ -14,6 +19,18 @@ export const PRICES = {
   PROFESOR_POSGRADO: 1691.50,
   LICENCIATURA: 995,
   PAQUETE_11: 16915
+};
+
+// Mapeo de roles académicos a customer_category_fk en la BD
+export const ROLE_TO_CUSTOMER_CATEGORY = {
+  profesor: 5,        // Profesor
+  posgrado: 6,        // Estudiante Posgrado
+  licenciatura: 7     // Estudiante Licenciatura
+};
+
+// Función helper para obtener customer_category_fk desde el rol
+export const getCustomerCategoryFk = (role) => {
+  return ROLE_TO_CUSTOMER_CATEGORY[role] || null;
 };
 
 // Configuración MSI por rol
