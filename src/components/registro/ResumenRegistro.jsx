@@ -2,15 +2,9 @@ import React, { useState } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../data/variables';
 import { translationsRegistro } from '../../data/translationsRegistro';
-import { formatPrice } from '../../lib/academicPricing';
 import styles from './resumenRegistro.module.css';
 
-const ResumenRegistro = ({ 
-  leadData = null, 
-  selectedPaymentMethod = null,
-  academicPriceData = null,
-  isAcademic = false
-}) => {
+const ResumenRegistro = ({ leadData = null, selectedPaymentMethod = null, priceData = null }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
   
@@ -19,17 +13,6 @@ const ResumenRegistro = ({
   const toggleCollapse = () => {
     setIsCollapsed(!isCollapsed);
   };
-
-  // Calcular precio a mostrar (académico o general)
-  const displayPrice = academicPriceData && isAcademic
-    ? academicPriceData.finalPrice
-    : 1990;
-
-  const formattedPrice = formatPrice(displayPrice);
-
-  // Datos adicionales si es académico
-  const hasDiscount = academicPriceData && academicPriceData.discount > 0;
-  const monthlyPayment = academicPriceData?.monthlyAmount;
 
   const getPaymentButtonText = () => {
     if (!leadData) return null;
@@ -70,7 +53,7 @@ const ResumenRegistro = ({
             ? (ingles ? 'Show Summary' : 'Ver Resumen') 
             : (ingles ? 'Hide Summary' : 'Ocultar Resumen')}
         </span>
-        <span className={styles.togglePrice}>{formattedPrice}</span>
+        <span className={styles.togglePrice}>${t.price.amount}</span>
       </button>
 
       <div className={`${styles.summaryCard} ${isCollapsed ? styles.hidden : ''}`}>
@@ -88,34 +71,18 @@ const ResumenRegistro = ({
         {/* Precio destacado */}
         <div className={styles.priceSection}>
           <div className={styles.priceLabel}>{t.price.label}</div>
-          <div className={styles.priceAmount}>{formattedPrice}</div>
-          
-          {/* Badge de descuento académico */}
-          {isAcademic && hasDiscount && (
-            <div className={styles.academicBadge}>
-              <span className={styles.academicBadgeIcon}>🎓</span>
-              <span className={styles.academicBadgeText}>
-                {ingles 
-                  ? `${academicPriceData.discountPercentage}% Academic Discount` 
-                  : `${academicPriceData.discountPercentage}% Descuento Académico`}
-              </span>
-            </div>
-          )}
-          
-          {/* Información MSI si aplica */}
-          {isAcademic && monthlyPayment && (
-            <div className={styles.msiInfo}>
-              <span className={styles.msiLabel}>
-                {ingles ? 'Monthly payment:' : 'Pago mensual:'}
-              </span>
-              <span className={styles.msiAmount}>{formatPrice(monthlyPayment)}</span>
-            </div>
-          )}
-          
-          {/* Nota de precio (solo si NO hay MSI) */}
-          {!(isAcademic && monthlyPayment) && (
-            <div className={styles.priceNote}>{t.price.note}</div>
-          )}
+          <div className={styles.priceAmount}>
+            {priceData
+              ? (() => {
+                  try {
+                    return priceData.finalPrice.toLocaleString('es-MX', { style: 'currency', currency: 'MXN' });
+                  } catch {
+                    return t.price.amount;
+                  }
+                })()
+              : t.price.amount}
+          </div>
+          <div className={styles.priceNote}>{t.price.note}</div>
         </div>
 
         {/* Datos del Lead (si existen) */}

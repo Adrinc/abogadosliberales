@@ -22,13 +22,13 @@ const RegistroSeccion2 = () => {
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
 
-  // Estado académico
-  const [isAcademic, setIsAcademic] = useState(false);
-  const [academicData, setAcademicData] = useState(null);
-  const [academicPriceData, setAcademicPriceData] = useState(null);
-
   // Método de pago seleccionado
   const [selectedMethod, setSelectedMethod] = useState('paypal'); // 'paypal' | 'creditCard' | 'bankTransfer'
+
+  // Estado para el flujo académico
+  const [isAcademic, setIsAcademic] = useState(false);
+  // Guardar el precio académico calculado (si se requiere en otras partes)
+  const [academicPriceData, setAcademicPriceData] = useState(null);
 
   // Intersection Observer para animaciones
   useEffect(() => {
@@ -61,154 +61,108 @@ const RegistroSeccion2 = () => {
     setLeadId(id);
   };
 
-  // Handler para el toggle académico
-  const handleAcademicToggle = () => {
-    setIsAcademic(!isAcademic);
-    
-    // Si se desactiva, resetear datos académicos
-    if (isAcademic) {
-      setAcademicData(null);
-      setAcademicPriceData(null);
-      console.log('Academic mode disabled - clearing academic data');
-    }
-  };
-
-  // Handler cuando se completa el stepper académico
-  const handleAcademicComplete = (data) => {
-    console.log('✅ Academic verification completed:', data);
-    setAcademicData(data);
-    setAcademicPriceData(data.priceData);
-  };
-
-  // Handler cuando cambia el precio en tiempo real (stepper step 4)
-  const handleAcademicPriceChange = (priceData) => {
-    setAcademicPriceData(priceData);
-  };
-
   return (
-    <section 
-      id="formulario-registro" 
-      className={styles.registroSection} 
+    <section
+      id="formulario-registro"
+      className={styles.registroSection}
       ref={sectionRef}
     >
       <div className={styles.container}>
-        
-        {/* Grid asimétrico: Formulario grande + Resumen sticky */}
         <div className={styles.layout}>
-          
-          {/* Columna Izquierda: Formularios */}
+          {/* Columna Izquierda: Formularios y Stepper */}
           <div className={styles.formColumn}>
-            
-            {/* TOGGLE ACADÉMICO */}
-            <div className={`${styles.academicToggleCard} ${isVisible ? styles.fadeInLeft : ''}`}>
-              <AcademicToggle 
-                isAcademic={isAcademic}
-                onToggle={handleAcademicToggle}
+            {/* Toggle académico siempre visible */}
+            <AcademicToggle
+              isAcademic={isAcademic}
+              onToggle={() => setIsAcademic(!isAcademic)}
+            />
+
+            {isAcademic ? (
+              // Si el usuario pertenece a una institución educativa, mostramos el stepper completo
+              <AcademicStepper
+                onPriceChange={(priceData) => setAcademicPriceData(priceData)}
+                onComplete={(data) => {
+                  // Guardar datos del lead y cualquier otra información relevante
+                  if (data) {
+                    // Si el stepper nos devuelve datos del lead, almacenarlos localmente
+                    if (data.leadData) setLeadData(data.leadData);
+                    if (data.leadId) setLeadId(data.leadId);
+                  }
+                }}
               />
-            </div>
-
-            {/* STEPPER ACADÉMICO (solo si toggle activo) */}
-            {isAcademic && (
-              <div className={`${styles.academicStepperCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
-                <AcademicStepper 
-                  onComplete={handleAcademicComplete}
-                  onPriceChange={handleAcademicPriceChange}
-                />
-              </div>
-            )}
-
-            {/* PASO 1: Formulario de Lead */}
-            <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
-              <FormularioLead 
-                onSubmit={handleLeadSubmit}
-                isCompleted={!!leadData}
-                isAcademic={isAcademic}
-              />
-            </div>
-
-            {/* PASO 2: Selector de Método de Pago (solo si lead está completo) */}
-            {leadData && (
+            ) : (
               <>
-                <div className={`${styles.paymentMethodsCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
-                  <div className={styles.sectionHeader}>
-                    <h2 className={styles.sectionTitle}>
-                      {t.paymentMethods.title}
-                    </h2>
-                    <p className={styles.sectionSubtitle}>
-                      {t.paymentMethods.subtitle}
-                    </p>
-                  </div>
-
-                  {/* Tabs de métodos de pago */}
-                  <div className={styles.tabs}>
-                    <button
-                      className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
-                      onClick={() => setSelectedMethod('paypal')}
-                    >
-                      <div className={styles.tabIcon}>💳</div>
-                      <span className={styles.tabLabel}>{t.paymentMethods.tabs.paypal}</span>
-                      <div className={styles.tabIndicator}></div>
-                    </button>
-                    
-                    <button
-                      className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
-                      onClick={() => setSelectedMethod('creditCard')}
-                    >
-                      <div className={styles.tabIcon}>💰</div>
-                      <span className={styles.tabLabel}>{t.paymentMethods.tabs.creditCard}</span>
-                      <div className={styles.tabIndicator}></div>
-                    </button>
-                    
-                    <button
-                      className={`${styles.tab} ${selectedMethod === 'bankTransfer' ? styles.tabActive : ''}`}
-                      onClick={() => setSelectedMethod('bankTransfer')}
-                    >
-                      <div className={styles.tabIcon}>🏦</div>
-                      <span className={styles.tabLabel}>{t.paymentMethods.tabs.bankTransfer}</span>
-                      <div className={styles.tabIndicator}></div>
-                    </button>
-                  </div>
+                {/* PASO 1: Formulario de Lead */}
+                <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
+                  <FormularioLead
+                    onSubmit={handleLeadSubmit}
+                    isCompleted={!!leadData}
+                  />
                 </div>
 
-                {/* Renderizado condicional según método seleccionado */}
-                <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
-                  {selectedMethod === 'paypal' && (
-                    <PayPalIframe 
-                      leadId={leadId} 
-                      leadData={leadData}
-                      academicPriceData={academicPriceData}
-                      isAcademic={isAcademic}
-                    />
-                  )}
-                  
-                  {selectedMethod === 'creditCard' && (
-                    <IPPayTemporaryMessage />
-                  )}
-                  
-                  {selectedMethod === 'bankTransfer' && (
-                    <ComprobantePagoForm 
-                      leadId={leadId} 
-                      leadData={leadData}
-                      academicPriceData={academicPriceData}
-                      isAcademic={isAcademic}
-                    />
-                  )}
-                </div>
+                {/* PASO 2: Selector de Método de Pago (solo si lead está completo) */}
+                {leadData && (
+                  <>
+                    <div className={`${styles.paymentMethodsCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
+                      <div className={styles.sectionHeader}>
+                        <h2 className={styles.sectionTitle}>{t.paymentMethods.title}</h2>
+                        <p className={styles.sectionSubtitle}>{t.paymentMethods.subtitle}</p>
+                      </div>
+
+                      {/* Tabs de métodos de pago */}
+                      <div className={styles.tabs}>
+                        <button
+                          className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
+                          onClick={() => setSelectedMethod('paypal')}
+                        >
+                          <div className={styles.tabIcon}>💳</div>
+                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.paypal}</span>
+                          <div className={styles.tabIndicator}></div>
+                        </button>
+
+                        <button
+                          className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
+                          onClick={() => setSelectedMethod('creditCard')}
+                        >
+                          <div className={styles.tabIcon}>💰</div>
+                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.creditCard}</span>
+                          <div className={styles.tabIndicator}></div>
+                        </button>
+
+                        <button
+                          className={`${styles.tab} ${selectedMethod === 'bankTransfer' ? styles.tabActive : ''}`}
+                          onClick={() => setSelectedMethod('bankTransfer')}
+                        >
+                          <div className={styles.tabIcon}>🏦</div>
+                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.bankTransfer}</span>
+                          <div className={styles.tabIndicator}></div>
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Renderizado condicional según método seleccionado */}
+                    <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
+                      {selectedMethod === 'paypal' && <PayPalIframe leadId={leadId} leadData={leadData} />}
+                      {selectedMethod === 'creditCard' && <IPPayTemporaryMessage />}
+                      {selectedMethod === 'bankTransfer' && <ComprobantePagoForm leadId={leadId} leadData={leadData} />}
+                    </div>
+                  </>
+                )}
               </>
             )}
           </div>
 
-          {/* Columna Derecha: Resumen Sticky */}
-          <div className={styles.summaryColumn}>
-            <div className={`${styles.summaryCard} ${isVisible ? styles.fadeInRight : ''}`}>
-              <ResumenRegistro 
-                leadData={leadData}
-                selectedPaymentMethod={selectedMethod}
-                academicPriceData={academicPriceData}
-                isAcademic={isAcademic}
-              />
+          {/* Columna Derecha: Resumen Sticky (solo cuando no es académico) */}
+         {/*  {!isAcademic && ( */}
+            <div className={styles.summaryColumn}>
+              <div className={`${styles.summaryCard} ${isVisible ? styles.fadeInRight : ''}`}>
+                <ResumenRegistro
+                  leadData={leadData}
+                  selectedPaymentMethod={selectedMethod}
+                />
+              </div>
             </div>
-          </div>
+        {/*   )} */}
 
         </div>
       </div>
