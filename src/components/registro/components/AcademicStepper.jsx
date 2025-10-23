@@ -155,6 +155,12 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
 
   const handlePrevious = () => {
     if (currentStep > 1) {
+      // Si venimos del step 5 (pago), volver al step 4 (formulario)
+      // Pero limpiar leadData para que se muestre el formulario nuevamente
+      if (currentStep === 5) {
+        setLeadData(null);
+        setLeadId(null);
+      }
       setCurrentStep(currentStep - 1);
     }
   };
@@ -519,6 +525,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
             </p>
             {/* Formulario de datos personales */}
             <FormularioLead
+              key={`form-${leadData ? 'completed' : 'empty'}`}
               ref={formRef}
               onSubmit={handleLeadSubmit}
               isCompleted={!!leadData}
@@ -649,18 +656,21 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
           </button>
         )}
 
-        <button
-          type="button"
-          onClick={handleNext}
-          className={styles.btnPrimary}
-          disabled={isSubmitting}
-        >
-          {isSubmitting
-            ? t.messages.completing
-            : currentStep === 5
-            ? t.navigation.finish
-            : t.navigation.next}
-        </button>
+        {/* El botón "Finalizar" (siguiente) se oculta en el step 5 (pago) */}
+        {currentStep !== 5 && (
+          <button
+            type="button"
+            onClick={handleNext}
+            className={styles.btnPrimary}
+            disabled={isSubmitting}
+          >
+            {isSubmitting
+              ? t.messages.completing
+              : currentStep === 4
+              ? t.navigation.next
+              : t.navigation.next}
+          </button>
+        )}
       </div>
     </div>
   );
