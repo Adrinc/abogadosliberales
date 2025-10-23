@@ -80,7 +80,7 @@
 }
 
 .eventTitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: var(--font-family-primary, 'Roboto', serif);
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--al-blue-primary, #020266);

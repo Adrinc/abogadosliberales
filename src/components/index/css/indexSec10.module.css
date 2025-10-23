@@ -98,7 +98,6 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 700;
   line-height: 1.15;
@@ -276,7 +275,6 @@
 }
 
 .newsletterTitle {
-  font-family: 'Roboto', sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: #EECB00;

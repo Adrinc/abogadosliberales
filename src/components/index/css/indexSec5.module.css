@@ -212,7 +212,7 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(2.5rem, 4vw, 3.5rem);
   font-weight: 700;
   line-height: 1.2;
@@ -330,7 +330,7 @@
 }
 
 .price {
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(3.5rem, 5vw, 5rem);
   font-weight: 700;
   line-height: 1;
@@ -367,7 +367,7 @@
 }
 
 .includesTitle {
-  font-family: 'Roboto', sans-serif;
+
   font-size: 1.25rem;
   font-weight: 700;
   color: #020266;
@@ -593,7 +593,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Roboto', sans-serif;
+
   font-size: 1.75rem;
   font-weight: 700;
   color: #FFFFFF;

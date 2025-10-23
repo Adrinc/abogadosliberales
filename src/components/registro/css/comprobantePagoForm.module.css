@@ -7,7 +7,6 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
   font-size: 1.375rem;
   font-weight: 700;
   color: var(--al-blue-primary, #020266);
@@ -48,7 +47,7 @@
   font-size: 1.75rem;
   font-weight: 700;
   color: var(--al-blue-primary, #020266);
-  font-family: var(--al-font-body, 'Inter', sans-serif);
+  /* font-family: var(--al-font-body, 'Inter', sans-serif); */
 }
 
 /* ============================================
@@ -65,7 +64,7 @@
 }
 
 .bankDetailsTitle {
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+ /*  font-family: var(--al-font-headline, 'Merriweather', serif); */
   font-size: 1.125rem;
   font-weight: 700;
   color: var(--al-blue-primary, #020266);
@@ -439,7 +438,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #065F46;
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: var(--font-family-primary, 'Roboto', serif);
 }
 
 .successState p {
@@ -478,7 +477,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #991B1B;
-  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-family: var(--font-family-primary, 'Roboto', serif);
 }
 
 .errorState p {

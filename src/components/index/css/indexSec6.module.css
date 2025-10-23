@@ -161,7 +161,7 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(2.5rem, 4vw, 3.5rem);
   font-weight: 700;
   line-height: 1.2;
@@ -230,7 +230,7 @@
   top: 1.5rem;
   right: 1.5rem;
   font-size: 4rem;
-  font-family: Georgia, serif;
+
   color: rgba(238, 203, 0, 0.15);
   line-height: 1;
   pointer-events: none;
@@ -272,7 +272,7 @@
 }
 
 .testimonialName {
-  font-family: 'Roboto', sans-serif;
+
   font-size: 1.25rem;
   font-weight: 700;
   color: #020266;
@@ -346,7 +346,7 @@
   display: inline-flex;
   align-items: center;
   gap: 12px;
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(1.75rem, 3vw, 2.25rem);
   font-weight: 700;
   color: #020266;

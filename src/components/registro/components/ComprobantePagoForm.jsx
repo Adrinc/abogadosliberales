@@ -575,9 +575,9 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
         </form>
       )}
 
-      <div className={styles.debugInfo}>
+     {/*  <div className={styles.debugInfo}>
         <small>🔧 Debug: Lead ID = {leadId} | Event ID = {EVENT_ID}</small>
-      </div>
+      </div> */}
     </div>
   );
 };

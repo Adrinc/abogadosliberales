@@ -531,9 +531,9 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
         <div ref={paypalContainerRef} className={styles.paypalButtonContainer}></div>
       )}
 
-      <div className={styles.debugInfo}>
+  {/*     <div className={styles.debugInfo}>
         <small>🔧 Debug: Lead ID = {leadId} | Event ID = {EVENT_ID}</small>
-      </div>
+      </div> */}
     </div>
   );
 };

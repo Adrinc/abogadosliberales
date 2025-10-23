@@ -277,20 +277,26 @@ const NavBar = () => {
     return false;
   };
 
+  // Manejar click en el logo para ir a home
+  const handleLogoClick = (e) => {
+    e.preventDefault();
+    window.location.href = "/";
+  };
+
   return (
     <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
       {/* Overlay para móvil */}
       {isOpen && <div className={styles.overlay} onClick={toggleMenu} />}
       
       {/* Logo con efecto de hover mejorado */}
-      <div className={styles.logopic}>
+      <a href="/" className={styles.logopic} onClick={handleLogoClick} tabIndex={0} aria-label="Ir a inicio">
         <img src="/favicon.jpg" alt="Barra Mexicana de Abogados Liberales" />
         <div className={styles.logoText}>
           <div className={styles.logoTitle}>Abogados Liberales</div>
           <div className={styles.logoSubtitle}>Lux Iustitia</div>
         </div>
         <div className={styles.logoGlow}></div>
-      </div>
+      </a>
 
       {/* Switch de países mejorado */}
  {/*      <div className={styles.countrySwitch}>

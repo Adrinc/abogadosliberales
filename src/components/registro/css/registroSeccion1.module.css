@@ -51,7 +51,7 @@
 }
 
 .bannerTitle {
-  font-family: 'Roboto', sans-serif;
+  /* font-family: var(--font-family-primary, 'Roboto', serif); */
   font-size: clamp(1.25rem, 2vw, 1.5rem);
   font-weight: 700;
   color: var(--al-blue-primary, #020266);

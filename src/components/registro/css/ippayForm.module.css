@@ -300,7 +300,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #15803D;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: var(--font-family-primary, 'Roboto', serif); */
 }
 
 .successState p {
@@ -342,7 +342,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   color: #991B1B;
-  font-family: 'Roboto', sans-serif;
+  /* font-family: var(--font-family-primary, 'Roboto', serif); */
 }
 
 .errorState p {

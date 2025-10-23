@@ -178,7 +178,7 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(2.25rem, 4vw, 3rem);
   font-weight: 900;
   color: white;
@@ -283,7 +283,7 @@
   justify-content: center;
   font-size: 1.5rem;
   font-weight: 700;
-  font-family: 'Roboto', sans-serif;
+
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   border: 2px solid rgba(238, 203, 0, 0.2);
 }
@@ -432,7 +432,7 @@
 }
 
 .dayTitle {
-  font-family: 'Roboto', sans-serif;
+
   font-size: 1.5rem;
   font-weight: 800;
   color: #020266;
@@ -690,7 +690,7 @@
 }
 
 .sessionTitle {
-  font-family: 'Roboto', sans-serif;
+
   font-size: 1.125rem;
   font-weight: 700;
   color: #020266;

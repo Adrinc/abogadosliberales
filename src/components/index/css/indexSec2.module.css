@@ -158,7 +158,7 @@
 }
 
 .title {
-  font-family: 'Roboto', sans-serif;
+
   font-size: clamp(2.25rem, 3.5vw, 3rem);
   font-weight: 800;
   color: #020266;
@@ -267,7 +267,7 @@
   font-weight: 700;
   color: #020266;
   margin: 0 0 0.5rem 0;
-  font-family: 'Roboto', sans-serif;
+
 }
 
 .itemContent p {
