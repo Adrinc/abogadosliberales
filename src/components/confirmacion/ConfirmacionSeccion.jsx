@@ -117,6 +117,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             console.warn('⚠️ Error fetching payment (non-fatal):', paymentError);
           } else if (payment) {
             console.log('✅ Payment data loaded:', payment);
+            console.log('🔍 FULL payment object from DB:', JSON.stringify(payment, null, 2));
             setPaymentData(payment);
           } else {
             console.log('ℹ️ No payment record found yet (webhook may be processing)');
@@ -254,8 +255,17 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   
   // Extraer datos del response (webhook de n8n)
   const webhookResponse = paymentData?.response || {};
-  const ticketQRUrl = webhookResponse.image_url;
-  const ticketId = webhookResponse.ticket_id;
+  
+  // 🐛 LOG: Verificar estructura completa del response
+  console.log('🎫 Full webhookResponse:', webhookResponse);
+  console.log('🎫 webhookResponse.data:', webhookResponse.data);
+  
+  // La estructura correcta según el API es: response.data.qr_image_url
+  const ticketQRUrl = webhookResponse.data?.qr_image_url;
+  const ticketId = webhookResponse.data?.qr_code || webhookResponse.data?.ticket_id;
+  
+  console.log('🎫 Extracted ticketQRUrl:', ticketQRUrl);
+  console.log('🎫 Extracted ticketId:', ticketId);
 
   const isConfirmed = status === 'confirmed';
   const isPending = status === 'pending';
