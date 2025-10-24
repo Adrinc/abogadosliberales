@@ -5,12 +5,27 @@ import ConfirmacionSeccion from '../components/confirmacion/ConfirmacionSeccion.
 // Obtener query params
 const url = Astro.url;
 const transactionId = url.searchParams.get('transaction_id') || url.searchParams.get('receipt_id');
-const leadId = url.searchParams.get('lead_id');
+const leadIdRaw = url.searchParams.get('lead_id');
 const paymentMethod = url.searchParams.get('method') || 'unknown';
 const status = url.searchParams.get('status') || 'confirmed';
 
-// Verificar si tenemos los datos necesarios
-const hasData = transactionId && leadId;
+// Parsear leadId correctamente
+const leadId = leadIdRaw ? parseInt(leadIdRaw, 10) : null;
+
+// Log en servidor (solo se ve en terminal de Astro)
+console.log('🔍 confirmacion.astro - Query params:', {
+  transactionId,
+  leadIdRaw,
+  leadId,
+  paymentMethod,
+  status
+});
+
+// ⚠️ SIEMPRE pasar true - la validación real se hace en React después de intentar localStorage
+// Esto permite que el componente React intente recuperar los datos de localStorage
+const hasData = true;
+
+console.log('✅ confirmacion.astro - hasData (always true for fallback):', hasData);
 ---
 
 <LayoutBasic 

@@ -12,27 +12,66 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   const [paymentData, setPaymentData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   // Cargar datos del cliente y pago desde Supabase
   useEffect(() => {
     const fetchData = async () => {
-      if (!hasData || !leadId) {
+      console.log('🔍 ConfirmacionSeccion - Starting fetchData...');
+      console.log('📋 Props received:', { 
+        hasData, 
+        leadId, 
+        transactionId, 
+        paymentMethod, 
+        status 
+      });
+
+      // 🚨 FALLBACK RADICAL: Si no hay leadId, intentar obtenerlo de localStorage
+      let effectiveLeadId = leadId;
+      let effectiveTransactionId = transactionId;
+
+      if (!leadId || !transactionId) {
+        console.warn('⚠️ Missing params in URL, checking localStorage...');
+        
+        const storedLeadId = localStorage.getItem('lastLeadId');
+        const storedTransactionId = localStorage.getItem('lastTransactionId');
+        
+        if (storedLeadId) {
+          effectiveLeadId = parseInt(storedLeadId, 10);
+          console.log('✅ Recovered leadId from localStorage:', effectiveLeadId);
+        }
+        
+        if (storedTransactionId) {
+          effectiveTransactionId = storedTransactionId;
+          console.log('✅ Recovered transactionId from localStorage:', effectiveTransactionId);
+        }
+      }
+
+      if (!effectiveLeadId) {
+        console.error('❌ No leadId available (URL or localStorage)');
         setIsLoading(false);
+        setError('no_lead_id');
         return;
       }
 
       try {
-        console.log('📥 Fetching customer data for leadId:', leadId);
+        console.log('📥 Fetching customer data for leadId:', effectiveLeadId, 'Type:', typeof effectiveLeadId);
         
-        // 1. Obtener datos del cliente
-        const { data: customer, error: customerError } = await supabase
+        // 1. Obtener datos del cliente (effectiveLeadId ya es número)
+        const customerQuery = supabase
           .from('customer')
           .select('customer_id, first_name, last_name, email, mobile_phone, status')
-          .eq('customer_id', parseInt(leadId))
-          .single();
+          .eq('customer_id', effectiveLeadId);
+
+        console.log('🔍 Customer query:', customerQuery);
+
+        const { data: customer, error: customerError } = await customerQuery.single();
+
+        console.log('📊 Customer query result:', { customer, error: customerError });
 
         if (customerError) {
           console.error('❌ Error fetching customer:', customerError);
+          console.error('❌ Error details:', JSON.stringify(customerError, null, 2));
           setError('customer');
           setIsLoading(false);
           return;
@@ -42,25 +81,37 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         setCustomerData(customer);
 
         // 2. Obtener datos del pago desde event.event_payment
-        if (transactionId) {
-          console.log('📥 Fetching payment data for transaction:', transactionId);
+        if (effectiveTransactionId) {
+          console.log('📥 Fetching payment data...');
+          console.log('📋 Search params:', { 
+            leadId: effectiveLeadId, 
+            transactionId: effectiveTransactionId, 
+            paymentMethod 
+          });
           
           let paymentQuery = supabase
             .schema('event')
             .from('event_payment')
-            .select('event_payment_id, amount, currency, payment_method, status, created_at, response')
-            .eq('customer_fk', parseInt(leadId))
+            .select('event_payment_id, amount, currency, payment_method, status, created_at, response, paypal_transaction_id')
+            .eq('customer_fk', effectiveLeadId)
             .order('created_at', { ascending: false })
             .limit(1);
 
+          console.log('🔍 Base payment query created');
+
           // Filtrar por tipo de transacción según el método
-          if (paymentMethod === 'paypal' && transactionId) {
-            paymentQuery = paymentQuery.eq('paypal_transaction_id', transactionId);
-          } else if (paymentMethod === 'ippay' && transactionId) {
-            paymentQuery = paymentQuery.eq('ippay_transaction_id', transactionId);
+          if (paymentMethod === 'paypal' && effectiveTransactionId) {
+            console.log('🔍 Adding PayPal transaction filter:', effectiveTransactionId);
+            paymentQuery = paymentQuery.eq('paypal_transaction_id', effectiveTransactionId);
+          } else if (paymentMethod === 'ippay' && effectiveTransactionId) {
+            console.log('🔍 Adding IPPay transaction filter:', effectiveTransactionId);
+            paymentQuery = paymentQuery.eq('ippay_transaction_id', effectiveTransactionId);
           }
 
+          console.log('🔍 Executing payment query...');
           const { data: payment, error: paymentError } = await paymentQuery.maybeSingle();
+
+          console.log('📊 Payment query result:', { payment, error: paymentError });
 
           if (paymentError) {
             console.warn('⚠️ Error fetching payment (non-fatal):', paymentError);
@@ -69,6 +120,17 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             setPaymentData(payment);
           } else {
             console.log('ℹ️ No payment record found yet (webhook may be processing)');
+            
+            // Si no se encuentra el pago y es el primer intento, reintentar después de 3 segundos
+            if (retryCount < 2) {
+              console.log(`🔄 Retry ${retryCount + 1}/2: Will check again in 3 seconds...`);
+              setTimeout(() => {
+                setRetryCount(prev => prev + 1);
+              }, 3000);
+              return; // No marcar como cargado aún
+            } else {
+              console.warn('⚠️ Payment record not found after 2 retries');
+            }
           }
         }
 
@@ -81,12 +143,46 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     };
 
     fetchData();
-  }, [hasData, leadId, transactionId, paymentMethod]);
+  }, [leadId, transactionId, paymentMethod, retryCount]); // Removido hasData de dependencias
 
-  // Pantalla de error: sin datos en URL
-  if (!hasData) {
+  // 🐛 PANEL DE DEBUG TEMPORAL (remover después de solucionar)
+  const DebugPanel = () => (
+    <div style={{
+      position: 'fixed',
+      top: '10px',
+      right: '10px',
+      background: '#000',
+      color: '#0f0',
+      padding: '15px',
+      borderRadius: '8px',
+      fontFamily: 'monospace',
+      fontSize: '12px',
+      maxWidth: '400px',
+      zIndex: 9999,
+      border: '2px solid #0f0'
+    }}>
+      <div style={{ marginBottom: '10px', fontWeight: 'bold', color: '#ff0' }}>
+        🐛 DEBUG PANEL
+      </div>
+      <div><strong>hasData:</strong> {String(hasData)}</div>
+      <div><strong>leadId:</strong> {leadId} ({typeof leadId})</div>
+      <div><strong>transactionId:</strong> {transactionId}</div>
+      <div><strong>paymentMethod:</strong> {paymentMethod}</div>
+      <div><strong>status:</strong> {status}</div>
+      <hr style={{ margin: '10px 0', borderColor: '#0f0' }} />
+      <div><strong>isLoading:</strong> {String(isLoading)}</div>
+      <div><strong>error:</strong> {error || 'null'}</div>
+      <div><strong>customerData:</strong> {customerData ? '✅ Loaded' : '❌ Null'}</div>
+      <div><strong>paymentData:</strong> {paymentData ? '✅ Loaded' : '❌ Null'}</div>
+      <div><strong>retryCount:</strong> {retryCount}</div>
+    </div>
+  );
+
+  // Pantalla de error: no se pudo recuperar leadId ni de URL ni de localStorage
+  if (error === 'no_lead_id') {
     return (
       <div className={styles.container}>
+        <DebugPanel />
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>⚠️</div>
           <h1 className={styles.errorTitle}>
@@ -109,6 +205,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (isLoading) {
     return (
       <div className={styles.container}>
+        <DebugPanel />
         <div className={styles.loadingCard}>
           <div className={styles.spinner}></div>
           <h2 className={styles.loadingTitle}>
@@ -126,6 +223,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (error === 'customer' || !customerData) {
     return (
       <div className={styles.container}>
+        <DebugPanel />
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>❌</div>
           <h1 className={styles.errorTitle}>
@@ -156,6 +254,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
 
   return (
     <div className={styles.container}>
+      <DebugPanel />
       <div className={styles.confirmationCard}>
         
         {/* Success/Pending Icon */}

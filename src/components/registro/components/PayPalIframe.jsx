@@ -246,6 +246,7 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
                 const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
                 const minimalPayload = { ...webhookPayload, lead_id: effectiveLeadId };
 
+                console.log('📤 Sending minimal webhook with lead_id:', effectiveLeadId);
                 const webhookResponse = await fetch(WEBHOOK_URL, {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
@@ -256,13 +257,27 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               
                 if (webhookResponse.ok) {
                   console.log('✅ Webhook processed successfully (minimal data)');
+                  
+                  // ⏳ Esperar 2 segundos para que la BD se actualice
+                  console.log('⏳ Waiting for database to update...');
+                  await new Promise(resolve => setTimeout(resolve, 2000));
+                  
                   setPaymentStatus('success');
                   setTransactionId(data.orderID);
                   setIsProcessing(false);
                 
-                  setTimeout(() => {
-                    window.location.href = `/confirmacion?transaction_id=${data.orderID}&lead_id=${effectiveLeadId || ''}&method=paypal&status=pending_capture`;
-                  }, 3000);
+                  // 💾 Guardar en localStorage como fallback
+                  if (effectiveLeadId) {
+                    localStorage.setItem('lastLeadId', effectiveLeadId.toString());
+                    console.log('💾 Saved leadId to localStorage:', effectiveLeadId);
+                  }
+                  if (data.orderID) {
+                    localStorage.setItem('lastTransactionId', data.orderID);
+                    console.log('💾 Saved transactionId to localStorage:', data.orderID);
+                  }
+                
+                  console.log('🔄 Redirecting to confirmation page...');
+                  window.location.href = `/confirmacion?transaction_id=${data.orderID}&lead_id=${effectiveLeadId || ''}&method=paypal&status=pending_capture`;
                   return; // Salir exitosamente
                 }
               } catch (webhookError) {
@@ -321,9 +336,10 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
 
             console.log('📤 Sending webhook to n8n:', webhookPayload);
 
-            // 4. Enviar webhook
+            // 4. Enviar webhook y esperar confirmación
             let webhookOk = false;
             try {
+              console.log('📤 Sending webhook to n8n and waiting for response...');
               const webhookResponse = await fetch(WEBHOOK_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -336,6 +352,10 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               if (webhookResponse.ok) {
                 const webhookResult = await webhookResponse.json().catch(() => null);
                 console.log('✅ Webhook processed successfully:', webhookResult);
+                
+                // ⏳ ESPERAR 2 segundos adicionales para asegurar que la BD se actualice
+                console.log('⏳ Waiting for database to update...');
+                await new Promise(resolve => setTimeout(resolve, 2000));
               } else {
                 const errorText = await webhookResponse.text().catch(() => '');
                 console.error('❌ Webhook error:', errorText);
@@ -347,13 +367,23 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
             // 5. Marcar como exitoso y redirigir
             setPaymentStatus('success');
             setIsProcessing(false);
-            console.log('🎉 Payment completed successfully');
+            console.log('🎉 Payment completed successfully, redirecting...');
 
-            setTimeout(() => {
-              const txId = transactionID || data.orderID;
-              const statusParam = webhookOk ? 'confirmed' : 'pending_webhook';
-              window.location.href = `/confirmacion?transaction_id=${txId}&lead_id=${leadId}&method=paypal&status=${statusParam}`;
-            }, 3000);
+            // 💾 Guardar en localStorage como fallback
+            const txId = transactionID || data.orderID;
+            if (effectiveLeadId) {
+              localStorage.setItem('lastLeadId', effectiveLeadId.toString());
+              console.log('💾 Saved leadId to localStorage:', effectiveLeadId);
+            }
+            if (txId) {
+              localStorage.setItem('lastTransactionId', txId);
+              console.log('💾 Saved transactionId to localStorage:', txId);
+            }
+
+            // Redirigir inmediatamente (ya esperamos arriba)
+            const statusParam = webhookOk ? 'confirmed' : 'pending_webhook';
+            console.log('🔄 Redirecting to confirmation page...');
+            window.location.href = `/confirmacion?transaction_id=${txId}&lead_id=${effectiveLeadId}&method=paypal&status=${statusParam}`;
 
           } catch (error) {
             console.error('❌ Error during PayPal approval handling:', error);
