@@ -92,7 +92,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           let paymentQuery = supabase
             .schema('event')
             .from('event_payment')
-            .select('event_payment_id, amount, currency, payment_method, status, created_at, response, paypal_transaction_id')
+            .select('event_payment_id, amount, currency, payment_method, status, created_at, response, paypal_transaction_id, ippay_transaction_id')
             .eq('customer_fk', effectiveLeadId)
             .order('created_at', { ascending: false })
             .limit(1);
@@ -248,13 +248,20 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   // Calcular monto a mostrar
   const displayAmount = paymentData?.amount || 1990;
   const displayCurrency = paymentData?.currency || 'MXN';
+  
+  // Obtener método de pago del objeto payment (más confiable que URL)
+  const actualPaymentMethod = paymentData?.payment_method?.toLowerCase() || paymentMethod;
+  
+  // Extraer datos del response (webhook de n8n)
+  const webhookResponse = paymentData?.response || {};
+  const ticketQRUrl = webhookResponse.image_url;
+  const ticketId = webhookResponse.ticket_id;
 
   const isConfirmed = status === 'confirmed';
   const isPending = status === 'pending';
 
   return (
     <div className={styles.container}>
-      <DebugPanel />
       <div className={styles.confirmationCard}>
         
         {/* Success/Pending Icon */}
@@ -336,7 +343,9 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             <span className={styles.detailLabel}>
               {ingles ? 'Registration ID:' : 'ID de Registro:'}
             </span>
-            <span className={styles.detailValue}>{leadId}</span>
+            <span className={styles.detailValue}>
+              {paymentData?.event_payment_id || leadId}
+            </span>
           </div>
 
           {transactionId && (
@@ -356,10 +365,10 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
               {ingles ? 'Payment Method:' : 'Método de Pago:'}
             </span>
             <span className={styles.detailValue}>
-              {paymentMethod === 'paypal' && 'PayPal'}
-              {paymentMethod === 'ippay' && (ingles ? 'Credit/Debit Card' : 'Tarjeta de Crédito/Débito')}
-              {paymentMethod === 'transfer' && (ingles ? 'Bank Transfer' : 'Transferencia Bancaria')}
-              {paymentMethod === 'unknown' && (ingles ? 'Unknown' : 'Desconocido')}
+              {actualPaymentMethod === 'paypal' && 'PayPal'}
+              {actualPaymentMethod === 'ippay' && (ingles ? 'Credit/Debit Card' : 'Tarjeta de Crédito/Débito')}
+              {actualPaymentMethod === 'transfer' && (ingles ? 'Bank Transfer' : 'Transferencia Bancaria')}
+              {(!actualPaymentMethod || actualPaymentMethod === 'unknown') && (ingles ? 'Unknown' : 'Desconocido')}
             </span>
           </div>
 
@@ -408,6 +417,37 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             </div>
           </div>
         </div>
+
+        {/* QR Code / Ticket */}
+        {ticketQRUrl && (
+          <div className={styles.ticketBox}>
+            <h3 className={styles.ticketTitle}>
+              {ingles ? 'Your Access QR Code' : 'Tu Código QR de Acceso'}
+            </h3>
+            <p className={styles.ticketSubtitle}>
+              {ingles 
+                ? 'Present this QR code at the event entrance' 
+                : 'Presenta este código QR en la entrada del evento'}
+            </p>
+            <div className={styles.qrContainer}>
+              <img 
+                src={ticketQRUrl} 
+                alt={ingles ? 'Event Access QR Code' : 'Código QR de Acceso al Evento'} 
+                className={styles.qrImage}
+              />
+              {ticketId && (
+                <p className={styles.ticketId}>
+                  {ingles ? 'Ticket ID:' : 'ID de Boleto:'} <strong>{ticketId}</strong>
+                </p>
+              )}
+            </div>
+            <p className={styles.qrNotice}>
+              {ingles 
+                ? '💾 Save this image or take a screenshot for easy access' 
+                : '💾 Guarda esta imagen o toma una captura de pantalla para fácil acceso'}
+            </p>
+          </div>
+        )}
 
         {/* Next Steps */}
         <div className={styles.nextSteps}>

@@ -656,3 +656,105 @@
   font-family: 'Roboto', sans-serif;
 }
 
+/* ============================================
+   TICKET / QR CODE BOX
+   ============================================ */
+
+.ticketBox {
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.05), rgba(238, 203, 0, 0.02));
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid rgba(238, 203, 0, 0.3);
+  margin-bottom: 2.5rem;
+  text-align: center;
+}
+
+.ticketTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.ticketSubtitle {
+  font-size: 0.9375rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+}
+
+.qrContainer {
+  background: #FFFFFF;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 2px solid var(--al-border-light, #E2E8F0);
+  display: inline-block;
+  margin: 0 auto 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.qrImage {
+  max-width: 280px;
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+}
+
+.ticketId {
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 1rem 0 0 0;
+  font-family: 'Courier New', monospace;
+}
+
+.ticketId strong {
+  color: var(--al-blue-primary, #020266);
+  font-weight: 700;
+}
+
+.qrNotice {
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ============================================
+   RESPONSIVE: QR CODE
+   ============================================ */
+
+@media (max-width: 768px) {
+  .ticketBox {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .qrContainer {
+    padding: 1.5rem;
+  }
+
+  .qrImage {
+    max-width: 240px;
+  }
+}
+
+@media (max-width: 480px) {
+  .qrContainer {
+    padding: 1rem;
+  }
+
+  .qrImage {
+    max-width: 200px;
+  }
+
+  .ticketTitle {
+    font-size: 1.125rem;
+  }
+
+  .ticketSubtitle {
+    font-size: 0.875rem;
+  }
+}
