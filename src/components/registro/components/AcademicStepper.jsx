@@ -353,8 +353,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                 </label>
               ))}
 
-              {/* Paquete 11 (solo para profesor y posgrado) */}
-              {canAccessPaquete11(academicData.role) && (
+              {/* Paquete 11 (solo para profesor y posgrado) - TEMPORALMENTE OCULTO */}
+              {/* {canAccessPaquete11(academicData.role) && (
                 <label
                   className={`${styles.roleCard} ${styles.roleCardSpecial} ${
                     academicData.isPaquete11 ? styles.roleCardActive : ''
@@ -382,7 +382,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
                     <p className={styles.roleHint}>{t.step2.paquete11.hint}</p>
                   </div>
                 </label>
-              )}
+              )} */}
             </div>
 
             {errors.role && <span className={styles.errorText}>{errors.role}</span>}
@@ -531,6 +531,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               isCompleted={!!leadData}
               hideSubmitButton={true}
               customerCategoryFk={getCustomerCategoryFk(academicData.role)}
+              isAcademicFlow={true}  // Oculta campos redundantes (documento, organización, cargo, cupón)
             />
             {!leadData && (
               <p className={styles.hint}>
@@ -543,13 +544,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         {/* STEP 5: Plan de pago */}
         {currentStep === 5 && (
           <div className={styles.step}>
-            <h3 className={styles.stepTitle}>
-              {(t.step5 && t.step5.title) || (ingles ? 'Plan de pago' : 'Plan de pago')}
-            </h3>
-            <p className={styles.stepSubtitle}>
-              {(t.step5 && t.step5.subtitle) ||
-                (ingles ? 'Selecciona tu método de pago' : 'Selecciona tu método de pago')}
-            </p>
+       
             {leadData ? (
               <>
                 {/* Métodos de pago */}

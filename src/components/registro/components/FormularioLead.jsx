@@ -9,7 +9,8 @@ const FormularioLead = React.forwardRef(({
   onSubmit, 
   isCompleted, 
   hideSubmitButton = false, 
-  customerCategoryFk = null  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
+  customerCategoryFk = null,  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
+  isAcademicFlow = false  // TRUE cuando viene del flujo académico (AcademicStepper)
 }, ref) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
@@ -62,11 +63,16 @@ const FormularioLead = React.forwardRef(({
     if (!formData.mobile_phone.trim()) {
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
     }
-    if (!formData.document_type) {
-      newErrors.document_type = t.leadForm.documentType.error;
-    }
-    if (!formData.document_number.trim()) {
-      newErrors.document_number = t.leadForm.documentNumber.error;
+
+    // Validar documento solo si NO estamos en flujo académico
+    // (en flujo académico ya se capturó en Step 3)
+    if (!isAcademicFlow) {
+      if (!formData.document_type) {
+        newErrors.document_type = t.leadForm.documentType.error;
+      }
+      if (!formData.document_number.trim()) {
+        newErrors.document_number = t.leadForm.documentNumber.error;
+      }
     }
 
     setErrors(newErrors);
@@ -102,21 +108,29 @@ const FormularioLead = React.forwardRef(({
         console.log('✅ Customer already exists:', existingCustomer.customer_id);
         customerId = existingCustomer.customer_id;
 
-        // Opcional: actualizar datos si han cambiado
+        // Actualizar datos incluyendo customer_category_fk
+        const updatePayload = {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          mobile_phone: formData.mobile_phone,
+          status: 'Lead'
+        };
+
+        // Solo agregar customer_category_fk si se proporciona (flujo académico)
+        if (customerCategoryFk !== null && customerCategoryFk !== undefined) {
+          updatePayload.customer_category_fk = customerCategoryFk;
+          console.log('📋 Updating customer_category_fk:', customerCategoryFk);
+        }
+
         const { error: updateError } = await supabase
           .from('customer')
-          .update({
-            first_name: formData.first_name,
-            last_name: formData.last_name,
-            mobile_phone: formData.mobile_phone,
-            status: 'Lead' // Mantener o actualizar status
-          })
+          .update(updatePayload)
           .eq('customer_id', customerId);
 
         if (updateError) {
           console.warn('⚠️ Error updating customer (non-fatal):', updateError.message);
         } else {
-          console.log('✅ Customer data updated');
+          console.log('✅ Customer data updated with category:', customerCategoryFk);
         }
       } else {
         // Cliente no existe, crear nuevo
@@ -127,11 +141,14 @@ const FormularioLead = React.forwardRef(({
           mobile_phone: formData.mobile_phone,
           status: 'Lead',
           customer_parent_id: null,
-          customer_category_fk: customerCategoryFk || null,  // Mapeo académico: 5, 6, o 7
+          customer_category_fk: customerCategoryFk || null,  // Mapeo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
           organization_fk: null
         };
 
-        console.log('📥 Inserting new customer:', { email: formData.email });
+        console.log('📥 Inserting new customer:', { 
+          email: formData.email, 
+          customer_category_fk: customerCategoryFk 
+        });
 
         const { data: newCustomer, error: insertError } = await supabase
           .from('customer')
@@ -148,7 +165,7 @@ const FormularioLead = React.forwardRef(({
         }
 
         customerId = newCustomer.customer_id;
-        console.log('✅ New customer created with ID:', customerId);
+        console.log('✅ New customer created with ID:', customerId, 'and category:', customerCategoryFk);
       }
 
       // 2. Preparar datos del lead para el componente padre
@@ -268,96 +285,104 @@ const FormularioLead = React.forwardRef(({
         <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>
       </div>
 
-      {/* Tipo de Documento y Número (Grid 2 columnas) */}
-      <div className={styles.gridRow}>
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="document_type">
-            {t.leadForm.documentType.label} <span className={styles.required}>*</span>
-          </label>
-          <select
-            id="document_type"
-            name="document_type"
-            value={formData.document_type}
-            onChange={handleChange}
-            className={`${styles.select} ${errors.document_type ? styles.inputError : ''}`}
-          >
-            <option value="">{t.leadForm.documentType.placeholder}</option>
-            {t.leadForm.documentType.options.map(option => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
-          {errors.document_type && <span className={styles.errorText}>{errors.document_type}</span>}
-        </div>
+      {/* Tipo de Documento y Número - OCULTO en flujo académico (ya capturado en Step 3) */}
+      {!isAcademicFlow && (
+        <div className={styles.gridRow}>
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="document_type">
+              {t.leadForm.documentType.label} <span className={styles.required}>*</span>
+            </label>
+            <select
+              id="document_type"
+              name="document_type"
+              value={formData.document_type}
+              onChange={handleChange}
+              className={`${styles.select} ${errors.document_type ? styles.inputError : ''}`}
+            >
+              <option value="">{t.leadForm.documentType.placeholder}</option>
+              {t.leadForm.documentType.options.map(option => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            {errors.document_type && <span className={styles.errorText}>{errors.document_type}</span>}
+          </div>
 
+          <div className={styles.formGroup}>
+            <label className={styles.label} htmlFor="document_number">
+              {t.leadForm.documentNumber.label} <span className={styles.required}>*</span>
+            </label>
+            <input
+              type="text"
+              id="document_number"
+              name="document_number"
+              value={formData.document_number}
+              onChange={handleChange}
+              placeholder={t.leadForm.documentNumber.placeholder}
+              className={`${styles.input} ${errors.document_number ? styles.inputError : ''}`}
+            />
+            {errors.document_number && <span className={styles.errorText}>{errors.document_number}</span>}
+          </div>
+        </div>
+      )}
+
+      {/* Organización - OCULTO en flujo académico (redundante con universidad) */}
+      {!isAcademicFlow && (
         <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="document_number">
-            {t.leadForm.documentNumber.label} <span className={styles.required}>*</span>
+          <label className={styles.label} htmlFor="company">
+            {t.leadForm.company.label}
           </label>
           <input
             type="text"
-            id="document_number"
-            name="document_number"
-            value={formData.document_number}
+            id="company"
+            name="company"
+            value={formData.company}
             onChange={handleChange}
-            placeholder={t.leadForm.documentNumber.placeholder}
-            className={`${styles.input} ${errors.document_number ? styles.inputError : ''}`}
+            placeholder={t.leadForm.company.placeholder}
+            className={styles.input}
           />
-          {errors.document_number && <span className={styles.errorText}>{errors.document_number}</span>}
+          <span className={styles.hint}>{t.leadForm.company.hint}</span>
         </div>
-      </div>
+      )}
 
-      {/* Organización (Opcional) */}
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="company">
-          {t.leadForm.company.label}
-        </label>
-        <input
-          type="text"
-          id="company"
-          name="company"
-          value={formData.company}
-          onChange={handleChange}
-          placeholder={t.leadForm.company.placeholder}
-          className={styles.input}
-        />
-        <span className={styles.hint}>{t.leadForm.company.hint}</span>
-      </div>
+      {/* Cargo - OCULTO en flujo académico (redundante con rol) */}
+      {!isAcademicFlow && (
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="job_title">
+            {t.leadForm.jobTitle.label}
+          </label>
+          <input
+            type="text"
+            id="job_title"
+            name="job_title"
+            value={formData.job_title}
+            onChange={handleChange}
+            placeholder={t.leadForm.jobTitle.placeholder}
+            className={styles.input}
+          />
+          <span className={styles.hint}>{t.leadForm.jobTitle.hint}</span>
+        </div>
+      )}
 
-      {/* Cargo (Opcional) */}
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="job_title">
-          {t.leadForm.jobTitle.label}
-        </label>
-        <input
-          type="text"
-          id="job_title"
-          name="job_title"
-          value={formData.job_title}
-          onChange={handleChange}
-          placeholder={t.leadForm.jobTitle.placeholder}
-          className={styles.input}
-        />
-        <span className={styles.hint}>{t.leadForm.jobTitle.hint}</span>
-      </div>
-
-      {/* Cupón (Opcional) */}
-      <div className={styles.formGroup}>
-        <label className={styles.label} htmlFor="coupon">
-          {t.leadForm.coupon.label}
-        </label>
-        <input
-          type="text"
-          id="coupon"
-          name="coupon"
-          value={formData.coupon}
-          onChange={handleChange}
-          placeholder={t.leadForm.coupon.placeholder}
-          className={styles.input}
-        />
-        <span className={styles.hint}>{t.leadForm.coupon.hint}</span>
-      </div>
+      {/* Cupón - OCULTO en flujo académico (descuento ya aplicado) */}
+      {!isAcademicFlow && (
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="coupon">
+            {t.leadForm.coupon.label}
+          </label>
+          <input
+            type="text"
+            id="coupon"
+            name="coupon"
+            value={formData.coupon}
+            onChange={handleChange}
+            placeholder={t.leadForm.coupon.placeholder}
+            className={styles.input}
+          />
+          <span className={styles.hint}>{t.leadForm.coupon.hint}</span>
+        </div>
+      )}
 
       {/* Botón Submit */}
       {!hideSubmitButton && (

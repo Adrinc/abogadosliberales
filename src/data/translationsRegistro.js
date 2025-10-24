@@ -49,7 +49,7 @@ export const translationsRegistro = {
         options: [
           { 
             value: "profesor", 
-            label: "Profesor / Docente",
+            label: "Personal educativo",
             description: "Personal académico de tiempo completo o por asignatura",
             price: "$1,691.50 MXN",
             discount: "15% descuento"
@@ -513,7 +513,7 @@ export const translationsRegistro = {
         options: [
           { 
             value: "profesor", 
-            label: "Professor / Faculty",
+            label: "Educational Staff",
             description: "Full-time or adjunct academic staff",
             price: "$1,691.50 MXN",
             discount: "15% discount"
