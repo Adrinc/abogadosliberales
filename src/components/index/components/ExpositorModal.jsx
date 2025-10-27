@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isEnglish } from '../../../data/variables';
 import { useStore } from '@nanostores/react';
 import { translationsExpositores } from '../../../data/translationsExpositores';
@@ -8,6 +8,15 @@ const ExpositorModal = ({ expositor, onClose }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsExpositores.en.modal : translationsExpositores.es.modal;
   const expositorData = ingles ? translationsExpositores.en[expositor.id] : translationsExpositores.es[expositor.id];
+  const [isClosing, setIsClosing] = useState(false);
+
+  // Función para manejar el cierre con fade-out
+  const handleClose = () => {
+    setIsClosing(true);
+    setTimeout(() => {
+      onClose();
+    }, 300); // Duración del fade-out (igual a la animación CSS)
+  };
 
   // Prevenir scroll del body cuando el modal está abierto
   useEffect(() => {
@@ -20,20 +29,26 @@ const ExpositorModal = ({ expositor, onClose }) => {
   // Cerrar con tecla ESC
   useEffect(() => {
     const handleEsc = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [onClose]);
+  }, []);
 
   if (!expositorData) return null;
 
   return (
-    <div className={styles.modalOverlay} onClick={onClose}>
-      <div className={styles.modalContainer} onClick={(e) => e.stopPropagation()}>
+    <div 
+      className={`${styles.modalOverlay} ${isClosing ? styles.fadeOut : ''}`} 
+      onClick={handleClose}
+    >
+      <div 
+        className={`${styles.modalContainer} ${isClosing ? styles.slideDown : ''}`} 
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Botón cerrar */}
-        <button className={styles.closeButton} onClick={onClose} aria-label={t.closeButton}>
+        <button className={styles.closeButton} onClick={handleClose} aria-label={t.closeButton}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line>

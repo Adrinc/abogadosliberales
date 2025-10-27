@@ -11,7 +11,6 @@ const IndexSeccion4 = () => {
   const t = ingles ? translationsIndex.en.programa : translationsIndex.es.programa;
   const [isVisible, setIsVisible] = useState(false);
   const [activeDay, setActiveDay] = useState('day1');
-  const [scrollY, setScrollY] = useState(0);
   const [selectedExpositor, setSelectedExpositor] = useState(null);
   const sectionRef = useRef(null);
 
@@ -36,20 +35,6 @@ const IndexSeccion4 = () => {
     };
   }, []);
 
-  // Parallax effect suave
-  useEffect(() => {
-    const handleScroll = () => {
-      if (sectionRef.current) {
-        const rect = sectionRef.current.getBoundingClientRect();
-        const scrollProgress = Math.max(0, Math.min(1, 1 - rect.top / window.innerHeight));
-        setScrollY(scrollProgress * 50); // Movimiento máximo de 50px
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   // Función para obtener el ícono según el tipo de actividad
   const getActivityIcon = (type) => {
     if (type.includes('Conferencia')) return '🎤';
@@ -68,9 +53,6 @@ const IndexSeccion4 = () => {
       id="programa"
       className={`${styles.section} ${isVisible ? styles.visible : ''}`} 
       ref={sectionRef}
-      style={{
-        backgroundPositionY: `${scrollY}px`
-      }}
     >
       {/* Borde decorativo superior dorado */}
       <div className={styles.topBorder}>

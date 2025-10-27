@@ -14,7 +14,7 @@
   background: #020266; /* Fallback azul oscuro */
 }
 
-/* Fondo parallax con imagen */
+/* Fondo sin parallax */
 .section::before {
   content: '';
   position: absolute;
@@ -22,10 +22,9 @@
   background-image: url('/image/backgrounds/bg_banner1.jpg');
   background-size: cover;
   background-position: center;
-  background-attachment: fixed; /* Parallax effect */
+  background-attachment: scroll; /* Sin parallax */
   opacity: 0.15;
   z-index: 0;
-  transition: transform 0.3s ease-out;
 }
 
 /* Overlay institucional azul-dorado */
@@ -109,16 +108,7 @@
     transparent 100%
   );
   filter: blur(8px);
-  animation: borderPulse 3s ease-in-out infinite;
-}
-
-@keyframes borderPulse {
-  0%, 100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
+  opacity: 0.7; /* Sin animación */
 }
 
 .container {
@@ -139,14 +129,13 @@
   text-align: center;
   max-width: 800px;
   margin: 0 auto 3rem;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1; /* Sin animación */
+  transform: none;
 }
 
 .section.visible .header {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 .label {
@@ -226,9 +215,8 @@
   gap: 1rem;
   justify-content: center;
   margin-bottom: 2.5rem;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  opacity: 1; /* Sin animación */
+  transform: none;
 }
 
 .dayTab {
@@ -338,14 +326,13 @@
   gap: 2rem;
   margin-bottom: 2.5rem;
   position: relative;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  opacity: 1; /* Sin animación */
+  transform: none;
 }
 
 .section.visible .tabsCtaRow {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 .tabsCtaRow .dayTabs {
@@ -366,26 +353,24 @@
   display: flex;
   position: absolute;
   left: 0;
-  opacity: 0;
-  transform: translateX(-20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.3s;
+  opacity: 1; /* Sin animación */
+  transform: none;
 }
 
 .section.visible .ctaWrapperInline {
   opacity: 1;
-  transform: translateX(0);
+  transform: none;
 }
 
 /* Timeline - CONTENEDOR CON SCROLL */
 .timeline {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
+  opacity: 1; /* Sin animación */
+  transform: none;
 }
 
 .section.visible .timeline {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 .timelineWrapper {
@@ -412,23 +397,10 @@
   height: 6px;
   background: linear-gradient(90deg, 
     #EECB00 0%, 
-    #F4D672 25%, 
-    #EECB00 50%, 
-    #F4D672 75%, 
+    #F4D672 50%, 
     #EECB00 100%
   );
   z-index: 2;
-  background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
-}
-
-@keyframes shimmer {
-  0% {
-    background-position: -200% 0;
-  }
-  100% {
-    background-position: 200% 0;
-  }
 }
 
 .dayTitle {
@@ -510,27 +482,15 @@
   background: linear-gradient(90deg, transparent, #EECB00, transparent);
   border-radius: 2px;
   z-index: 6;
-  animation: pulseScroll 2s ease-in-out infinite;
-}
-
-@keyframes pulseScroll {
-  0%, 100% {
-    opacity: 0.4;
-    transform: translateX(-50%) scaleX(0.8);
-  }
-  50% {
-    opacity: 1;
-    transform: translateX(-50%) scaleX(1.2);
-  }
+  opacity: 0.7; /* Sin animación */
 }
 
 /* Session card */
 .sessionCard {
   position: relative;
   margin-bottom: 1.5rem;
-  opacity: 0;
-  transform: translateX(-20px);
-  animation: sessionSlideIn 0.5s ease forwards;
+  opacity: 1; /* Sin animación */
+  transform: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -539,19 +499,8 @@
 }
 
 .section.visible .sessionCard {
-  animation-play-state: running;
-}
-
-/* Efecto de aparición más dramático */
-@keyframes sessionSlideIn {
-  from {
-    opacity: 0;
-    transform: translateX(-30px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0) scale(1);
-  }
+  opacity: 1;
+  transform: none;
 }
 
 /* Línea conectora vertical */
@@ -723,7 +672,7 @@
 .sessionGrid {
   display: grid;
   grid-template-columns: 140px 1fr;
-  gap: 1.5rem;
+  gap: 2rem; /* Más separación entre expositor y contenido */
   width: 100%;
 }
 
@@ -735,7 +684,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 0.75rem;
+
 }
 
 .expositorImage {
@@ -823,6 +774,8 @@
   flex-direction: column;
   gap: 0.875rem;
   flex: 1;
+
+  padding:12px;
 }
 
 .sessionSpeaker {
@@ -1186,7 +1139,7 @@
   /* Grid de sesión más compacto */
   .sessionGrid {
     grid-template-columns: 72px 1fr;
-    gap: 0.875rem;
+    gap: 1.125rem; /* Más separación entre expositor y contenido */
   }
 
   .expositorImage {
@@ -1279,6 +1232,7 @@
   .section {
     padding: 4rem 1.5rem;
   }
+  
 
   /* Desactivar parallax en móvil (mejor performance) */
   .section::before {
