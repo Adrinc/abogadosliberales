@@ -15,7 +15,7 @@ export const translationsRegistro = {
     // Toggle Académico
     academicToggle: {
       title: "¿Perteneces a una institución educativa?",
-      subtitle: "Obtén descuentos exclusivos de UNAM, UVM o UAM",
+      subtitle: "Obtén descuentos exclusivos UVM o UAM",
       activeMessage: "Accede a precios académicos especiales. Complete los datos adicionales a continuación."
     },
 
@@ -33,7 +33,6 @@ export const translationsRegistro = {
         required: true,
         error: "Seleccione su universidad",
         options: [
-          { value: "UNAM", label: "UNAM - Universidad Nacional Autónoma de México" },
           { value: "UVM", label: "UVM - Universidad del Valle de México" },
           { value: "UAM", label: "UAM - Universidad Autónoma Metropolitana" }
         ]
@@ -78,47 +77,66 @@ export const translationsRegistro = {
         }
       },
 
-      // Paso 3: Verificación
+      // Paso 3: Datos personales y verificación
       step3: {
-        title: "Verificación de identidad",
-        subtitle: "Documente su afiliación académica",
+        title: "Datos personales y verificación",
+        subtitle: "Complete su información y documentación académica",
         
-        documentType: {
-          label: "Tipo de identificación",
-          placeholder: "Seleccione tipo",
+        firstName: {
+          label: "Nombre(s)",
+          placeholder: "Ingrese su(s) nombre(s)",
           required: true,
-          error: "Seleccione el tipo de documento",
-          options: [
-            { value: "credencial_escolar", label: "Credencial escolar vigente" },
-            { value: "ine", label: "INE / IFE" },
-            { value: "curp", label: "CURP" },
-            { value: "otro", label: "Otro documento oficial" }
-          ]
+          error: "Ingrese su nombre"
         },
 
-        documentNumber: {
-          label: "Número de documento",
-          placeholder: "Ingrese el número",
+        lastName: {
+          label: "Apellido(s)",
+          placeholder: "Ingrese sus apellidos",
           required: true,
-          error: "Ingrese el número de documento"
+          error: "Ingrese sus apellidos"
+        },
+
+        email: {
+          label: "Correo electrónico",
+          placeholder: "ejemplo@correo.com",
+          required: true,
+          error: "Ingrese un correo válido",
+          hint: "Recibirá su confirmación y QR de acceso aquí"
+        },
+
+        emailConfirm: {
+          label: "Confirmar correo electrónico",
+          placeholder: "Confirme su correo",
+          required: true,
+          error: "Los correos no coinciden",
+          hint: "Asegúrese de escribir el mismo correo para evitar errores"
+        },
+
+        phone: {
+          label: "Teléfono / WhatsApp",
+          placeholder: "+52 55 1234 5678",
+          required: true,
+          error: "Ingrese su teléfono"
         },
 
         studentId: {
           label: "Matrícula o Número de empleado",
-          placeholder: "Ej: 318123456 (UNAM) o 123456 (UVM)",
+          placeholder: "Ej: 318123456 o EMP-12345",
           required: true,
           error: "Ingrese su matrícula o número de empleado",
-          hint: "Requerido para estudiantes y profesores"
+          hint: "Obligatorio para validar su descuento académico"
         },
 
         proofFile: {
-          label: "Comprobante académico (opcional pero recomendado)",
-          hint: "Suba su credencial escolar, constancia de estudios o nombramiento. PDF, JPG o PNG hasta 5 MB.",
-          buttonText: "Seleccionar archivo",
-          selectedText: "Archivo seleccionado:",
-          errorSize: "El archivo no debe exceder 5 MB",
-          errorType: "Solo se permiten archivos PDF, JPG o PNG",
-          dragText: "Arrastre su archivo aquí o haga clic para seleccionar"
+          label: "Identificación académica",
+          hint: "Suba una imagen (foto) de su credencial escolar, constancia de estudios o nombramiento. Formatos aceptados: JPG, PNG, WebP, HEIC (iPhone), AVIF. Hasta 5 MB.",
+          buttonText: "Seleccionar imagen",
+          selectedText: "Imagen seleccionada:",
+          errorSize: "La imagen no debe exceder 5 MB",
+          errorType: "Solo se permiten archivos de imagen (JPG, PNG, WebP, HEIC, AVIF, BMP)",
+          dragText: "Arrastre su imagen aquí o haga clic para seleccionar",
+          required: true,
+          error: "Debe cargar una imagen de su identificación académica"
         }
       },
 
@@ -479,7 +497,7 @@ export const translationsRegistro = {
     // Academic Toggle
     academicToggle: {
       title: "Do you belong to an educational institution?",
-      subtitle: "Get exclusive discounts from UNAM, UVM or UAM",
+      subtitle: "Get exclusive discounts from UVM or UAM",
       activeMessage: "Access special academic pricing. Complete the additional information below."
     },
 
@@ -497,7 +515,6 @@ export const translationsRegistro = {
         required: true,
         error: "Select your university",
         options: [
-          { value: "UNAM", label: "UNAM - National Autonomous University of Mexico" },
           { value: "UVM", label: "UVM - University of Valle de México" },
           { value: "UAM", label: "UAM - Metropolitan Autonomous University" }
         ]
@@ -542,47 +559,66 @@ export const translationsRegistro = {
         }
       },
 
-      // Step 3: Verification
+      // Step 3: Personal data and verification
       step3: {
-        title: "Identity verification",
-        subtitle: "Document your academic affiliation",
+        title: "Personal data and verification",
+        subtitle: "Complete your information and academic documentation",
         
-        documentType: {
-          label: "Type of identification",
-          placeholder: "Select type",
+        firstName: {
+          label: "First name(s)",
+          placeholder: "Enter your first name(s)",
           required: true,
-          error: "Select document type",
-          options: [
-            { value: "credencial_escolar", label: "Valid student ID" },
-            { value: "ine", label: "INE / IFE" },
-            { value: "curp", label: "CURP" },
-            { value: "otro", label: "Other official document" }
-          ]
+          error: "Enter your first name"
         },
 
-        documentNumber: {
-          label: "Document number",
-          placeholder: "Enter number",
+        lastName: {
+          label: "Last name(s)",
+          placeholder: "Enter your last name(s)",
           required: true,
-          error: "Enter document number"
+          error: "Enter your last name"
+        },
+
+        email: {
+          label: "Email address",
+          placeholder: "example@email.com",
+          required: true,
+          error: "Enter a valid email",
+          hint: "You will receive your confirmation and access QR here"
+        },
+
+        emailConfirm: {
+          label: "Confirm email address",
+          placeholder: "Confirm your email",
+          required: true,
+          error: "Emails do not match",
+          hint: "Make sure to write the same email to avoid errors"
+        },
+
+        phone: {
+          label: "Phone / WhatsApp",
+          placeholder: "+52 55 1234 5678",
+          required: true,
+          error: "Enter your phone number"
         },
 
         studentId: {
           label: "Student ID or Employee number",
-          placeholder: "E.g: 318123456 (UNAM) or 123456 (UVM)",
+          placeholder: "E.g: 318123456 or EMP-12345",
           required: true,
           error: "Enter your student ID or employee number",
-          hint: "Required for students and professors"
+          hint: "Required to validate your academic discount"
         },
 
         proofFile: {
-          label: "Academic proof (optional but recommended)",
-          hint: "Upload your student ID, enrollment certificate or appointment. PDF, JPG or PNG up to 5 MB.",
-          buttonText: "Select file",
-          selectedText: "Selected file:",
-          errorSize: "File must not exceed 5 MB",
-          errorType: "Only PDF, JPG or PNG files allowed",
-          dragText: "Drag your file here or click to select"
+          label: "Academic identification",
+          hint: "Upload an image (photo) of your student ID, enrollment certificate or appointment. Accepted formats: JPG, PNG, WebP, HEIC (iPhone), AVIF. Up to 5 MB.",
+          buttonText: "Select image",
+          selectedText: "Selected image:",
+          errorSize: "Image must not exceed 5 MB",
+          errorType: "Only image files allowed (JPG, PNG, WebP, HEIC, AVIF, BMP)",
+          dragText: "Drag your image here or click to select",
+          required: true,
+          error: "You must upload an image of your academic identification"
         }
       },
 

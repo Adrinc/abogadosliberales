@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
+import supabase from '../../../lib/supabaseClient';
 import {
   calculateAcademicPrice,
   getMSIOptions,
@@ -17,7 +18,7 @@ import PayPalIframe from '../components/PayPalIframe';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
-const AcademicStepper = ({ onComplete, onPriceChange }) => {
+const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelectedMethod }) => {
   const ingles = useStore(isEnglish);
   const t = ingles
     ? translationsRegistro.en.academicStepper
@@ -30,18 +31,23 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
   // Datos del lead y método de pago para los pasos 4 y 5
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
-  const [selectedMethod, setSelectedMethod] = useState('paypal'); // 'paypal' | 'creditCard' | 'bankTransfer'
+  // selectedMethod ahora viene como prop desde RegistroSeccion2
+  // const [selectedMethod, setSelectedMethod] = useState('paypal'); // REMOVIDO - ahora es prop
 
   // Referencia al formulario de datos personales (FormularioLead)
   const formRef = useRef(null);
 
-  // Datos académicos
+  // Datos académicos y personales
   const [academicData, setAcademicData] = useState({
     university: '',
     role: '',
     isPaquete11: false,
-    documentType: '',
-    documentNumber: '',
+    // Datos personales (antes en Step 4, ahora en Step 3)
+    firstName: '',
+    lastName: '',
+    email: '',
+    emailConfirm: '',
+    phone: '',
     studentId: '',
     proofFile: null,
     paymentPlan: 'single', // 'single' | 'msi3' | 'msi6' | 'msi12'
@@ -50,8 +56,9 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
   // Errores por paso
   const [errors, setErrors] = useState({});
 
-  // Archivo seleccionado
+  // Archivo seleccionado y preview
   const [selectedFile, setSelectedFile] = useState(null);
+  const [filePreview, setFilePreview] = useState(null);
   const [fileError, setFileError] = useState('');
 
   // Calcular precio en tiempo real
@@ -80,10 +87,7 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
   // Helper para obtener la etiqueta de cada paso en la barra de progreso.
   const getStepLabel = (step) => {
     if (step === 4) {
-      return ingles ? 'Datos personales' : 'Datos personales';
-    }
-    if (step === 5) {
-      return ingles ? 'Plan de pago' : 'Plan de pago';
+      return ingles ? 'Payment method' : 'Método de pago';
     }
     const key = `step${step}`;
     return (t[key] && t[key].title) || step;
@@ -107,23 +111,37 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
         break;
 
       case 3:
-        if (!academicData.documentType) {
-          newErrors.documentType = t.step3.documentType.error;
+        // Validar datos personales
+        if (!academicData.firstName.trim()) {
+          newErrors.firstName = t.step3.firstName.error;
         }
-        if (!academicData.documentNumber.trim()) {
-          newErrors.documentNumber = t.step3.documentNumber.error;
+        if (!academicData.lastName.trim()) {
+          newErrors.lastName = t.step3.lastName.error;
         }
-        // Matrícula obligatoria para estudiantes y posgrado
-        if (
-          (academicData.role === 'licenciatura' || academicData.role === 'posgrado') &&
-          !academicData.studentId.trim()
-        ) {
+        // Validar email
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!academicData.email.trim()) {
+          newErrors.email = t.step3.email.error;
+        } else if (!emailRegex.test(academicData.email)) {
+          newErrors.email = t.step3.email.error;
+        }
+        // Validar confirmación de email
+        if (!academicData.emailConfirm.trim()) {
+          newErrors.emailConfirm = t.step3.emailConfirm.error;
+        } else if (academicData.email !== academicData.emailConfirm) {
+          newErrors.emailConfirm = t.step3.emailConfirm.error;
+        }
+        if (!academicData.phone.trim()) {
+          newErrors.phone = t.step3.phone.error;
+        }
+        // Matrícula obligatoria
+        if (!academicData.studentId.trim()) {
           newErrors.studentId = t.step3.studentId.error;
         }
-        break;
-
-      case 4:
-        // Paso 4 corresponde a datos personales y se valida mediante el formulario
+        // Archivo obligatorio
+        if (!selectedFile && !academicData.proofFile) {
+          newErrors.proofFile = t.step3.proofFile.error;
+        }
         break;
 
       default:
@@ -134,32 +152,151 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // Handlers
-  const handleNext = () => {
-    // Si estamos en el paso 4 (datos personales), enviamos el formulario y esperamos a que el callback de onSubmit avance al siguiente paso.
-    if (currentStep === 4) {
-      if (formRef.current && typeof formRef.current.submit === 'function') {
-        formRef.current.submit();
+  // Crear customer en Supabase (Step 3)
+  const handleCreateCustomer = async () => {
+    setIsSubmitting(true);
+
+    try {
+      console.log('📤 Creating customer in Supabase...');
+      
+      // Obtener la categoría correspondiente según el rol
+      const customerCategoryFk = getCustomerCategoryFk(academicData.role, academicData.isPaquete11);
+      console.log('📋 Customer category FK:', customerCategoryFk);
+
+      // 1. Verificar si el email ya existe
+      const { data: existingCustomer, error: selectError } = await supabase
+        .from('customer')
+        .select('customer_id, email, status')
+        .eq('email', academicData.email)
+        .limit(1)
+        .maybeSingle();
+
+      if (selectError) {
+        console.warn('⚠️ Error checking existing customer:', selectError.message);
       }
-    } else {
-      // Para los demás pasos, realizar validación y avanzar normalmente
-      if (validateStep(currentStep)) {
-        if (currentStep < 5) {
-          setCurrentStep(currentStep + 1);
+
+      let customerId = null;
+
+      if (existingCustomer) {
+        // Cliente ya existe, actualizar datos
+        console.log('✅ Customer already exists:', existingCustomer.customer_id);
+        customerId = existingCustomer.customer_id;
+
+        const { error: updateError } = await supabase
+          .from('customer')
+          .update({
+            first_name: academicData.firstName,
+            last_name: academicData.lastName,
+            mobile_phone: academicData.phone,
+            customer_category_fk: customerCategoryFk,
+            status: 'Lead'
+          })
+          .eq('customer_id', customerId);
+
+        if (updateError) {
+          console.warn('⚠️ Error updating customer:', updateError.message);
         } else {
-          handleComplete();
+          console.log('✅ Customer updated successfully');
         }
+      } else {
+        // Cliente no existe, crear nuevo
+        const { data: newCustomer, error: insertError } = await supabase
+          .from('customer')
+          .insert({
+            first_name: academicData.firstName,
+            last_name: academicData.lastName,
+            email: academicData.email,
+            mobile_phone: academicData.phone,
+            customer_category_fk: customerCategoryFk,
+            status: 'Lead',
+            customer_parent_id: null,
+            organization_fk: null
+          })
+          .select('customer_id')
+          .single();
+
+        if (insertError) {
+          console.error('❌ Error creating customer:', insertError.message);
+          throw new Error(ingles 
+            ? 'Failed to create customer. Please try again.' 
+            : 'Error al crear el cliente. Por favor intente nuevamente.'
+          );
+        }
+
+        customerId = newCustomer.customer_id;
+        console.log('✅ New customer created with ID:', customerId);
+      }
+
+      // Guardar leadData y leadId
+      setLeadId(customerId);
+      const newLeadData = {
+        name: `${academicData.firstName} ${academicData.lastName}`,
+        email: academicData.email,
+        phone: academicData.phone,
+        customer_id: customerId
+      };
+      setLeadData(newLeadData);
+
+      console.log('🎉 Customer creation successful!');
+      
+      // Notificar al componente padre que se creó el lead
+      if (onComplete) {
+        onComplete({
+          leadData: newLeadData,
+          leadId: customerId
+        });
+      }
+      
+      // Avanzar al siguiente paso
+      setCurrentStep(currentStep + 1);
+
+    } catch (error) {
+      console.error('❌ Error during customer creation:', error);
+      alert(error.message || (ingles 
+        ? 'An error occurred. Please try again.' 
+        : 'Ocurrió un error. Por favor intente nuevamente.'
+      ));
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Handlers
+  const handleNext = async () => {
+    // Validar el paso actual
+    if (!validateStep(currentStep)) {
+      return;
+    }
+
+    // Si estamos en el paso 3 (datos personales + académicos), crear customer en BD
+    if (currentStep === 3) {
+      await handleCreateCustomer();
+    } else {
+      // Para los demás pasos, avanzar normalmente
+      if (currentStep < 4) {
+        setCurrentStep(currentStep + 1);
+      } else {
+        handleComplete();
       }
     }
   };
 
   const handlePrevious = () => {
     if (currentStep > 1) {
-      // Si venimos del step 5 (pago), volver al step 4 (formulario)
-      // Pero limpiar leadData para que se muestre el formulario nuevamente
-      if (currentStep === 5) {
+      // Si venimos del step 4 (pago), volver al step 3
+      // Limpiar leadData para permitir edición
+      if (currentStep === 4) {
         setLeadData(null);
         setLeadId(null);
+        
+        // Notificar al padre para que también limpie su estado
+        if (onComplete) {
+          onComplete({
+            leadData: null,
+            leadId: null
+          });
+        }
+        console.log('🧹 Retrocediendo del Step 4 → Step 3 - Datos limpiados');
       }
       setCurrentStep(currentStep - 1);
     }
@@ -205,8 +342,17 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
 
     if (!file) return;
 
-    // Validar tipo
-    const validTypes = ['application/pdf', 'image/jpeg', 'image/png'];
+    // Validar tipo - IMÁGENES (JPG, PNG, WebP, HEIC, AVIF, BMP)
+    const validTypes = [
+      'image/jpeg',
+      'image/jpg',
+      'image/png',
+      'image/webp',      // Android, web moderna
+      'image/heic',      // iPhone (iOS 11+)
+      'image/heif',      // iPhone alternativo
+      'image/avif',      // Formato moderno
+      'image/bmp'        // Formato antiguo pero válido
+    ];
     if (!validTypes.includes(file.type)) {
       setFileError(t.step3.proofFile.errorType);
       return;
@@ -220,6 +366,26 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
 
     setSelectedFile(file);
     setAcademicData({ ...academicData, proofFile: file });
+
+    // Generar preview de la imagen
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setFilePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // Función para remover archivo
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setFilePreview(null);
+    setAcademicData({ ...academicData, proofFile: null });
+    if (errors.proofFile) {
+      setErrors({ ...errors, proofFile: '' });
+    }
+    // Limpiar input file
+    const fileInput = document.getElementById('proofFile');
+    if (fileInput) fileInput.value = '';
   };
 
   // Callback para el formulario de datos personales. Almacena los datos del lead y avanza al paso 5.
@@ -248,17 +414,16 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
   return (
     <div className={styles.stepperContainer}>
       {/* Progress Bar */}
-      {/* Configuramos la barra de progreso para mostrar cinco pasos en una sola línea.
-          Para evitar que el quinto paso se desplace a otra línea, utilizamos flexbox y
-          asignamos un ancho fijo del 20% a cada paso. */}
+      {/* Configuramos la barra de progreso para mostrar cuatro pasos en una sola línea.
+          Utilizamos flexbox y asignamos un ancho de 25% a cada paso. */}
       <div
         className={styles.progressBar}
         style={{ display: 'flex', flexWrap: 'nowrap' }}
       >
-        {[1, 2, 3, 4, 5].map((step) => (
+        {[1, 2, 3, 4].map((step) => (
           <div
             key={step}
-            style={{ width: '20%' }}
+            style={{ width: '25%' }}
             className={`${styles.progressStep} ${
               step <= currentStep ? styles.progressStepActive : ''
             } ${step < currentStep ? styles.progressStepCompleted : ''}`}
@@ -389,106 +554,168 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
           </div>
         )}
 
-        {/* STEP 3: Verificación */}
+        {/* STEP 3: Datos personales y verificación */}
         {currentStep === 3 && (
           <div className={styles.step}>
             <h3 className={styles.stepTitle}>{t.step3.title}</h3>
             <p className={styles.stepSubtitle}>{t.step3.subtitle}</p>
 
-            {/* Tipo de documento */}
+            {/* Nombre(s) */}
             <div className={styles.formGroup}>
-              <label className={styles.label} htmlFor="documentType">
-                {t.step3.documentType.label}{' '}
-                <span className={styles.required}>*</span>
-              </label>
-              <select
-                id="documentType"
-                value={academicData.documentType}
-                onChange={(e) => {
-                  setAcademicData({ ...academicData, documentType: e.target.value });
-                  if (errors.documentType) setErrors({ ...errors, documentType: '' });
-                }}
-                className={`${styles.select} ${
-                  errors.documentType ? styles.inputError : ''
-                }`}
-              >
-                <option value="">{t.step3.documentType.placeholder}</option>
-                {t.step3.documentType.options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {errors.documentType && (
-                <span className={styles.errorText}>{errors.documentType}</span>
-              )}
-            </div>
-
-            {/* Número de documento */}
-            <div className={styles.formGroup}>
-              <label className={styles.label} htmlFor="documentNumber">
-                {t.step3.documentNumber.label}{' '}
+              <label className={styles.label} htmlFor="firstName">
+                {t.step3.firstName.label}{' '}
                 <span className={styles.required}>*</span>
               </label>
               <input
                 type="text"
-                id="documentNumber"
-                value={academicData.documentNumber}
+                id="firstName"
+                value={academicData.firstName}
                 onChange={(e) => {
-                  setAcademicData({ ...academicData, documentNumber: e.target.value });
-                  if (errors.documentNumber) setErrors({ ...errors, documentNumber: '' });
+                  setAcademicData({ ...academicData, firstName: e.target.value });
+                  if (errors.firstName) setErrors({ ...errors, firstName: '' });
                 }}
-                placeholder={t.step3.documentNumber.placeholder}
-                className={`${styles.input} ${
-                  errors.documentNumber ? styles.inputError : ''
-                }`}
+                placeholder={t.step3.firstName.placeholder}
+                className={`${styles.input} ${errors.firstName ? styles.inputError : ''}`}
               />
-              {errors.documentNumber && (
-                <span className={styles.errorText}>{errors.documentNumber}</span>
+              {errors.firstName && (
+                <span className={styles.errorText}>{errors.firstName}</span>
               )}
             </div>
 
-            {/* Matrícula (solo para estudiantes y posgrado) */}
-            {(academicData.role === 'licenciatura' || academicData.role === 'posgrado') && (
-              <div className={styles.formGroup}>
-                <label className={styles.label} htmlFor="studentId">
-                  {t.step3.studentId.label}{' '}
-                  <span className={styles.required}>*</span>
-                </label>
-                <input
-                  type="text"
-                  id="studentId"
-                  value={academicData.studentId}
-                  onChange={(e) => {
-                    setAcademicData({ ...academicData, studentId: e.target.value });
-                    if (errors.studentId) setErrors({ ...errors, studentId: '' });
-                  }}
-                  placeholder={t.step3.studentId.placeholder}
-                  className={`${styles.input} ${
-                    errors.studentId ? styles.inputError : ''
-                  }`}
-                />
-                {errors.studentId && (
-                  <span className={styles.errorText}>{errors.studentId}</span>
-                )}
-                <span className={styles.hint}>{t.step3.studentId.hint}</span>
-              </div>
-            )}
+            {/* Apellido(s) */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="lastName">
+                {t.step3.lastName.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                value={academicData.lastName}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, lastName: e.target.value });
+                  if (errors.lastName) setErrors({ ...errors, lastName: '' });
+                }}
+                placeholder={t.step3.lastName.placeholder}
+                className={`${styles.input} ${errors.lastName ? styles.inputError : ''}`}
+              />
+              {errors.lastName && (
+                <span className={styles.errorText}>{errors.lastName}</span>
+              )}
+            </div>
 
-            {/* Archivo (opcional) */}
+            {/* Correo electrónico */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="email">
+                {t.step3.email.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="email"
+                id="email"
+                value={academicData.email}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, email: e.target.value });
+                  if (errors.email) setErrors({ ...errors, email: '' });
+                }}
+                placeholder={t.step3.email.placeholder}
+                className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
+              />
+              {errors.email && (
+                <span className={styles.errorText}>{errors.email}</span>
+              )}
+              {!errors.email && t.step3.email.hint && (
+                <span className={styles.hint}>{t.step3.email.hint}</span>
+              )}
+            </div>
+
+            {/* Confirmar correo electrónico */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="emailConfirm">
+                {t.step3.emailConfirm.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="email"
+                id="emailConfirm"
+                value={academicData.emailConfirm}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, emailConfirm: e.target.value });
+                  if (errors.emailConfirm) setErrors({ ...errors, emailConfirm: '' });
+                }}
+                placeholder={t.step3.emailConfirm.placeholder}
+                className={`${styles.input} ${errors.emailConfirm ? styles.inputError : ''}`}
+              />
+              {errors.emailConfirm && (
+                <span className={styles.errorText}>{errors.emailConfirm}</span>
+              )}
+              {!errors.emailConfirm && t.step3.emailConfirm.hint && (
+                <span className={styles.hint}>{t.step3.emailConfirm.hint}</span>
+              )}
+            </div>
+
+            {/* Teléfono / WhatsApp */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="phone">
+                {t.step3.phone.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                value={academicData.phone}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, phone: e.target.value });
+                  if (errors.phone) setErrors({ ...errors, phone: '' });
+                }}
+                placeholder={t.step3.phone.placeholder}
+                className={`${styles.input} ${errors.phone ? styles.inputError : ''}`}
+              />
+              {errors.phone && (
+                <span className={styles.errorText}>{errors.phone}</span>
+              )}
+            </div>
+
+            {/* Matrícula o Número de empleado */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="studentId">
+                {t.step3.studentId.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <input
+                type="text"
+                id="studentId"
+                value={academicData.studentId}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, studentId: e.target.value });
+                  if (errors.studentId) setErrors({ ...errors, studentId: '' });
+                }}
+                placeholder={t.step3.studentId.placeholder}
+                className={`${styles.input} ${errors.studentId ? styles.inputError : ''}`}
+              />
+              {errors.studentId && (
+                <span className={styles.errorText}>{errors.studentId}</span>
+              )}
+              {!errors.studentId && t.step3.studentId.hint && (
+                <span className={styles.hint}>{t.step3.studentId.hint}</span>
+              )}
+            </div>
+
+            {/* Archivo de identificación (OBLIGATORIO) */}
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="proofFile">
-                {t.step3.proofFile.label}
+                {t.step3.proofFile.label}{' '}
+                <span className={styles.required}>*</span>
               </label>
               <div className={styles.fileUpload}>
                 <input
                   type="file"
                   id="proofFile"
-                  accept=".pdf,.jpg,.jpeg,.png"
+                  accept=".jpg,.jpeg,.png,.webp,.heic,.heif,.avif,.bmp,image/jpeg,image/png,image/webp,image/heic,image/heif,image/avif,image/bmp"
                   onChange={handleFileChange}
                   className={styles.fileInput}
                 />
-                <label htmlFor="proofFile" className={styles.fileLabel}>
+                <label htmlFor="proofFile" className={`${styles.fileLabel} ${errors.proofFile ? styles.fileLabelError : ''}`}>
                   <svg className={styles.fileIcon} width="24" height="24" viewBox="0 0 24 24" fill="none">
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" stroke="currentColor" strokeWidth="2" />
                     <path d="M17 8l-5-5-5 5M12 3v12" stroke="currentColor" strokeWidth="2" />
@@ -498,51 +725,47 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
               </div>
               {selectedFile && (
                 <div className={styles.selectedFile}>
-                  <span className={styles.fileName}>{selectedFile.name}</span>
-                  <span className={styles.fileSize}>
-                    ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                  <span className={styles.selectedFileName}>{selectedFile.name}</span>
+                  <span className={styles.selectedFileSize}>
+                    ({(selectedFile.size / 1024).toFixed(1)} KB)
                   </span>
+                  <button
+                    type="button"
+                    onClick={handleRemoveFile}
+                    className={styles.removeFileButton}
+                  >
+                    ✕
+                  </button>
                 </div>
               )}
+
+              {/* Preview de la imagen cargada */}
+              {filePreview && (
+                <div className={styles.filePreviewContainer}>
+                  <img 
+                    src={filePreview} 
+                    alt="Vista previa de identificación" 
+                    className={styles.imagePreview}
+                  />
+                  <p className={styles.previewLabel}>
+                    {ingles ? 'Preview of uploaded image' : 'Vista previa de la imagen cargada'}
+                  </p>
+                </div>
+              )}
+
+              {errors.proofFile && (
+                <span className={styles.errorText}>{errors.proofFile}</span>
+              )}
+              {!errors.proofFile && t.step3.proofFile.hint && (
+                <span className={styles.hint}>{t.step3.proofFile.hint}</span>
+              )}
               {fileError && <span className={styles.errorText}>{fileError}</span>}
-              <span className={styles.hint}>{t.step3.proofFile.hint}</span>
             </div>
           </div>
         )}
 
-        {/* STEP 4: Datos personales */}
+        {/* STEP 4: Método de pago */}
         {currentStep === 4 && (
-          <div className={styles.step}>
-            {/* Use translation if available; fallback to a static label */}
-            <h3 className={styles.stepTitle}>
-              {(t.step4 && t.step4.title) || (ingles ? 'Datos personales' : 'Datos personales')}
-            </h3>
-            <p className={styles.stepSubtitle}>
-              {(t.step4 && t.step4.subtitle) ||
-                (ingles
-                  ? 'Por favor ingresa tus datos personales'
-                  : 'Por favor ingresa tus datos personales')}
-            </p>
-            {/* Formulario de datos personales */}
-            <FormularioLead
-              key={`form-${leadData ? 'completed' : 'empty'}`}
-              ref={formRef}
-              onSubmit={handleLeadSubmit}
-              isCompleted={!!leadData}
-              hideSubmitButton={true}
-              customerCategoryFk={getCustomerCategoryFk(academicData.role)}
-              isAcademicFlow={true}  // Oculta campos redundantes (documento, organización, cargo, cupón)
-            />
-            {!leadData && (
-              <p className={styles.hint}>
-                {ingles ? 'Completa el formulario para continuar' : 'Completa el formulario para continuar'}
-              </p>
-            )}
-          </div>
-        )}
-
-        {/* STEP 5: Plan de pago */}
-        {currentStep === 5 && (
           <div className={styles.step}>
        
             {leadData ? (
@@ -651,8 +874,8 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
           </button>
         )}
 
-        {/* El botón "Finalizar" (siguiente) se oculta en el step 5 (pago) */}
-        {currentStep !== 5 && (
+        {/* El botón "Continuar" se oculta en el Step 4 (método de pago) */}
+        {currentStep < 4 && (
           <button
             type="button"
             onClick={handleNext}
@@ -661,8 +884,6 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => {
           >
             {isSubmitting
               ? t.messages.completing
-              : currentStep === 4
-              ? t.navigation.next
               : t.navigation.next}
           </button>
         )}

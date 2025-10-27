@@ -726,15 +726,6 @@
    PROGRESS BAR
    ============================================ */
 
-/*
- * The academic stepper can dynamically render a different number of steps
- * depending on whether the user is following the full academic flow or
- * the simplified flow.  Using a flex layout instead of a fixed grid
- * ensures that any number of steps (for example, five steps when
- * additional personal data and payment selection are required) will
- * distribute evenly across the horizontal space.  Each step will take
- * up an equal portion of the bar without wrapping to the next line.
- */
 .progressBar {
   display: flex;
   flex-wrap: nowrap;
@@ -743,15 +734,9 @@
   position: relative;
 }
 
-/* Each progress step should occupy an equal width so that all steps
- * appear on a single line.  A flex-basis of 20% means that five
- * steps will each take up exactly one fifth of the bar; when fewer
- * steps are present the browser will automatically adjust their widths
- * evenly.  Flex-shrink is disabled to prevent the steps from
- * compressing, and flex-grow is disabled so they don't expand more
- * than the available space.  */
+
 .progressStep {
-  flex: 0 0 20%;
+  flex: 0 0 25%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1672,5 +1657,114 @@
   .sectionIcon {
     width: 24px;
     height: 24px;
+  }
+}
+
+
+/* ============================================
+   FILE PREVIEW - IMAGEN/PDF
+   ============================================ */
+
+.filePreviewContainer {
+  margin-top: 1.5rem;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, 
+    rgba(248, 250, 252, 0.95), 
+    rgba(244, 246, 255, 0.95)
+  );
+  border: 2px solid var(--al-border-light, #E2E8F0);
+  border-radius: 12px;
+  text-align: center;
+  animation: fadeInPreview 0.4s ease;
+}
+
+@keyframes fadeInPreview {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.imagePreview {
+  max-width: 100%;
+  max-height: 300px;
+  width: auto;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 
+    0 4px 12px rgba(2, 2, 102, 0.08),
+    0 2px 4px rgba(2, 2, 102, 0.04);
+  object-fit: contain;
+  margin: 0 auto;
+  display: block;
+}
+
+.pdfPreview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.pdfIcon {
+  color: var(--al-blue-primary, #020266);
+  opacity: 0.7;
+}
+
+.pdfText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--al-blue-primary, #020266);
+  margin: 0;
+}
+
+.previewLabel {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  font-weight: 500;
+}
+
+.removeFileButton {
+  background: #EF4444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  transition: all 0.3s ease;
+  padding: 0;
+  line-height: 1;
+}
+
+.removeFileButton:hover {
+  background: #DC2626;
+  transform: scale(1.1);
+}
+
+/* Responsive para preview */
+@media (max-width: 768px) {
+  .imagePreview {
+    max-height: 200px;
+  }
+
+  .filePreviewContainer {
+    padding: 1rem;
+  }
+
+  .pdfPreview {
+    padding: 1.5rem;
   }
 }

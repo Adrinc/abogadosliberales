@@ -74,7 +74,14 @@ const RegistroSeccion2 = () => {
             {/* Toggle académico siempre visible */}
             <AcademicToggle
               isAcademic={isAcademic}
-              onToggle={() => setIsAcademic(!isAcademic)}
+              onToggle={() => {
+                setIsAcademic(!isAcademic);
+                // Limpiar datos del lead al cambiar entre flujos
+                setLeadData(null);
+                setLeadId(null);
+                setAcademicPriceData(null);
+                console.log('🧹 Toggle cambiado - Datos limpiados');
+              }}
             />
 
             {isAcademic ? (
@@ -83,12 +90,21 @@ const RegistroSeccion2 = () => {
                 onPriceChange={(priceData) => setAcademicPriceData(priceData)}
                 onComplete={(data) => {
                   // Guardar datos del lead y cualquier otra información relevante
+                  console.log('🎯 onComplete llamado en RegistroSeccion2 con data:', data);
                   if (data) {
                     // Si el stepper nos devuelve datos del lead, almacenarlos localmente
-                    if (data.leadData) setLeadData(data.leadData);
-                    if (data.leadId) setLeadId(data.leadId);
+                    if (data.leadData) {
+                      console.log('✅ Actualizando leadData:', data.leadData);
+                      setLeadData(data.leadData);
+                    }
+                    if (data.leadId) {
+                      console.log('✅ Actualizando leadId:', data.leadId);
+                      setLeadId(data.leadId);
+                    }
                   }
                 }}
+                selectedMethod={selectedMethod}
+                setSelectedMethod={setSelectedMethod}
               />
             ) : (
               <>

@@ -14,6 +14,14 @@ const ResumenRegistro = ({
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
   
+  // Debug: Verificar props recibidas
+  console.log('🔍 ResumenRegistro - Props recibidas:', {
+    leadData,
+    selectedPaymentMethod,
+    academicPriceData,
+    isAcademic
+  });
+  
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {
@@ -110,11 +118,6 @@ const ResumenRegistro = ({
               </span>
               <span className={styles.msiAmount}>{formatPrice(monthlyPayment)}</span>
             </div>
-          )}
-          
-          {/* Nota de precio (solo si NO hay MSI) */}
-          {!(isAcademic && monthlyPayment) && (
-            <div className={styles.priceNote}>{t.price.note}</div>
           )}
         </div>
 
