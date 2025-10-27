@@ -36,7 +36,7 @@ const MapComponent = ({ position, venueName, parkingPosition }) => {
   if (!mapComponents) {
     return (
       <div style={{ 
-        height: '550px', 
+        height: '360px', 
         width: '100%', 
         borderRadius: '16px', 
         background: 'linear-gradient(135deg, #F8FAFC, #E2E8F0)',
@@ -156,7 +156,7 @@ const MapComponent = ({ position, venueName, parkingPosition }) => {
       zoom={17}
       scrollWheelZoom={false}
       className={styles.leafletMap}
-      style={{ height: '550px', width: '100%', borderRadius: '16px' }}
+      style={{ height: '360px', width: '100%', borderRadius: '16px' }}
       attributionControl={false}
     >
       <TileLayer

@@ -5,7 +5,7 @@
 
 .section {
   position: relative;
-  padding: 100px 0;
+  padding: 50px 0 60px;
   background: linear-gradient(135deg, #020266 0%, #05054F 50%, #0B0B2B 100%);
   overflow: hidden;
   color: #FFFFFF;
@@ -59,16 +59,16 @@
    ============================================ */
 
 .badgeWrapper {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
 }
 
 .badge {
   display: inline-block;
-  padding: 10px 24px;
+  padding: 6px 18px;
   background: linear-gradient(135deg, rgba(238, 203, 0, 0.2), rgba(238, 203, 0, 0.1));
   border: 2px solid #EECB00;
   border-radius: 999px;
-  font-size: 0.875rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: #EECB00;
   letter-spacing: 0.05em;
@@ -94,28 +94,28 @@
 
 .headerWrapper {
   max-width: 800px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 1.75rem;
 }
 
 .title {
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(1.875rem, 3.5vw, 2.75rem);
   font-weight: 700;
-  line-height: 1.15;
+  line-height: 1.1;
   color: #FFFFFF;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.75rem;
   text-shadow: 0 4px 20px rgba(238, 203, 0, 0.4);
 }
 
 .subtitle {
-  font-size: clamp(1.125rem, 1.75vw, 1.5rem);
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.5vw, 1.25rem);
+  line-height: 1.5;
   color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 1rem;
+  margin-bottom: 0.625rem;
 }
 
 .description {
-  font-size: clamp(1rem, 1.25vw, 1.125rem);
-  line-height: 1.7;
+  font-size: clamp(0.9375rem, 1.15vw, 1.0625rem);
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.75);
 }
 
@@ -127,19 +127,19 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  margin-bottom: 3rem;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
 }
 
 .ctaPrimary {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 20px 50px;
+  gap: 12px;
+  padding: 16px 40px;
   background: linear-gradient(135deg, #EECB00, #F4D672);
   color: #020266;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: 700;
   border: none;
   border-radius: 14px;
@@ -179,7 +179,7 @@
 }
 
 .ctaArrow {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   transition: transform 0.3s ease;
 }
 
@@ -190,12 +190,12 @@
 .ctaSecondary {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 16px 40px;
+  gap: 8px;
+  padding: 12px 32px;
   background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   color: #FFFFFF;
-  font-size: 1.125rem;
+  font-size: 1rem;
   font-weight: 600;
   border: 2px solid rgba(255, 255, 255, 0.4);
   border-radius: 12px;
@@ -211,7 +211,7 @@
 }
 
 .whatsappIcon {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
 }
 
 /* ============================================
@@ -220,20 +220,20 @@
 
 .trustSignals {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem;
-  padding: 2.5rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  padding: 1.5rem 0;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
   border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .trustSignal {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1.5rem;
+  gap: 0.5rem;
+  padding: 1rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   border-radius: 12px;
@@ -248,16 +248,16 @@
 }
 
 .trustIcon {
-  font-size: 2.5rem;
+  font-size: 2rem;
   filter: drop-shadow(0 4px 12px rgba(238, 203, 0, 0.4));
 }
 
 .trustText {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   text-align: center;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* ============================================
@@ -267,7 +267,7 @@
 .newsletterWrapper {
   max-width: 600px;
   margin: 0 auto;
-  padding: 2.5rem;
+  padding: 1.75rem;
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(15px);
   border-radius: 16px;
@@ -275,26 +275,26 @@
 }
 
 .newsletterTitle {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #EECB00;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .newsletterForm {
   display: flex;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  gap: 0.625rem;
+  margin-bottom: 0.75rem;
 }
 
 .newsletterInput {
   flex: 1;
-  padding: 14px 20px;
+  padding: 12px 18px;
   background: rgba(255, 255, 255, 0.1);
   border: 2px solid rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   color: #FFFFFF;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   transition: all 0.3s ease;
 }
 
@@ -310,10 +310,10 @@
 }
 
 .newsletterButton {
-  padding: 14px 28px;
+  padding: 12px 24px;
   background: linear-gradient(135deg, #EECB00, #F4D672);
   color: #020266;
-  font-size: 1rem;
+  font-size: 0.9375rem;
   font-weight: 600;
   border: none;
   border-radius: 10px;
@@ -338,6 +338,112 @@
 /* ============================================
    RESPONSIVE
    ============================================ */
+
+/* Pantallas grandes (Full HD+) - Restaurar espaciado completo */
+@media (min-width: 1920px) {
+  .section {
+    padding: 100px 0;
+  }
+
+  .badgeWrapper {
+    margin-bottom: 2rem;
+  }
+
+  .badge {
+    padding: 10px 24px;
+    font-size: 0.875rem;
+  }
+
+  .headerWrapper {
+    margin-bottom: 3rem;
+  }
+
+  .title {
+    font-size: clamp(2.5rem, 5vw, 4rem);
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .subtitle {
+    font-size: clamp(1.125rem, 1.75vw, 1.5rem);
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .description {
+    font-size: clamp(1rem, 1.25vw, 1.125rem);
+    line-height: 1.7;
+  }
+
+  .ctaWrapper {
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  .ctaPrimary {
+    padding: 20px 50px;
+    font-size: 1.25rem;
+    gap: 14px;
+  }
+
+  .ctaArrow {
+    font-size: 1.75rem;
+  }
+
+  .ctaSecondary {
+    padding: 16px 40px;
+    font-size: 1.125rem;
+    gap: 10px;
+  }
+
+  .whatsappIcon {
+    font-size: 1.5rem;
+  }
+
+  .trustSignals {
+    gap: 1.5rem;
+    padding: 2.5rem 0;
+    margin-bottom: 3rem;
+  }
+
+  .trustSignal {
+    padding: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  .trustIcon {
+    font-size: 2.5rem;
+  }
+
+  .trustText {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+
+  .newsletterWrapper {
+    padding: 2.5rem;
+  }
+
+  .newsletterTitle {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .newsletterForm {
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .newsletterInput {
+    padding: 14px 20px;
+    font-size: 1rem;
+  }
+
+  .newsletterButton {
+    padding: 14px 28px;
+    font-size: 1rem;
+  }
+}
 
 @media (max-width: 768px) {
   .section {
