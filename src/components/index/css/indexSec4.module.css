@@ -865,20 +865,14 @@
   line-height: 1.5;
 }
 
-/* CTA */
+/* CTA al final - SOLO VISIBLE EN MÓVIL */
 .ctaWrapper {
-  display: flex;
+  display: none; /* Oculto por defecto (desktop) */
   justify-content: center;
-  margin-top: 4rem;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.6s;
+  margin-top: 1.5rem;
 }
 
-.section.visible .ctaWrapper {
-  opacity: 1;
-  transform: translateY(0);
-}
+/* En móvil se hará visible con display: flex */
 
 .ctaButton {
   display: inline-flex;
@@ -1233,43 +1227,126 @@
     padding: 4rem 1.5rem;
   }
   
-
   /* Desactivar parallax en móvil (mejor performance) */
   .section::before {
     background-attachment: scroll;
     opacity: 0.1;
   }
 
-  /* Reorganizar fila de tabs y CTA en columnas */
-  .tabsCtaRow {
-    flex-direction: column;
-    gap: 1rem;
+  /* ===== FILA 1: Label centrado con más separación ===== */
+  .topLabelRow {
+    display: flex;
     justify-content: center;
-    position: relative;
+    width: 100%;
+    margin-bottom: 2rem; /* Más separación del título */
   }
 
-  .ctaWrapperInline {
+  .topLabelRow .label {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
+  }
+
+  /* ===== FILA 2: Cambiar a columna única en móvil ===== */
+  .contentGrid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* ===== COLUMNA IZQUIERDA (ahora arriba) ===== */
+  .leftColumn {
     position: static;
     width: 100%;
-    justify-content: center;
-    transform: none;
-    opacity: 1;
+    gap: 1.25rem;
+    margin-bottom: 0; /* Sin separación, el CTA va abajo */
   }
 
-  .section.visible .ctaWrapperInline {
-    opacity: 1;
-    transform: none;
+  .header {
+    text-align: center;
+    margin-bottom: 1.5rem;
   }
 
+  .title {
+    font-size: 1.875rem;
+    text-align: center;
+  }
+
+  .title::after {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+  }
+
+  .description {
+    text-align: center;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  /* ===== TABS: Mostrar días completos HORIZONTALMENTE ===== */
   .dayTabs {
-    flex-direction: column;
+    flex-direction: row;
     gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    justify-content: center;
   }
 
   .dayTab {
+    flex: 1;
     min-width: auto;
-    width: 100%;
-    padding: 1rem 1.5rem;
+    max-width: 48%;
+    padding: 0.875rem 1rem;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .dayNumber {
+    width: 40px;
+    height: 40px;
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .dayTab.active .dayNumber {
+    transform: scale(1.1);
+  }
+
+  .dayInfo {
+    gap: 0.125rem;
+    align-items: center;
+  }
+
+  .dayName {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .dayTab.active .dayName {
+    font-size: 0.9375rem;
+  }
+
+  .dayDate {
+    font-size: 0.75rem;
+  }
+
+  .dayTab.active .dayDate {
+    font-size: 0.8125rem;
+  }
+
+  /* ===== OCULTAR CTA ARRIBA (lo movemos abajo) ===== */
+  .ctaWrapperInline {
+    display: none;
+  }
+
+  /* ===== TIMELINE (ahora en medio) ===== */
+  .timeline {
+    margin-bottom: 1.5rem;
+  }
+
+  .dayTitle {
+    font-size: 1.25rem;
+    padding: 1.5rem 1.5rem 1.25rem;
   }
 
   .sessionsContainer {
@@ -1304,15 +1381,6 @@
 
   .sessionTitle {
     font-size: 1rem;
-  }
-
-  .title {
-    font-size: 1.875rem;
-  }
-
-  .dayTitle {
-    font-size: 1.25rem;
-    padding: 1.5rem 1.5rem 1.25rem;
   }
 
   /* Speaker responsive */
@@ -1357,6 +1425,23 @@
     font-size: 0.75rem;
   }
 
+  /* ===== CTA DEBAJO DEL TIMELINE - CENTRADO ===== */
+  .ctaWrapper {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0 0;
+    opacity: 1;
+    transform: none;
+    position: static;
+  }
+
+  .ctaButton {
+    width: auto;
+    max-width: 100%;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+
   /* Bordes más sutiles en móvil */
   .topBorder,
   .bottomBorder {
@@ -1365,6 +1450,11 @@
 
   .borderGlow {
     display: none; /* Mejor performance en móvil */
+  }
+
+  /* Reorganizar fila de tabs y CTA en columnas (legacy - ya no se usa) */
+  .tabsCtaRow {
+    display: none;
   }
 }
 
@@ -1418,6 +1508,11 @@
     width: 40px;
     height: 40px;
     font-size: 1.25rem;
+  }
+
+  /* CTA full width en móvil muy pequeño */
+  .ctaWrapper {
+    margin: 1.25rem 0 0;
   }
 
   .ctaButton {
