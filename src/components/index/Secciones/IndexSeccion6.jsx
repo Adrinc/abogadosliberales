@@ -11,6 +11,21 @@ const IndexSeccion6 = () => {
   const sectionRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
   const [playingVideo, setPlayingVideo] = useState(false);
+  const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Auto-rotate testimonials cada 5 segundos
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setCurrentTestimonial((prev) => (prev + 1) % t.testimonials.length);
+        setIsTransitioning(false);
+      }, 500); // Duración del fade-out
+    }, 7000); // Cambio cada 5 segundos
+
+    return () => clearInterval(interval);
+  }, [t.testimonials.length]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -57,6 +72,10 @@ const IndexSeccion6 = () => {
     ));
   };
 
+  // Testimonio actual para el carrusel
+  const currentTestimonialData = t.testimonials[currentTestimonial];
+  const testimonialImage = testimonialImages[currentTestimonial];
+
   return (
     <section 
       ref={sectionRef} 
@@ -79,123 +98,135 @@ const IndexSeccion6 = () => {
           <p className={styles.subtitle}>{t.subtitle}</p>
         </div>
 
-        {/* Grid de testimonios */}
-        <div className={styles.testimonialsGrid}>
-          {t.testimonials.map((testimonial, index) => (
-            <div 
-              key={index} 
-              className={styles.testimonialCard}
-              style={{ animationDelay: `${index * 0.15}s` }}
-            >
+        {/* Grid 2 columnas: Carrusel (izq) + Video (der) */}
+        <div className={styles.twoColumnGrid}>
+          
+          {/* COLUMNA IZQUIERDA: Carrusel de testimonios */}
+          <div className={styles.carouselWrapper}>
+            <div className={`${styles.testimonialCard} ${isTransitioning ? styles.fadeOut : styles.fadeIn}`}>
               {/* Quote icon decorativo */}
               <div className={styles.quoteIcon}>"</div>
 
               {/* Avatar y info */}
               <div className={styles.testimonialHeader}>
                 <div className={styles.avatarWrapper}>
-                  {/* Imagen real del testimonio */}
                   <img 
-                    src={testimonialImages[index]} 
-                    alt={testimonial.name}
+                    src={testimonialImage} 
+                    alt={currentTestimonialData.name}
                     className={styles.avatar}
                   />
                 </div>
                 
                 <div className={styles.testimonialInfo}>
-                  <h3 className={styles.testimonialName}>{testimonial.name}</h3>
-                  <p className={styles.testimonialRole}>{testimonial.role}</p>
-                  <p className={styles.testimonialLocation}>📍 {testimonial.location}</p>
+                  <h3 className={styles.testimonialName}>{currentTestimonialData.name}</h3>
+                  <p className={styles.testimonialRole}>{currentTestimonialData.role}</p>
+                  <p className={styles.testimonialLocation}>📍 {currentTestimonialData.location}</p>
                 </div>
               </div>
 
               {/* Texto del testimonio */}
-              <p className={styles.testimonialText}>{testimonial.text}</p>
+              <p className={styles.testimonialText}>{currentTestimonialData.text}</p>
 
               {/* Rating con estrellas */}
               <div className={styles.ratingWrapper}>
-                {renderStars(testimonial.rating)}
+                {renderStars(currentTestimonialData.rating)}
               </div>
             </div>
-          ))}
-        </div>
 
-        {/* Video destacado */}
-        <div className={styles.videoSection}>
-        {/*   <h3 className={styles.videoTitle}>
-            <span className={styles.videoIcon}>🎬</span>
-            {t.videoTitle}
-          </h3> */}
+            {/* Indicadores del carrusel */}
+            <div className={styles.carouselIndicators}>
+              {t.testimonials.map((_, index) => (
+                <button
+                  key={index}
+                  className={`${styles.indicator} ${index === currentTestimonial ? styles.active : ''}`}
+                  onClick={() => {
+                    setIsTransitioning(true);
+                    setTimeout(() => {
+                      setCurrentTestimonial(index);
+                      setIsTransitioning(false);
+                    }, 500);
+                  }}
+                  aria-label={`Ver testimonio ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
 
-          <div className={styles.videoWrapper}>
-            {!playingVideo ? (
-              <div className={styles.videoThumbnail}>
-                {/* Placeholder de thumbnail */}
-                <div className={styles.thumbnailOverlay}>
-                  <button 
-                    className={styles.playButton}
-                    onClick={() => setPlayingVideo(true)}
-                    aria-label="Reproducir video"
-                  >
-                    <svg 
-                      className={styles.playIcon} 
-                      viewBox="0 0 100 100" 
-                      xmlns="http://www.w3.org/2000/svg"
+          {/* COLUMNA DERECHA: Video */}
+          <div className={styles.videoSection}>
+            <div className={styles.videoWrapper}>
+              {!playingVideo ? (
+                <div className={styles.videoThumbnail}>
+                  {/* Placeholder de thumbnail */}
+                  <div className={styles.thumbnailOverlay}>
+                    <button 
+                      className={styles.playButton}
+                      onClick={() => setPlayingVideo(true)}
+                      aria-label="Reproducir video"
                     >
-                      <circle cx="50" cy="50" r="48" fill="rgba(238, 203, 0, 0.95)" stroke="#FFFFFF" strokeWidth="3"/>
-                      <polygon points="40,30 70,50 40,70" fill="#020266"/>
+                      <svg 
+                        className={styles.playIcon} 
+                        viewBox="0 0 100 100" 
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="50" cy="50" r="48" fill="rgba(238, 203, 0, 0.95)" stroke="#FFFFFF" strokeWidth="3"/>
+                        <polygon points="40,30 70,50 40,70" fill="#020266"/>
+                      </svg>
+                    </button>
+                    
+                    <div className={styles.videoBadge}>
+                      <span className={styles.badgeIcon}>▶</span>
+                      <span>Highlights del Congreso 2024</span>
+                    </div>
+                  </div>
+
+                  {/* Fondo decorativo para thumbnail */}
+                  <div className={styles.thumbnailBackground}>
+                    <svg viewBox="0 0 450 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+                      <defs>
+                        <linearGradient id="videoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#020266" />
+                          <stop offset="50%" stopColor="#05054F" />
+                          <stop offset="100%" stopColor="#0B0B2B" />
+                        </linearGradient>
+                      </defs>
+                      <rect width="450" height="800" fill="url(#videoGradient)"/>
+                      
+                      {/* Elementos decorativos */}
+                      <circle cx="225" cy="150" r="80" fill="rgba(238, 203, 0, 0.1)"/>
+                      <circle cx="225" cy="650" r="100" fill="rgba(238, 203, 0, 0.08)"/>
+                      <rect x="125" y="350" width="200" height="100" fill="rgba(255, 255, 255, 0.05)" rx="12"/>
+                      
+                      {/* Texto decorativo */}
+                      <text x="225" y="400" fontSize="28" fill="rgba(255, 255, 255, 0.8)" textAnchor="middle" fontWeight="700">
+                        Congreso 2024
+                      </text>
+                      <text x="225" y="435" fontSize="18" fill="rgba(238, 203, 0, 0.9)" textAnchor="middle">
+                        Abogados Liberales
+                      </text>
                     </svg>
-                  </button>
-                  
-                  <div className={styles.videoBadge}>
-                    <span className={styles.badgeIcon}>▶</span>
-                    <span>Highlights del Congreso 2024</span>
                   </div>
                 </div>
-
-                {/* Fondo decorativo para thumbnail */}
-                <div className={styles.thumbnailBackground}>
-                  <svg viewBox="0 0 450 800" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
-                    <defs>
-                      <linearGradient id="videoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#020266" />
-                        <stop offset="50%" stopColor="#05054F" />
-                        <stop offset="100%" stopColor="#0B0B2B" />
-                      </linearGradient>
-                    </defs>
-                    <rect width="450" height="800" fill="url(#videoGradient)"/>
-                    
-                    {/* Elementos decorativos */}
-                    <circle cx="225" cy="150" r="80" fill="rgba(238, 203, 0, 0.1)"/>
-                    <circle cx="225" cy="650" r="100" fill="rgba(238, 203, 0, 0.08)"/>
-                    <rect x="125" y="350" width="200" height="100" fill="rgba(255, 255, 255, 0.05)" rx="12"/>
-                    
-                    {/* Texto decorativo */}
-                    <text x="225" y="400" fontSize="28" fill="rgba(255, 255, 255, 0.8)" textAnchor="middle" fontWeight="700">
-                      Congreso 2024
-                    </text>
-                    <text x="225" y="435" fontSize="18" fill="rgba(238, 203, 0, 0.9)" textAnchor="middle">
-                      Abogados Liberales
-                    </text>
-                  </svg>
+              ) : (
+                <div className={styles.videoIframe}>
+                  {/* Video de Facebook - formato vertical con autoplay */}
+                  <iframe
+                    src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1363765995300224%2F&show_text=false&width=267&t=0&autoplay=1"
+                    style={{ border: 'none', width: '100%', height: '100%' }}
+                    scrolling="no"
+                    frameBorder="0"
+                    allowFullScreen={true}
+                    allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
+                    loading="lazy"
+                    title="Video del Congreso 2024 - Abogados Liberales"
+                  ></iframe>
                 </div>
-              </div>
-            ) : (
-              <div className={styles.videoIframe}>
-                {/* Video de Facebook - formato vertical con autoplay */}
-                <iframe
-                  src="https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1363765995300224%2F&show_text=false&width=267&t=0&autoplay=1"
-                  style={{ border: 'none', width: '100%', height: '100%' }}
-                  scrolling="no"
-                  frameBorder="0"
-                  allowFullScreen={true}
-                  allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"
-                  loading="lazy"
-                  title="Video del Congreso 2024 - Abogados Liberales"
-                ></iframe>
-              </div>
-            )}
+              )}
+            </div>
           </div>
+
         </div>
+        {/* Fin del grid de 2 columnas */}
 
       </div>
     </section>

@@ -176,14 +176,29 @@
 }
 
 /* ============================================
-   GRID DE TESTIMONIOS
+   GRID 2 COLUMNAS - Carrusel (izq) + Video (der)
    ============================================ */
 
-.testimonialsGrid {
+.twoColumnGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: 1fr 1fr;
   gap: 2rem;
-  margin-bottom: 5rem;
+  align-items: stretch;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* ============================================
+   CARRUSEL DE TESTIMONIOS
+   ============================================ */
+
+.carouselWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .testimonialCard {
@@ -202,20 +217,26 @@
     0 12px 32px rgba(2, 2, 102, 0.1),
     0 4px 12px rgba(2, 2, 102, 0.06),
     0 0 0 1px rgba(255, 255, 255, 0.9) inset;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  opacity: 0;
-  transform: translateY(30px) rotateX(8deg);
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.visible .testimonialCard {
+/* Animaciones de transición del carrusel */
+.fadeIn {
   opacity: 1;
-  transform: translateY(0) rotateX(0deg);
+  transform: translateX(0);
+}
+
+.fadeOut {
+  opacity: 0;
+  transform: translateX(-30px);
 }
 
 .testimonialCard:hover {
-  transform: translateY(-12px) rotateX(2deg) scale(1.02);
+  transform: translateY(-6px);
   border-color: rgba(238, 203, 0, 0.5);
   box-shadow: 
     0 20px 56px rgba(2, 2, 102, 0.15),
@@ -230,7 +251,6 @@
   top: 1.5rem;
   right: 1.5rem;
   font-size: 4rem;
-
   color: rgba(238, 203, 0, 0.15);
   line-height: 1;
   pointer-events: none;
@@ -333,13 +353,48 @@
 }
 
 /* ============================================
+   INDICADORES DEL CARRUSEL
+   ============================================ */
+
+.carouselIndicators {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.indicator {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #020266;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 0;
+}
+
+.indicator:hover {
+  background: rgba(2, 2, 102, 0.3);
+  transform: scale(1.2);
+}
+
+.indicator.active {
+  background: linear-gradient(135deg, #EECB00, #F4D672);
+  border-color: #EECB00;
+  box-shadow: 0 0 8px rgba(238, 203, 0, 0.6);
+}
+
+/* ============================================
    VIDEO SECTION
    ============================================ */
 
 .videoSection {
-  max-width: 1000px;
-  margin: 0 auto;
-  text-align: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .videoTitle {
@@ -519,13 +574,187 @@
    RESPONSIVE
    ============================================ */
 
-@media (max-width: 1024px) {
-  .testimonialsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+/* Breakpoint específico para laptops medianas (1366x768 y similares) */
+@media (min-width: 901px) and (max-width: 1440px) {
+  
+  /* Sección ULTRA ULTRA compacta */
+  .section {
+    padding: 1rem 0; /* 120px → 16px - MÁS AGRESIVO */
   }
 
-  /* Reducir blur de orbs en tablets */
+  .container {
+    padding: 0 1rem;
+  }
+
+  /* Header ultra ultra compacto */
+  .labelWrapper {
+    margin-bottom: 0.375rem; /* 1.5rem → 0.375rem */
+  }
+
+  .label {
+    font-size: 0.5625rem; /* 0.875rem → 0.5625rem */
+    padding: 3px 12px;
+    letter-spacing: 0.1em;
+  }
+
+  .headerWrapper {
+    margin-bottom: 0.75rem; /* 4rem → 0.75rem - CRÍTICO */
+    max-width: 600px;
+  }
+
+  .title {
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem); /* Más pequeño */
+    margin-bottom: 0.25rem;
+    line-height: 1.1;
+  }
+
+  .subtitle {
+    font-size: clamp(0.75rem, 0.95vw, 0.875rem); /* Ultra reducido */
+    line-height: 1.3;
+  }
+
+  /* Grid 2 columnas ultra compacto */
+  .twoColumnGrid {
+    gap: 0.75rem; /* 2rem → 0.75rem - MÁS COMPACTO */
+    max-height: 500px; /* Limitar altura total */
+  }
+
+  /* Carrusel MINI */
+  .carouselWrapper {
+    min-height: 320px; /* 400px → 320px - REDUCIDO */
+    max-height: 500px;
+  }
+
+  .testimonialCard {
+    padding: 0.875rem 0.75rem; /* 2.5rem → 0.875rem - ULTRA COMPACTO */
+    border-radius: 12px;
+  }
+
+  .quoteIcon {
+    font-size: 1.875rem; /* 4rem → 1.875rem - MUCHO MÁS PEQUEÑO */
+    top: 0.5rem;
+    right: 0.5rem;
+  }
+
+  /* Header del testimonio MINI */
+  .testimonialHeader {
+    gap: 0.625rem; /* 1.25rem → 0.625rem */
+    margin-bottom: 0.625rem; /* 1.5rem → 0.625rem */
+  }
+
+  .avatar {
+    width: 48px; /* 80px → 48px - 40% REDUCCIÓN */
+    height: 48px;
+    border-width: 2px;
+  }
+
+  .testimonialName {
+    font-size: 0.875rem; /* 1.25rem → 0.875rem */
+    margin-bottom: 0.125rem;
+  }
+
+  .testimonialRole {
+    font-size: 0.75rem; /* 0.9375rem → 0.75rem */
+    margin-bottom: 0.125rem;
+  }
+
+  .testimonialLocation {
+    font-size: 0.6875rem; /* 0.875rem → 0.6875rem */
+  }
+
+  /* Texto MINI */
+  .testimonialText {
+    font-size: 0.75rem; /* 1rem → 0.75rem - 25% REDUCCIÓN */
+    line-height: 1.4;
+    margin-bottom: 0.625rem; /* 1.5rem → 0.625rem */
+    padding-left: 0.5rem;
+    border-left-width: 2px;
+  }
+
+  /* Rating MINI */
+  .ratingWrapper {
+    gap: 2px;
+  }
+
+  .star {
+    font-size: 0.9375rem; /* 1.5rem → 0.9375rem - 37.5% REDUCCIÓN */
+  }
+
+  /* Indicadores del carrusel MINI */
+  .carouselIndicators {
+    gap: 0.375rem;
+    margin-top: 0.625rem;
+  }
+
+  .indicator {
+    width: 8px; /* 12px → 8px */
+    height: 8px;
+    border-width: 1.5px;
+  }
+
+  /* Video MINI - CRÍTICO */
+  .videoWrapper {
+    max-width: 280px; /* 500px → 280px - 44% REDUCCIÓN */
+    max-height: 500px; /* Limitar altura */
+    border-radius: 12px;
+    aspect-ratio: 9 / 16; /* Mantener formato vertical */
+  }
+
+  .playButton {
+    width: 56px; /* 100px → 56px - 44% REDUCCIÓN */
+    height: 56px;
+    margin-bottom: 0.875rem;
+  }
+
+  .videoBadge {
+    font-size: 0.6875rem; /* 0.9375rem → 0.6875rem */
+    padding: 6px 12px; /* 10px 20px → 6px 12px */
+  }
+
+  .badgeIcon {
+    font-size: 0.625rem;
+  }
+
+  /* Reducir blur de orbs y ocultar si es necesario */
+  .section::before,
+  .section::after {
+    filter: blur(30px);
+    opacity: 0.4;
+  }
+
+  .orbCenter {
+    display: none; /* Ocultar para ahorrar espacio visual */
+  }
+}
+
+@media (max-width: 1024px) {
+  .twoColumnGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .carouselWrapper {
+    order: 1;
+  }
+
+  .videoSection {
+    order: 2;
+  }
+@media (max-width: 1024px) {
+  .twoColumnGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .carouselWrapper {
+    order: 1;
+  }
+
+  .videoSection {
+    order: 2;
+  }
+
+  /* Reducir blur de orbs en tablets para mejor performance */
   .section::before,
   .section::after,
   .orbCenter {
@@ -536,6 +765,11 @@
 @media (max-width: 768px) {
   .section {
     padding: 80px 0;
+  }
+
+  .twoColumnGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
 
   /* Reducir intensidad de orbs en móvil */
@@ -554,24 +788,11 @@
   .testimonialCard {
     transform-style: flat;
     perspective: none;
-  }
-
-  .visible .testimonialCard {
-    transform: translateY(0);
+    padding: 2rem 1.5rem;
   }
 
   .testimonialCard:hover {
     transform: translateY(-8px);
-  }
-
-  .testimonialsGrid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-    margin-bottom: 4rem;
-  }
-
-  .testimonialCard {
-    padding: 2rem 1.5rem;
   }
 
   .testimonialHeader {
@@ -591,12 +812,6 @@
     font-size: 3rem;
     top: 1rem;
     right: 1rem;
-  }
-
-  .videoTitle {
-    font-size: 1.5rem;
-    padding: 0.75rem 1.5rem;
-    margin-bottom: 2rem;
   }
 
   .playButton {
@@ -626,6 +841,10 @@
     font-size: 1rem;
   }
 
+  .twoColumnGrid {
+    gap: 1.25rem;
+  }
+
   .testimonialCard {
     padding: 1.5rem 1rem;
   }
@@ -646,13 +865,6 @@
 
   .star {
     font-size: 1.25rem;
-  }
-
-  .videoTitle {
-    flex-direction: column;
-    gap: 8px;
-    font-size: 1.25rem;
-    padding: 0.75rem 1rem;
   }
 
   .playButton {
@@ -700,4 +912,5 @@
   .testimonialCard:hover {
     transform: translateY(-4px);
   }
+}
 }
