@@ -328,7 +328,7 @@ const FormularioLead = React.forwardRef(({
       )}
 
       {/* Organización - OCULTO en flujo académico (redundante con universidad) */}
-      {!isAcademicFlow && (
+    {/*   {!isAcademicFlow && (
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="company">
             {t.leadForm.company.label}
@@ -344,10 +344,10 @@ const FormularioLead = React.forwardRef(({
           />
           <span className={styles.hint}>{t.leadForm.company.hint}</span>
         </div>
-      )}
+      )} */}
 
       {/* Cargo - OCULTO en flujo académico (redundante con rol) */}
-      {!isAcademicFlow && (
+ {/*      {!isAcademicFlow && (
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="job_title">
             {t.leadForm.jobTitle.label}
@@ -363,7 +363,7 @@ const FormularioLead = React.forwardRef(({
           />
           <span className={styles.hint}>{t.leadForm.jobTitle.hint}</span>
         </div>
-      )}
+      )} */}
 
       {/* Cupón - OCULTO en flujo académico (descuento ya aplicado) */}
       {!isAcademicFlow && (
