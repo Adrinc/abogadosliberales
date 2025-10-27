@@ -117,7 +117,7 @@ const IndexSeccion1 = () => {
       {/* Scroll indicator */}
       <div className={styles.scrollIndicator}>
         <span className={styles.scrollText}>
-          {ingles ? "Scroll to explore" : "Desliza para explorar"}
+          {ingles ? "Scroll" : "Scroll"}
         </span>
         <div className={styles.scrollIcon}></div>
       </div>

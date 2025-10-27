@@ -12,7 +12,7 @@
   justify-content: center;
   overflow: hidden;
   background: #020266;
-  margin-top: 40px;
+  margin-top: 80px;
 }
 
 /* Video de fondo */
@@ -371,10 +371,11 @@
 }
 
 .scrollText {
-  font-size: 0.875rem;
-  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 .scrollIcon {
@@ -410,6 +411,134 @@
 }
 
 /* Responsive */
+
+/* Breakpoint específico para laptops medianas (1366x768 y similares) */
+@media (min-width: 901px) and (max-width: 1440px) {
+  .heroSection {
+    min-height: 85vh; /* Reducido de 100vh a 85vh */
+    margin-top: 70px; /* Ajustado al nuevo navbar compacto */
+  }
+
+  .heroContainer {
+    padding: 1.5rem;
+    max-width: 800px;
+  }
+
+  .heroCard {
+    padding: 2rem 2rem; /* Reducido de 3rem a 2rem */
+  }
+
+  /* Badge más compacto */
+  .badgeWrapper {
+    margin-bottom: 1rem; /* Reducido de 1.5rem */
+  }
+
+  .badge {
+    padding: 0.4rem 1rem;
+    font-size: 0.7rem;
+  }
+
+  .badgeDot {
+    width: 6px;
+    height: 6px;
+  }
+
+  /* Título más compacto */
+  .heroTitle {
+    font-size: clamp(1.6rem, 2.5vw, 2rem); /* Reducido */
+    margin-bottom: 1.5rem; /* Reducido de 2rem */
+  }
+
+  /* Info de evento más compacta */
+  .eventInfo {
+    margin-bottom: 1.25rem; /* Reducido de 1.5rem */
+  }
+
+  .infoItem {
+    padding: 0.6rem 1.25rem; /* Reducido */
+  }
+
+  .infoIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .infoItem span {
+    font-size: 0.875rem;
+  }
+
+  /* Descripción más compacta */
+  .heroDescription {
+    font-size: 1.05rem; /* Reducido de 1.2rem */
+    line-height: 1.6;
+    margin-bottom: 1.5rem; /* Reducido de 2rem */
+    max-width: 650px;
+  }
+
+  /* CTAs más compactos */
+  .ctaGroup {
+    gap: 0.875rem;
+    margin-bottom: 1.5rem; /* Reducido de 2rem */
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    padding: 0.75rem 1.5rem; /* Reducido */
+    font-size: 0.95rem;
+  }
+
+  .ctaIcon {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Precio más compacto */
+  .priceTag {
+    padding: 0.875rem 1.75rem; /* Reducido */
+    margin-bottom: 1.25rem; /* Reducido de 1.5rem */
+  }
+
+  .priceLabel {
+    font-size: 0.8rem;
+  }
+
+  .priceAmount {
+    font-size: 1.75rem; /* Reducido de 2rem */
+  }
+
+  /* Trust signals más compactos */
+  .trustSignals {
+    gap: 1.5rem;
+    padding-top: 1.25rem; /* Reducido */
+  }
+
+  .trustIcon {
+    width: 20px;
+    height: 20px;
+  }
+
+  .trustItem span {
+    font-size: 0.75rem;
+    max-width: 110px;
+  }
+
+  /* Scroll indicator reposicionado a la izquierda */
+  .scrollIndicator {
+    left: 2rem; /* Cambiado de centrado a izquierda */
+    transform: translateX(0); /* Sin centrado */
+    bottom: 2rem;
+  }
+
+  .scrollText {
+    font-size: 0.7rem;
+  }
+
+  .scrollIcon {
+    width: 20px;
+    height: 32px;
+  }
+}
+
 @media (max-width: 1024px) {
   .heroCard {
     padding: 2.5rem 2rem;
@@ -421,6 +550,10 @@
 }
 
 @media (max-width: 768px) {
+  .heroSection {
+    margin-top: 80px; /* Consistente con navbar móvil */
+  }
+
   .heroCard {
     padding: 2rem 1.5rem;
   }
@@ -458,15 +591,13 @@
     font-size: 0.7rem;
     padding: 0.4rem 1rem;
   }
-  .heroSection {
-    margin-top: 60px;
-  }
 }
 
 @media (max-width: 480px) {
-    .heroSection {
-    margin-top: 75px;
+  .heroSection {
+    margin-top: 80px; /* Consistente */
   }
+
   .heroContainer {
     padding: 1rem;
   }

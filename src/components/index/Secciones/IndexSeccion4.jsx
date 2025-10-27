@@ -80,30 +80,24 @@ const IndexSeccion4 = () => {
 
       <div className={styles.container}>
         
-        {/* Header */}
-        <div className={styles.header}>
-          <div className={styles.labelWrapper}>
-            <div className={styles.label}>{t.label}</div>
-          </div>
-          <h2 className={styles.title}>{t.title}</h2>
-          <p className={styles.description}>{t.description}</p>
+        {/* Fila 1: Label centrado en el tope */}
+        <div className={styles.topLabelRow}>
+          <div className={styles.label}>{t.label}</div>
         </div>
 
-        {/* Tabs y CTA en la misma fila */}
-        <div className={styles.tabsCtaRow}>
-          {/* CTA alineado a la izquierda */}
-          <div className={styles.ctaWrapperInline}>
-            <a href="#inscripcion" className={styles.ctaButton}>
-              <span>{t.cta}</span>
-              <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <line x1="5" y1="12" x2="19" y2="12"></line>
-                <polyline points="12 5 19 12 12 19"></polyline>
-              </svg>
-            </a>
-          </div>
+        {/* Fila 2: Grid con 2 columnas */}
+        <div className={styles.contentGrid}>
+          
+          {/* Columna izquierda: Header + Tabs + CTA */}
+          <div className={styles.leftColumn}>
+            {/* Header */}
+            <div className={styles.header}>
+              <h2 className={styles.title}>{t.title}</h2>
+              <p className={styles.description}>{t.description}</p>
+            </div>
 
-          {/* Tabs centrados */}
-          <div className={styles.dayTabs}>
+            {/* Tabs de días */}
+            <div className={styles.dayTabs}>
             <button
               className={`${styles.dayTab} ${activeDay === 'day1' ? styles.active : ''}`}
               onClick={() => setActiveDay('day1')}
@@ -125,9 +119,20 @@ const IndexSeccion4 = () => {
               </div>
             </button>
           </div>
+
+          {/* CTA */}
+          <div className={styles.ctaWrapperInline}>
+            <a href="#inscripcion" className={styles.ctaButton}>
+              <span>{t.cta}</span>
+              <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </a>
+          </div>
         </div>
 
-        {/* Timeline de sesiones */}
+        {/* Columna derecha: Timeline de sesiones */}
         <div className={styles.timeline}>
           <div className={styles.timelineWrapper}>
             <h3 className={styles.dayTitle}>{currentDayData.title}</h3>
@@ -229,6 +234,8 @@ const IndexSeccion4 = () => {
             ))}
             </div>
           </div>
+        </div>
+
         </div>
 
       </div>

@@ -342,6 +342,147 @@
   }
 }
 
+/* Breakpoint específico para laptops medianas (1366x768 y similares) */
+@media (min-width: 901px) and (max-width: 1440px) {
+  .section {
+    padding: 3rem 2rem; /* Balance entre compacto y espacioso */
+    min-height: auto;
+  }
+
+  .container {
+    max-width: 1200px;
+  }
+
+  /* Label más compacto */
+  .labelWrapper {
+    margin-bottom: 1.5rem;
+  }
+
+  .label {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+
+  /* Grid híbrido: imagen pequeña a la izquierda + contenido */
+  .grid {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  /* Imagen pequeña y decorativa a la izquierda */
+  .imageColumn {
+    position: relative;
+    top: 0;
+    flex-shrink: 0;
+    width: 200px; /* Imagen pequeña */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .imageWrapper {
+    aspect-ratio: 1 / 1; /* Cuadrada */
+    border-radius: 16px;
+  }
+
+  .imageWrapper img {
+    border-radius: 16px;
+  }
+
+  /* Ocultar highlight box para ahorrar espacio */
+  .highlightBox {
+    display: none;
+  }
+
+  /* Contenido ocupa el resto del espacio */
+  .contentColumn {
+    flex: 1;
+    gap: 1.25rem;
+  }
+
+  /* Título más compacto pero legible */
+  .title {
+    font-size: clamp(1.65rem, 2.2vw, 2rem);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+    text-align: left;
+  }
+
+  .title::after {
+    left: 0;
+    transform: none;
+    width: 60px;
+    height: 3px;
+  }
+
+  .description {
+    font-size: 0.95rem;
+    line-height: 1.65;
+    text-align: left;
+    margin: 0 0 1rem;
+  }
+
+  /* Items en 3 columnas - SIN truncar texto */
+  .itemsGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .item {
+    padding: 1.125rem;
+    border-radius: 12px;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.625rem;
+    min-height: auto;
+  }
+
+  .iconWrapper {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto;
+    border-radius: 14px;
+  }
+
+  .icon {
+    font-size: 1.5rem;
+  }
+
+  .itemContent {
+    text-align: center;
+  }
+
+  .itemContent h3 {
+    font-size: 1rem;
+    margin-bottom: 0.375rem;
+    line-height: 1.3;
+  }
+
+  /* Texto completo sin truncar */
+  .itemContent p {
+    font-size: 0.85rem;
+    line-height: 1.5;
+    /* Quitar truncado - mostrar todo */
+    display: block;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  /* CTA más compacto */
+  .ctaWrapper {
+    margin-top: 0.75rem;
+    text-align: left;
+  }
+
+  .ctaButton {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
 @media (max-width: 1024px) {
   .grid {
     grid-template-columns: 1fr;
