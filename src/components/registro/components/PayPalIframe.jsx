@@ -256,7 +256,8 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
                 console.log('Webhook response status:', webhookResponse.status);
               
                 if (webhookResponse.ok) {
-                  console.log('✅ Webhook processed successfully (minimal data)');
+                  const minimalWebhookData = await webhookResponse.json().catch(() => null); // 🔥 NUEVO: Capturar respuesta
+                  console.log('✅ Webhook processed successfully (minimal data):', minimalWebhookData);
                   
                   // ⏳ Esperar 2 segundos para que la BD se actualice
                   console.log('⏳ Waiting for database to update...');
@@ -275,9 +276,16 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
                     localStorage.setItem('lastTransactionId', data.orderID);
                     console.log('💾 Saved transactionId to localStorage:', data.orderID);
                   }
+                  
+                  // 🔥 NUEVO: Guardar webhook response en localStorage
+                  if (minimalWebhookData) {
+                    localStorage.setItem('lastWebhookResponse', JSON.stringify(minimalWebhookData));
+                    console.log('💾 Saved minimal webhook response to localStorage');
+                  }
                 
                   console.log('🔄 Redirecting to confirmation page...');
-                  window.location.href = `/confirmacion?transaction_id=${data.orderID}&lead_id=${effectiveLeadId || ''}&method=paypal&status=pending_capture`;
+                  const hasWebhookData = minimalWebhookData ? '&has_webhook=true' : '';
+                  window.location.href = `/confirmacion?transaction_id=${data.orderID}&lead_id=${effectiveLeadId || ''}&method=paypal&status=pending_capture${hasWebhookData}`;
                   return; // Salir exitosamente
                 }
               } catch (webhookError) {
@@ -338,6 +346,7 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
 
             // 4. Enviar webhook y esperar confirmación
             let webhookOk = false;
+            let webhookData = null; // 🔥 NUEVO: Guardar la respuesta completa
             try {
               console.log('📤 Sending webhook to n8n and waiting for response...');
               const webhookResponse = await fetch(WEBHOOK_URL, {
@@ -350,8 +359,8 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               webhookOk = webhookResponse.ok;
               
               if (webhookResponse.ok) {
-                const webhookResult = await webhookResponse.json().catch(() => null);
-                console.log('✅ Webhook processed successfully:', webhookResult);
+                webhookData = await webhookResponse.json(); // 🔥 NUEVO: Capturar la respuesta JSON
+                console.log('✅ Webhook processed successfully:', webhookData);
                 
                 // ⏳ ESPERAR 2 segundos adicionales para asegurar que la BD se actualice
                 console.log('⏳ Waiting for database to update...');
@@ -379,11 +388,20 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               localStorage.setItem('lastTransactionId', txId);
               console.log('💾 Saved transactionId to localStorage:', txId);
             }
+            
+            // 🔥 NUEVO: Guardar webhook response en localStorage
+            if (webhookData) {
+              localStorage.setItem('lastWebhookResponse', JSON.stringify(webhookData));
+              console.log('💾 Saved webhook response to localStorage');
+            }
 
             // Redirigir inmediatamente (ya esperamos arriba)
             const statusParam = webhookOk ? 'confirmed' : 'pending_webhook';
             console.log('🔄 Redirecting to confirmation page...');
-            window.location.href = `/confirmacion?transaction_id=${txId}&lead_id=${effectiveLeadId}&method=paypal&status=${statusParam}`;
+            
+            // 🔥 NUEVO: Agregar flag para indicar que hay webhook data disponible
+            const hasWebhookData = webhookData ? '&has_webhook=true' : '';
+            window.location.href = `/confirmacion?transaction_id=${txId}&lead_id=${effectiveLeadId}&method=paypal&status=${statusParam}${hasWebhookData}`;
 
           } catch (error) {
             console.error('❌ Error during PayPal approval handling:', error);

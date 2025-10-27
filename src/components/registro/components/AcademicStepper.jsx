@@ -16,6 +16,7 @@ import styles from '../css/academicStepper.module.css';
 import FormularioLead from './FormularioLead.jsx';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
+import StripeForm from './StripeForm';
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
 const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelectedMethod }) => {
@@ -210,7 +211,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
             customer_category_fk: customerCategoryFk,
             status: 'Lead',
             customer_parent_id: null,
-            organization_fk: null
+            organization_fk: 14
           })
           .select('customer_id')
           .single();
@@ -838,7 +839,15 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                         isAcademic={true}
                       />
                     )}
-                    {selectedMethod === 'creditCard' && <IPPayTemporaryMessage />}
+                    {selectedMethod === 'creditCard' && (
+                      <StripeForm
+                        leadId={leadId}
+                        leadData={leadData}
+                        academicPriceData={currentPrice}
+                        isAcademic={true}
+                        academicRole={academicData.role}
+                      />
+                    )}
                     {selectedMethod === 'bankTransfer' && (
                       <ComprobantePagoForm
                         leadId={leadId}

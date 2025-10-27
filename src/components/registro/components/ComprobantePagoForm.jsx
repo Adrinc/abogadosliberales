@@ -243,7 +243,7 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
         status: 'pending',
         customer_parent_id: leadData?.customer_parent_id || null,
         customer_category_fk: leadData?.customer_category_fk || null,
-        organization_fk: leadData?.organization_fk || null
+        organization_fk: leadData?.organization_fk || 14
       };
 
       console.log('📥 Inserting new customer in Supabase:', { email });

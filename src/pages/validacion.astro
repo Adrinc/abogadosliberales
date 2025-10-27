@@ -18,6 +18,7 @@ const hasData = receiptId && leadId;
   showFooter={true}
 >
   <ConfirmacionSeccion 
+    transition:persist
     client:only="react"
     transactionId={receiptId}
     leadId={leadId}

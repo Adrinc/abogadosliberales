@@ -3,6 +3,7 @@ import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../data/variables';
 import supabase from '../../lib/supabaseClient';
 import styles from './confirmacion.module.css';
+import DebugPanel from './DebugPanel.jsx';
 
 const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, hasData }) => {
   const ingles = useStore(isEnglish);
@@ -13,6 +14,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
+  const [webhookResponseFromStorage, setWebhookResponseFromStorage] = useState(null); // 🔥 NUEVO
 
   // Cargar datos del cliente y pago desde Supabase
   useEffect(() => {
@@ -29,9 +31,35 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
       // 🚨 FALLBACK RADICAL: Si no hay leadId, intentar obtenerlo de localStorage
       let effectiveLeadId = leadId;
       let effectiveTransactionId = transactionId;
+      let localWebhookResponse = null; // 🔥 Variable local para el webhook response
+
+      console.log('═══════════════════════════════════════════');
+      console.log('🔍 VERIFICACIÓN DE PARÁMETROS INICIALES');
+      console.log('═══════════════════════════════════════════');
+      console.log('📋 leadId (prop):', leadId, typeof leadId);
+      console.log('📋 transactionId (prop):', transactionId, typeof transactionId);
+      console.log('📋 paymentMethod (prop):', paymentMethod);
+      console.log('📋 status (prop):', status);
+      console.log('═══════════════════════════════════════════');
+
+      // 🔥 NUEVO: Intentar obtener webhook response de localStorage PRIMERO
+      try {
+        const storedWebhookResponse = localStorage.getItem('lastWebhookResponse');
+        if (storedWebhookResponse) {
+          localWebhookResponse = JSON.parse(storedWebhookResponse);
+          setWebhookResponseFromStorage(localWebhookResponse); // Guardar en estado
+          console.log('✅ Found webhook response in localStorage:', localWebhookResponse);
+        } else {
+          console.log('⚠️ No webhook response found in localStorage');
+        }
+      } catch (e) {
+        console.error('❌ Error parsing webhook response from localStorage:', e);
+      }
 
       if (!leadId || !transactionId) {
         console.warn('⚠️ Missing params in URL, checking localStorage...');
+        console.log('🔍 leadId missing?:', !leadId);
+        console.log('🔍 transactionId missing?:', !transactionId);
         
         const storedLeadId = localStorage.getItem('lastLeadId');
         const storedTransactionId = localStorage.getItem('lastTransactionId');
@@ -81,8 +109,28 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         setCustomerData(customer);
 
         // 2. Obtener datos del pago desde event.event_payment
-        if (effectiveTransactionId) {
-          console.log('📥 Fetching payment data...');
+        // 🔥 NUEVO: Solo hacer query si NO tenemos webhook response en localStorage
+        if (localWebhookResponse && localWebhookResponse.data) {
+          console.log('🎉 Using webhook response from localStorage - SKIPPING Supabase query');
+          console.log('🎫 Webhook data available:', localWebhookResponse);
+          
+          // Construir un objeto paymentData compatible desde el webhook response
+          const paymentDataFromWebhook = {
+            event_payment_id: localWebhookResponse.data.payment_id,
+            amount: 1990, // Por ahora hardcoded, pero podría venir del webhook
+            currency: 'MXN',
+            payment_method: 'paypal',
+            status: localWebhookResponse.data.payment_status,
+            created_at: localWebhookResponse.data.created_at,
+            response: localWebhookResponse, // 🔥 El response completo del webhook
+            paypal_transaction_id: localWebhookResponse.data.paypal_transaction_id,
+            ippay_transaction_id: null
+          };
+          
+          console.log('✅ Payment data constructed from webhook:', paymentDataFromWebhook);
+          setPaymentData(paymentDataFromWebhook);
+        } else if (effectiveTransactionId) {
+          console.log('📥 Fetching payment data from Supabase (fallback)...');
           console.log('📋 Search params:', { 
             leadId: effectiveLeadId, 
             transactionId: effectiveTransactionId, 
@@ -116,7 +164,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           if (paymentError) {
             console.warn('⚠️ Error fetching payment (non-fatal):', paymentError);
           } else if (payment) {
-            console.log('✅ Payment data loaded:', payment);
+            console.log('✅ Payment data loaded from Supabase (fallback):', payment);
             console.log('🔍 FULL payment object from DB:', JSON.stringify(payment, null, 2));
             setPaymentData(payment);
           } else {
@@ -146,44 +194,23 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     fetchData();
   }, [leadId, transactionId, paymentMethod, retryCount]); // Removido hasData de dependencias
 
-  // 🐛 PANEL DE DEBUG TEMPORAL (remover después de solucionar)
-  const DebugPanel = () => (
-    <div style={{
-      position: 'fixed',
-      top: '10px',
-      right: '10px',
-      background: '#000',
-      color: '#0f0',
-      padding: '15px',
-      borderRadius: '8px',
-      fontFamily: 'monospace',
-      fontSize: '12px',
-      maxWidth: '400px',
-      zIndex: 9999,
-      border: '2px solid #0f0'
-    }}>
-      <div style={{ marginBottom: '10px', fontWeight: 'bold', color: '#ff0' }}>
-        🐛 DEBUG PANEL
-      </div>
-      <div><strong>hasData:</strong> {String(hasData)}</div>
-      <div><strong>leadId:</strong> {leadId} ({typeof leadId})</div>
-      <div><strong>transactionId:</strong> {transactionId}</div>
-      <div><strong>paymentMethod:</strong> {paymentMethod}</div>
-      <div><strong>status:</strong> {status}</div>
-      <hr style={{ margin: '10px 0', borderColor: '#0f0' }} />
-      <div><strong>isLoading:</strong> {String(isLoading)}</div>
-      <div><strong>error:</strong> {error || 'null'}</div>
-      <div><strong>customerData:</strong> {customerData ? '✅ Loaded' : '❌ Null'}</div>
-      <div><strong>paymentData:</strong> {paymentData ? '✅ Loaded' : '❌ Null'}</div>
-      <div><strong>retryCount:</strong> {retryCount}</div>
-    </div>
-  );
-
   // Pantalla de error: no se pudo recuperar leadId ni de URL ni de localStorage
   if (error === 'no_lead_id') {
     return (
       <div className={styles.container}>
-        <DebugPanel />
+        <DebugPanel 
+          hasData={hasData}
+          leadId={leadId}
+          transactionId={transactionId}
+          paymentMethod={paymentMethod}
+          status={status}
+          isLoading={isLoading}
+          error={error}
+          customerData={customerData}
+          paymentData={paymentData}
+          retryCount={retryCount}
+          actualPaymentMethod="not computed yet"
+        />
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>⚠️</div>
           <h1 className={styles.errorTitle}>
@@ -206,7 +233,19 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <DebugPanel />
+        <DebugPanel 
+          hasData={hasData}
+          leadId={leadId}
+          transactionId={transactionId}
+          paymentMethod={paymentMethod}
+          status={status}
+          isLoading={isLoading}
+          error={error}
+          customerData={customerData}
+          paymentData={paymentData}
+          retryCount={retryCount}
+          actualPaymentMethod="not computed yet"
+        />
         <div className={styles.loadingCard}>
           <div className={styles.spinner}></div>
           <h2 className={styles.loadingTitle}>
@@ -224,7 +263,19 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (error === 'customer' || !customerData) {
     return (
       <div className={styles.container}>
-        <DebugPanel />
+        <DebugPanel 
+          hasData={hasData}
+          leadId={leadId}
+          transactionId={transactionId}
+          paymentMethod={paymentMethod}
+          status={status}
+          isLoading={isLoading}
+          error={error}
+          customerData={customerData}
+          paymentData={paymentData}
+          retryCount={retryCount}
+          actualPaymentMethod="not computed yet"
+        />
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>❌</div>
           <h1 className={styles.errorTitle}>
@@ -246,32 +297,147 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     );
   }
 
+  // 🐛 LOG: Verificar TODO el objeto paymentData
+  console.log('═══════════════════════════════════════════');
+  console.log('💳 ANÁLISIS COMPLETO DEL PAYMENT DATA');
+  console.log('═══════════════════════════════════════════');
+  console.log('💳 Full paymentData:', JSON.stringify(paymentData, null, 2));
+  console.log('💳 paymentData exists?:', !!paymentData);
+  console.log('💳 paymentData.amount:', paymentData?.amount);
+  console.log('💳 paymentData.currency:', paymentData?.currency);
+  console.log('💳 paymentData.payment_method:', paymentData?.payment_method);
+  console.log('💳 paymentData.event_payment_id:', paymentData?.event_payment_id);
+  console.log('💳 paymentData.response exists?:', !!paymentData?.response);
+  console.log('═══════════════════════════════════════════');
+
   // Calcular monto a mostrar
   const displayAmount = paymentData?.amount || 1990;
   const displayCurrency = paymentData?.currency || 'MXN';
   
-  // Obtener método de pago del objeto payment (más confiable que URL)
-  const actualPaymentMethod = paymentData?.payment_method?.toLowerCase() || paymentMethod;
+  // 🔍 LOG: Analizar método de pago
+  console.log('═══════════════════════════════════════════');
+  console.log('💳 ANÁLISIS DEL PAYMENT METHOD');
+  console.log('═══════════════════════════════════════════');
+  console.log('💳 paymentData?.payment_method:', paymentData?.payment_method);
+  console.log('💳 paymentMethod (from URL):', paymentMethod);
+  console.log('💳 effectiveTransactionId:', transactionId);
+  console.log('═══════════════════════════════════════════');
+  
+  // Obtener método de pago con múltiples fallbacks
+  let actualPaymentMethod = 'unknown';
+  
+  if (paymentData?.payment_method) {
+    actualPaymentMethod = paymentData.payment_method.toLowerCase();
+    console.log('✅ Using payment_method from DB:', actualPaymentMethod);
+  } else if (paymentMethod && paymentMethod !== 'unknown') {
+    actualPaymentMethod = paymentMethod.toLowerCase();
+    console.log('⚠️ Using payment_method from URL (fallback):', actualPaymentMethod);
+  } else if (paymentData?.paypal_transaction_id) {
+    actualPaymentMethod = 'paypal';
+    console.log('🔍 Detected PayPal from paypal_transaction_id');
+  } else if (paymentData?.ippay_transaction_id) {
+    actualPaymentMethod = 'ippay';
+    console.log('🔍 Detected IPPay from ippay_transaction_id');
+  } else {
+    console.warn('❌ Could not determine payment method - showing as unknown');
+  }
+  
+  console.log('🎯 FINAL actualPaymentMethod:', actualPaymentMethod);
   
   // Extraer datos del response (webhook de n8n)
+  // 🔥 PRIORIDAD: Usar paymentData.response (que puede venir del webhook o de Supabase)
   const webhookResponse = paymentData?.response || {};
   
-  // 🐛 LOG: Verificar estructura completa del response
-  console.log('🎫 Full webhookResponse:', webhookResponse);
-  console.log('🎫 webhookResponse.data:', webhookResponse.data);
+  console.log('═══════════════════════════════════════════');
+  console.log('🔍 FUENTE DEL WEBHOOK RESPONSE');
+  console.log('═══════════════════════════════════════════');
+  console.log('💾 webhookResponse source:', paymentData?.response ? 
+    (webhookResponseFromStorage ? 'localStorage (webhook direct)' : 'Supabase (fallback)') 
+    : 'NOT AVAILABLE');
+  console.log('═══════════════════════════════════════════');
   
-  // La estructura correcta según el API es: response.data.qr_image_url
-  const ticketQRUrl = webhookResponse.data?.qr_image_url;
-  const ticketId = webhookResponse.data?.qr_code || webhookResponse.data?.ticket_id;
+  // 🐛 LOG DETALLADO: Verificar estructura COMPLETA del response
+  console.log('═══════════════════════════════════════════');
+  console.log('🎫 ANÁLISIS COMPLETO DEL RESPONSE DEL WEBHOOK');
+  console.log('═══════════════════════════════════════════');
+  console.log('🎫 Full webhookResponse:', JSON.stringify(webhookResponse, null, 2));
+  console.log('🎫 Type of webhookResponse:', typeof webhookResponse);
+  console.log('🎫 Is Array?:', Array.isArray(webhookResponse));
+  console.log('🎫 Has .data property?:', 'data' in webhookResponse);
+  console.log('🎫 Has .qr_image_url property?:', 'qr_image_url' in webhookResponse);
   
+  if (webhookResponse && typeof webhookResponse === 'object') {
+    console.log('🔑 All keys in webhookResponse:', Object.keys(webhookResponse));
+  }
+  
+  // Manejar diferentes estructuras del response:
+  // Caso 1: response = { success: true, data: { qr_image_url: "..." } }
+  // Caso 2: response = { qr_image_url: "..." } (data directamente)
+  // Caso 3: response como string JSON que necesita parsearse
+  
+  let responseData = webhookResponse;
+  
+  // Si es un string, intentar parsear
+  if (typeof webhookResponse === 'string') {
+    try {
+      responseData = JSON.parse(webhookResponse);
+      console.log('🔄 Response parseado desde string:', JSON.stringify(responseData, null, 2));
+    } catch (e) {
+      console.error('❌ Error parseando response:', e);
+    }
+  }
+  
+  console.log('🎫 responseData después de procesamiento:', JSON.stringify(responseData, null, 2));
+  
+  // Intentar extraer de diferentes ubicaciones
+  const ticketQRUrl = 
+    responseData?.data?.qr_image_url ||           // Caso 1: response.data.qr_image_url
+    responseData?.qr_image_url ||                 // Caso 2: response.qr_image_url
+    null;
+    
+  const ticketId = 
+    responseData?.data?.qr_code ||                // Caso 1: response.data.qr_code
+    responseData?.data?.ticket_id ||              // Caso 1: response.data.ticket_id
+    responseData?.qr_code ||                      // Caso 2: response.qr_code
+    responseData?.ticket_id ||                    // Caso 2: response.ticket_id
+    null;
+  
+  console.log('🎯 RESULTADO FINAL:');
   console.log('🎫 Extracted ticketQRUrl:', ticketQRUrl);
   console.log('🎫 Extracted ticketId:', ticketId);
+  console.log('═══════════════════════════════════════════');
+  
+  // 🎫 LOG adicional: Mostrar todas las claves disponibles en el response
+  if (responseData && typeof responseData === 'object') {
+    console.log('🔑 Keys available in responseData:', Object.keys(responseData));
+    if (responseData.data) {
+      console.log('🔑 Keys available in responseData.data:', Object.keys(responseData.data));
+    }
+  }
 
   const isConfirmed = status === 'confirmed';
   const isPending = status === 'pending';
 
   return (
     <div className={styles.container}>
+      {/* Debug Panel - Siempre visible en la esquina superior derecha */}
+      <DebugPanel 
+        hasData={hasData}
+        leadId={leadId}
+        transactionId={transactionId}
+        paymentMethod={paymentMethod}
+        status={status}
+        isLoading={isLoading}
+        error={error}
+        customerData={customerData}
+        paymentData={paymentData}
+        retryCount={retryCount}
+        actualPaymentMethod={actualPaymentMethod}
+        webhookResponse={webhookResponse}
+        ticketQRUrl={ticketQRUrl}
+        ticketId={ticketId}
+      />
+      
       <div className={styles.confirmationCard}>
         
         {/* Success/Pending Icon */}
@@ -354,7 +520,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
               {ingles ? 'Registration ID:' : 'ID de Registro:'}
             </span>
             <span className={styles.detailValue}>
-              {paymentData?.event_payment_id || leadId}
+              {customerData?.customer_id || paymentData?.event_payment_id || leadId || 'N/A'}
             </span>
           </div>
 

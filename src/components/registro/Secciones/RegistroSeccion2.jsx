@@ -8,6 +8,7 @@ import FormularioLead from '../components/FormularioLead';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayForm from '../components/IPPayForm';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
+import StripeForm from '../components/StripeForm';
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 import ResumenRegistro from '../ResumenRegistro';
 import styles from '../css/registroSeccion2.module.css';
@@ -159,7 +160,7 @@ const RegistroSeccion2 = () => {
                     {/* Renderizado condicional según método seleccionado */}
                     <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
                       {selectedMethod === 'paypal' && <PayPalIframe leadId={leadId} leadData={leadData} />}
-                      {selectedMethod === 'creditCard' && <IPPayTemporaryMessage />}
+                      {selectedMethod === 'creditCard' && <StripeForm leadId={leadId} leadData={leadData} />}
                       {selectedMethod === 'bankTransfer' && <ComprobantePagoForm leadId={leadId} leadData={leadData} />}
                     </div>
                   </>

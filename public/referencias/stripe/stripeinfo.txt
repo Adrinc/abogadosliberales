@@ -1,0 +1,49 @@
+Cuando seleccionen el método de pago de tarjeta:
+
+**URL**: `https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order`
+
+**Método**: `POST`
+
+**Payload de Entrada**:
+```json
+{
+  "customer_id": 123,
+  "event_id": 1,
+  "amount": 1990.00,
+  "currency": "MXN",
+  "price_key": "precio_estudiante_lic",
+  "client": "congreso_nacional",
+  "msi_periods": 3,
+  "success_url": "https://tusitio.com/success",
+  "cancel_url": "https://tusitio.com/cancel"
+}
+
+Respuesta:
+
+[
+{
+"success": 
+true,
+"message": 
+"Orden de pago creada exitosamente",
+"data": 
+{
+"access_url": 
+"https://checkout.stripe.com/c/pay/cs_test_a1sFkDQMlSPWzfPmfJzvnkU8QWVkzGGGEQHBAGD2mOEXNAxSVOUPXzSkdX#fidnandhYHdWcXxpYCc%2FJ2FgY2RwaXEnKSdkdWxOYHwnPyd1blpxYHZxWjA0Vk9KanVESTI2ck1KMXJoPU5NbGxXQmpGckZGU2JCSHxNXHJDbUxPTmM3YjdEMGtrYm40R2Jtc3NDXzBiNlxfZzd2an1iQFBBUm9%2FZ0poRl9JaEdrQWNfNTVVUW9LfGdvfScpJ2N3amhWYHdzYHcnP3F3cGApJ2dkZm5id2pwa2FGamlqdyc%2FJyZjY2NjY2MnKSdpZHxqcHFRfHVgJz8ndmxrYmlgWmxxYGgnKSdga2RnaWBVaWRmYG1qaWFgd3YnP3F3cGB4JSUl",
+"order_id": 
+"cs_test_a1sFkDQMlSPWzfPmfJzvnkU8QWVkzGGGEQHBAGD2mOEXNAxSVOUPXzSkdX",
+"payment_id": 
+"cs_test_a1sFkDQMlSPWzfPmfJzvnkU8QWVkzGGGEQHBAGD2mOEXNAxSVOUPXzSkdX",
+"session_id": 
+"cs_test_a1sFkDQMlSPWzfPmfJzvnkU8QWVkzGGGEQHBAGD2mOEXNAxSVOUPXzSkdX",
+"event_payment_id": 
+7,
+"amount": 
+995,
+"currency": 
+"MXN",
+"status": 
+"pending"
+}
+}
+]
