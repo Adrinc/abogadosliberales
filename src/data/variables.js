@@ -1,12 +1,11 @@
 import { atom } from 'nanostores';
 
 export const isEnglish = atom(false);
-export let defaultLang = '';
+export let defaultLang = 'es';
 
 export function getLangFromUrl(url) {
-    const [, lang] = url.pathname.split('/');
-    if (lang=="en") return 'en';
-    return defaultLang;
+    // FORZAR ESPAÑOL: Ya no se permite inglés en el portal
+    return 'es';
   }
 
 export async function getLangBoolean() {

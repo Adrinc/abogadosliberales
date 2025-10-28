@@ -153,18 +153,139 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
     return Object.keys(newErrors).length === 0;
   };
 
+  // Convertir archivo a base64
+  const fileToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        // Remover el prefijo "data:image/jpeg;base64," para obtener solo el string base64
+        const base64String = reader.result.split(',')[1];
+        resolve(base64String);
+      };
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
+  // Subir credencial al webhook de n8n
+  const uploadCredential = async (customerId, file) => {
+    console.log('📤 Uploading credential to n8n webhook...');
+    console.log('📋 Customer ID:', customerId, '(type:', typeof customerId, ')');
+    console.log('📋 File name:', file.name);
+    console.log('📋 File type:', file.type);
+    console.log('📋 File size:', file.size);
+
+    // Validar que customer_id sea numérico
+    if (!customerId || typeof customerId !== 'number') {
+      throw new Error('customer_id debe ser numérico. Recibido: ' + typeof customerId);
+    }
+
+    try {
+      // Convertir archivo a base64
+      const base64File = await fileToBase64(file);
+      console.log('✅ File converted to base64');
+
+      // Determinar el tipo de credencial según el rol
+      let credentialType = 'student_id'; // Por defecto
+      if (academicData.role === 'profesor') {
+        credentialType = 'teacher_id';
+      } else if (academicData.role === 'licenciatura' || academicData.role === 'posgrado') {
+        credentialType = 'student_id';
+      }
+
+      // Construir payload según la especificación (customer_id NUMÉRICO)
+      const payload = {
+        customer_id: customerId, // ✅ Número puro, no string
+        credential_type: credentialType,
+        institution_name: academicData.university || 'Universidad no especificada',
+        file: {
+          file_name: `credential_${customerId}`,
+          file_bucket: 'customer_document',
+          file_route: `credentials/${customerId}`,
+          file_title: 'Credencial Académica',
+          file_description: `Credencial ${credentialType === 'teacher_id' ? 'de profesor' : 'estudiantil'} subida por el cliente`,
+          metadata_json: {
+            customer_id: customerId, // ✅ Número puro
+            upload_source: 'landing_page',
+            original_file_name: file.name,
+            file_type: file.type,
+            file_size: file.size,
+            uploaded_at: new Date().toISOString()
+          },
+          media_category_id: 3, // Categoría de credenciales
+          file: base64File // String base64 puro (sin prefijo)
+        }
+      };
+
+      console.log('📦 Payload preparado:', {
+        customer_id: payload.customer_id,
+        credential_type: payload.credential_type,
+        institution_name: payload.institution_name,
+        file: {
+          ...payload.file,
+          file: `[base64 string with ${base64File.length} characters]`
+        }
+      });
+
+      // Enviar al webhook
+      const response = await fetch('https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_credential', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload)
+      });
+
+      console.log('📡 Response status:', response.status);
+      console.log('📡 Response headers:', response.headers);
+
+      // Leer el texto de respuesta primero
+      const responseText = await response.text();
+      console.log('📡 Response text:', responseText);
+
+      if (!response.ok) {
+        console.error('❌ Webhook error response:', responseText);
+        throw new Error(`HTTP ${response.status}: ${responseText || 'Error desconocido del servidor'}`);
+      }
+
+      // Intentar parsear como JSON
+      let result;
+      try {
+        result = JSON.parse(responseText);
+        console.log('✅ Credential uploaded successfully:', result);
+      } catch (parseError) {
+        console.error('❌ Failed to parse response as JSON:', parseError);
+        console.error('❌ Raw response:', responseText);
+        throw new Error('El servidor no respondió con un JSON válido. Por favor contacte al administrador.');
+      }
+
+      return result;
+
+    } catch (error) {
+      console.error('❌ Error uploading credential:', error);
+      throw new Error(ingles 
+        ? 'Failed to upload credential. Please try again.' 
+        : 'Error al subir la credencial. Por favor intente nuevamente.'
+      );
+    }
+  };
+
   // Crear customer en Supabase (Step 3)
   const handleCreateCustomer = async () => {
     setIsSubmitting(true);
 
+    let customerId = null;
+    let isNewCustomer = false;
+
     try {
-      console.log('📤 Creating customer in Supabase...');
+      // 🔥 PASO 1: Crear/actualizar customer PRIMERO para obtener customer_id numérico
+      console.log('📤 Step 1: Creating/updating customer in Supabase...');
       
       // Obtener la categoría correspondiente según el rol
       const customerCategoryFk = getCustomerCategoryFk(academicData.role, academicData.isPaquete11);
       console.log('📋 Customer category FK:', customerCategoryFk);
 
-      // 1. Verificar si el email ya existe
+      // 1.1. Verificar si el email ya existe
       const { data: existingCustomer, error: selectError } = await supabase
         .from('customer')
         .select('customer_id, email, status')
@@ -176,12 +297,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         console.warn('⚠️ Error checking existing customer:', selectError.message);
       }
 
-      let customerId = null;
-
       if (existingCustomer) {
         // Cliente ya existe, actualizar datos
         console.log('✅ Customer already exists:', existingCustomer.customer_id);
         customerId = existingCustomer.customer_id;
+        isNewCustomer = false;
 
         const { error: updateError } = await supabase
           .from('customer')
@@ -225,10 +345,55 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         }
 
         customerId = newCustomer.customer_id;
+        isNewCustomer = true;
         console.log('✅ New customer created with ID:', customerId);
       }
 
-      // Guardar leadData y leadId
+      // 🔥 PASO 2: Subir credencial usando el customer_id numérico
+      console.log('📤 Step 2: Uploading credential with customer_id:', customerId);
+      
+      if (selectedFile) {
+        try {
+          await uploadCredential(customerId, selectedFile);
+          console.log('✅ Credential uploaded successfully');
+        } catch (uploadError) {
+          console.error('❌ Error uploading credential:', uploadError);
+          
+          // 🔥 CRÍTICO: Si falla la subida Y es un nuevo customer, BORRARLO
+          if (isNewCustomer && customerId) {
+            console.warn('⚠️ Credential upload failed for NEW customer - rolling back...');
+            try {
+              const { error: deleteError } = await supabase
+                .from('customer')
+                .delete()
+                .eq('customer_id', customerId);
+              
+              if (deleteError) {
+                console.error('❌ Failed to rollback customer:', deleteError.message);
+              } else {
+                console.log('✅ Customer rollback successful - customer_id', customerId, 'deleted');
+              }
+            } catch (rollbackError) {
+              console.error('❌ Rollback error:', rollbackError);
+            }
+          }
+          
+          // Mostrar error al usuario
+          alert(uploadError.message || (ingles 
+            ? 'Failed to upload credential. Please check your internet connection and try again.' 
+            : 'Error al subir la credencial. Por favor verifique su conexión a internet e intente nuevamente.'));
+          
+          // 🔥 DETENER TODO el flujo
+          throw uploadError;
+        }
+      } else {
+        console.warn('⚠️ No credential file to upload');
+      }
+
+      // 🔥 PASO 3: TODO OK - Customer creado y credencial subida
+      console.log('🎉 Customer created AND credential uploaded successfully!');
+
+      // 3. Guardar leadData y leadId
       setLeadId(customerId);
       const newLeadData = {
         name: `${academicData.firstName} ${academicData.lastName}`,
@@ -240,7 +405,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
 
       console.log('🎉 Customer creation successful!');
       
-      // Notificar al componente padre que se creó el lead
+      // 4. Notificar al componente padre que se creó el lead
       if (onComplete) {
         onComplete({
           leadData: newLeadData,
@@ -248,15 +413,48 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         });
       }
       
-      // Avanzar al siguiente paso
+      // 5. Avanzar al siguiente paso
       setCurrentStep(currentStep + 1);
 
     } catch (error) {
-      console.error('❌ Error during customer creation:', error);
-      alert(error.message || (ingles 
-        ? 'An error occurred. Please try again.' 
-        : 'Ocurrió un error. Por favor intente nuevamente.'
-      ));
+      console.error('❌ Error during customer creation/upload:', error);
+      
+      // 🔥 Mensaje de error específico según el tipo
+      let errorMessage = error.message;
+      
+      if (error.message.includes('JSON')) {
+        errorMessage = ingles 
+          ? '⚠️ Server error: The credential upload service is not responding correctly.\n\nPlease contact the administrator with this error:\n"Invalid JSON response from upload_credential webhook"\n\nWebhook: https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_credential' 
+          : '⚠️ Error del servidor: El servicio de carga de credenciales no está respondiendo correctamente.\n\nPor favor contacte al administrador con este error:\n"Respuesta JSON inválida del webhook upload_credential"\n\nWebhook: https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_credential';
+      } else if (error.message.includes('HTTP')) {
+        errorMessage = ingles 
+          ? '⚠️ Server error: Could not connect to credential upload service. Please check your internet connection and try again.' 
+          : '⚠️ Error del servidor: No se pudo conectar al servicio de carga de credenciales. Por favor verifique su conexión a internet e intente nuevamente.';
+      } else if (error.message.includes('customer_id')) {
+        errorMessage = ingles 
+          ? 'Invalid customer ID format. Please contact support.' 
+          : 'Formato de ID de cliente inválido. Por favor contacte a soporte.';
+      } else if (error.message.includes('customer')) {
+        errorMessage = ingles 
+          ? 'Failed to create customer record. Please try again.' 
+          : 'Error al crear el registro del cliente. Por favor intente nuevamente.';
+      } else {
+        // Error genérico - mostrar el mensaje original
+        errorMessage = ingles 
+          ? `Credential upload failed: ${error.message}.\n\nPlease try again or contact support.` 
+          : `Error al subir credencial: ${error.message}.\n\nPor favor intente nuevamente o contacte a soporte.`;
+      }
+      
+      alert(errorMessage);
+      
+      // 🔥 NO AVANZAR AL STEP 4 - el usuario debe quedarse en Step 3
+      console.log('🛑 Stopping flow due to error - staying in Step 3');
+      
+      if (isNewCustomer) {
+        console.log('💡 NOTE: New customer was rolled back (deleted) due to credential upload failure');
+      }
+      
+      console.log('💡 TIP: If you see "Invalid JSON response", the webhook is not configured correctly in n8n');
     } finally {
       setIsSubmitting(false);
     }

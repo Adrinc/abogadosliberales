@@ -233,16 +233,12 @@ const NavBar = () => {
     setIsOpen(!isOpen);
   };
 
-  // Función para manejar el cambio de país en el switch
+  // Función para manejar el cambio de país en el switch (DESHABILITADA - solo español)
   const handleSwitch = (country) => {
-    selectedCountry.set(country);
-    if (country === "mex") {
-      isEnglish.set(false);
-      changeLang("es");
-    } else if (country === "usa") {
-      isEnglish.set(true);
-      changeLang("en");
-    }
+    // FORZAR ESPAÑOL SIEMPRE
+    selectedCountry.set("mex");
+    isEnglish.set(false);
+    changeLang("es");
   };
 
   // Función para verificar si el enlace está activo

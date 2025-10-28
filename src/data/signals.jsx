@@ -6,22 +6,35 @@ import { isEnglish } from "./variables";
 const LangContext = createContext();
 
 export const LangProvider = ({ children }) => {
-  const browserLang = typeof window !== "undefined"
-    ? (localStorage.getItem("lang") || navigator.language.slice(0, 2))
-    : "es";
+  // FORZAR ESPAÑOL: Ya no se usa inglés en el portal
+  // Se ignora localStorage y la configuración del navegador
+  const browserLang = "es";
 
   const [lang, setLang] = useState(browserLang);
 
   const t = translations[lang] || translations.es;
+  
+  // Limpiar localStorage al iniciar para usuarios que tenían inglés guardado
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedLang = localStorage.getItem("lang");
+      if (storedLang === "en") {
+        localStorage.removeItem("lang");
+        localStorage.setItem("lang", "es");
+      }
+    }
+  }, []);
 
   const changeLang = (newLang) => {
-    setLang(newLang);
-    localStorage.setItem("lang", newLang);
-    isEnglish.set(newLang === "en");
+    // Ya no se permite cambiar idioma - siempre español
+    setLang("es");
+    localStorage.setItem("lang", "es");
+    isEnglish.set(false);
   };
 
   useEffect(() => {
-    isEnglish.set(lang === "en");
+    // Forzar español siempre
+    isEnglish.set(false);
   }, [lang]);
 
   return (

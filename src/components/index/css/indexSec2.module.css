@@ -7,7 +7,7 @@
   position: relative;
   width: 100%;
 /*   min-height: 100vh; */
-  padding: 8rem 2rem;
+  padding: 4rem 2rem; /* Reducido de 8rem a 4rem */
   /* SOLUCIÓN SIMPLE: Fondo azul suave institucional */
   background: linear-gradient(180deg, #E8ECFF 0%, #EEF2FF 100%);
   overflow: hidden;
@@ -23,19 +23,19 @@
 .labelWrapper {
   display: flex;
   justify-content: center;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem; /* Reducido de 3rem */
 }
 
 .label {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.35rem; /* Reducido de 0.75rem 1.5rem */
   background: linear-gradient(135deg, #EECB00 0%, #F4D672 100%);
   color: #020266;
   border: none;
   border-radius: 999px;
-  font-size: 1rem;
+  font-size: 0.9rem; /* Reducido de 1rem */
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
@@ -55,7 +55,7 @@
 .grid {
   display: grid;
   grid-template-columns: 40fr 60fr;
-  gap: 4rem;
+  gap: 3rem; /* Reducido de 4rem */
   align-items: start;
 }
 
@@ -64,7 +64,7 @@
   top: 120px;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem; /* Reducido de 2rem */
 }
 
 .imageWrapper {
@@ -110,7 +110,7 @@
 }
 
 .highlightBox {
-  padding: 1.75rem;
+  padding: 1.35rem; /* Reducido de 1.75rem */
   background: linear-gradient(135deg, 
     rgba(238, 203, 0, 0.12) 0%, 
     rgba(2, 2, 102, 0.08) 100%
@@ -137,15 +137,15 @@
 }
 
 .quoteIcon {
-  font-size: 2.5rem;
+  font-size: 2.25rem; /* Reducido de 2.5rem */
   flex-shrink: 0;
   filter: drop-shadow(0 2px 4px rgba(238, 203, 0, 0.3));
 }
 
 .highlightBox p {
   color: #020266;
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.95rem; /* Reducido de 1rem */
+  line-height: 1.65; /* Reducido de 1.7 */
   font-style: italic;
   font-weight: 500;
   margin: 0;
@@ -154,18 +154,18 @@
 .contentColumn {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.5rem; /* Reducido de 2rem */
 }
 
 .title {
 
-  font-size: clamp(2.25rem, 3.5vw, 3rem);
+  font-size: clamp(2rem, 3.5vw, 2.65rem); /* Reducido de 2.25-3rem a 2-2.65rem */
   font-weight: 800;
   color: #020266;
   line-height: 1.2;
   margin: 0;
   position: relative;
-  padding-bottom: 1rem;
+  padding-bottom: 0.75rem; /* Reducido de 1rem */
 }
 
 .title::after {
@@ -180,8 +180,8 @@
 }
 
 .description {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 1.05rem; /* Reducido de 1.125rem */
+  line-height: 1.7; /* Reducido de 1.8 */
   color: #1A202C;
   margin: 0;
   font-weight: 400;
@@ -195,14 +195,14 @@
 .itemsGrid {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  gap: 1.25rem; /* Reducido de 1.5rem */
+  margin-top: 0.75rem; /* Reducido de 1rem */
 }
 
 .item {
   display: flex;
   gap: 1.25rem;
-  padding: 1.5rem;
+  padding: 1.25rem; /* Reducido de 1.5rem */
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -230,13 +230,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: 56px; /* Reducido de 64px */
+  height: 56px;
   background: linear-gradient(135deg, 
     rgba(238, 203, 0, 0.15) 0%, 
     rgba(2, 2, 102, 0.1) 100%
   );
-  border-radius: 20px;
+  border-radius: 18px; /* Reducido de 20px */
   flex-shrink: 0;
   border: 2px solid rgba(238, 203, 0, 0.3);
   box-shadow: 
@@ -254,7 +254,7 @@
 }
 
 .icon {
-  font-size: 2rem;
+  font-size: 1.85rem; /* Reducido de 2rem */
   filter: drop-shadow(0 2px 4px rgba(238, 203, 0, 0.2));
 }
 
@@ -263,16 +263,16 @@
 }
 
 .itemContent h3 {
-  font-size: 1.25rem;
+  font-size: 1.15rem; /* Reducido de 1.25rem */
   font-weight: 700;
   color: #020266;
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 0.4rem 0; /* Reducido de 0.5rem */
 
 }
 
 .itemContent p {
-  font-size: 1rem;
-  line-height: 1.6;
+  font-size: 0.95rem; /* Reducido de 1rem */
+  line-height: 1.55; /* Reducido de 1.6 */
   color: #4A5568;
   margin: 0;
 }

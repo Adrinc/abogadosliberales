@@ -5,7 +5,7 @@
 
 .section {
   position: relative;
-  padding: 120px 0;
+  padding: 60px 0; /* Reducido de 120px - 50% reducción */
   background: linear-gradient(180deg, #020266 0%, #05054F 50%, #0B0B2B 100%);
   overflow: hidden;
   color: #FFFFFF;
@@ -49,17 +49,17 @@
 
 .labelWrapper {
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem; /* Reducido de 1.5rem - 33% reducción */
 }
 
 .label {
   display: inline-block;
-  font-size: 0.875rem;
+  font-size: 0.8rem; /* Reducido de 0.875rem */
   font-weight: 700;
   letter-spacing: 0.15em;
   color: #EECB00;
   background: rgba(238, 203, 0, 0.15);
-  padding: 8px 24px;
+  padding: 6px 20px; /* Reducido de 8px 24px */
   border-radius: 999px;
   border: 1.5px solid rgba(238, 203, 0, 0.4);
   text-transform: uppercase;
@@ -69,24 +69,24 @@
 .headerWrapper {
   text-align: center;
   max-width: 900px;
-  margin: 0 auto 3rem;
+  margin: 0 auto 2rem; /* Reducido de 3rem - 33% reducción */
 }
 
 .title {
 
-  font-size: clamp(2.5rem, 4vw, 3.5rem);
+  font-size: clamp(2.125rem, 3.5vw, 3rem); /* Reducido de clamp(2.5rem, 4vw, 3.5rem) - 15% */
   font-weight: 700;
   line-height: 1.2;
   color: #FFFFFF;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem; /* Reducido de 1rem - 25% */
   text-shadow: 0 4px 16px rgba(238, 203, 0, 0.3);
 }
 
 .subtitle {
-  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  font-size: clamp(1rem, 1.35vw, 1.2rem); /* Reducido de clamp(1.125rem, 1.5vw, 1.375rem) - 12% */
   color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem; /* Reducido de 2rem - 25% */
 }
 
 /* ============================================
@@ -97,12 +97,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: 0.75rem; /* Reducido de 1rem - 25% */
+  margin-bottom: 0.75rem; /* Reducido de 1rem - 25% */
 }
 
 .mottoIcon {
-  font-size: 1.5rem;
+  font-size: 1.3rem; /* Reducido de 1.5rem - 13% */
   color: #EECB00;
   animation: sparkle 3s ease-in-out infinite;
 }
@@ -114,7 +114,7 @@
 
 .mottoLatin {
 
-  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-size: clamp(1.3rem, 2.2vw, 1.75rem); /* Reducido de clamp(1.5rem, 2.5vw, 2rem) - 12% */
   font-weight: 700;
   font-style: italic;
   background: linear-gradient(135deg, #EECB00, #F4D672);
@@ -125,10 +125,10 @@
 }
 
 .motto {
-  font-size: clamp(1rem, 1.25vw, 1.25rem);
+  font-size: clamp(0.9rem, 1.1vw, 1.1rem); /* Reducido de clamp(1rem, 1.25vw, 1.25rem) - 12% */
   color: rgba(255, 255, 255, 0.9);
   font-style: italic;
-  margin-top: 0.5rem;
+  margin-top: 0.375rem; /* Reducido de 0.5rem - 25% */
 }
 
 /* ============================================
@@ -137,18 +137,18 @@
 
 .descriptionWrapper {
   max-width: 800px;
-  margin: 0 auto 4rem;
+  margin: 0 auto 2.5rem; /* Reducido de 4rem - 37.5% reducción */
   text-align: center;
 }
 
 .description {
-  font-size: clamp(1rem, 1.25vw, 1.125rem);
-  line-height: 1.8;
+  font-size: clamp(0.9375rem, 1.1vw, 1.05rem); /* Reducido de clamp(1rem, 1.25vw, 1.125rem) - 10% */
+  line-height: 1.7; /* Reducido de 1.8 */
   color: rgba(255, 255, 255, 0.85);
-  padding: 2rem;
+  padding: 1.5rem; /* Reducido de 2rem - 25% */
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  border-radius: 16px;
+  border-radius: 14px; /* Reducido de 16px */
   border: 1px solid rgba(238, 203, 0, 0.2);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
@@ -160,16 +160,16 @@
 .pillarsGrid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
-  margin-bottom: 4rem;
+  gap: 1.75rem; /* Reducido de 2.5rem - 30% reducción */
+  margin-bottom: 2.5rem; /* Reducido de 4rem - 37.5% reducción */
 }
 
 .pillarCard {
   position: relative;
-  padding: 3rem 2rem;
+  padding: 2rem 1.5rem; /* Reducido de 3rem 2rem - 33% reducción */
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
   backdrop-filter: blur(15px);
-  border-radius: 20px;
+  border-radius: 18px; /* Reducido de 20px */
   border: 2px solid rgba(238, 203, 0, 0.2);
   text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -220,9 +220,9 @@
    ============================================ */
 
 .pillarIconWrapper {
-  width: 100px;
-  height: 100px;
-  margin: 0 auto 1.5rem;
+  width: 85px; /* Reducido de 100px - 15% */
+  height: 85px; /* Reducido de 100px - 15% */
+  margin: 0 auto 1.125rem; /* Reducido de 1.5rem - 25% */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -245,22 +245,22 @@
 }
 
 .pillarIcon {
-  font-size: 3rem;
+  font-size: 2.55rem; /* Reducido de 3rem - 15% */
   filter: drop-shadow(0 4px 16px rgba(238, 203, 0, 0.5));
 }
 
 .pillarTitle {
   
-  font-size: 1.75rem;
+  font-size: 1.5rem; /* Reducido de 1.75rem - 14% */
   font-weight: 700;
   color: #EECB00;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem; /* Reducido de 1rem - 25% */
   line-height: 1.3;
 }
 
 .pillarDescription {
-  font-size: 1rem;
-  line-height: 1.7;
+  font-size: 0.9375rem; /* Reducido de 1rem - 6.25% */
+  line-height: 1.6; /* Reducido de 1.7 */
   color: rgba(255, 255, 255, 0.8);
 }
 
@@ -275,14 +275,14 @@
 .cta {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  padding: 16px 40px;
+  gap: 10px; /* Reducido de 12px */
+  padding: 13px 34px; /* Reducido de 16px 40px - 18.75% */
   background: transparent;
   color: #FFFFFF;
-  font-size: 1.125rem;
+  font-size: 1.05rem; /* Reducido de 1.125rem - 6.6% */
   font-weight: 600;
   border: 2px solid rgba(255, 255, 255, 0.6);
-  border-radius: 12px;
+  border-radius: 11px; /* Reducido de 12px */
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
@@ -315,7 +315,7 @@
 }
 
 .ctaArrow {
-  font-size: 1.5rem;
+  font-size: 1.35rem; /* Reducido de 1.5rem - 10% */
   transition: transform 0.3s ease;
 }
 
