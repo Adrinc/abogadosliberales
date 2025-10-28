@@ -359,6 +359,16 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
       const webhookResult = await webhookResponse.json();
       console.log('✅ Webhook response:', webhookResult);
 
+      // 🔥 NUEVO: Guardar en localStorage (igual que PayPal y Stripe)
+      localStorage.setItem('lastLeadId', effectiveLeadId.toString());
+      localStorage.setItem('lastTransactionId', referenceNumber); // Número de referencia como transaction ID
+      localStorage.setItem('lastPaymentMethod', 'transfer'); // 🔥 CRÍTICO
+      console.log('💾 Saved to localStorage:', {
+        lastLeadId: effectiveLeadId,
+        lastTransactionId: referenceNumber,
+        lastPaymentMethod: 'transfer'
+      });
+
       // Éxito
       setUploadStatus('success');
       setIsUploading(false);

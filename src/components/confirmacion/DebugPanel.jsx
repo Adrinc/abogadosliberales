@@ -109,7 +109,8 @@ const DebugPanel = ({
               <div>• Amount: ${paymentData.amount} {paymentData.currency}</div>
               <div>• Method (DB): <span style={{ color: paymentData.payment_method ? '#0f0' : '#f00' }}>{paymentData.payment_method || 'NULL'}</span></div>
               <div>• PayPal TX: {paymentData.paypal_transaction_id || 'null'}</div>
-              <div>• IPPay TX: {paymentData.ippay_transaction_id || 'null'}</div>
+              <div>• Stripe TX: {paymentData.stripe_transaction_id || paymentData.other_transaction_id || 'null'}</div>
+              <div>• Transfer Ref: {paymentData.transfer_reference_number || 'null'}</div>
               <div>• Response: {paymentData.response ? '✅ Exists' : '❌ Null'}</div>
             </div>
           )}

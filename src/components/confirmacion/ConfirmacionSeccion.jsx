@@ -114,17 +114,22 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           console.log('🎉 Using webhook response from localStorage - SKIPPING Supabase query');
           console.log('🎫 Webhook data available:', localWebhookResponse);
           
+          // 🔥 LEER el método de pago REAL desde localStorage
+          const storedPaymentMethod = localStorage.getItem('lastPaymentMethod') || 'paypal';
+          console.log('💾 Método de pago desde localStorage:', storedPaymentMethod);
+          
           // Construir un objeto paymentData compatible desde el webhook response
           const paymentDataFromWebhook = {
             event_payment_id: localWebhookResponse.data.payment_id,
             amount: 1990, // Por ahora hardcoded, pero podría venir del webhook
             currency: 'MXN',
-            payment_method: 'paypal',
+            payment_method: storedPaymentMethod, // 🔥 USAR EL MÉTODO REAL, NO HARDCODEAR
             status: localWebhookResponse.data.payment_status,
             created_at: localWebhookResponse.data.created_at,
             response: localWebhookResponse, // 🔥 El response completo del webhook
             paypal_transaction_id: localWebhookResponse.data.paypal_transaction_id,
-            ippay_transaction_id: null
+            stripe_transaction_id: null,
+            other_transaction_id: null
           };
           
           console.log('✅ Payment data constructed from webhook:', paymentDataFromWebhook);
@@ -140,7 +145,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           let paymentQuery = supabase
             .schema('event')
             .from('event_payment')
-            .select('event_payment_id, amount, currency, payment_method, status, created_at, response, paypal_transaction_id, ippay_transaction_id')
+            .select('event_payment_id, amount, currency, payment_method, status, created_at, response, paypal_transaction_id, stripe_transaction_id, other_transaction_id, transfer_reference_number')
             .eq('customer_fk', effectiveLeadId)
             .order('created_at', { ascending: false })
             .limit(1);
@@ -335,11 +340,23 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   } else if (paymentData?.paypal_transaction_id) {
     actualPaymentMethod = 'paypal';
     console.log('🔍 Detected PayPal from paypal_transaction_id');
-  } else if (paymentData?.ippay_transaction_id) {
-    actualPaymentMethod = 'ippay';
-    console.log('🔍 Detected IPPay from ippay_transaction_id');
+  } else if (paymentData?.stripe_transaction_id || paymentData?.other_transaction_id) {
+    actualPaymentMethod = 'stripe';
+    console.log('🔍 Detected Stripe from stripe_transaction_id or other_transaction_id');
   } else {
     console.warn('❌ Could not determine payment method - showing as unknown');
+  }
+  
+  // 🔥 NORMALIZACIÓN: Convertir 'creditCard' a 'stripe' para consistencia
+  if (actualPaymentMethod === 'creditcard' || actualPaymentMethod === 'credit_card') {
+    actualPaymentMethod = 'stripe';
+    console.log('🔄 Normalized creditCard → stripe');
+  }
+  
+  // 🔥 NORMALIZACIÓN: Convertir 'banktransfer' a 'transfer' para consistencia
+  if (actualPaymentMethod === 'banktransfer' || actualPaymentMethod === 'bank_transfer') {
+    actualPaymentMethod = 'transfer';
+    console.log('🔄 Normalized bankTransfer → transfer');
   }
   
   console.log('🎯 FINAL actualPaymentMethod:', actualPaymentMethod);
@@ -527,10 +544,10 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           {transactionId && (
             <div className={styles.detailRow}>
               <span className={styles.detailLabel}>
-                {paymentMethod === 'paypal' && (ingles ? 'PayPal Transaction:' : 'Transacción PayPal:')}
-                {paymentMethod === 'ippay' && (ingles ? 'Credit Card Transaction:' : 'Transacción Tarjeta:')}
-                {paymentMethod === 'transfer' && (ingles ? 'Reference Number:' : 'Número de Referencia:')}
-                {paymentMethod === 'unknown' && (ingles ? 'Transaction ID:' : 'ID de Transacción:')}
+                {actualPaymentMethod === 'paypal' && (ingles ? 'PayPal Transaction:' : 'Transacción PayPal:')}
+                {actualPaymentMethod === 'stripe' && (ingles ? 'Stripe Transaction:' : 'Transacción Stripe:')}
+                {actualPaymentMethod === 'transfer' && (ingles ? 'Reference Number:' : 'Número de Referencia:')}
+                {(!actualPaymentMethod || actualPaymentMethod === 'unknown') && (ingles ? 'Transaction ID:' : 'ID de Transacción:')}
               </span>
               <span className={styles.detailValue}>{transactionId}</span>
             </div>
@@ -542,7 +559,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             </span>
             <span className={styles.detailValue}>
               {actualPaymentMethod === 'paypal' && 'PayPal'}
-              {actualPaymentMethod === 'ippay' && (ingles ? 'Credit/Debit Card' : 'Tarjeta de Crédito/Débito')}
+              {actualPaymentMethod === 'stripe' && (ingles ? 'Credit/Debit Card (Stripe)' : 'Tarjeta de Crédito/Débito (Stripe)')}
               {actualPaymentMethod === 'transfer' && (ingles ? 'Bank Transfer' : 'Transferencia Bancaria')}
               {(!actualPaymentMethod || actualPaymentMethod === 'unknown') && (ingles ? 'Unknown' : 'Desconocido')}
             </span>

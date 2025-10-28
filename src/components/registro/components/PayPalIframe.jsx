@@ -389,6 +389,10 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               console.log('💾 Saved transactionId to localStorage:', txId);
             }
             
+            // 🔥 NUEVO: Guardar método de pago
+            localStorage.setItem('lastPaymentMethod', 'paypal');
+            console.log('💾 Saved payment method to localStorage: paypal');
+            
             // 🔥 NUEVO: Guardar webhook response en localStorage
             if (webhookData) {
               localStorage.setItem('lastWebhookResponse', JSON.stringify(webhookData));

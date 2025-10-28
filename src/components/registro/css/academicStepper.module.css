@@ -1768,3 +1768,14 @@
     padding: 1.5rem;
   }
 }
+
+/* ============================================
+   SUCCESS TEXT (Email Match Confirmation)
+   ============================================ */
+.successText {
+  display: block;
+  font-size: 0.8125rem;
+  color: #059669;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}

@@ -650,7 +650,10 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
               {errors.emailConfirm && (
                 <span className={styles.errorText}>{errors.emailConfirm}</span>
               )}
-              {!errors.emailConfirm && t.step3.emailConfirm.hint && (
+              {!errors.emailConfirm && academicData.emailConfirm && academicData.email === academicData.emailConfirm && (
+                <span className={styles.successText}>✓ {ingles ? 'Emails match' : 'Los correos coinciden'}</span>
+              )}
+              {!errors.emailConfirm && t.step3.emailConfirm.hint && !academicData.emailConfirm && (
                 <span className={styles.hint}>{t.step3.emailConfirm.hint}</span>
               )}
             </div>

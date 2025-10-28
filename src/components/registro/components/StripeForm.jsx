@@ -15,6 +15,9 @@ const StripeForm = ({
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
+  // 🔍 Debug: Ver qué academicRole estamos recibiendo
+  console.log('🎓 StripeForm recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
+  
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // 'success' | 'error'
   const [errorMessage, setErrorMessage] = useState('');
@@ -37,16 +40,16 @@ const StripeForm = ({
       return 'precio_lista_congreso'; // Precio general
     }
     
-    // Mapeo según documentación:
+    // Mapeo según valores REALES del formulario (en español):
     const roleMapping = {
-      'undergraduate': 'precio_estudiante_lic',     // Estudiante de Licenciatura
-      'postgraduate': 'precio_prof_estud_pos',      // Estudiante de Posgrado
-      'teacher': 'precio_lista_congreso',           // Profesor
-      'staff': 'precio_lista_congreso',             // Personal Educativo
-      'other': 'precio_lista_congreso'              // Otro
+      'licenciatura': 'precio_estudiante_lic',      // Estudiante de Licenciatura → $995 MXN
+      'posgrado': 'precio_prof_estud_pos',          // Estudiante de Posgrado → $1,692 MXN
+      'profesor': 'precio_lista_congreso',          // Profesor/Staff → $1,990 MXN
     };
     
-    return roleMapping[academicRole] || 'precio_lista_congreso';
+    const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
+    console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
+    return priceKey;
   };
 
   // Handler para iniciar el proceso de pago
@@ -66,7 +69,8 @@ const StripeForm = ({
       }
 
       // 2. Construir URLs de éxito y cancelación
-      const successUrl = `${window.location.origin}/confirmacion`;
+      // 🔥 IMPORTANTE: Agregar parámetros a la URL para que ConfirmacionSeccion sepa el método
+      const successUrl = `${window.location.origin}/confirmacion?lead_id=${leadId}&method=stripe&status=confirmed`;
       const cancelUrl = window.location.href; // Volver a la página actual
 
       // 3. Construir payload para n8n

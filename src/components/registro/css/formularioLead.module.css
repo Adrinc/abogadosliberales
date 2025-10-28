@@ -135,6 +135,17 @@
   font-size: 1rem;
 }
 
+/* Mensaje de éxito (emails coinciden) */
+.successText {
+  font-size: 0.8125rem;
+  color: #059669;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
 /* ============================================
    SUBMIT BUTTON
    ============================================ */

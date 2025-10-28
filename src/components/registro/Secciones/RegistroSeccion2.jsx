@@ -130,7 +130,11 @@ const RegistroSeccion2 = () => {
                       <div className={styles.tabs}>
                         <button
                           className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
-                          onClick={() => setSelectedMethod('paypal')}
+                          onClick={() => {
+                            setSelectedMethod('paypal');
+                            localStorage.setItem('lastPaymentMethod', 'paypal');
+                            console.log('🎯 Método seleccionado: paypal (guardado en localStorage)');
+                          }}
                         >
                           <div className={styles.tabIcon}>💳</div>
                           <span className={styles.tabLabel}>{t.paymentMethods.tabs.paypal}</span>
@@ -139,7 +143,11 @@ const RegistroSeccion2 = () => {
 
                         <button
                           className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
-                          onClick={() => setSelectedMethod('creditCard')}
+                          onClick={() => {
+                            setSelectedMethod('creditCard');
+                            localStorage.setItem('lastPaymentMethod', 'stripe');
+                            console.log('🎯 Método seleccionado: creditCard → stripe (guardado en localStorage)');
+                          }}
                         >
                           <div className={styles.tabIcon}>💰</div>
                           <span className={styles.tabLabel}>{t.paymentMethods.tabs.creditCard}</span>
@@ -148,7 +156,11 @@ const RegistroSeccion2 = () => {
 
                         <button
                           className={`${styles.tab} ${selectedMethod === 'bankTransfer' ? styles.tabActive : ''}`}
-                          onClick={() => setSelectedMethod('bankTransfer')}
+                          onClick={() => {
+                            setSelectedMethod('bankTransfer');
+                            localStorage.setItem('lastPaymentMethod', 'transfer');
+                            console.log('🎯 Método seleccionado: bankTransfer → transfer (guardado en localStorage)');
+                          }}
                         >
                           <div className={styles.tabIcon}>🏦</div>
                           <span className={styles.tabLabel}>{t.paymentMethods.tabs.bankTransfer}</span>

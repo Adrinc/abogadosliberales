@@ -19,6 +19,7 @@ const FormularioLead = React.forwardRef(({
     first_name: '',
     last_name: '',
     email: '',
+    email_confirm: '', // 🔥 NUEVO: Confirmación de email
     mobile_phone: '',
     document_type: '',
     document_number: '',
@@ -59,6 +60,16 @@ const FormularioLead = React.forwardRef(({
     }
     if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = t.leadForm.email.error;
+    }
+    // 🔥 NUEVO: Validar que el email de confirmación coincida
+    if (!formData.email_confirm.trim()) {
+      newErrors.email_confirm = ingles 
+        ? 'Please confirm your email' 
+        : 'Por favor confirme su correo electrónico';
+    } else if (formData.email !== formData.email_confirm) {
+      newErrors.email_confirm = ingles 
+        ? 'Emails do not match' 
+        : 'Los correos electrónicos no coinciden';
     }
     if (!formData.mobile_phone.trim()) {
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
@@ -265,6 +276,26 @@ const FormularioLead = React.forwardRef(({
           className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
         />
         {errors.email && <span className={styles.errorText}>{errors.email}</span>}
+      </div>
+
+      {/* 🔥 NUEVO: Confirmación de Email */}
+      <div className={styles.formGroup}>
+        <label className={styles.label} htmlFor="email_confirm">
+          {ingles ? 'Confirm Email' : 'Confirmar Correo Electrónico'} <span className={styles.required}>*</span>
+        </label>
+        <input
+          type="email"
+          id="email_confirm"
+          name="email_confirm"
+          value={formData.email_confirm}
+          onChange={handleChange}
+          placeholder={ingles ? 'Re-enter your email address' : 'Vuelva a ingresar su correo electrónico'}
+          className={`${styles.input} ${errors.email_confirm ? styles.inputError : ''}`}
+        />
+        {errors.email_confirm && <span className={styles.errorText}>{errors.email_confirm}</span>}
+        {!errors.email_confirm && formData.email_confirm && formData.email === formData.email_confirm && (
+          <span className={styles.successText}>✓ {ingles ? 'Emails match' : 'Los correos coinciden'}</span>
+        )}
       </div>
 
       {/* Teléfono */}
