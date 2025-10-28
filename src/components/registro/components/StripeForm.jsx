@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
@@ -69,7 +69,7 @@ const StripeForm = ({
       }
 
       // 2. Construir URLs de éxito y cancelación
-      // 🔥 IMPORTANTE: Agregar parámetros a la URL para que ConfirmacionSeccion sepa el método
+      // 🔥 Redirigir en la MISMA ventana (como PayPal)
       const successUrl = `${window.location.origin}/confirmacion?lead_id=${leadId}&method=stripe&status=confirmed`;
       const cancelUrl = window.location.href; // Volver a la página actual
 
@@ -133,32 +133,9 @@ const StripeForm = ({
       console.log('💾 Datos guardados en localStorage');
       console.log('🔗 Access URL:', access_url);
 
-      // 8. Abrir popup con el checkout de Stripe
-      const stripeWindow = window.open(
-        access_url,
-        'StripeCheckout',
-        'width=600,height=700,scrollbars=yes,resizable=yes'
-      );
-
-      if (!stripeWindow) {
-        // Si el popup fue bloqueado, redirigir en la misma ventana
-        console.warn('⚠️ Popup bloqueado, redirigiendo en la misma ventana...');
-        window.location.href = access_url;
-        return;
-      }
-
-      // 9. Monitorear el popup
-      const checkPopup = setInterval(() => {
-        if (stripeWindow.closed) {
-          clearInterval(checkPopup);
-          console.log('🔄 Popup cerrado por el usuario');
-          setIsProcessing(false);
-          // No mostrar error, solo detener el procesamiento
-        }
-      }, 1000);
-
-      // Nota: Stripe redirigirá automáticamente a success_url o cancel_url
-      // No hacemos nada más aquí
+      // 8. Redirigir en la MISMA ventana (como PayPal)
+      console.log('🔄 Redirigiendo a Stripe Checkout...');
+      window.location.href = access_url;
 
     } catch (error) {
       console.error('❌ Error en el proceso de pago:', error);
@@ -215,8 +192,8 @@ const StripeForm = ({
       {isProcessing && (
         <div className={styles.processingState}>
           <div className={styles.spinner}></div>
-          <p>{ingles ? 'Opening secure payment window...' : 'Abriendo ventana de pago seguro...'}</p>
-          <small>{ingles ? 'Please do not close this window' : 'Por favor no cierre esta ventana'}</small>
+          <p>{ingles ? 'Redirecting to secure payment...' : 'Redirigiendo a pago seguro...'}</p>
+          <small>{ingles ? 'Please wait' : 'Por favor espere'}</small>
         </div>
       )}
 

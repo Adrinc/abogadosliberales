@@ -193,16 +193,17 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         credentialType = 'student_id';
       }
 
-      // Construir payload según la especificación (customer_id NUMÉRICO)
+      // Construir payload según la especificación del compañero (incluye event_id)
       const payload = {
         customer_id: customerId, // ✅ Número puro, no string
         credential_type: credentialType,
         institution_name: academicData.university || 'Universidad no especificada',
+        event_id: 1, // ✅ NUEVO - ID del evento (Congreso Nacional de Amparo)
         file: {
           file_name: `credential_${customerId}`,
           file_bucket: 'customer_document',
           file_route: `credentials/${customerId}`,
-          file_title: 'Credencial Académica',
+          file_title: credentialType === 'teacher_id' ? 'Credencial de Profesor' : 'Credencial Estudiantil',
           file_description: `Credencial ${credentialType === 'teacher_id' ? 'de profesor' : 'estudiantil'} subida por el cliente`,
           metadata_json: {
             customer_id: customerId, // ✅ Número puro
@@ -221,6 +222,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         customer_id: payload.customer_id,
         credential_type: payload.credential_type,
         institution_name: payload.institution_name,
+        event_id: payload.event_id,
         file: {
           ...payload.file,
           file: `[base64 string with ${base64File.length} characters]`

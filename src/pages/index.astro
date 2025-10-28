@@ -25,3 +25,42 @@ import IndexSeccion10 from '../components/index/Secciones/IndexSeccion10.jsx';
     <IndexSeccion8 transition:persist client:only/>
 </LayoutBasic>
 
+<script>
+  // Script para manejar navegación con hash desde otras páginas
+  function scrollToHashSection() {
+    const hash = window.location.hash;
+    
+    if (hash) {
+      // Esperar a que todos los componentes React se hayan renderizado
+      setTimeout(() => {
+        const targetId = hash.substring(1); // Quitar el "#"
+        const targetElement = document.getElementById(targetId);
+        
+        if (targetElement) {
+          // Calcular offset del navbar (80px)
+          const navbarHeight = 80;
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+          
+          // Scroll suave a la sección
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 300); // Dar tiempo a que React monte los componentes
+    }
+  }
+
+  // Ejecutar al cargar la página
+  document.addEventListener('DOMContentLoaded', scrollToHashSection);
+  
+  // Ejecutar también después de las transiciones de Astro
+  document.addEventListener('astro:after-swap', scrollToHashSection);
+  
+  // Ejecutar inmediatamente por si ya cargó
+  if (document.readyState === 'complete') {
+    scrollToHashSection();
+  }
+</script>
+

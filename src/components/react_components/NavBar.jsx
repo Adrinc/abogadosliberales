@@ -279,6 +279,42 @@ const NavBar = () => {
     window.location.href = "/";
   };
 
+  // Manejar click en enlaces con hash para cerrar menú móvil
+  const handleNavLinkClick = (e, href) => {
+    // Cerrar menú móvil si está abierto
+    if (isOpen) {
+      setIsOpen(false);
+    }
+
+    // Si el enlace tiene hash y estamos en una página diferente a index
+    if (href.includes("#") && currentPath !== "/") {
+      // Dejar que la navegación normal ocurra
+      // El script en index.astro se encargará del scroll
+      return;
+    }
+
+    // Si estamos en index y el enlace tiene hash, hacer scroll suave
+    if (href.includes("#") && currentPath === "/") {
+      e.preventDefault();
+      const targetId = href.split("#")[1];
+      const targetElement = document.getElementById(targetId);
+      
+      if (targetElement) {
+        const navbarHeight = 80;
+        const elementPosition = targetElement.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+        
+        // Actualizar URL sin recargar
+        history.pushState(null, '', href);
+      }
+    }
+  };
+
   return (
     <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
       {/* Overlay para móvil */}
@@ -340,6 +376,7 @@ const NavBar = () => {
           <a 
             href="/" 
             className={`${styles.navLink} ${isActiveLink("/") ? styles.activeLink : ""}`}
+            onClick={(e) => handleNavLinkClick(e, "/")}
           >
             {textosNavbar.inicio}
           </a>
@@ -348,6 +385,7 @@ const NavBar = () => {
           <a 
             href="/#programa" 
             className={`${styles.navLink} ${isActiveLink("/#programa") ? styles.activeLink : ""}`}
+            onClick={(e) => handleNavLinkClick(e, "/#programa")}
           >
             Programa
           </a>
@@ -356,6 +394,7 @@ const NavBar = () => {
           <a 
             href="/#inscripcion" 
             className={`${styles.navLink} ${isActiveLink("/#inscripcion") ? styles.activeLink : ""}`}
+            onClick={(e) => handleNavLinkClick(e, "/#inscripcion")}
           >
             Inscripción
           </a>
@@ -364,6 +403,7 @@ const NavBar = () => {
           <a 
             href="/#como-llegar" 
             className={`${styles.navLink} ${isActiveLink("/#como-llegar") ? styles.activeLink : ""}`}
+            onClick={(e) => handleNavLinkClick(e, "/#como-llegar")}
           >
             {textosNavbar.comoLlegar}
           </a>
@@ -372,6 +412,7 @@ const NavBar = () => {
           <a 
             href="/contacto" 
             className={`${styles.navLink} ${isActiveLink("/contacto") ? styles.activeLink : ""}`}
+            onClick={(e) => handleNavLinkClick(e, "/contacto")}
           >
             {textosNavbar.contacto}
           </a>
