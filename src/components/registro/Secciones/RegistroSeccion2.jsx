@@ -31,6 +31,31 @@ const RegistroSeccion2 = () => {
   // Guardar el precio académico calculado (si se requiere en otras partes)
   const [academicPriceData, setAcademicPriceData] = useState(null);
 
+  // 🧹 LIMPIEZA: Al montar el componente, limpiar datos de confirmación previos
+  useEffect(() => {
+    console.log('🧹 Limpiando datos de confirmación previos del localStorage...');
+    
+    // Lista de claves a limpiar relacionadas con pagos anteriores
+    const keysToClean = [
+      'lastPaymentAmount',
+      'lastPaymentMethod', 
+      'lastLeadId',
+      'lastTransactionId',
+      'stripeAccessUrl',
+      'lastWebhookResponse' // 🔥 Esta es la clave que guarda el QR URL
+    ];
+    
+    keysToClean.forEach(key => {
+      const value = localStorage.getItem(key);
+      if (value) {
+        console.log(`🗑️ Eliminando ${key}:`, value);
+        localStorage.removeItem(key);
+      }
+    });
+    
+    console.log('✅ localStorage limpiado - Listo para nuevo registro');
+  }, []); // Solo al montar el componente
+
   // Intersection Observer para animaciones
   useEffect(() => {
     const observer = new IntersectionObserver(

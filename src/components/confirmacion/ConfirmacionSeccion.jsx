@@ -200,6 +200,32 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     fetchData();
   }, [leadId, transactionId, paymentMethod, retryCount]); // Removido hasData de dependencias
 
+  // 🧹 LIMPIEZA: Al desmontar el componente (usuario sale de la página de confirmación)
+  useEffect(() => {
+    return () => {
+      console.log('🧹 Usuario saliendo de confirmación - Limpiando localStorage...');
+      
+      const keysToClean = [
+        'lastPaymentAmount',
+        'lastPaymentMethod', 
+        'lastLeadId',
+        'lastTransactionId',
+        'stripeAccessUrl',
+        'lastWebhookResponse' // 🔥 Limpiar QR URL
+      ];
+      
+      keysToClean.forEach(key => {
+        const value = localStorage.getItem(key);
+        if (value) {
+          console.log(`🗑️ Cleanup - Eliminando ${key}`);
+          localStorage.removeItem(key);
+        }
+      });
+      
+      console.log('✅ Cleanup completado - localStorage limpio');
+    };
+  }, []); // Solo al desmontar
+
   // Pantalla de error: no se pudo recuperar leadId ni de URL ni de localStorage
   if (error === 'no_lead_id') {
     return (
