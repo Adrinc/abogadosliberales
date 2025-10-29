@@ -144,7 +144,7 @@ const FormContacto = () => {
             {t.nombre}
           </label>
           <div className={styles.inputContainer}>
-            <img src="./icons/user.svg" alt="User Icon" className={styles.icon} />
+            <img src="/icons/user.svg" alt="User Icon" className={styles.icon} />
             <input
               type="text"
               id="nombre"
@@ -164,7 +164,7 @@ const FormContacto = () => {
             {t.email}
           </label>
           <div className={styles.inputContainer}>
-            <img src="./icons/email.svg" alt="Email Icon" className={styles.icon} />
+            <img src="/icons/email.svg" alt="Email Icon" className={styles.icon} />
             <input
               type="email"
               id="email"
@@ -184,7 +184,7 @@ const FormContacto = () => {
             {t.telefono}
           </label>
           <div className={styles.inputContainer}>
-            <img src="./icons/phone.svg" alt="Phone Icon" className={styles.icon} />
+            <img src="/icons/phone.svg" alt="Phone Icon" className={styles.icon} />
             <input
               type="text"
               id="telefono"
@@ -204,7 +204,7 @@ const FormContacto = () => {
             {t.ayuda}
           </label>
           <div className={styles.inputContainer}>
-            <img src="../icons/help.svg" alt="Help Icon" className={styles.icon} />
+            <img src="/icons/help.svg" alt="Help Icon" className={styles.icon} />
             <textarea
               id="ayuda"
               name="ayuda"
