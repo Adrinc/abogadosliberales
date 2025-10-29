@@ -6,9 +6,18 @@ import { formatPrice } from '../../../lib/academicPricing';
 import styles from '../css/comprobantePagoForm.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAcademic = false }) => {
+const ComprobantePagoForm = ({ 
+  leadId, 
+  leadData, 
+  academicPriceData = null, 
+  isAcademic = false,
+  academicRole = null // 🔥 NUEVO: Para determinar price_key
+}) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
+  
+  // 🔍 Debug: Ver qué academicRole estamos recibiendo
+  console.log('🎓 ComprobantePagoForm recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
 
   // Estados del formulario
   const [file, setFile] = useState(null);
@@ -40,6 +49,24 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_receipt';
   const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
   const ALLOWED_TYPES = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+  
+  // 🔥 Mapear rol académico a price_key (idéntico a StripeForm y PayPal)
+  const getPriceKey = () => {
+    if (!isAcademic || !academicRole) {
+      return 'precio_lista_congreso'; // Precio general ($1,990 MXN)
+    }
+    
+    // ✅ Mapeo CORRECTO según especificación del backend:
+    const roleMapping = {
+      'profesor': 'precio_prof_estud_pos',      // Profesor/Personal Educativo → $1,692 MXN
+      'posgrado': 'precio_prof_estud_pos',      // Estudiante de Posgrado → $1,692 MXN
+      'licenciatura': 'precio_estudiante_lic',  // Estudiante de Licenciatura → $995 MXN
+    };
+    
+    const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
+    console.log('🎯 ComprobantePago getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
+    return priceKey;
+  };
 
   // Validaciones
   const validateFile = (file) => {
@@ -292,10 +319,21 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
       const base64File = await fileToBase64(file);
       console.log('✅ File converted to base64');
 
+      // 🔍 Debug: Verificar valores antes de construir payload
+      const calculatedPriceKey = getPriceKey();
+      console.log('🎯 ComprobantePago - Valores de pago:', {
+        isAcademic,
+        academicRole,
+        academicPriceData,
+        finalAmount,
+        calculatedPriceKey
+      });
+
       // Preparar payload según el nuevo formato
       const webhookPayload = {
         customer_id: effectiveLeadId,
         event_id: EVENT_ID,
+        price_key: calculatedPriceKey, // 🔥 Usar el valor calculado explícitamente
         reference_number: referenceNumber.trim(),
         amount: parseFloat(AMOUNT),
         payment_date: new Date(paymentDate).toISOString(),
@@ -326,6 +364,7 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
       console.log('📋 Payload prepared:', {
         customer_id: webhookPayload.customer_id,
         event_id: webhookPayload.event_id,
+        price_key: webhookPayload.price_key, // 🔥 IMPORTANTE: Verificar que esté aquí
         reference_number: webhookPayload.reference_number,
         amount: webhookPayload.amount,
         payment_date: webhookPayload.payment_date,
@@ -585,9 +624,7 @@ const ComprobantePagoForm = ({ leadId, leadData, academicPriceData = null, isAca
         </form>
       )}
 
-     {/*  <div className={styles.debugInfo}>
-        <small>🔧 Debug: Lead ID = {leadId} | Event ID = {EVENT_ID}</small>
-      </div> */}
+
     </div>
   );
 };

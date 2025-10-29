@@ -3,7 +3,7 @@
  * 
  * Reglas de negocio:
  * - Precio general: $1,990 MXN
- * - Profesor/Posgrado: $1,691.50 MXN (15% desc) | 3 MSI → $563.83/mes
+ * - Profesor/Posgrado: $1,692 MXN (15% desc) | 3 MSI → $564/mes
  * - Estudiante Licenciatura: $995 MXN (50% desc) | 3 MSI → $331.67/mes
  * - Paquete 11 (Profesor/Posgrado): $16,915 MXN | 3/6/12 MSI
  * 
@@ -11,12 +11,17 @@
  * 5 → Profesor
  * 6 → Estudiante Posgrado
  * 7 → Estudiante Licenciatura
+ * 
+ * Mapeo a price_key (backend):
+ * - precio_lista_congreso: $1,990 MXN (general)
+ * - precio_prof_estud_pos: $1,692 MXN (profesor + posgrado)
+ * - precio_estudiante_lic: $995 MXN (licenciatura)
  */
 
 // Precios base
 export const PRICES = {
   GENERAL: 1990,
-  PROFESOR_POSGRADO: 1691.50,
+  PROFESOR_POSGRADO: 1692, // ✅ Redondeado de 1691.50 a 1692
   LICENCIATURA: 995,
   PAQUETE_11: 16915
 };
@@ -37,11 +42,11 @@ export const getCustomerCategoryFk = (role) => {
 export const MSI_CONFIG = {
   PROFESOR_POSGRADO: {
     availableMonths: [3],
-    3: 563.83
+    3: 564 // $1,692 / 3 = $564/mes (redondeado)
   },
   LICENCIATURA: {
     availableMonths: [3],
-    3: 331.67
+    3: 331.67 // $995 / 3 = $331.67/mes
   },
   PAQUETE_11: {
     availableMonths: [3, 6, 12],

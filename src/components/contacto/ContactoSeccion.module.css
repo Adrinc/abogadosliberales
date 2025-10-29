@@ -5,13 +5,13 @@
   align-items: center;
   width: 100vw;
   min-height: calc(100vh - 80px); /* Resta la altura del navbar */
-  padding: 40px 20px;
+  padding: 20px 20px; /* REDUCIDO de 40px - 50% menos para 1080p */
   margin-top: 80px; /* Compensar la altura del navbar */
   background: linear-gradient(135deg, 
-    #020266 0%, 
+    #0B0B2B 0%, 
     #05054F 25%, 
-    #020266 50%,
-    #0B0B2B 75%,
+    #020266 50%, 
+    #05054F 75%, 
     #020266 100%);
   background-size: 400% 400%;
   animation: gradientShift 15s ease infinite;
@@ -50,10 +50,10 @@
   justify-content: center;
   align-items: center; /* Cambio de flex-start a center para centrado vertical */
   width: 50%;
-  min-height: calc(100vh - 160px); /* Ajustar altura considerando navbar y padding */
+  min-height: calc(100vh - 120px); /* REDUCIDO - Altura más compacta para 1080p */
   z-index: 2;
   position: relative;
-  padding: 20px;
+  padding: 10px; /* REDUCIDO de 20px - 50% menos para 1080p */
 }
 
 .containerInfo {
@@ -84,7 +84,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  min-height: calc(100vh - 160px); /* Altura ajustada */
+  min-height: calc(100vh - 120px); /* REDUCIDO - Altura más compacta */
   z-index: 2;
   position: relative;
 }
@@ -95,7 +95,7 @@
   height: auto;
   min-height: auto;
   animation: slideInLeft 1s ease-out;
-  padding: 40px 0; /* Aumentar padding vertical */
+  padding: 20px 0; /* REDUCIDO de 40px - 50% menos para 1080p */
 }
 
 @keyframes slideInLeft {
@@ -113,7 +113,7 @@
   text-align: center;
   position: relative;
   width: 50%;
-  min-height: calc(100vh - 160px); /* Altura ajustada */
+  min-height: calc(100vh - 120px); /* REDUCIDO - Altura más compacta */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,9 +148,9 @@
 }
 
 .logo {
-  width: 280px;
-  height: 280px;
-  margin-bottom: 30px;
+  width: 180px; /* REDUCIDO de 280px - 35% menos para 1080p */
+  height: 180px; /* REDUCIDO de 280px - 35% menos para 1080p */
+  margin-bottom: 15px; /* REDUCIDO de 30px - 50% menos para 1080p */
   transition: all 0.3s ease;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
   animation: logoFloat 3s ease-in-out infinite;
@@ -172,8 +172,8 @@
 }
 
 .title {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
+  font-size: 2.25rem; /* REDUCIDO de 3.5rem - 35% menos para 1080p */
+  margin-bottom: 10px; /* REDUCIDO de 15px - 33% menos para 1080p */
   font-weight: 800;
   background: linear-gradient(135deg, 
     #EECB00 0%, 
@@ -198,16 +198,16 @@
 }
 
 .description {
-  font-size: 2rem;
+  font-size: 1.25rem; /* REDUCIDO de 2rem - 37.5% menos para 1080p */
   color: #EECB00;
   font-weight: 400;
   font-style: italic;
   letter-spacing: 0.02em;
-  margin-top: 25px;
-  line-height: 1.4;
+  margin-top: 12px; /* REDUCIDO de 25px - 52% menos para 1080p */
+  line-height: 1.35;
   text-shadow: 0 2px 10px rgba(238, 203, 0, 0.5);
   animation: textShimmer 3s ease-in-out infinite;
-  max-width: 600px;
+  max-width: 500px; /* REDUCIDO de 600px */
 }
 
 @keyframes textShimmer {
@@ -273,33 +273,52 @@
   display: none;
 }
 
-@media (min-width: 1200px) {
+/* Media query SOLO para pantallas 2K y 4K - Restaurar espaciado original */
+@media (min-width: 2560px) {
   .section {
-    padding: 60px 60px 40px 60px; /* Más padding arriba */
+    padding: 40px 20px;
     margin-top: 80px;
   }
   
   .container {
     width: 55%;
     max-width: 800px;
-    min-height: calc(100vh - 180px);
+    min-height: calc(100vh - 160px);
+    padding: 20px;
   }
   
   .formColumn, .infoColumn {
-    min-height: calc(100vh - 180px);
+    min-height: calc(100vh - 160px);
   }
   
   .formColumn {
-    padding: 60px 0;
+    padding: 40px 0;
   }
   
   .infoColumn {
     width: 45%;
-    min-height: calc(100vh - 180px);
+    min-height: calc(100vh - 160px);
+  }
+  
+  .logo {
+    width: 280px;
+    height: 280px;
+    margin-bottom: 30px;
+  }
+  
+  .title {
+    font-size: 3.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .description {
+    font-size: 2rem;
+    margin-top: 25px;
+    max-width: 600px;
   }
 }
 
-/* Media query para desktop mediano */
+/* Media queries para tablets y pantallas medianas */
 @media (min-width: 769px) and (max-width: 1199px) {
   .section {
     padding: 50px 30px 40px 30px;

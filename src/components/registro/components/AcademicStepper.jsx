@@ -1040,6 +1040,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                         leadData={leadData}
                         academicPriceData={currentPrice}
                         isAcademic={true}
+                        academicRole={academicData.role}
                       />
                     )}
                     {selectedMethod === 'creditCard' && (
@@ -1057,6 +1058,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                         leadData={leadData}
                         academicPriceData={currentPrice}
                         isAcademic={true}
+                        academicRole={academicData.role}
                       />
                     )}
                   </div>

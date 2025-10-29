@@ -37,14 +37,14 @@ const StripeForm = ({
   // 🔥 Mapear rol académico a price_key
   const getPriceKey = () => {
     if (!isAcademic || !academicRole) {
-      return 'precio_lista_congreso'; // Precio general
+      return 'precio_lista_congreso'; // Precio general ($1,990 MXN)
     }
     
-    // Mapeo según valores REALES del formulario (en español):
+    // ✅ Mapeo CORRECTO según especificación del backend:
     const roleMapping = {
-      'licenciatura': 'precio_estudiante_lic',      // Estudiante de Licenciatura → $995 MXN
-      'posgrado': 'precio_prof_estud_pos',          // Estudiante de Posgrado → $1,692 MXN
-      'profesor': 'precio_lista_congreso',          // Profesor/Staff → $1,990 MXN
+      'profesor': 'precio_prof_estud_pos',      // Profesor/Personal Educativo → $1,692 MXN
+      'posgrado': 'precio_prof_estud_pos',      // Estudiante de Posgrado → $1,692 MXN
+      'licenciatura': 'precio_estudiante_lic',  // Estudiante de Licenciatura → $995 MXN
     };
     
     const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
@@ -75,7 +75,15 @@ const StripeForm = ({
 
       // 3. Construir payload para n8n
       const priceKey = getPriceKey();
-      console.log('💰 Price key calculado:', priceKey, '(Role:', academicRole, ')');
+      
+      // 🔍 Debug: Verificar valores antes de construir payload
+      console.log('🎯 Stripe - Valores de pago:', {
+        isAcademic,
+        academicRole,
+        academicPriceData,
+        finalAmount: AMOUNT,
+        calculatedPriceKey: priceKey
+      });
       
       const payload = {
         customer_id: parseInt(leadId),

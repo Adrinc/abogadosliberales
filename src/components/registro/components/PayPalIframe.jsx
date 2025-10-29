@@ -6,9 +6,18 @@ import { formatPrice } from '../../../lib/academicPricing';
 import styles from '../css/paypalIframe.module.css';
 import supabase from '../../../lib/supabaseClient';
 
-const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic = false }) => {
+const PayPalIframe = ({ 
+  leadId, 
+  leadData, 
+  academicPriceData = null, 
+  isAcademic = false,
+  academicRole = null // 🔥 NUEVO: Para determinar price_key
+}) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
+  
+  // 🔍 Debug: Ver qué academicRole estamos recibiendo
+  console.log('🎓 PayPalIframe recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
   
   const paypalContainerRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -29,6 +38,24 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_paypal_payment';
+  
+  // 🔥 Mapear rol académico a price_key (idéntico a StripeForm)
+  const getPriceKey = () => {
+    if (!isAcademic || !academicRole) {
+      return 'precio_lista_congreso'; // Precio general ($1,990 MXN)
+    }
+    
+    // ✅ Mapeo CORRECTO según especificación del backend:
+    const roleMapping = {
+      'profesor': 'precio_prof_estud_pos',      // Profesor/Personal Educativo → $1,692 MXN
+      'posgrado': 'precio_prof_estud_pos',      // Estudiante de Posgrado → $1,692 MXN
+      'licenciatura': 'precio_estudiante_lic',  // Estudiante de Licenciatura → $995 MXN
+    };
+    
+    const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
+    console.log('🎯 PayPal getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
+    return priceKey;
+  };
 
   // Obtener o crear customer en Supabase y devolver customer_id
   const getOrCreateCustomer = async () => {
@@ -223,10 +250,21 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
               console.warn('⚠️ Capture failed, but order was approved:', captureError.message);
               console.log('📋 Using orderID only for webhook:', data.orderID);
               
+              // 🔍 Debug: Verificar valores antes de construir payload mínimo
+              const calculatedPriceKey = getPriceKey();
+              console.log('🎯 PayPal (minimal) - Valores de pago:', {
+                isAcademic,
+                academicRole,
+                academicPriceData,
+                finalAmount: AMOUNT,
+                calculatedPriceKey
+              });
+              
               // Construir payload mínimo con solo orderID
               const webhookPayload = {
                 lead_id: parseInt(leadId),
                 event_id: EVENT_ID,
+                price_key: calculatedPriceKey, // 🔥 Usar el valor calculado explícitamente
                 paypal_order_id: data.orderID, // Order ID de PayPal (único campo necesario)
                 amount: parseFloat(AMOUNT),
                 currency: CURRENCY,
@@ -325,9 +363,20 @@ const PayPalIframe = ({ leadId, leadData, academicPriceData = null, isAcademic =
             const resolvedCustomerId = await getOrCreateCustomer();
             const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
 
+            // 🔍 Debug: Verificar valores antes de construir payload completo
+            const calculatedPriceKey = getPriceKey();
+            console.log('🎯 PayPal (full) - Valores de pago:', {
+              isAcademic,
+              academicRole,
+              academicPriceData,
+              finalAmount: AMOUNT,
+              calculatedPriceKey
+            });
+
             const webhookPayload = {
               lead_id: effectiveLeadId,
               event_id: EVENT_ID,
+              price_key: calculatedPriceKey, // 🔥 Usar el valor calculado explícitamente
               paypal_order_id: data.orderID, // Order ID de PayPal (único campo necesario)
               amount: paymentAmount ? parseFloat(paymentAmount) : parseFloat(AMOUNT),
               currency: paymentCurrency || CURRENCY,

@@ -50,14 +50,14 @@ export const translationsRegistro = {
             value: "profesor", 
             label: "Personal educativo",
             description: "Personal académico de tiempo completo o por asignatura",
-            price: "$1,691.50 MXN",
+            price: "$1,692 MXN",
             discount: "15% descuento"
           },
           { 
             value: "posgrado", 
             label: "Estudiante de Posgrado",
             description: "Maestría, Doctorado o Especialidad",
-            price: "$1,691.50 MXN",
+            price: "$1,692 MXN",
             discount: "15% descuento"
           },
           { 
@@ -532,14 +532,14 @@ export const translationsRegistro = {
             value: "profesor", 
             label: "Educational Staff",
             description: "Full-time or adjunct academic staff",
-            price: "$1,691.50 MXN",
+            price: "$1,692 MXN",
             discount: "15% discount"
           },
           { 
             value: "posgrado", 
             label: "Graduate Student",
             description: "Master's, PhD or Specialty",
-            price: "$1,691.50 MXN",
+            price: "$1,692 MXN",
             discount: "15% discount"
           },
           { 
