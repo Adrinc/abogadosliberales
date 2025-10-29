@@ -1,0 +1,18 @@
+---
+import LayoutBasic from '../layouts/LayoutBasic.astro';
+import RevalidacionSeccion from '../components/revalidacion/Secciones/RevalidacionSeccion.jsx';
+
+// 🔥 Los parámetros ahora se parsean del lado del cliente (React)
+// porque Astro no los pasa correctamente en modo desarrollo
+console.log('🔍 [SERVER] Página revalidacion.astro cargada');
+console.log('🔍 [SERVER] URL:', Astro.url.href);
+---
+
+<LayoutBasic 
+  title="Re-validación de Registro - Congreso Nacional de Amparo 2025" 
+  showFooter={true}
+>
+  <RevalidacionSeccion 
+    client:only="react"
+  />
+</LayoutBasic>
