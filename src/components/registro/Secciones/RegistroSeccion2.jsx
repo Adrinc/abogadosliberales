@@ -31,11 +31,23 @@ const RegistroSeccion2 = () => {
   // Guardar el precio académico calculado (si se requiere en otras partes)
   const [academicPriceData, setAcademicPriceData] = useState(null);
 
-  // 🧹 LIMPIEZA: Al montar el componente, limpiar datos de confirmación previos
+  // 🧹 LIMPIEZA INTELIGENTE: Solo limpiar si NO venimos de confirmación
   useEffect(() => {
-    console.log('🧹 Limpiando datos de confirmación previos del localStorage...');
+    // Detectar si venimos de una página de confirmación
+    const referrer = document.referrer;
+    const comesFromConfirmation = referrer.includes('/confirmacion') || referrer.includes('/validacion');
     
-    // Lista de claves a limpiar relacionadas con pagos anteriores
+    console.log('🔍 RegistroSeccion2 mounted - Referrer:', referrer);
+    console.log('🔍 Comes from confirmation?:', comesFromConfirmation);
+    
+    if (comesFromConfirmation) {
+      console.log('⏭️ Usuario viene de confirmación - NO limpiar localStorage (permite ver datos)');
+      return; // No limpiar si viene de confirmación
+    }
+    
+    // Si NO viene de confirmación, limpiar todo para nuevo registro
+    console.log('🧹 Usuario viene de otra página - Limpiando localStorage para nuevo registro...');
+    
     const keysToClean = [
       'lastPaymentAmount',
       'lastPaymentMethod', 
@@ -53,8 +65,34 @@ const RegistroSeccion2 = () => {
       }
     });
     
+    // 💰 Establecer precio inicial para flujo general (nuevo registro)
+    if (!isAcademic) {
+      localStorage.setItem('lastPaymentAmount', '1990.00');
+      console.log('💰 Nuevo registro - Precio general establecido: 1990.00');
+    }
+    
     console.log('✅ localStorage limpiado - Listo para nuevo registro');
   }, []); // Solo al montar el componente
+
+  // 💰 ACTUALIZAR PRECIO: Cuando cambia el toggle académico
+  useEffect(() => {
+    // Solo actualizar si NO venimos de confirmación
+    const referrer = document.referrer;
+    const comesFromConfirmation = referrer.includes('/confirmacion') || referrer.includes('/validacion');
+    
+    if (comesFromConfirmation) {
+      console.log('⏭️ Viene de confirmación - NO actualizar precio automáticamente');
+      return;
+    }
+    
+    if (!isAcademic) {
+      localStorage.setItem('lastPaymentAmount', '1990.00');
+      console.log('💰 Toggle a flujo general - Monto actualizado: 1990.00');
+    } else {
+      // En flujo académico, el precio se calculará en el stepper
+      console.log('🎓 Toggle a flujo académico - Precio se calculará al seleccionar rol');
+    }
+  }, [isAcademic]); // Se ejecuta cuando cambia isAcademic
 
   // Intersection Observer para animaciones
   useEffect(() => {
@@ -106,7 +144,8 @@ const RegistroSeccion2 = () => {
                 setLeadData(null);
                 setLeadId(null);
                 setAcademicPriceData(null);
-                console.log('🧹 Toggle cambiado - Datos limpiados');
+                console.log('🔄 Toggle cambiado - Datos de lead limpiados');
+                // El precio se actualizará automáticamente por el useEffect de isAcademic
               }}
             />
 

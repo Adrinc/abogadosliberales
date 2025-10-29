@@ -438,11 +438,20 @@ const PayPalIframe = ({
               console.log('💾 Saved transactionId to localStorage:', txId);
             }
             
-            // 🔥 NUEVO: Guardar método de pago
+            // 🔥 NUEVO: Guardar método de pago y monto
             localStorage.setItem('lastPaymentMethod', 'paypal');
             localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
-            console.log('💾 Saved payment method to localStorage: paypal');
-            console.log('💾 Saved payment amount to localStorage:', AMOUNT);
+            
+            console.log('═══════════════════════════════════════════');
+            console.log('💾 GUARDANDO DATOS EN LOCALSTORAGE (PayPal)');
+            console.log('═══════════════════════════════════════════');
+            console.log('💾 Payment method:', 'paypal');
+            console.log('💾 Payment amount (AMOUNT):', AMOUNT);
+            console.log('💾 isAcademic:', isAcademic);
+            console.log('💾 academicRole:', academicRole);
+            console.log('💾 academicPriceData:', academicPriceData);
+            console.log('💾 finalAmount original:', finalAmount);
+            console.log('═══════════════════════════════════════════');
             
             // 🔥 NUEVO: Guardar webhook response en localStorage
             if (webhookData) {

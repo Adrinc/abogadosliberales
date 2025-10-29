@@ -73,6 +73,19 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
         paymentPlan: academicData.paymentPlan,
       });
 
+      console.log('═══════════════════════════════════════════');
+      console.log('💰 PRECIO ACADÉMICO CALCULADO EN STEPPER');
+      console.log('═══════════════════════════════════════════');
+      console.log('🎓 Universidad:', academicData.university);
+      console.log('🎓 Rol:', academicData.role);
+      console.log('💵 Precio Final:', priceData.finalPrice);
+      console.log('💵 Descuento:', priceData.discountPercentage + '%');
+      console.log('═══════════════════════════════════════════');
+
+      // 🔥 GUARDAR INMEDIATAMENTE EN LOCALSTORAGE
+      localStorage.setItem('lastPaymentAmount', priceData.finalPrice.toFixed(2));
+      console.log('💾 Monto guardado en localStorage:', priceData.finalPrice.toFixed(2));
+
       // Notificar al padre del cambio de precio
       if (onPriceChange) {
         onPriceChange(priceData);

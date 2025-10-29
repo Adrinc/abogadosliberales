@@ -200,29 +200,40 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     fetchData();
   }, [leadId, transactionId, paymentMethod, retryCount]); // Removido hasData de dependencias
 
-  // 🧹 LIMPIEZA: Al desmontar el componente (usuario sale de la página de confirmación)
+  // 🧹 LIMPIEZA INTELIGENTE: Al desmontar, limpiar SOLO si NO vamos a /registro
   useEffect(() => {
     return () => {
-      console.log('🧹 Usuario saliendo de confirmación - Limpiando localStorage...');
-      
-      const keysToClean = [
-        'lastPaymentAmount',
-        'lastPaymentMethod', 
-        'lastLeadId',
-        'lastTransactionId',
-        'stripeAccessUrl',
-        'lastWebhookResponse' // 🔥 Limpiar QR URL
-      ];
-      
-      keysToClean.forEach(key => {
-        const value = localStorage.getItem(key);
-        if (value) {
-          console.log(`🗑️ Cleanup - Eliminando ${key}`);
-          localStorage.removeItem(key);
+      // Pequeño delay para permitir que la navegación se complete
+      setTimeout(() => {
+        const currentPath = window.location.pathname;
+        console.log('🔍 Usuario saliendo de confirmación - Current path:', currentPath);
+        
+        if (currentPath.includes('/registro')) {
+          console.log('⏭️ Usuario volvió a /registro - Mantener datos para posible revisión');
+          return; // NO limpiar si va a registro
         }
-      });
-      
-      console.log('✅ Cleanup completado - localStorage limpio');
+        
+        console.log('🧹 Usuario fue a otra página - Limpiando localStorage...');
+        
+        const keysToClean = [
+          'lastPaymentAmount',
+          'lastPaymentMethod', 
+          'lastLeadId',
+          'lastTransactionId',
+          'stripeAccessUrl',
+          'lastWebhookResponse' // 🔥 Limpiar QR URL
+        ];
+        
+        keysToClean.forEach(key => {
+          const value = localStorage.getItem(key);
+          if (value) {
+            console.log(`🗑️ Cleanup - Eliminando ${key}`);
+            localStorage.removeItem(key);
+          }
+        });
+        
+        console.log('✅ Cleanup completado - localStorage limpio');
+      }, 100); // Pequeño delay de 100ms
     };
   }, []); // Solo al desmontar
 
@@ -348,6 +359,16 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   // Calcular monto a mostrar
   // 🔥 PRIORIDAD: localStorage > paymentData > default (1990)
   const storedAmount = localStorage.getItem('lastPaymentAmount');
+  
+  console.log('═══════════════════════════════════════════');
+  console.log('💰 ANÁLISIS DETALLADO DEL MONTO A MOSTRAR');
+  console.log('═══════════════════════════════════════════');
+  console.log('💾 localStorage.getItem("lastPaymentAmount"):', storedAmount);
+  console.log('📦 paymentData?.amount:', paymentData?.amount);
+  console.log('🔢 typeof storedAmount:', typeof storedAmount);
+  console.log('🔢 parseFloat(storedAmount):', storedAmount ? parseFloat(storedAmount) : null);
+  console.log('═══════════════════════════════════════════');
+  
   const displayAmount = storedAmount 
     ? parseFloat(storedAmount) 
     : (paymentData?.amount || 1990);
@@ -356,8 +377,11 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   console.log('💰 Cálculo de monto a mostrar:', {
     storedAmount,
     paymentDataAmount: paymentData?.amount,
-    finalDisplayAmount: displayAmount
+    finalDisplayAmount: displayAmount,
+    displayCurrency
   });
+  console.log('✅ Monto FINAL a mostrar:', displayAmount, displayCurrency);
+  console.log('═══════════════════════════════════════════');
   
   // 🔍 LOG: Analizar método de pago
   console.log('═══════════════════════════════════════════');
