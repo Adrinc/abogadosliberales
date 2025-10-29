@@ -153,7 +153,7 @@ const FormularioLead = React.forwardRef(({
           status: 'Lead',
           customer_parent_id: null,
           customer_category_fk: customerCategoryFk || null,  // Mapeo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
-          organization_fk: null
+          organization_fk: 14
         };
 
         console.log('📥 Inserting new customer:', { 

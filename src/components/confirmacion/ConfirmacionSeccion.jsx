@@ -3,7 +3,8 @@ import { useStore } from '@nanostores/react';
 import { isEnglish } from '../../data/variables';
 import supabase from '../../lib/supabaseClient';
 import styles from './confirmacion.module.css';
-import DebugPanel from './DebugPanel.jsx';
+// 🚫 TEMPORAL: DebugPanel comentado para deploy - Descomentar para debugging
+// import DebugPanel from './DebugPanel.jsx';
 
 const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, hasData }) => {
   const ingles = useStore(isEnglish);
@@ -203,7 +204,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (error === 'no_lead_id') {
     return (
       <div className={styles.container}>
-        <DebugPanel 
+        {/* 🚫 TEMPORAL: DebugPanel comentado para deploy */}
+        {/* <DebugPanel 
           hasData={hasData}
           leadId={leadId}
           transactionId={transactionId}
@@ -215,7 +217,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           paymentData={paymentData}
           retryCount={retryCount}
           actualPaymentMethod="not computed yet"
-        />
+        /> */}
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>⚠️</div>
           <h1 className={styles.errorTitle}>
@@ -238,7 +240,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (isLoading) {
     return (
       <div className={styles.container}>
-        <DebugPanel 
+        {/* 🚫 TEMPORAL: DebugPanel comentado para deploy */}
+        {/* <DebugPanel 
           hasData={hasData}
           leadId={leadId}
           transactionId={transactionId}
@@ -250,7 +253,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           paymentData={paymentData}
           retryCount={retryCount}
           actualPaymentMethod="not computed yet"
-        />
+        /> */}
         <div className={styles.loadingCard}>
           <div className={styles.spinner}></div>
           <h2 className={styles.loadingTitle}>
@@ -268,7 +271,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   if (error === 'customer' || !customerData) {
     return (
       <div className={styles.container}>
-        <DebugPanel 
+        {/* 🚫 TEMPORAL: DebugPanel comentado para deploy */}
+        {/* <DebugPanel 
           hasData={hasData}
           leadId={leadId}
           transactionId={transactionId}
@@ -280,7 +284,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           paymentData={paymentData}
           retryCount={retryCount}
           actualPaymentMethod="not computed yet"
-        />
+        /> */}
         <div className={styles.errorCard}>
           <div className={styles.errorIcon}>❌</div>
           <h1 className={styles.errorTitle}>
@@ -448,7 +452,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   return (
     <div className={styles.container}>
       {/* Debug Panel - Siempre visible en la esquina superior derecha */}
-      <DebugPanel 
+      {/* 🚫 TEMPORAL: Comentado para deploy - Descomentar para debugging */}
+      {/* <DebugPanel 
         hasData={hasData}
         leadId={leadId}
         transactionId={transactionId}
@@ -463,7 +468,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         webhookResponse={webhookResponse}
         ticketQRUrl={ticketQRUrl}
         ticketId={ticketId}
-      />
+      /> */}
       
       <div className={styles.confirmationCard}>
         
