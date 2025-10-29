@@ -54,7 +54,8 @@ const RegistroSeccion2 = () => {
       'lastLeadId',
       'lastTransactionId',
       'stripeAccessUrl',
-      'lastWebhookResponse' // 🔥 Esta es la clave que guarda el QR URL
+      'lastWebhookResponse', // 🔥 Esta es la clave que guarda el QR URL
+      'isAcademicPurchase' // 🎓 Estado de compra académica
     ];
     
     keysToClean.forEach(key => {
@@ -84,6 +85,10 @@ const RegistroSeccion2 = () => {
       console.log('⏭️ Viene de confirmación - NO actualizar precio automáticamente');
       return;
     }
+    
+    // 🎓 GUARDAR ESTADO ACADÉMICO en localStorage
+    localStorage.setItem('isAcademicPurchase', isAcademic ? 'true' : 'false');
+    console.log('🎓 Estado académico guardado:', isAcademic);
     
     if (!isAcademic) {
       localStorage.setItem('lastPaymentAmount', '1990.00');

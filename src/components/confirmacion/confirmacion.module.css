@@ -758,3 +758,95 @@
     font-size: 0.875rem;
   }
 }
+
+/* ============================================
+   RETRY BOX (Botón de Reintentar QR)
+   ============================================ */
+.retryBox {
+  background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+  border: 2px solid #F59E0B;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  animation: fadeInUp 0.5s ease-out;
+}
+
+.retryIcon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.retryTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #78350F;
+  margin-bottom: 0.5rem;
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+}
+
+.retryText {
+  font-size: 1rem;
+  color: #92400E;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.retryButton {
+  background: #F59E0B;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 14px 32px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+.retryButton:hover {
+  background: #D97706;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(245, 158, 11, 0.4);
+}
+
+.retryButton:active {
+  transform: translateY(0);
+}
+
+.retryNotice {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: #92400E;
+  font-style: italic;
+}
+
+@media (max-width: 768px) {
+  .retryBox {
+    padding: 1.5rem;
+  }
+
+  .retryIcon {
+    font-size: 2.5rem;
+  }
+
+  .retryTitle {
+    font-size: 1.25rem;
+  }
+
+  .retryText {
+    font-size: 0.9375rem;
+  }
+
+  .retryButton {
+    padding: 12px 24px;
+    font-size: 0.9375rem;
+  }
+}

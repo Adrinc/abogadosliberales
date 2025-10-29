@@ -16,6 +16,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   const [error, setError] = useState(null);
   const [retryCount, setRetryCount] = useState(0);
   const [webhookResponseFromStorage, setWebhookResponseFromStorage] = useState(null); // 🔥 NUEVO
+  const [manualRetryTrigger, setManualRetryTrigger] = useState(0); // 🔄 Para botón de reintentar manual
 
   // Cargar datos del cliente y pago desde Supabase
   useEffect(() => {
@@ -109,10 +110,111 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         console.log('✅ Customer data loaded:', customer);
         setCustomerData(customer);
 
+        // 🎓 DETECTAR SI ES COMPRA ACADÉMICA
+        const isAcademicPurchase = localStorage.getItem('isAcademicPurchase') === 'true';
+        console.log('═══════════════════════════════════════════');
+        console.log('🎓 VERIFICACIÓN DE TIPO DE COMPRA');
+        console.log('═══════════════════════════════════════════');
+        console.log('🎓 isAcademicPurchase:', isAcademicPurchase);
+        console.log('📋 localStorage.getItem("isAcademicPurchase"):', localStorage.getItem('isAcademicPurchase'));
+        console.log('═══════════════════════════════════════════');
+
+        // 🔥 BÚSQUEDA DE QR EN VISTA tickets_with_details
+        // ⚠️ SOLO para compras NO académicas (general)
+        // Las compras académicas NO generan QR
+        let ticketDataFromView = null;
+        
+        if (!isAcademicPurchase) {
+          // 🎫 FLUJO GENERAL: Buscar QR
+          console.log('═══════════════════════════════════════════');
+          console.log('🎫 BUSCANDO QR EN VISTA tickets_with_details (FLUJO GENERAL)');
+          console.log('═══════════════════════════════════════════');
+          console.log('🆔 customer_id (ID de registro):', effectiveLeadId);
+          console.log('🎯 event_id: 1');
+          
+          try {
+            console.log('🔍 Ejecutando query en tickets_with_details...');
+            
+            const { data: ticketData, error: ticketError } = await supabase
+              .schema('event')
+              .from('tickets_with_details')
+              .select('qr_image_url, ticket_id, qr_code, payment_method, payment_status')
+              .eq('customer_id', effectiveLeadId)
+              .eq('event_id', 1)
+              .order('ticket_created_at', { ascending: false })
+              .limit(1)
+              .maybeSingle();
+            
+            if (ticketError) {
+              console.error('❌ Error buscando ticket en vista:', ticketError);
+            } else if (ticketData && ticketData.qr_image_url) {
+              console.log('✅ TICKET ENCONTRADO en vista:', ticketData);
+              console.log('🎫 QR URL:', ticketData.qr_image_url);
+              ticketDataFromView = ticketData;
+            } else {
+              console.log('⚠️ No se encontró ticket en la vista (puede que aún no se haya generado)');
+            }
+          } catch (err) {
+            console.error('❌ Error inesperado buscando ticket:', err);
+          }
+          console.log('═══════════════════════════════════════════');
+        } else {
+          // 🎓 FLUJO ACADÉMICO: NO buscar QR (no se genera)
+          console.log('═══════════════════════════════════════════');
+          console.log('🎓 COMPRA ACADÉMICA DETECTADA');
+          console.log('═══════════════════════════════════════════');
+          console.log('⏭️ Saltando búsqueda de QR (compras académicas NO generan QR)');
+          console.log('✅ Continuando con flujo de pago sin QR');
+          console.log('═══════════════════════════════════════════');
+        }
+
+        // 🔄 RETRY LÓGICA: Si NO tenemos ticket y aún hay reintentos disponibles, ESPERAR
+        // ⚠️ SOLO para compras NO académicas (las académicas no generan QR)
+        // 🚀 MEJORADO: 5 intentos × 4 segundos = 20 segundos máximo (mejor para conexiones lentas)
+        if (!isAcademicPurchase && !ticketDataFromView && retryCount < 5) {
+          console.log('⏳ Ticket no encontrado aún - Reintentando...');
+          console.log(`🔄 Retry ${retryCount + 1}/5: Will check again in 4 seconds...`);
+          setTimeout(() => {
+            setRetryCount(prev => prev + 1);
+          }, 4000);
+          return; // ⚠️ CRÍTICO: Salir SIN setear paymentData ni marcar isLoading=false
+        }
+
         // 2. Obtener datos del pago desde event.event_payment
-        // 🔥 NUEVO: Solo hacer query si NO tenemos webhook response en localStorage
-        if (localWebhookResponse && localWebhookResponse.data) {
-          console.log('🎉 Using webhook response from localStorage - SKIPPING Supabase query');
+        // 🔥 PRIORIDAD DE FUENTES (solo después de agotar retries o encontrar ticket):
+        // 1. ticketDataFromView (búsqueda directa por customer_id) - TIENE QR
+        // 2. localWebhookResponse (respuesta de webhook en localStorage) - PUEDE tener QR
+        // 3. Supabase event_payment (fallback histórico) - NO tiene QR
+        
+        if (ticketDataFromView) {
+          // 🎫 CASO 1: Tenemos datos del ticket desde la vista (MEJOR FUENTE)
+          console.log('🎫 Using ticket data from view (PRIORIDAD 1)');
+          
+          const paymentDataFromView = {
+            event_payment_id: null,
+            amount: parseFloat(localStorage.getItem('lastPaymentAmount')) || 1990,
+            currency: 'MXN',
+            payment_method: ticketDataFromView.payment_method || localStorage.getItem('lastPaymentMethod') || 'unknown',
+            status: ticketDataFromView.payment_status || 'confirmed',
+            created_at: new Date().toISOString(),
+            response: {
+              success: true,
+              data: {
+                qr_image_url: ticketDataFromView.qr_image_url,
+                ticket_id: ticketDataFromView.ticket_id,
+                qr_code: ticketDataFromView.qr_code
+              }
+            },
+            paypal_transaction_id: null,
+            stripe_transaction_id: effectiveTransactionId,
+            other_transaction_id: null
+          };
+          
+          console.log('✅ Payment data constructed from view:', paymentDataFromView);
+          setPaymentData(paymentDataFromView);
+        } else if (localWebhookResponse && localWebhookResponse.data) {
+          // 🎉 CASO 2: Webhook response en localStorage (PRIORIDAD 2)
+          console.log('� Using webhook response from localStorage - SKIPPING Supabase query');
           console.log('🎫 Webhook data available:', localWebhookResponse);
           
           // 🔥 LEER el método de pago REAL desde localStorage
@@ -174,21 +276,20 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
             console.log('🔍 FULL payment object from DB:', JSON.stringify(payment, null, 2));
             setPaymentData(payment);
           } else {
-            console.log('ℹ️ No payment record found yet (webhook may be processing)');
-            
-            // Si no se encuentra el pago y es el primer intento, reintentar después de 3 segundos
-            if (retryCount < 2) {
-              console.log(`🔄 Retry ${retryCount + 1}/2: Will check again in 3 seconds...`);
-              setTimeout(() => {
-                setRetryCount(prev => prev + 1);
-              }, 3000);
-              return; // No marcar como cargado aún
-            } else {
-              console.warn('⚠️ Payment record not found after 2 retries');
-            }
+            console.log('ℹ️ No payment record found (webhook may be processing)');
+            console.warn('⚠️ No ticket or payment found after retries - Showing page without QR');
           }
         }
 
+        // ✅ Solo llegamos aquí si:
+        // 1. Tenemos ticket de la vista (con QR), O
+        // 2. Ya agotamos los 3 reintentos (mostrar sin QR)
+        console.log('🏁 Finalizando carga - Estado:', {
+          hasTicket: !!ticketDataFromView,
+          hasPaymentData: !!paymentData,
+          retryCount,
+          willShowQR: !!ticketDataFromView || !!(paymentData?.response?.data?.qr_image_url)
+        });
         setIsLoading(false);
       } catch (err) {
         console.error('❌ Unexpected error loading data:', err);
@@ -198,7 +299,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
     };
 
     fetchData();
-  }, [leadId, transactionId, paymentMethod, retryCount]); // Removido hasData de dependencias
+  }, [leadId, transactionId, paymentMethod, retryCount, manualRetryTrigger]); // 🔄 Agregar manualRetryTrigger
 
   // 🧹 LIMPIEZA INTELIGENTE: Al desmontar, limpiar SOLO si NO vamos a /registro
   useEffect(() => {
@@ -221,7 +322,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           'lastLeadId',
           'lastTransactionId',
           'stripeAccessUrl',
-          'lastWebhookResponse' // 🔥 Limpiar QR URL
+          'lastWebhookResponse', // 🔥 Limpiar QR URL
+          'isAcademicPurchase' // 🎓 Estado de compra académica
         ];
         
         keysToClean.forEach(key => {
@@ -390,17 +492,25 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   console.log('💳 paymentData?.payment_method:', paymentData?.payment_method);
   console.log('💳 paymentMethod (from URL):', paymentMethod);
   console.log('💳 effectiveTransactionId:', transactionId);
+  
+  // 🔥 PRIORIDAD 1: localStorage (donde se guarda al seleccionar)
+  const storedPaymentMethod = localStorage.getItem('lastPaymentMethod');
+  console.log('💾 localStorage.getItem("lastPaymentMethod"):', storedPaymentMethod);
   console.log('═══════════════════════════════════════════');
   
   // Obtener método de pago con múltiples fallbacks
+  // PRIORIDAD: localStorage > paymentData.payment_method > URL > detección automática
   let actualPaymentMethod = 'unknown';
   
-  if (paymentData?.payment_method) {
+  if (storedPaymentMethod) {
+    actualPaymentMethod = storedPaymentMethod.toLowerCase();
+    console.log('✅ Using payment_method from localStorage (PRIORIDAD 1):', actualPaymentMethod);
+  } else if (paymentData?.payment_method) {
     actualPaymentMethod = paymentData.payment_method.toLowerCase();
-    console.log('✅ Using payment_method from DB:', actualPaymentMethod);
+    console.log('✅ Using payment_method from DB (PRIORIDAD 2):', actualPaymentMethod);
   } else if (paymentMethod && paymentMethod !== 'unknown') {
     actualPaymentMethod = paymentMethod.toLowerCase();
-    console.log('⚠️ Using payment_method from URL (fallback):', actualPaymentMethod);
+    console.log('⚠️ Using payment_method from URL (PRIORIDAD 3):', actualPaymentMethod);
   } else if (paymentData?.paypal_transaction_id) {
     actualPaymentMethod = 'paypal';
     console.log('🔍 Detected PayPal from paypal_transaction_id');
@@ -498,6 +608,10 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
 
   const isConfirmed = status === 'confirmed';
   const isPending = status === 'pending';
+  
+  // 🎓 LEER ESTADO ACADÉMICO para condicionales de renderizado
+  const isAcademicPurchase = localStorage.getItem('isAcademicPurchase') === 'true';
+  console.log('🎓 Renderizado - isAcademicPurchase:', isAcademicPurchase);
 
   return (
     <div className={styles.container}>
@@ -703,6 +817,37 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
               {ingles 
                 ? '💾 Save this image or take a screenshot for easy access' 
                 : '💾 Guarda esta imagen o toma una captura de pantalla para fácil acceso'}
+            </p>
+          </div>
+        )}
+
+        {/* 🔄 Botón de Reintentar si NO hay QR después de agotar intentos automáticos */}
+        {/* ⚠️ SOLO para compras NO académicas (las académicas no generan QR) */}
+        {!isAcademicPurchase && !ticketQRUrl && retryCount >= 5 && (
+          <div className={styles.retryBox}>
+            <div className={styles.retryIcon}>⏳</div>
+            <h3 className={styles.retryTitle}>
+              {ingles ? 'QR Code Being Generated' : 'Generando Código QR'}
+            </h3>
+            <p className={styles.retryText}>
+              {ingles 
+                ? 'Your QR code is being processed. This usually takes a few moments.' 
+                : 'Tu código QR está siendo procesado. Esto normalmente toma unos momentos.'}
+            </p>
+            <button 
+              className={styles.retryButton}
+              onClick={() => {
+                console.log('🔄 Usuario clickeó reintentar manualmente');
+                setRetryCount(0); // Resetear contador
+                setManualRetryTrigger(prev => prev + 1); // Forzar re-ejecución del useEffect
+              }}
+            >
+              {ingles ? '🔄 Retry Now' : '🔄 Reintentar Ahora'}
+            </button>
+            <p className={styles.retryNotice}>
+              {ingles 
+                ? 'You will also receive your QR code via email' 
+                : 'También recibirás tu código QR por correo electrónico'}
             </p>
           </div>
         )}
