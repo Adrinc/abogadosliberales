@@ -76,7 +76,7 @@ const FootNetHive = () => {
           <div className={styles.logoSection}>
             <div className={styles.logoWrapper}>
               <img 
-                src="./favicon.jpg" 
+                src="/favicon.jpg" 
                 alt="Barra Mexicana de Abogados Liberales" 
                 className={styles.logo} 
               />

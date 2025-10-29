@@ -101,7 +101,7 @@ const ContactoSeccion = () => {
       <div className={styles.infoColumn}>
         <div className={styles.containerInfo}>
           <div className={styles.logoContainer}>
-            <img src="./favicon.jpg" alt="Barra Mexicana de Abogados Liberales" className={styles.logo} />
+            <img src="/favicon.jpg" alt="Barra Mexicana de Abogados Liberales" className={styles.logo} />
             <div className={styles.logoGlow}></div>
           </div>
           
