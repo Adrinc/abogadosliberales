@@ -316,8 +316,18 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   console.log('═══════════════════════════════════════════');
 
   // Calcular monto a mostrar
-  const displayAmount = paymentData?.amount || 1990;
+  // 🔥 PRIORIDAD: localStorage > paymentData > default (1990)
+  const storedAmount = localStorage.getItem('lastPaymentAmount');
+  const displayAmount = storedAmount 
+    ? parseFloat(storedAmount) 
+    : (paymentData?.amount || 1990);
   const displayCurrency = paymentData?.currency || 'MXN';
+  
+  console.log('💰 Cálculo de monto a mostrar:', {
+    storedAmount,
+    paymentDataAmount: paymentData?.amount,
+    finalDisplayAmount: displayAmount
+  });
   
   // 🔍 LOG: Analizar método de pago
   console.log('═══════════════════════════════════════════');

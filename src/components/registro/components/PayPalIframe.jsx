@@ -440,7 +440,9 @@ const PayPalIframe = ({
             
             // 🔥 NUEVO: Guardar método de pago
             localStorage.setItem('lastPaymentMethod', 'paypal');
+            localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
             console.log('💾 Saved payment method to localStorage: paypal');
+            console.log('💾 Saved payment amount to localStorage:', AMOUNT);
             
             // 🔥 NUEVO: Guardar webhook response en localStorage
             if (webhookData) {

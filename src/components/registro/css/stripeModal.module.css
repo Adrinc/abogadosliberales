@@ -1,0 +1,304 @@
+/* StripeModal.module.css - Modal de pago con Stripe (estilo similar a PayPal) */
+
+.container {
+  background: white;
+  border-radius: 1rem;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--al-blue-primary);
+  margin-bottom: 0.75rem;
+  text-align: center;
+}
+
+.description {
+  font-size: 0.9375rem;
+  color: var(--al-text-secondary);
+  margin-bottom: 1.5rem;
+  text-align: center;
+  line-height: 1.5;
+}
+
+/* Monto Total */
+.amountBox {
+  background: var(--al-bg-soft);
+  border: 2px solid var(--al-border-light);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.amountLabel {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.amount {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--al-blue-primary);
+}
+
+.academicBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(238, 203, 0, 0.15);
+  border: 1px solid var(--al-gold-primary);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-blue-primary);
+}
+
+.academicBadgeIcon {
+  font-size: 1.25rem;
+}
+
+/* Formulario de Pago */
+.paymentForm {
+  margin-top: 1.5rem;
+}
+
+.stripeElement {
+  background: white;
+  border: 2px solid var(--al-border-light);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  min-height: 120px;
+  transition: border-color 0.3s ease;
+}
+
+.stripeElement:focus-within {
+  border-color: var(--al-blue-primary);
+  box-shadow: 0 0 0 3px rgba(2, 2, 102, 0.1);
+}
+
+/* Botones */
+.payButton,
+.submitButton {
+  width: 100%;
+  background: var(--al-blue-primary);
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.payButton:hover,
+.submitButton:hover {
+  background: var(--al-gold-primary);
+  color: var(--al-blue-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(2, 2, 102, 0.12);
+}
+
+.payButton:disabled,
+.submitButton:disabled {
+  background: var(--al-border-light);
+  color: var(--al-text-secondary);
+  cursor: not-allowed;
+  transform: none;
+}
+
+.retryButton {
+  background: var(--al-blue-primary);
+  color: white;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.retryButton:hover {
+  background: var(--al-gold-primary);
+  color: var(--al-blue-primary);
+}
+
+/* Estados */
+.loadingState,
+.processingState,
+.successState,
+.errorState {
+  text-align: center;
+  padding: 2rem 1rem;
+}
+
+.spinner {
+  border: 4px solid rgba(2, 2, 102, 0.1);
+  border-top: 4px solid var(--al-blue-primary);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.successState {
+  animation: fadeIn 0.3s ease;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #22c55e;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;
+  animation: scaleIn 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.errorIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: #ef4444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 auto 1rem;
+  animation: shake 0.5s ease;
+}
+
+.errorState h4 {
+  color: #ef4444;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.errorState p {
+  color: var(--al-text-secondary);
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+.successState h4 {
+  color: #22c55e;
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.successState p {
+  color: var(--al-text-secondary);
+  margin-bottom: 1rem;
+  font-size: 0.9375rem;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+/* Información de Seguridad */
+.securityInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: var(--al-bg-light);
+  border-radius: 0.5rem;
+  text-align: left;
+}
+
+.securityIcon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.securityInfo small {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary);
+  line-height: 1.4;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 1.5rem;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .amount {
+    font-size: 1.75rem;
+  }
+
+  .amountBox {
+    padding: 1.25rem;
+  }
+
+  .payButton,
+  .submitButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+}

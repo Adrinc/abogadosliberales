@@ -16,7 +16,7 @@ import styles from '../css/academicStepper.module.css';
 import FormularioLead from './FormularioLead.jsx';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
-import StripeForm from './StripeForm';
+import StripeForm from './StripeForm'; // ✅ Revertido: Stripe Redirect (temporal)
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
 const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelectedMethod }) => {

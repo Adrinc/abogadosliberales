@@ -402,10 +402,12 @@ const ComprobantePagoForm = ({
       localStorage.setItem('lastLeadId', effectiveLeadId.toString());
       localStorage.setItem('lastTransactionId', referenceNumber); // Número de referencia como transaction ID
       localStorage.setItem('lastPaymentMethod', 'transfer'); // 🔥 CRÍTICO
+      localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
       console.log('💾 Saved to localStorage:', {
         lastLeadId: effectiveLeadId,
         lastTransactionId: referenceNumber,
-        lastPaymentMethod: 'transfer'
+        lastPaymentMethod: 'transfer',
+        lastPaymentAmount: AMOUNT
       });
 
       // Éxito

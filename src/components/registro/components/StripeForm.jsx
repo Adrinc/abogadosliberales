@@ -136,9 +136,10 @@ const StripeForm = ({
       localStorage.setItem('lastLeadId', leadId.toString());
       localStorage.setItem('lastTransactionId', order_id);
       localStorage.setItem('lastPaymentMethod', 'stripe');
+      localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
       localStorage.setItem('stripeAccessUrl', access_url);
       
-      console.log('💾 Datos guardados en localStorage');
+      console.log('💾 Datos guardados en localStorage (incluye monto)');
       console.log('🔗 Access URL:', access_url);
 
       // 8. Redirigir en la MISMA ventana (como PayPal)

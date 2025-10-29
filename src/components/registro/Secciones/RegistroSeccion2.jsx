@@ -8,7 +8,7 @@ import FormularioLead from '../components/FormularioLead';
 import PayPalIframe from '../components/PayPalIframe';
 import IPPayForm from '../components/IPPayForm';
 import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
-import StripeForm from '../components/StripeForm';
+import StripeForm from '../components/StripeForm'; // ✅ Revertido: Stripe Redirect (temporal)
 import ComprobantePagoForm from '../components/ComprobantePagoForm';
 import ResumenRegistro from '../ResumenRegistro';
 import styles from '../css/registroSeccion2.module.css';
