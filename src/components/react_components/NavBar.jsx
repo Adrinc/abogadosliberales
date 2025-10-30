@@ -441,10 +441,10 @@ const NavBar = () => {
           <img src="/icons/twitter.svg" alt="Twitter" className={styles.icon} />
           <div className={styles.iconRipple}></div>
         </a>
-        <a href="https://www.linkedin.com/company/barra-mexicana-abogados-liberales" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+     {/*    <a href="https://www.linkedin.com/company/barra-mexicana-abogados-liberales" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
           <img src="/icons/linkedin.svg" alt="LinkedIn" className={styles.icon} />
           <div className={styles.iconRipple}></div>
-        </a>
+        </a> */}
       </div>
 
       {/* Botón de contacto con efectos premium */}
