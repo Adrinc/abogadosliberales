@@ -85,12 +85,12 @@ const IndexSeccion7 = () => {
         </div>
 
         {/* CTA */}
-        <div className={styles.ctaWrapper}>
+    {/*     <div className={styles.ctaWrapper}>
           <a href={t.ctaLink} className={styles.cta}>
             {t.cta}
             <span className={styles.ctaArrow}>→</span>
           </a>
-        </div>
+        </div> */}
 
       </div>
     </section>

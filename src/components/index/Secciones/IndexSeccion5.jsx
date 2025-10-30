@@ -109,14 +109,14 @@ const IndexSeccion5 = () => {
               </div>
             </div>
 
-            <div className={styles.instructionsBox}>
+          {/*   <div className={styles.instructionsBox}>
               <p className={styles.instructions}>
                 <strong>📧 {t.paymentInfo.instructions}</strong>
               </p>
               <p className={styles.note}>
                 <strong>⚠️ Importante:</strong> {t.paymentInfo.note}
               </p>
-            </div>
+            </div> */}
           </div>
 
           {/* COLUMNA DERECHA: Card principal de pricing */}
@@ -155,14 +155,14 @@ const IndexSeccion5 = () => {
                 onClick={handlePrimaryClick}
               >
                 {t.ctaPrimary}
-                <span className={styles.ctaArrow}>→</span>
+             {/*    <span className={styles.ctaArrow}>→</span> */}
               </button>
-              <a 
+           {/*    <a 
                 href="mailto:secretariageneral@abogadosliberales.mx?subject=Consulta descuento grupos" 
                 className={styles.ctaSecondary}
               >
                 {t.ctaSecondary}
-              </a>
+              </a> */}
             </div>
 
             {/* Trust badges */}
@@ -173,7 +173,7 @@ const IndexSeccion5 = () => {
               </div>
               <div className={styles.trustBadge}>
                 <span className={styles.trustIcon}>⏳</span>
-                <span className={styles.trustText}>Cupo limitado: 250 asistentes</span>
+                <span className={styles.trustText}>Cupo limitado</span>
               </div>
             </div>
           </div>

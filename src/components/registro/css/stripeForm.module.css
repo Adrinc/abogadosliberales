@@ -237,6 +237,46 @@
   line-height: 1.5;
 }
 
+/* Tarjetas aceptadas */
+.acceptedCards {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(2, 2, 102, 0.02);
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.acceptedCardsLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--al-text-secondary, #4A5568);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cardIcons {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cardIcon {
+  height: 32px;
+  width: auto;
+  transition: all 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+}
+
+.cardIcon:hover {
+  transform: translateY(-2px) scale(1.05);
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .container {

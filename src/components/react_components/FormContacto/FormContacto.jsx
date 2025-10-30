@@ -83,8 +83,11 @@ const FormContacto = () => {
     }
     setErrors({});
 
-    const [first, ...rest] = formData.nombre.trim().split(' ');
-    const last = rest.length > 0 ? rest.join(' ') : '';
+    // División inteligente del nombre completo
+    const palabras = formData.nombre.trim().split(/\s+/);
+    const mitad = Math.ceil(palabras.length / 2);
+    const first = palabras.slice(0, mitad).join(' ');
+    const last = palabras.slice(mitad).join(' ');
 
     const payload = {
       lead_email: formData.email,
@@ -92,11 +95,11 @@ const FormContacto = () => {
       lead_first_name: first,
       lead_last_name: last,
       lead_message: formData.ayuda,
-      organization_id: "6"
+      organization_id: "14"
     };
 
-    try {//"https://u-n8n.virtalus.cbluna-dev.com/webhook/contactus_process"
-      const response = await fetch("", {
+    try {
+      const response = await fetch("https://u-n8n.virtalus.cbluna-dev.com/webhook/contactus_process", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)

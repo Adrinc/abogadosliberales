@@ -14,8 +14,8 @@ export const translationsIndex = {
       price: "$1,990 MXN",
       trustSignals: {
         certification: "Impartido por magistrados",
-        attendees: "200+ asistentes edición 2025",
-        experts: "12 ponentes especializados"
+        attendees: "Edición 2025",
+        experts: "Ponentes especializados"
       }
     },
 
@@ -259,7 +259,7 @@ export const translationsIndex = {
           "Acceso a grupo exclusivo de seguimiento post-congreso"
         ]
       },
-      ctaPrimary: "Registrar mi lugar ahora",
+      ctaPrimary: "Adquirir mi acceso",
       ctaSecondary: "Consultar descuentos para grupos",
       paymentInfo: {
         title: "Datos para realizar el pago",
@@ -267,7 +267,7 @@ export const translationsIndex = {
         clabe: "036180500731081928",
         accountName: "BARRA MEXICANA DE CIENCIAS JURIDICAS Y PROFESIONALES LIBERALES DEL DERECHO A.C.",
         instructions: "Envía tu comprobante de pago a: secretariageneral@abogadosliberales.mx",
-        note: "Cupo limitado a 250 asistentes. Los lugares se asignan por orden de pago confirmado."
+        note: "Cupo limitado. Los lugares se asignan por orden de pago confirmado."
       }
     },
 
@@ -396,9 +396,9 @@ export const translationsIndex = {
         privacy: "No compartimos tu información. Podrás cancelar tu suscripción en cualquier momento."
       },
       trustSignals: {
-        limitedSeats: "Cupo limitado a 250 asistentes",
+        limitedSeats: "Cupo limitado",
         officialCert: "Certificado oficial avalado",
-        expertSpeakers: "12 expertos nacionales confirmados"
+        expertSpeakers: "Impartido por magistrados"
       }
     }
   },
@@ -797,7 +797,7 @@ export const translationsIndex = {
         privacy: "We don't share your information. You can unsubscribe anytime."
       },
       trustSignals: {
-        limitedSeats: "Limited to 250 attendees",
+        limitedSeats: "Limited",
         officialCert: "Official endorsed certificate",
         expertSpeakers: "12 confirmed national experts"
       }

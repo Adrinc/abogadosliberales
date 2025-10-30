@@ -160,7 +160,7 @@ const StripeForm = ({
   return (
     <div className={styles.container}>
       <h3 className={styles.title}>
-        {ingles ? 'Secure Payment with Stripe' : 'Pago seguro con Stripe'}
+        {ingles ? 'Secure Payment' : 'Pago seguro en línea'}
       </h3>
       <p className={styles.description}>
         {ingles 
@@ -222,12 +222,43 @@ const StripeForm = ({
 
       {/* Botón de Pago */}
       {!isProcessing && paymentStatus === null && (
-        <button 
-          className={styles.payButton}
-          onClick={handlePayment}
-        >
-          {ingles ? 'Pay with Card' : 'Pagar con Tarjeta'}
-        </button>
+        <>
+          <button 
+            className={styles.payButton}
+            onClick={handlePayment}
+          >
+            {ingles ? 'Pay with Card' : 'Pagar con Tarjeta'}
+          </button>
+          
+          {/* Iconos de métodos de pago aceptados */}
+          <div className={styles.acceptedCards}>
+            <span className={styles.acceptedCardsLabel}>
+              {ingles ? 'We accept:' : 'Aceptamos:'}
+            </span>
+            <div className={styles.cardIcons}>
+              {/* Visa */}
+              <img 
+                src="/image/global/visacard.png" 
+                alt="Visa" 
+                className={styles.cardIcon}
+              />
+              
+              {/* Mastercard */}
+              <img 
+                src="/image/global/mastercard.png" 
+                alt="Mastercard" 
+                className={styles.cardIcon}
+              />
+              
+              {/* American Express */}
+              <img 
+                src="/image/global/americancard.png" 
+                alt="American Express" 
+                className={styles.cardIcon}
+              />
+            </div>
+          </div>
+        </>
       )}
 
       {/* Información de Seguridad */}
@@ -235,8 +266,8 @@ const StripeForm = ({
         <div className={styles.securityIcon}>🔒</div>
         <small>
           {ingles 
-            ? 'Secure payment powered by Stripe. Your card information is encrypted and never stored on our servers.' 
-            : 'Pago seguro con Stripe. La información de tu tarjeta está cifrada y nunca se almacena en nuestros servidores.'}
+            ? 'Secure payment. Your card information is encrypted and never stored on our servers.' 
+            : 'Pago en línea. La información de tu tarjeta está cifrada y nunca se almacena en nuestros servidores.'}
         </small>
       </div>
     </div>

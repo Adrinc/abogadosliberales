@@ -15,7 +15,7 @@ export const translationsRegistro = {
     // Toggle Académico
     academicToggle: {
       title: "¿Perteneces a una institución educativa?",
-      subtitle: "Obtén descuentos exclusivos UVM o UAM",
+      subtitle: "Obtén descuentos exclusivos UVM, UAM o UNAM",
       activeMessage: "Accede a precios académicos especiales. Complete los datos adicionales a continuación."
     },
 
@@ -34,7 +34,8 @@ export const translationsRegistro = {
         error: "Seleccione su universidad",
         options: [
           { value: "UVM", label: "UVM - Universidad del Valle de México" },
-          { value: "UAM", label: "UAM - Universidad Autónoma Metropolitana" }
+          { value: "UAM", label: "UAM - Universidad Autónoma Metropolitana" },
+          { value: "UNAM", label: "UNAM - Universidad Nacional Autónoma de México" }
         ]
       },
 
@@ -268,8 +269,8 @@ export const translationsRegistro = {
       
       tabs: {
         paypal: "PayPal",
-        creditCard: "Tarjeta de Crédito/Débito",
-        bankTransfer: "Transferencia Bancaria"
+        creditCard: "Pago en línea",
+        bankTransfer: "Pago por transferencia bancaria"
       }
     },
 
@@ -497,7 +498,7 @@ export const translationsRegistro = {
     // Academic Toggle
     academicToggle: {
       title: "Do you belong to an educational institution?",
-      subtitle: "Get exclusive discounts from UVM or UAM",
+      subtitle: "Get exclusive discounts from UVM, UAM or UNAM",
       activeMessage: "Access special academic pricing. Complete the additional information below."
     },
 
@@ -516,7 +517,8 @@ export const translationsRegistro = {
         error: "Select your university",
         options: [
           { value: "UVM", label: "UVM - University of Valle de México" },
-          { value: "UAM", label: "UAM - Metropolitan Autonomous University" }
+          { value: "UAM", label: "UAM - Metropolitan Autonomous University" },
+          { value: "UNAM", label: "UNAM - National Autonomous University of Mexico" }
         ]
       },
 

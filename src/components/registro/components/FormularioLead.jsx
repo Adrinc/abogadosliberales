@@ -21,8 +21,7 @@ const FormularioLead = React.forwardRef(({
     email: '',
     email_confirm: '', // 🔥 NUEVO: Confirmación de email
     mobile_phone: '',
-    document_type: '',
-    document_number: '',
+    // 🚫 ELIMINADOS: document_type y document_number ya no se usan en flujo general
     company: '',
     job_title: '',
     coupon: ''
@@ -75,16 +74,7 @@ const FormularioLead = React.forwardRef(({
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
     }
 
-    // Validar documento solo si NO estamos en flujo académico
-    // (en flujo académico ya se capturó en Step 3)
-    if (!isAcademicFlow) {
-      if (!formData.document_type) {
-        newErrors.document_type = t.leadForm.documentType.error;
-      }
-      if (!formData.document_number.trim()) {
-        newErrors.document_number = t.leadForm.documentNumber.error;
-      }
-    }
+    // 🚫 ELIMINADA validación de document_type y document_number (ya no se usan)
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -316,85 +306,7 @@ const FormularioLead = React.forwardRef(({
         <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>
       </div>
 
-      {/* Tipo de Documento y Número - OCULTO en flujo académico (ya capturado en Step 3) */}
-      {!isAcademicFlow && (
-        <div className={styles.gridRow}>
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="document_type">
-              {t.leadForm.documentType.label} <span className={styles.required}>*</span>
-            </label>
-            <select
-              id="document_type"
-              name="document_type"
-              value={formData.document_type}
-              onChange={handleChange}
-              className={`${styles.select} ${errors.document_type ? styles.inputError : ''}`}
-            >
-              <option value="">{t.leadForm.documentType.placeholder}</option>
-              {t.leadForm.documentType.options.map(option => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-            {errors.document_type && <span className={styles.errorText}>{errors.document_type}</span>}
-          </div>
-
-          <div className={styles.formGroup}>
-            <label className={styles.label} htmlFor="document_number">
-              {t.leadForm.documentNumber.label} <span className={styles.required}>*</span>
-            </label>
-            <input
-              type="text"
-              id="document_number"
-              name="document_number"
-              value={formData.document_number}
-              onChange={handleChange}
-              placeholder={t.leadForm.documentNumber.placeholder}
-              className={`${styles.input} ${errors.document_number ? styles.inputError : ''}`}
-            />
-            {errors.document_number && <span className={styles.errorText}>{errors.document_number}</span>}
-          </div>
-        </div>
-      )}
-
-      {/* Organización - OCULTO en flujo académico (redundante con universidad) */}
-    {/*   {!isAcademicFlow && (
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="company">
-            {t.leadForm.company.label}
-          </label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-            placeholder={t.leadForm.company.placeholder}
-            className={styles.input}
-          />
-          <span className={styles.hint}>{t.leadForm.company.hint}</span>
-        </div>
-      )} */}
-
-      {/* Cargo - OCULTO en flujo académico (redundante con rol) */}
- {/*      {!isAcademicFlow && (
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="job_title">
-            {t.leadForm.jobTitle.label}
-          </label>
-          <input
-            type="text"
-            id="job_title"
-            name="job_title"
-            value={formData.job_title}
-            onChange={handleChange}
-            placeholder={t.leadForm.jobTitle.placeholder}
-            className={styles.input}
-          />
-          <span className={styles.hint}>{t.leadForm.jobTitle.hint}</span>
-        </div>
-      )} */}
+      {/* 🚫 ELIMINADOS: Campos document_type y document_number */}
 
       {/* Cupón - OCULTO en flujo académico (descuento ya aplicado) */}
       {!isAcademicFlow && (

@@ -24,7 +24,7 @@ const RegistroSeccion2 = () => {
   const [leadId, setLeadId] = useState(null);
 
   // Método de pago seleccionado
-  const [selectedMethod, setSelectedMethod] = useState('paypal'); // 'paypal' | 'creditCard' | 'bankTransfer'
+  const [selectedMethod, setSelectedMethod] = useState('creditCard'); // 'creditCard' | 'bankTransfer' (PayPal oculto)
 
   // Estado para el flujo académico
   const [isAcademic, setIsAcademic] = useState(false);
@@ -197,7 +197,8 @@ const RegistroSeccion2 = () => {
 
                       {/* Tabs de métodos de pago */}
                       <div className={styles.tabs}>
-                        <button
+                        {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
+                        {/* <button
                           className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
                           onClick={() => {
                             setSelectedMethod('paypal');
@@ -208,7 +209,7 @@ const RegistroSeccion2 = () => {
                           <div className={styles.tabIcon}>💳</div>
                           <span className={styles.tabLabel}>{t.paymentMethods.tabs.paypal}</span>
                           <div className={styles.tabIndicator}></div>
-                        </button>
+                        </button> */}
 
                         <button
                           className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
@@ -238,9 +239,10 @@ const RegistroSeccion2 = () => {
                       </div>
                     </div>
 
-                    {/* Renderizado condicional según método seleccionado */}
+                    {/* PASO 3: Formulario de Pago (dependiendo del método seleccionado) */}
                     <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
-                      {selectedMethod === 'paypal' && (
+                      {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
+                      {/* {selectedMethod === 'paypal' && (
                         <PayPalIframe 
                           leadId={leadId} 
                           leadData={leadData}
@@ -248,7 +250,7 @@ const RegistroSeccion2 = () => {
                           isAcademic={false}
                           academicRole={null}
                         />
-                      )}
+                      )} */}
                       {selectedMethod === 'creditCard' && (
                         <StripeForm 
                           leadId={leadId} 

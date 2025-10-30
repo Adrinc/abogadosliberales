@@ -35,6 +35,7 @@ const IndexSeccion4 = () => {
     };
   }, []);
 
+
   // Función para obtener el ícono según el tipo de actividad
   const getActivityIcon = (type) => {
     if (type.includes('Conferencia')) return '🎤';
@@ -104,7 +105,7 @@ const IndexSeccion4 = () => {
 
           {/* CTA */}
           <div className={styles.ctaWrapperInline}>
-            <a href="#inscripcion" className={styles.ctaButton}>
+            <a href="/registro" className={styles.ctaButton}>
               <span>{t.cta}</span>
               <svg className={styles.ctaIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <line x1="5" y1="12" x2="19" y2="12"></line>

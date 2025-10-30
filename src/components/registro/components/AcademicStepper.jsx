@@ -1000,7 +1000,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                     </p>
                   </div>
                   <div className={styles.tabs}>
-                    <button
+                    {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
+                    {/* <button
                       className={`${styles.tab} ${
                         selectedMethod === 'paypal' ? styles.tabActive : ''
                       }`}
@@ -1014,7 +1015,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                           t.paymentMethods.tabs.paypal) || 'PayPal'}
                       </span>
                       <div className={styles.tabIndicator}></div>
-                    </button>
+                    </button> */}
                     <button
                       className={`${styles.tab} ${
                         selectedMethod === 'creditCard' ? styles.tabActive : ''
@@ -1047,7 +1048,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                     </button>
                   </div>
                   <div className={styles.paymentFormCard}>
-                    {selectedMethod === 'paypal' && (
+                    {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
+                    {/* {selectedMethod === 'paypal' && (
                       <PayPalIframe
                         leadId={leadId}
                         leadData={leadData}
@@ -1055,7 +1057,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
                         isAcademic={true}
                         academicRole={academicData.role}
                       />
-                    )}
+                    )} */}
                     {selectedMethod === 'creditCard' && (
                       <StripeForm
                         leadId={leadId}

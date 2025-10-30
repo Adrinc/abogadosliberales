@@ -112,19 +112,44 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
 
         // 🎓 DETECTAR SI ES COMPRA ACADÉMICA
         const isAcademicPurchase = localStorage.getItem('isAcademicPurchase') === 'true';
+        // 💳 DETECTAR MÉTODO DE PAGO
+        const paymentMethod = localStorage.getItem('lastPaymentMethod') || 'unknown';
+        
         console.log('═══════════════════════════════════════════');
-        console.log('🎓 VERIFICACIÓN DE TIPO DE COMPRA');
+        console.log('🎓 VERIFICACIÓN DE TIPO DE COMPRA Y MÉTODO DE PAGO');
         console.log('═══════════════════════════════════════════');
         console.log('🎓 isAcademicPurchase:', isAcademicPurchase);
-        console.log('📋 localStorage.getItem("isAcademicPurchase"):', localStorage.getItem('isAcademicPurchase'));
+        console.log('� paymentMethod:', paymentMethod);
+        console.log('�📋 localStorage.getItem("isAcademicPurchase"):', localStorage.getItem('isAcademicPurchase'));
+        console.log('📋 localStorage.getItem("lastPaymentMethod"):', localStorage.getItem('lastPaymentMethod'));
+        console.log('═══════════════════════════════════════════');
+
+        // 🔥 REGLA: QR solo para compras GENERALES (NO académicas) pagadas con STRIPE
+        // ✅ Mostrar QR: isAcademicPurchase === false && paymentMethod === 'stripe'
+        // ❌ NO mostrar QR: isAcademicPurchase === true || paymentMethod !== 'stripe'
+        const shouldSearchForQR = !isAcademicPurchase && paymentMethod === 'stripe';
+        
+        console.log('═══════════════════════════════════════════');
+        console.log('🔍 DECISIÓN DE BÚSQUEDA DE QR');
+        console.log('═══════════════════════════════════════════');
+        console.log('✅ shouldSearchForQR:', shouldSearchForQR);
+        if (!shouldSearchForQR) {
+          if (isAcademicPurchase) {
+            console.log('⏭️ Razón: Compra académica (NO se genera QR)');
+          } else if (paymentMethod !== 'stripe') {
+            console.log('⏭️ Razón: Método de pago no es Stripe (método:', paymentMethod, ')');
+            console.log('⏭️ Transferencia bancaria: Debe esperar validación manual en CRM');
+          }
+        } else {
+          console.log('✅ Razón: Compra general + Pago con Stripe → Buscar QR');
+        }
         console.log('═══════════════════════════════════════════');
 
         // 🔥 BÚSQUEDA DE QR EN VISTA tickets_with_details
-        // ⚠️ SOLO para compras NO académicas (general)
-        // Las compras académicas NO generan QR
+        // ⚠️ SOLO para: Compras NO académicas (general) + Pagadas con Stripe
         let ticketDataFromView = null;
         
-        if (!isAcademicPurchase) {
+        if (shouldSearchForQR) {
           // 🎫 FLUJO GENERAL: Buscar QR
           console.log('═══════════════════════════════════════════');
           console.log('🎫 BUSCANDO QR EN VISTA tickets_with_details (FLUJO GENERAL)');
@@ -159,19 +184,23 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           }
           console.log('═══════════════════════════════════════════');
         } else {
-          // 🎓 FLUJO ACADÉMICO: NO buscar QR (no se genera)
+          // 🎓 FLUJO SIN QR: Compra académica O transferencia bancaria
           console.log('═══════════════════════════════════════════');
-          console.log('🎓 COMPRA ACADÉMICA DETECTADA');
+          if (isAcademicPurchase) {
+            console.log('🎓 COMPRA ACADÉMICA DETECTADA');
+          } else {
+            console.log('🏦 TRANSFERENCIA BANCARIA DETECTADA');
+          }
           console.log('═══════════════════════════════════════════');
-          console.log('⏭️ Saltando búsqueda de QR (compras académicas NO generan QR)');
-          console.log('✅ Continuando con flujo de pago sin QR');
+          console.log('⏭️ Saltando búsqueda de QR (no aplica para este tipo de compra/pago)');
+          console.log('✅ Continuando con flujo de confirmación sin QR');
           console.log('═══════════════════════════════════════════');
         }
 
         // 🔄 RETRY LÓGICA: Si NO tenemos ticket y aún hay reintentos disponibles, ESPERAR
-        // ⚠️ SOLO para compras NO académicas (las académicas no generan QR)
+        // ⚠️ SOLO para compras que DEBERÍAN tener QR (general + Stripe)
         // 🚀 MEJORADO: 5 intentos × 4 segundos = 20 segundos máximo (mejor para conexiones lentas)
-        if (!isAcademicPurchase && !ticketDataFromView && retryCount < 5) {
+        if (shouldSearchForQR && !ticketDataFromView && retryCount < 5) {
           console.log('⏳ Ticket no encontrado aún - Reintentando...');
           console.log(`🔄 Retry ${retryCount + 1}/5: Will check again in 4 seconds...`);
           setTimeout(() => {
@@ -822,8 +851,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         )}
 
         {/* 🔄 Botón de Reintentar si NO hay QR después de agotar intentos automáticos */}
-        {/* ⚠️ SOLO para compras NO académicas (las académicas no generan QR) */}
-        {!isAcademicPurchase && !ticketQRUrl && retryCount >= 5 && (
+        {/* ⚠️ SOLO para compras que DEBERÍAN tener QR: General (NO académica) + Stripe */}
+        {!isAcademicPurchase && paymentData?.payment_method === 'stripe' && !ticketQRUrl && retryCount >= 5 && (
           <div className={styles.retryBox}>
             <div className={styles.retryIcon}>⏳</div>
             <h3 className={styles.retryTitle}>

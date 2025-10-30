@@ -273,10 +273,10 @@ const NavBar = () => {
     return false;
   };
 
-  // Manejar click en el logo para ir a home
+  // Manejar click en el logo para ir a la web externa
   const handleLogoClick = (e) => {
     e.preventDefault();
-    window.location.href = "/";
+    window.location.href = "https://abogadosliberales.mx";
   };
 
   // Manejar click en enlaces con hash para cerrar menú móvil

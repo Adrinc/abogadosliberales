@@ -76,7 +76,7 @@ const IndexSeccion10 = () => {
             <span className={styles.ctaArrow}>→</span>
           </button>
           
-          <a 
+       {/*    <a 
             href="https://wa.me/525512345678?text=Hola,%20quiero%20información%20sobre%20el%20Congreso%20de%20Amparo%202025" 
             target="_blank"
             rel="noopener noreferrer"
@@ -84,7 +84,7 @@ const IndexSeccion10 = () => {
           >
             <span className={styles.whatsappIcon}>💬</span>
             {t.ctaSecondary}
-          </a>
+          </a> */}
         </div>
 
         {/* Trust signals */}
@@ -93,10 +93,10 @@ const IndexSeccion10 = () => {
             <span className={styles.trustIcon}>⏳</span>
             <span className={styles.trustText}>{t.trustSignals.limitedSeats}</span>
           </div>
-          <div className={styles.trustSignal}>
+         {/*  <div className={styles.trustSignal}>
             <span className={styles.trustIcon}>🏆</span>
             <span className={styles.trustText}>{t.trustSignals.officialCert}</span>
-          </div>
+          </div> */}
           <div className={styles.trustSignal}>
             <span className={styles.trustIcon}>🎓</span>
             <span className={styles.trustText}>{t.trustSignals.expertSpeakers}</span>
@@ -104,7 +104,7 @@ const IndexSeccion10 = () => {
         </div>
 
         {/* Newsletter */}
-        <div className={styles.newsletterWrapper}>
+  {/*       <div className={styles.newsletterWrapper}>
           <h3 className={styles.newsletterTitle}>{t.newsletter.title}</h3>
           <form className={styles.newsletterForm} onSubmit={handleSubmit}>
             <input 
@@ -120,7 +120,7 @@ const IndexSeccion10 = () => {
             </button>
           </form>
           <p className={styles.newsletterPrivacy}>{t.newsletter.privacy}</p>
-        </div>
+        </div> */}
 
       </div>
     </section>
