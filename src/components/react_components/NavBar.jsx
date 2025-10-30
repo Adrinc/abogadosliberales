@@ -321,7 +321,7 @@ const NavBar = () => {
       {isOpen && <div className={styles.overlay} onClick={toggleMenu} />}
       
       {/* Logo con efecto de hover mejorado */}
-      <a href="/" className={styles.logopic} onClick={handleLogoClick} tabIndex={0} aria-label="Ir a inicio">
+      <a href="https://abogadosliberales.mx" className={styles.logopic} onClick={handleLogoClick} tabIndex={0} aria-label="Ir a inicio">
         <img src="/favicon.jpg" alt="Barra Mexicana de Abogados Liberales" />
         <div className={styles.logoText}>
           <div className={styles.logoTitle}>Abogados Liberales</div>
