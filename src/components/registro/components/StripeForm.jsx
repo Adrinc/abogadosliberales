@@ -69,9 +69,17 @@ const StripeForm = ({
       }
 
       // 2. Construir URLs de éxito y cancelación
-      // 🔥 Redirigir en la MISMA ventana (como PayPal)
-      const successUrl = `${window.location.origin}/confirmacion?lead_id=${leadId}&method=stripe&status=confirmed`;
+      // 🔥 Redirigir según tipo de compra:
+      // - ACADÉMICO → /validacion (siempre requiere validación manual)
+      // - GENERAL → /confirmacion (pago confirmado inmediatamente)
+      const successUrl = isAcademic
+        ? `${window.location.origin}/validacion?lead_id=${leadId}&method=stripe&status=pending`
+        : `${window.location.origin}/confirmacion?lead_id=${leadId}&method=stripe&status=confirmed`;
+      
       const cancelUrl = window.location.href; // Volver a la página actual
+
+      console.log('🔗 Success URL:', successUrl);
+      console.log('🎓 isAcademic:', isAcademic, '→ Ruta:', isAcademic ? '/validacion' : '/confirmacion');
 
       // 3. Construir payload para n8n
       const priceKey = getPriceKey();

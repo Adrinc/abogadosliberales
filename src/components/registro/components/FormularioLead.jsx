@@ -105,11 +105,30 @@ const FormularioLead = React.forwardRef(({
       let customerId = null;
 
       if (existingCustomer) {
-        // Cliente ya existe, usar su ID
         console.log('✅ Customer already exists:', existingCustomer.customer_id);
+        console.log('📊 Current status:', existingCustomer.status);
+
+        // 🔥 VALIDACIÓN CRÍTICA: Si el status NO es "Lead", NO permitir continuar
+        if (existingCustomer.status !== 'Lead') {
+          console.error('❌ Customer status is NOT "Lead" (current:', existingCustomer.status, ')');
+          console.error('❌ User is already registered for the event - Registration blocked');
+          
+          // Mostrar error al usuario
+          setErrors({
+            email: ingles 
+              ? '⚠️ This email is already registered for the event. If you need assistance, please contact support.' 
+              : '⚠️ Este correo ya está registrado para el evento. Si necesita asistencia, por favor contacte a soporte.'
+          });
+          
+          setIsSubmitting(false);
+          return; // ⚠️ CRÍTICO: Salir SIN continuar, base de datos intacta
+        }
+
+        // ✅ Status es "Lead" → Permitir actualización
+        console.log('✅ Status is "Lead" - Proceeding with update');
         customerId = existingCustomer.customer_id;
 
-        // Actualizar datos incluyendo customer_category_fk
+        // ✅ Actualizar datos incluyendo customer_category_fk
         const updatePayload = {
           first_name: formData.first_name,
           last_name: formData.last_name,
@@ -117,11 +136,9 @@ const FormularioLead = React.forwardRef(({
           status: 'Lead'
         };
 
-        // Solo agregar customer_category_fk si se proporciona (flujo académico)
-        if (customerCategoryFk !== null && customerCategoryFk !== undefined) {
-          updatePayload.customer_category_fk = customerCategoryFk;
-          console.log('📋 Updating customer_category_fk:', customerCategoryFk);
-        }
+        // Siempre actualizar customer_category_fk (null si no es académico, 5/6/7 si lo es)
+        updatePayload.customer_category_fk = customerCategoryFk || null;
+        console.log('📋 Updating customer_category_fk:', customerCategoryFk || null, '(null = general)');
 
         const { error: updateError } = await supabase
           .from('customer')
@@ -131,7 +148,7 @@ const FormularioLead = React.forwardRef(({
         if (updateError) {
           console.warn('⚠️ Error updating customer (non-fatal):', updateError.message);
         } else {
-          console.log('✅ Customer data updated with category:', customerCategoryFk);
+          console.log('✅ Customer data updated with category:', customerCategoryFk || null);
         }
       } else {
         // Cliente no existe, crear nuevo

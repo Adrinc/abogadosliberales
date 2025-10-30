@@ -6,15 +6,19 @@ import ConfirmacionSeccion from '../components/confirmacion/ConfirmacionSeccion.
 const url = Astro.url;
 const receiptId = url.searchParams.get('receipt_id');
 const leadId = url.searchParams.get('lead_id');
+const method = url.searchParams.get('method'); // 'transfer' o 'stripe'
+const status = url.searchParams.get('status'); // 'pending'
 
-// Para validación, siempre es transfer y pending
-const paymentMethod = 'transfer';
-const status = 'pending';
-const hasData = receiptId && leadId;
+// Para validación:
+// - Transferencia bancaria: Siempre pending (requiere validación manual del CRM)
+// - Stripe académico: También pending (requiere validación de credencial)
+const paymentMethod = method || 'transfer';
+const paymentStatus = status || 'pending';
+const hasData = leadId; // Solo necesitamos leadId (receiptId es opcional)
 ---
 
 <LayoutBasic 
-  title="Comprobante Recibido - Congreso Nacional de Amparo 2025" 
+  title="Registro Recibido - Congreso Nacional de Amparo 2025" 
   showFooter={true}
 >
   <ConfirmacionSeccion 
@@ -23,7 +27,7 @@ const hasData = receiptId && leadId;
     transactionId={receiptId}
     leadId={leadId}
     paymentMethod={paymentMethod}
-    status={status}
+    status={paymentStatus}
     hasData={hasData}
   />
 </LayoutBasic>

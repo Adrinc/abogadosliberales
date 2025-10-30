@@ -416,6 +416,12 @@ const ComprobantePagoForm = ({
 
       console.log('🎉 Receipt uploaded successfully! Redirecting...');
 
+      // 🔥 Redirigir SIEMPRE a /validacion (tanto académicos como generales con transferencia)
+      // - Académicos: Requieren validación de credencial + comprobante
+      // - Generales con transferencia: Requieren validación de comprobante
+      console.log('🔗 Redirigiendo a /validacion (requiere validación manual)');
+      console.log('🎓 isAcademic:', isAcademic);
+      
       // Redirigir después de 3 segundos
       setTimeout(() => {
         window.location.href = `/validacion?receipt_id=${webhookResult.data?.receipt_id || referenceNumber}&lead_id=${effectiveLeadId || ''}&method=transfer&status=pending`;

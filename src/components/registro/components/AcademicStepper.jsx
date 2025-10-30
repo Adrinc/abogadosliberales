@@ -313,8 +313,27 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
       }
 
       if (existingCustomer) {
-        // Cliente ya existe, actualizar datos
         console.log('✅ Customer already exists:', existingCustomer.customer_id);
+        console.log('📊 Current status:', existingCustomer.status);
+
+        // 🔥 VALIDACIÓN CRÍTICA: Si el status NO es "Lead", NO permitir continuar
+        if (existingCustomer.status !== 'Lead') {
+          console.error('❌ Customer status is NOT "Lead" (current:', existingCustomer.status, ')');
+          console.error('❌ User is already registered for the event - Registration blocked');
+          
+          // Mostrar error al usuario
+          setErrors({
+            email: ingles 
+              ? '⚠️ This email is already registered for the event. If you need assistance, please contact support.' 
+              : '⚠️ Este correo ya está registrado para el evento. Si necesita asistencia, por favor contacte a soporte.'
+          });
+          
+          setIsSubmitting(false);
+          return; // ⚠️ CRÍTICO: Salir SIN continuar, base de datos intacta
+        }
+
+        // ✅ Status es "Lead" → Permitir actualización
+        console.log('✅ Status is "Lead" - Proceeding with update');
         customerId = existingCustomer.customer_id;
         isNewCustomer = false;
 
