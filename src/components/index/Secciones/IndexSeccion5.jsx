@@ -109,18 +109,21 @@ const IndexSeccion5 = () => {
               </div>
             </div>
 
-          {/*   <div className={styles.instructionsBox}>
-              <p className={styles.instructions}>
-                <strong>📧 {t.paymentInfo.instructions}</strong>
-              </p>
-              <p className={styles.note}>
-                <strong>⚠️ Importante:</strong> {t.paymentInfo.note}
-              </p>
-            </div> */}
           </div>
 
           {/* COLUMNA DERECHA: Card principal de pricing */}
           <div className={styles.pricingCard}>
+
+            {/* Badge académico (descuento) */}
+            <div className={styles.academicBadgeWrapper}>
+              <div className={styles.academicBadge}>
+                <svg className={styles.academicIcon} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                </svg>
+                <span>{t.academicBadge}</span>
+              </div>
+            </div>
 
             {/* Precio destacado */}
             <div className={styles.priceWrapper}>
@@ -155,14 +158,8 @@ const IndexSeccion5 = () => {
                 onClick={handlePrimaryClick}
               >
                 {t.ctaPrimary}
-             {/*    <span className={styles.ctaArrow}>→</span> */}
               </button>
-           {/*    <a 
-                href="mailto:secretariageneral@abogadosliberales.mx?subject=Consulta descuento grupos" 
-                className={styles.ctaSecondary}
-              >
-                {t.ctaSecondary}
-              </a> */}
+      
             </div>
 
             {/* Trust badges */}

@@ -6,6 +6,7 @@ export const translationsIndex = {
     // SECCIÓN 1: HERO
     hero: {
       badge: "EVENTO PRESENCIAL · CUPO LIMITADO",
+      academicBadge: "Descuentos académicos disponibles · Hasta 50% para estudiantes UNAM, UVM y UAM",
       title: "Ponte un paso adelante en las estrategias, la jurisprudencia y las nuevas reformas al Juicio de Amparo",
       date: "14 y 15 de noviembre · Ciudad de México",
       description: "Es una oportunidad única para obtener la guía de los magistrados que marcará la diferencia en tus casos",
@@ -245,6 +246,7 @@ export const translationsIndex = {
       label: "INSCRIPCIÓN",
       title: "Asegura tu lugar",
       subtitle: "Inversión en tu formación profesional",
+      academicBadge: "Descuentos académicos hasta 50% · UNAM, UVM y UAM",
       price: "$1,990",
       currency: "MXN",
       priceDescription: "Cuota de recuperación por persona",
@@ -407,6 +409,7 @@ export const translationsIndex = {
     // SECTION 1: HERO
     hero: {
       badge: "IN-PERSON EVENT · LIMITED CAPACITY",
+      academicBadge: "Academic discounts available · Up to 50% off for UNAM, UVM and UAM students",
       title: "Stay ahead of the curve on strategies, jurisprudence, and new reforms to the Amparo Trial",
       date: "November 14-15 · Mexico City",
       description: "It is a unique opportunity to obtain the guidance of the judges that will make a difference in your cases.",
@@ -646,6 +649,7 @@ export const translationsIndex = {
       label: "REGISTRATION",
       title: "Secure your spot",
       subtitle: "Investment in your professional development",
+      academicBadge: "Academic discounts up to 50% · UNAM, UVM and UAM",
       price: "$1,990",
       currency: "MXN",
       priceDescription: "Recovery fee per person",
