@@ -353,6 +353,8 @@
   background: linear-gradient(135deg, var(--al-blue-primary, #020266), var(--al-blue-800, #05054F));
   color: #FFFFFF;
   border: none;
+  position: relative;
+  z-index: 1;
 }
 
 .ctaPrimary::before,
@@ -366,7 +368,7 @@
   background: linear-gradient(135deg, var(--al-gold-primary, #EECB00), var(--al-gold-light, #F4D672));
   opacity: 0;
   transition: opacity 0.3s ease;
-  z-index: 0;
+  z-index: -1;
 }
 
 .ctaPrimary:hover::before,
@@ -378,13 +380,8 @@
 .ctaButton:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(2, 2, 102, 0.3);
-  color: var(--al-blue-primary, #020266);
-}
-
-.ctaPrimary span,
-.ctaButton span {
-  position: relative;
-  z-index: 1;
+  color: var(--al-blue-primary, #020266) !important;
+  transition: all 0.3s ease;
 }
 
 .ctaSecondary {
