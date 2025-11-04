@@ -187,8 +187,11 @@ const FormularioLead = React.forwardRef(({
       }
 
       // 2. Preparar datos del lead para el componente padre
+      // 🔥 IMPORTANTE: Formato compatible con ResumenRegistro.jsx
       const leadDataToSubmit = {
         ...formData,
+        name: `${formData.first_name} ${formData.last_name}`, // 🔥 Nombre completo para ResumenRegistro
+        phone: formData.mobile_phone, // 🔥 Alias para ResumenRegistro
         status: 'Lead',
         event_id: 1, // Congreso Nacional de Amparo
         customer_id: customerId
