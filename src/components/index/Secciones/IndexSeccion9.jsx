@@ -87,14 +87,14 @@ const IndexSeccion9 = () => {
               <div className={styles.detailItem}>
                 <span className={styles.detailIcon}>📅</span>
                 <p className={styles.detailText}>
-                  <strong>14–15 de noviembre de 2025</strong>
+                  <strong>22 de noviembre de 2025</strong>
                 </p>
               </div>
 
               <div className={styles.detailItem}>
                 <span className={styles.detailIcon}>⏰</span>
                 <p className={styles.detailText}>
-                  <strong>09:00 – 18:00 hrs</strong> (ambos días)
+                  <strong>09:00 – 18:00 hrs</strong>
                 </p>
               </div>
             </div>

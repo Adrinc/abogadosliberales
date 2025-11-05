@@ -278,7 +278,7 @@ export const translationsRegistro = {
     paypal: {
       title: "Pago seguro con PayPal",
       description: "Procesamiento instantáneo. Recibirá su confirmación y código QR por email inmediatamente.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       instructions: "Haga clic en el botón de PayPal para completar su pago de forma segura.",
       processing: "Procesando pago...",
       success: "¡Pago exitoso! Redirigiendo...",
@@ -289,7 +289,7 @@ export const translationsRegistro = {
     creditCard: {
       title: "Pago con tarjeta de crédito o débito",
       description: "Procesamiento instantáneo y seguro. Aceptamos Visa, Mastercard y American Express.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       
       cardNumber: {
         label: "Número de tarjeta",
@@ -313,7 +313,7 @@ export const translationsRegistro = {
         hint: "3-4 dígitos en el reverso"
       },
       
-      submitButton: "Pagar $1,990 MXN",
+      submitButton: "Pagar $990 MXN",
       processing: "Procesando pago seguro...",
       success: "¡Pago exitoso! Redirigiendo...",
       error: "Error al procesar el pago. Verifique los datos."
@@ -323,7 +323,7 @@ export const translationsRegistro = {
     bankTransfer: {
       title: "Transferencia o depósito bancario",
       description: "Realice su pago y suba el comprobante. Su registro será validado en 24-48 horas hábiles.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       
       bankDetails: {
         title: "Datos bancarios",
@@ -424,7 +424,7 @@ export const translationsRegistro = {
       eventName: "Congreso Nacional de Litigio Estratégico en Amparo",
       price: {
         label: "Precio",
-        amount: "$1,990 MXN",
+        amount: "$990 MXN",
         note: "Pago único"
       },
       dates: {
@@ -742,7 +742,7 @@ export const translationsRegistro = {
       eventName: "National Congress on Strategic Amparo Litigation",
       price: {
         label: "Price",
-        amount: "$1,990 MXN",
+        amount: "$990 MXN",
         note: "Single payment - Includes certificate"
       },
       dates: {
@@ -905,7 +905,7 @@ export const translationsRegistro = {
     paypal: {
       title: "Secure payment with PayPal",
       description: "Instant processing. You will receive your confirmation and QR code by email immediately.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       instructions: "Click the PayPal button to complete your payment securely.",
       processing: "Processing payment...",
       success: "Payment successful! Redirecting...",
@@ -916,7 +916,7 @@ export const translationsRegistro = {
     creditCard: {
       title: "Pay with credit or debit card",
       description: "Instant and secure processing. We accept Visa, Mastercard, and American Express.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       
       cardNumber: {
         label: "Card number",
@@ -940,7 +940,7 @@ export const translationsRegistro = {
         hint: "3-4 digits on the back"
       },
       
-      submitButton: "Pay $1,990 MXN",
+      submitButton: "Pay $990 MXN",
       processing: "Processing secure payment...",
       success: "Payment successful! Redirecting...",
       error: "Error processing payment. Please check the details."
@@ -950,7 +950,7 @@ export const translationsRegistro = {
     bankTransfer: {
       title: "Bank transfer or deposit",
       description: "Make your payment and upload the receipt. Your registration will be validated within 24-48 business hours.",
-      amount: "$1,990 MXN",
+      amount: "$990 MXN",
       
       bankDetails: {
         title: "Bank details",
@@ -1001,7 +1001,7 @@ export const translationsRegistro = {
       eventName: "National Congress on Strategic Amparo Litigation",
       price: {
         label: "Price",
-        amount: "$1,990 MXN",
+        amount: "$990 MXN",
         note: "Single payment - Certificate included"
       },
       dates: {

@@ -8,11 +8,11 @@ export const translationsIndex = {
       badge: "EVENTO PRESENCIAL · CUPO LIMITADO",
       academicBadge: "Descuentos académicos disponibles · Hasta 50% para estudiantes UNAM, UVM y UAM",
       title: "Ponte un paso adelante en las estrategias, la jurisprudencia y las nuevas reformas al Juicio de Amparo",
-      date: "14 y 15 de noviembre · Ciudad de México",
+      date: "22 de noviembre · Ciudad de México",
       description: "Es una oportunidad única para obtener la guía de los magistrados que marcará la diferencia en tus casos",
       ctaPrimary: "Adquirir mi acceso",
       ctaSecondary: "Ver programa completo",
-      price: "$1,990 MXN",
+      price: "$990 MXN",
       trustSignals: {
         certification: "Impartido por magistrados",
         attendees: "Edición 2025",
@@ -116,125 +116,112 @@ export const translationsIndex = {
     programa: {
       label: "PROGRAMA ACADÉMICO",
       title: "Agenda del congreso",
-      description: "Dos días intensivos de conferencias magistrales, paneles de discusión y talleres prácticos de litigio estratégico en amparo y derechos humanos.",
+      description: "Un día intensivo de conferencias magistrales, paneles de discusión y talleres prácticos de litigio estratégico en amparo y derechos humanos.",
       cta: "Adquirir mi acceso",
       downloadCta: "Descargar programa completo (PDF)",
       days: {
         day1: {
-          title: "Día 1 - Viernes 14 de noviembre",
+          title: "Viernes 22 de noviembre",
           sessions: [
             {
-              time: "09:00",
-              title: "Mesa de Bienvenida y Honores a la Bandera",
-              type: "Acto protocolario",
-              speaker: "Mesa Directiva BMAL"
+              time: "09:00 - 09:30",
+              title: "APERTURA",
+              type: "Acto protocolar",
+              speaker: "Mesa Directiva BMAL",
+              expositorId: null
             },
             {
-              time: "10:00",
+              time: "09:30 - 10:10",
               title: "Litigación de la Responsabilidad Patrimonial del Estado desde la Perspectiva de los Derechos Humanos",
               type: "Conferencia",
-              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Magistrado de Circuito en Materia Administrativa",
-              expositorId: "mtro_cristobal_arredondo"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos",
+              expositorId: "mtro_cristobal_arredondo",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "11:00",
-              title: "Estrategias de Defensa Jurídica ante los Actos Administrativos como Pilar Fundamental de los Derechos Humanos",
-              type: "Conferencia",
-              speaker: "Mtra. Diana Elda Pérez Medina - Magistrada de Circuito en Materia Administrativa",
-              expositorId: "mtra_diana_perez"
-            },
-            {
-              time: "12:00",
-              title: "Litigación Estratégica en Materia Contenciosa Administrativa y Amparo Administrativo",
-              type: "Conferencia",
-              speaker: "Mtro. Octavio Martínez Quijada - Magistrado de la Sala Superior del Tribunal de Justicia Administrativa del Estado de México",
-              expositorId: "mtro_octavio_martinez"
-            },
-            {
-              time: "13:00 - 14:30",
-              title: "Comida y Espacio de Convivencia",
-              type: "Intermedio",
-              speaker: "",
-              expositorId: null
-            },
-            {
-              time: "14:30",
-              title: "Técnicas de Litigio Estratégico en Amparo",
-              type: "Conferencia",
-              speaker: "Dr. Ricardo Garduño Pasten - Magistrado de Circuito en Materia Penal",
-              expositorId: "dr_ricardo_garduno"
-            },
-            {
-              time: "15:30",
-              title: "Ofrecimiento y Cuestionarios en la Prueba Pericial sobre Medios Tecnológicos",
-              type: "Taller",
-              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos",
-              expositorId: "dr_jose_garcia"
-            },
-            {
-              time: "16:30",
-              title: "Estrategias de Litigación en Casos Graves de Derechos Humanos",
-              type: "Conferencia",
-              speaker: "Dr. Arturo Robles Feria - Defensor Público Federal",
-              expositorId: "dr_arturo_robles"
-            },
-            {
-              time: "17:30",
-              title: "Brindis y Espacio de Convivencia",
-              type: "Intermedio",
-              speaker: ""
-            }
-          ]
-        },
-        day2: {
-          title: "Día 2 - Sábado 15 de noviembre",
-          sessions: [
-            {
-              time: "09:00",
+              time: "10:10 - 10:50",
               title: "Litigio Estratégico en la Protección Reforzada de Grupos de Atención Prioritaria",
               type: "Conferencia",
-              speaker: "Dr. Armando Hernández Cruz - Profesor de Posgrado de la Facultad de Derecho de la UNAM",
-              expositorId: "mtro_armando_hernandez"
+              speaker: "Dr. Armando Hernández Cruz",
+              expositorId: "mtro_armando_hernandez",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "10:00",
-              title: "Operatividad del Interés Legítimo en el Juicio de Amparo",
+              time: "10:50 - 11:30",
+              title: "Litigación Estratégica en Materia Contenciosa Administrativa y Amparo Administrativo",
               type: "Conferencia",
-              speaker: "Mtro. Juan Pablo Vázquez Calvo - Magistrado de Circuito en Materia Civil",
-              expositorId: "mtro_juan_pablo_vasquez"
+              speaker: "Mtro. Octavio Martínez Quijada",
+              expositorId: "mtro_octavio_martinez",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "11:00 - 11:30",
-              title: "Receso",
+              time: "11:30 - 12:00",
+              title: "DESCANSO",
               type: "Intermedio",
               speaker: "",
               expositorId: null
             },
             {
-              time: "11:30",
-              title: "Técnicas Estratégicas de Sustentación con Jurisprudencia en el Amparo",
+              time: "12:00 - 12:40",
+              title: "Técnicas de Litigio Estratégico en Amparo",
               type: "Conferencia",
-              speaker: "Dr. Omar Fuentes Cerdán - Secretario de Tribunal Colegiado con 20 años de experiencia en la Función Jurisdiccional",
-              expositorId: "dr_omar_fuentes"
+              speaker: "Dr. Ricardo Garduño Pasten",
+              expositorId: "dr_ricardo_garduno",
+              moderator: "Lic. Mariana Cruz"
             },
             {
-              time: "12:30",
-              title: "Recursos Tecnológicos en el Litigio Estratégico",
-              type: "Taller",
-              speaker: "Dr. José Antonio García Cruz - Perito Especialista en Medios Tecnológicos e Informáticos",
-              expositorId: "dr_jose_garcia"
+              time: "12:40 - 13:20",
+              title: "Operatividad del Interés Legítimo en el Juicio de Amparo",
+              type: "Conferencia",
+              speaker: "Mtro. Juan Pablo Vázquez Calvo",
+              expositorId: "mtro_juan_pablo_vasquez",
+              moderator: "Lic. Mariana Cruz"
             },
             {
-              time: "13:30",
-              title: "Debate Abierto para la Presentación de Propuestas de Proyectos de Reforma",
-              type: "Panel de discusión",
-              speaker: "Moderador: Dr. José Jacob Juárez Osorio"
+              time: "13:20 - 14:00",
+              title: "Estrategias de defensa Jurídica ante los actos administrativos como pilar fundamental de los Derechos Humanos",
+              type: "Conferencia",
+              speaker: "Mtra. Diana Elda Pérez Medina",
+              expositorId: "mtra_diana_perez",
+              moderator: "Lic. Mariana Cruz"
             },
             {
-              time: "14:15",
-              title: "Brindis y Espacio de Comida para Convivencia",
+              time: "14:00 - 15:00",
+              title: "COMIDA Y ESPACIO PARA CONVIVENCIA",
               type: "Intermedio",
-              speaker: ""
+              speaker: "",
+              expositorId: null
+            },
+            {
+              time: "15:00 - 15:40",
+              title: "Recursos Tecnológicos en el Litigio Estratégico",
+              type: "Conferencia",
+              speaker: "Dr. José Antonio García Cruz",
+              expositorId: "dr_jose_garcia",
+              moderator: "Dr. José Jacob Juárez Osorio"
+            },
+            {
+              time: "15:40 - 16:20",
+              title: "Técnicas estratégicas de sustentación con Jurisprudencia en el Amparo",
+              type: "Conferencia",
+              speaker: "Dr. Omar Fuentes Cerdán",
+              expositorId: "dr_omar_fuentes",
+              moderator: "Dr. José Jacob Juárez Osorio"
+            },
+            {
+              time: "16:20 - 17:00",
+              title: "Estrategias de Litigación en Casos Graves de Derechos Humanos",
+              type: "Conferencia",
+              speaker: "Dr. Arturo Robles Feria",
+              expositorId: "dr_arturo_robles",
+              moderator: "Dr. José Jacob Juárez Osorio"
+            },
+            {
+              time: "17:00 - 18:00",
+              title: "Debate abierto para la presentación de propuestas de proyectos de reforma y CLAUSURA",
+              type: "Panel de discusión",
+              speaker: "Todos los ponentes",
+              expositorId: null
             }
           ]
         }
@@ -247,14 +234,14 @@ export const translationsIndex = {
       title: "Asegura tu lugar",
       subtitle: "Inversión en tu formación profesional",
       academicBadge: "Descuentos académicos hasta 50% · UNAM, UVM y UAM",
-      price: "$1,990",
+      price: "$990",
       currency: "MXN",
       priceDescription: "Cuota de recuperación por persona",
       badgeDiscount: "OFERTA ESPECIAL - Grupos de 3+ personas: 10% descuento",
       includes: {
         title: "Tu registro incluye:",
         items: [
-          "Acceso completo a las 2 jornadas del congreso",
+          "Acceso completo al congreso",
           "Material didáctico digital (memorias del congreso)",
           "Coffee breaks",
           "Networking con ponentes y asistentes",
@@ -411,11 +398,11 @@ export const translationsIndex = {
       badge: "IN-PERSON EVENT · LIMITED CAPACITY",
       academicBadge: "Academic discounts available · Up to 50% off for UNAM, UVM and UAM students",
       title: "Stay ahead of the curve on strategies, jurisprudence, and new reforms to the Amparo Trial",
-      date: "November 14-15 · Mexico City",
+      date: "November 22 · Mexico City",
       description: "It is a unique opportunity to obtain the guidance of the judges that will make a difference in your cases.",
       ctaPrimary: "Get Ticket",
       ctaSecondary: "View Full Program",
-      price: "$1,990 MXN",
+      price: "$990 MXN",
       trustSignals: {
         certification: "Taught by magistrates",
         attendees: "200+ attendees 2025 edition",
@@ -519,125 +506,112 @@ export const translationsIndex = {
     programa: {
       label: "ACADEMIC PROGRAM",
       title: "Congress agenda",
-      description: "Two intensive days of keynote conferences, discussion panels and practical workshops on strategic amparo litigation and human rights.",
+      description: "An intensive day of keynote conferences, discussion panels and practical workshops on strategic amparo litigation and human rights.",
       cta: "Get Ticket",
       downloadCta: "Download full program (PDF)",
       days: {
         day1: {
-          title: "Day 1 - Friday, November 14",
+          title: "Friday, November 22",
           sessions: [
             {
-              time: "09:00",
-              title: "Welcome Ceremony and National Anthem Honors",
+              time: "09:00 - 09:30",
+              title: "OPENING CEREMONY",
               type: "Protocol act",
-              speaker: "BMAL Board of Directors"
+              speaker: "BMAL Board of Directors",
+              expositorId: null
             },
             {
-              time: "10:00",
+              time: "09:30 - 10:10",
               title: "State Patrimonial Liability Litigation from a Human Rights Perspective",
               type: "Conference",
-              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos - Circuit Magistrate in Administrative Matters",
-              expositorId: "mtro_cristobal_arredondo"
+              speaker: "Mtro. Jorge Cristóbal Arredondo Gallegos",
+              expositorId: "mtro_cristobal_arredondo",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "11:00",
-              title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
-              type: "Conference",
-              speaker: "Mtra. Diana Elda Pérez Medina - Circuit Magistrate in Administrative Matters",
-              expositorId: "mtra_diana_perez"
-            },
-            {
-              time: "12:00",
-              title: "Strategic Litigation in Administrative Contentious Matters and Administrative Amparo",
-              type: "Conference",
-              speaker: "Mtro. Octavio Martínez Quijada - Magistrate of the Superior Chamber of the Administrative Justice Court of the State of Mexico",
-              expositorId: "mtro_octavio_martinez"
-            },
-            {
-              time: "13:00 - 14:30",
-              title: "Lunch and Networking Space",
-              type: "Intermission",
-              speaker: "",
-              expositorId: null
-            },
-            {
-              time: "14:30",
-              title: "Strategic Amparo Litigation Techniques",
-              type: "Conference",
-              speaker: "Dr. Ricardo Garduño Pasten - Circuit Magistrate in Criminal Matters",
-              expositorId: "dr_ricardo_garduno"
-            },
-            {
-              time: "15:30",
-              title: "Expert Evidence Offering and Questionnaires on Technological Media",
-              type: "Workshop",
-              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media",
-              expositorId: "dr_jose_garcia"
-            },
-            {
-              time: "16:30",
-              title: "Litigation Strategies in Serious Human Rights Cases",
-              type: "Conference",
-              speaker: "Dr. Arturo Robles Feria - Federal Public Defender",
-              expositorId: "dr_arturo_robles"
-            },
-            {
-              time: "17:30",
-              title: "Toast and Networking Space",
-              type: "Intermission",
-              speaker: ""
-            }
-          ]
-        },
-        day2: {
-          title: "Day 2 - Saturday, November 15",
-          sessions: [
-            {
-              time: "09:00",
+              time: "10:10 - 10:50",
               title: "Strategic Litigation in Reinforced Protection of Priority Attention Groups",
               type: "Conference",
-              speaker: "Dr. Armando Hernández Cruz - Postgraduate Professor at UNAM Faculty of Law",
-              expositorId: "mtro_armando_hernandez"
+              speaker: "Dr. Armando Hernández Cruz",
+              expositorId: "mtro_armando_hernandez",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "10:00",
-              title: "Operability of Legitimate Interest in Amparo Lawsuits",
+              time: "10:50 - 11:30",
+              title: "Strategic Litigation in Administrative Contentious Matters and Administrative Amparo",
               type: "Conference",
-              speaker: "Mtro. Juan Pablo Vázquez Calvo - Circuit Magistrate in Civil Matters",
-              expositorId: "mtro_juan_pablo_vasquez"
+              speaker: "Mtro. Octavio Martínez Quijada",
+              expositorId: "mtro_octavio_martinez",
+              moderator: "Mtro. Jesús Rodolfo García Lemus"
             },
             {
-              time: "11:00 - 11:30",
-              title: "Break",
+              time: "11:30 - 12:00",
+              title: "BREAK",
               type: "Intermission",
               speaker: "",
               expositorId: null
             },
             {
-              time: "11:30",
+              time: "12:00 - 12:40",
+              title: "Strategic Amparo Litigation Techniques",
+              type: "Conference",
+              speaker: "Dr. Ricardo Garduño Pasten",
+              expositorId: "dr_ricardo_garduno",
+              moderator: "Lic. Mariana Cruz"
+            },
+            {
+              time: "12:40 - 13:20",
+              title: "Operability of Legitimate Interest in Amparo Lawsuits",
+              type: "Conference",
+              speaker: "Mtro. Juan Pablo Vázquez Calvo",
+              expositorId: "mtro_juan_pablo_vasquez",
+              moderator: "Lic. Mariana Cruz"
+            },
+            {
+              time: "13:20 - 14:00",
+              title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
+              type: "Conference",
+              speaker: "Mtra. Diana Elda Pérez Medina",
+              expositorId: "mtra_diana_perez",
+              moderator: "Lic. Mariana Cruz"
+            },
+            {
+              time: "14:00 - 15:00",
+              title: "LUNCH AND NETWORKING SPACE",
+              type: "Intermission",
+              speaker: "",
+              expositorId: null
+            },
+            {
+              time: "15:00 - 15:40",
+              title: "Technological Resources in Strategic Litigation",
+              type: "Conference",
+              speaker: "Dr. José Antonio García Cruz",
+              expositorId: "dr_jose_garcia",
+              moderator: "Dr. José Jacob Juárez Osorio"
+            },
+            {
+              time: "15:40 - 16:20",
               title: "Strategic Argumentation Techniques with Jurisprudence in Amparo",
               type: "Conference",
-              speaker: "Dr. Omar Fuentes Cerdán - Collegiate Court Secretary with 20 years of experience in Jurisdictional Function",
-              expositorId: "dr_omar_fuentes"
+              speaker: "Dr. Omar Fuentes Cerdán",
+              expositorId: "dr_omar_fuentes",
+              moderator: "Dr. José Jacob Juárez Osorio"
             },
             {
-              time: "12:30",
-              title: "Technological Resources in Strategic Litigation",
-              type: "Workshop",
-              speaker: "Dr. José Antonio García Cruz - Expert Specialist in Technological and Computer Media",
-              expositorId: "dr_jose_garcia"
+              time: "16:20 - 17:00",
+              title: "Litigation Strategies in Serious Human Rights Cases",
+              type: "Conference",
+              speaker: "Dr. Arturo Robles Feria",
+              expositorId: "dr_arturo_robles",
+              moderator: "Dr. José Jacob Juárez Osorio"
             },
             {
-              time: "13:30",
-              title: "Open Debate for Presentation of Reform Project Proposals",
+              time: "17:00 - 18:00",
+              title: "Open debate for presentation of reform project proposals and CLOSING CEREMONY",
               type: "Discussion panel",
-              speaker: "Moderator: Dr. José Jacob Juárez Osorio"
-            },
-            {
-              time: "14:15",
-              title: "Toast and Lunch Networking Space",
-              type: "Intermission",
-              speaker: ""
+              speaker: "All speakers",
+              expositorId: null
             }
           ]
         }
@@ -650,14 +624,14 @@ export const translationsIndex = {
       title: "Secure your spot",
       subtitle: "Investment in your professional development",
       academicBadge: "Academic discounts up to 50% · UNAM, UVM and UAM",
-      price: "$1,990",
+      price: "$990",
       currency: "MXN",
       priceDescription: "Recovery fee per person",
       badgeDiscount: "SPECIAL OFFER - Groups of 3+ people: 10% discount",
       includes: {
         title: "Your registration includes:",
         items: [
-          "Full access to the 2-day congress",
+          "Full access to the congress",
           "Digital educational material (congress proceedings)",
           "Coffee breaks",
           "Networking with speakers and attendees",

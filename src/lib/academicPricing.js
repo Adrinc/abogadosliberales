@@ -2,10 +2,9 @@
  * SISTEMA DE PRECIOS ACADÉMICOS - UNAM/UVM/UAM
  * 
  * Reglas de negocio:
- * - Precio general: $1,990 MXN
- * - Profesor/Posgrado: $1,692 MXN (15% desc) | 3 MSI → $564/mes
- * - Estudiante Licenciatura: $995 MXN (50% desc) | 3 MSI → $331.67/mes
- * - Paquete 11 (Profesor/Posgrado): $16,915 MXN | 3/6/12 MSI
+ * - Precio general: $990 MXN
+ * - Cualquier rol académico (Profesor/Posgrado/Licenciatura): $490 MXN (50% desc)
+ * - Paquete 11 (Profesor/Posgrado): $4,900 MXN | 3/6/12 MSI
  * 
  * Mapeo a customer_category_fk:
  * 5 → Profesor
@@ -13,17 +12,15 @@
  * 7 → Estudiante Licenciatura
  * 
  * Mapeo a price_key (backend):
- * - precio_lista_congreso: $1,990 MXN (general)
- * - precio_prof_estud_pos: $1,692 MXN (profesor + posgrado)
- * - precio_estudiante_lic: $995 MXN (licenciatura)
+ * - precio_lista_congreso: $990 MXN (general)
+ * - precio_academico: $490 MXN (todos los roles académicos)
  */
 
 // Precios base
 export const PRICES = {
-  GENERAL: 1990,
-  PROFESOR_POSGRADO: 1692, // ✅ Redondeado de 1691.50 a 1692
-  LICENCIATURA: 995,
-  PAQUETE_11: 16915
+  GENERAL: 990,
+  ACADEMICO: 490, // ✅ Precio unificado para todos los roles académicos (50% desc)
+  PAQUETE_11: 4900 // ✅ 11 entradas académicas: $490 × 10 = $4,900 (la 11ª gratis)
 };
 
 // Mapeo de roles académicos a customer_category_fk en la BD
@@ -40,19 +37,15 @@ export const getCustomerCategoryFk = (role) => {
 
 // Configuración MSI por rol
 export const MSI_CONFIG = {
-  PROFESOR_POSGRADO: {
+  ACADEMICO: {
     availableMonths: [3],
-    3: 564 // $1,692 / 3 = $564/mes (redondeado)
-  },
-  LICENCIATURA: {
-    availableMonths: [3],
-    3: 331.67 // $995 / 3 = $331.67/mes
+    3: 163.33 // $490 / 3 = $163.33/mes (redondeado)
   },
   PAQUETE_11: {
     availableMonths: [3, 6, 12],
-    3: 5638.33,
-    6: 2819.17,
-    12: 1409.58
+    3: 1633.33,  // $4,900 / 3
+    6: 816.67,   // $4,900 / 6
+    12: 408.33   // $4,900 / 12
   }
 };
 
@@ -106,27 +99,21 @@ export function calculateAcademicPrice(academicData = {}) {
 
   // Paquete 11 tiene prioridad
   if (academicData.isPaquete11) {
-    basePrice = PRICES.GENERAL * 11; // $21,890
-    finalPrice = PRICES.PAQUETE_11;
+    basePrice = PRICES.GENERAL * 11; // $10,890 (11 × $990)
+    finalPrice = PRICES.PAQUETE_11;  // $4,900 (11 × $490, paga 10)
     msiConfig = MSI_CONFIG.PAQUETE_11;
     roleKey = 'PAQUETE_11';
   } 
-  // Profesor o Posgrado
+  // Cualquier rol académico (profesor, posgrado o licenciatura) → mismo precio
   else if (
     academicData.role === ACADEMIC_ROLES.PROFESOR || 
-    academicData.role === ACADEMIC_ROLES.POSGRADO
+    academicData.role === ACADEMIC_ROLES.POSGRADO ||
+    academicData.role === ACADEMIC_ROLES.LICENCIATURA
   ) {
-    basePrice = PRICES.GENERAL;
-    finalPrice = PRICES.PROFESOR_POSGRADO;
-    msiConfig = MSI_CONFIG.PROFESOR_POSGRADO;
-    roleKey = 'PROFESOR_POSGRADO';
-  } 
-  // Estudiante de Licenciatura
-  else if (academicData.role === ACADEMIC_ROLES.LICENCIATURA) {
-    basePrice = PRICES.GENERAL;
-    finalPrice = PRICES.LICENCIATURA;
-    msiConfig = MSI_CONFIG.LICENCIATURA;
-    roleKey = 'LICENCIATURA';
+    basePrice = PRICES.GENERAL;  // $990
+    finalPrice = PRICES.ACADEMICO; // $490 (50% desc para todos)
+    msiConfig = MSI_CONFIG.ACADEMICO;
+    roleKey = 'ACADEMICO';
   }
   else {
     throw new Error(`Rol inválido: ${academicData.role}`);
@@ -172,10 +159,9 @@ export function getMSIOptions(role, isPaquete11 = false) {
 
   if (isPaquete11) {
     config = MSI_CONFIG.PAQUETE_11;
-  } else if (role === ACADEMIC_ROLES.PROFESOR || role === ACADEMIC_ROLES.POSGRADO) {
-    config = MSI_CONFIG.PROFESOR_POSGRADO;
-  } else if (role === ACADEMIC_ROLES.LICENCIATURA) {
-    config = MSI_CONFIG.LICENCIATURA;
+  } else {
+    // Todos los roles académicos usan la misma configuración MSI
+    config = MSI_CONFIG.ACADEMICO;
   }
 
   if (!config) return [];
@@ -190,13 +176,17 @@ export function getMSIOptions(role, isPaquete11 = false) {
 
 /**
  * Valida si un usuario puede acceder al paquete de 11
- * Solo profesores y posgrado
+ * Todos los roles académicos pueden acceder
  * 
  * @param {string} role - Rol académico
  * @returns {boolean}
  */
 export function canAccessPaquete11(role) {
-  return role === ACADEMIC_ROLES.PROFESOR || role === ACADEMIC_ROLES.POSGRADO;
+  return (
+    role === ACADEMIC_ROLES.PROFESOR || 
+    role === ACADEMIC_ROLES.POSGRADO || 
+    role === ACADEMIC_ROLES.LICENCIATURA
+  );
 }
 
 /**
