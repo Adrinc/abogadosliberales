@@ -28,7 +28,7 @@ const RegistroSeccion1 = () => {
           <div className={styles.bannerRight}>
             <div className={styles.priceBox}>
               <span className={styles.priceLabel}>{ingles ? "Investment" : "Inversión"}</span>
-              <span className={styles.priceAmount}>$1,990</span>
+              <span className={styles.priceAmount}>$990</span>
             </div>
           </div>
         </div>

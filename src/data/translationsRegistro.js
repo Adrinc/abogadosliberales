@@ -51,29 +51,29 @@ export const translationsRegistro = {
             value: "profesor", 
             label: "Personal educativo",
             description: "Personal académico de tiempo completo o por asignatura",
-            price: "$1,692 MXN",
-            discount: "15% descuento"
+            price: "$490 MXN",
+            discount: "50% descuento"
           },
           { 
             value: "posgrado", 
             label: "Estudiante de Posgrado",
             description: "Maestría, Doctorado o Especialidad",
-            price: "$1,692 MXN",
-            discount: "15% descuento"
+            price: "$490 MXN",
+            discount: "50% descuento"
           },
           { 
             value: "licenciatura", 
             label: "Estudiante de Licenciatura",
             description: "Estudiante activo de pregrado",
-            price: "$995 MXN",
+            price: "$490 MXN",
             discount: "50% descuento"
           }
         ],
         paquete11: {
           label: "Paquete 11 Participantes",
           description: "Solo para profesores y posgrado. Compra grupal.",
-          price: "$16,915 MXN",
-          discount: "22.7% descuento vs precio lista",
+          price: "$4,900 MXN",
+          discount: "55% descuento vs precio lista",
           hint: "Esta opción genera una compra para 11 participantes"
         }
       },
@@ -429,7 +429,7 @@ export const translationsRegistro = {
       },
       dates: {
         label: "Fechas",
-        value: "14–15 de noviembre de 2025"
+        value: "22 de noviembre de 2025"
       },
       venue: {
         label: "Sede",
@@ -438,7 +438,7 @@ export const translationsRegistro = {
       },
       schedule: {
         label: "Horario",
-        value: "09:00 – 18:00 hrs (ambos días)"
+        value: "09:00 – 18:00 hrs"
       },
       benefits: {
         title: "Tu inscripción incluye",
@@ -534,29 +534,29 @@ export const translationsRegistro = {
             value: "profesor", 
             label: "Educational Staff",
             description: "Full-time or adjunct academic staff",
-            price: "$1,692 MXN",
-            discount: "15% discount"
+            price: "$490 MXN",
+            discount: "50% discount"
           },
           { 
             value: "posgrado", 
             label: "Graduate Student",
             description: "Master's, PhD or Specialty",
-            price: "$1,692 MXN",
-            discount: "15% discount"
+            price: "$490 MXN",
+            discount: "50% discount"
           },
           { 
             value: "licenciatura", 
             label: "Undergraduate Student",
             description: "Active undergraduate student",
-            price: "$995 MXN",
+            price: "$490 MXN",
             discount: "50% discount"
           }
         ],
         paquete11: {
           label: "11 Participants Package",
           description: "For professors and graduate students only. Group purchase.",
-          price: "$16,915 MXN",
-          discount: "22.7% discount vs list price",
+          price: "$4,900 MXN",
+          discount: "55% discount vs list price",
           hint: "This option generates a purchase for 11 participants"
         }
       },
@@ -747,7 +747,7 @@ export const translationsRegistro = {
       },
       dates: {
         label: "Dates",
-        value: "November 14–15, 2025"
+        value: "November 22, 2025"
       },
       venue: {
         label: "Venue",
@@ -756,7 +756,7 @@ export const translationsRegistro = {
       },
       schedule: {
         label: "Schedule",
-        value: "09:00 AM – 06:00 PM (both days)"
+        value: "09:00 AM – 06:00 PM"
       },
       benefits: {
         title: "Your registration includes",
@@ -1006,7 +1006,7 @@ export const translationsRegistro = {
       },
       dates: {
         label: "Dates",
-        value: "November 14–15, 2025"
+        value: "November 22, 2025"
       },
       venue: {
         label: "Venue",
@@ -1015,7 +1015,7 @@ export const translationsRegistro = {
       },
       schedule: {
         label: "Schedule",
-        value: "09:00 AM – 06:00 PM (both days)"
+        value: "09:00 AM – 06:00 PM"
       },
       benefits: {
         title: "Your registration includes",

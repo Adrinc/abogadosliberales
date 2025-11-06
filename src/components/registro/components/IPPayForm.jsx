@@ -27,7 +27,7 @@ const IPPayForm = ({ leadId, leadData }) => {
 
   // Constantes
   const EVENT_ID = 1;
-  const AMOUNT = '1990.00';
+  const AMOUNT = '990.00';
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_ippay_payment';
   const IPPAY_API_URL = 'https://api.ippay.com/v1/charge'; // URL ficticia, reemplazar con la real

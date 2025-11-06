@@ -59,7 +59,7 @@ export const translationsRevalidacion = {
         items: [
           'Comprobante de transferencia bancaria',
           'Referencia de pago visible',
-          'Monto: $1,990 MXN (o monto académico)',
+          'Monto: $990 MXN (o monto académico)',
           'Fecha de transacción visible',
           'Formato: JPG, PNG o PDF',
           'Tamaño máximo: 5MB'
@@ -160,7 +160,7 @@ export const translationsRevalidacion = {
         items: [
           'Bank transfer receipt',
           'Payment reference visible',
-          'Amount: $1,990 MXN (or academic amount)',
+          'Amount: $990 MXN (or academic amount)',
           'Transaction date visible',
           'Format: JPG, PNG or PDF',
           'Maximum size: 5MB'

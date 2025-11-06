@@ -33,7 +33,7 @@ const PayPalIframe = ({
   // Calcular monto dinámico (académico o general)
   const finalAmount = academicPriceData && isAcademic 
     ? academicPriceData.finalPrice 
-    : 1990;
+    : 990;
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
@@ -42,17 +42,11 @@ const PayPalIframe = ({
   // 🔥 Mapear rol académico a price_key (idéntico a StripeForm)
   const getPriceKey = () => {
     if (!isAcademic || !academicRole) {
-      return 'precio_lista_congreso'; // Precio general ($1,990 MXN)
+      return 'precio_lista_congreso'; // Precio general ($990 MXN)
     }
     
-    // ✅ Mapeo CORRECTO según especificación del backend:
-    const roleMapping = {
-      'profesor': 'precio_prof_estud_pos',      // Profesor/Personal Educativo → $1,692 MXN
-      'posgrado': 'precio_prof_estud_pos',      // Estudiante de Posgrado → $1,692 MXN
-      'licenciatura': 'precio_estudiante_lic',  // Estudiante de Licenciatura → $995 MXN
-    };
-    
-    const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
+    // ✅ NUEVO ESQUEMA: Todos los roles académicos usan el mismo precio ($490 MXN)
+    const priceKey = 'precio_academico'; // Todos los académicos → $490 MXN (50% desc)
     console.log('🎯 PayPal getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
     return priceKey;
   };

@@ -193,7 +193,7 @@ export function canAccessPaquete11(role) {
  * Formatea precio en MXN
  * 
  * @param {number} amount - Cantidad
- * @returns {string} Precio formateado ($1,990.00 MXN)
+ * @returns {string} Precio formateado ($990.00 MXN)
  */
 export function formatPrice(amount) {
   return new Intl.NumberFormat('es-MX', {

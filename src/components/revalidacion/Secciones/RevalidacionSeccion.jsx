@@ -20,7 +20,7 @@ const RevalidacionSeccion = () => {
 
   // 🔥 NUEVO: Estado para customer category y amount calculado
   const [customerCategoryFk, setCustomerCategoryFk] = useState(null);
-  const [calculatedAmount, setCalculatedAmount] = useState(1990); // Default general
+  const [calculatedAmount, setCalculatedAmount] = useState(990); // Default general
 
   const [file, setFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
@@ -66,18 +66,16 @@ const RevalidacionSeccion = () => {
               console.error('❌ Error al buscar customer:', customerError);
               // Si hay error, usar valores por defecto
               setCustomerCategoryFk(null);
-              setCalculatedAmount(1990);
+              setCalculatedAmount(990);
             } else {
               const categoryFk = customerData?.customer_category_fk || null;
               setCustomerCategoryFk(categoryFk);
 
               // 🔥 Calcular amount según customer_category_fk
-              let amount = 1990; // Default general (null o empty)
+              let amount = 990; // Default general (null o empty)
               
-              if (categoryFk === 7) {
-                amount = 995; // Estudiante de licenciatura
-              } else if (categoryFk === 6 || categoryFk === 5) {
-                amount = 1692; // Personal educativo (6) o estudiante posgrado (5)
+              if (categoryFk === 7 || categoryFk === 6 || categoryFk === 5) {
+                amount = 490; // Precio académico unificado
               }
 
               setCalculatedAmount(amount);
@@ -91,7 +89,7 @@ const RevalidacionSeccion = () => {
             console.error('❌ Error inesperado al buscar customer:', err);
             // Valores por defecto en caso de error
             setCustomerCategoryFk(null);
-            setCalculatedAmount(1990);
+            setCalculatedAmount(990);
           }
         }
 

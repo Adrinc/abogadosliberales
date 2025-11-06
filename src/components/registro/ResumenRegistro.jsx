@@ -31,7 +31,7 @@ const ResumenRegistro = ({
   // Calcular precio a mostrar (académico o general)
   const displayPrice = academicPriceData && isAcademic
     ? academicPriceData.finalPrice
-    : 1990;
+    : 990;
 
   const formattedPrice = formatPrice(displayPrice);
 

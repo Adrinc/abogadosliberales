@@ -221,7 +221,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           
           const paymentDataFromView = {
             event_payment_id: null,
-            amount: parseFloat(localStorage.getItem('lastPaymentAmount')) || 1990,
+            amount: parseFloat(localStorage.getItem('lastPaymentAmount')) || 990,
             currency: 'MXN',
             payment_method: ticketDataFromView.payment_method || localStorage.getItem('lastPaymentMethod') || 'unknown',
             status: ticketDataFromView.payment_status || 'confirmed',
@@ -253,7 +253,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           // Construir un objeto paymentData compatible desde el webhook response
           const paymentDataFromWebhook = {
             event_payment_id: localWebhookResponse.data.payment_id,
-            amount: 1990, // Por ahora hardcoded, pero podría venir del webhook
+            amount: 990, // Por ahora hardcoded, pero podría venir del webhook
             currency: 'MXN',
             payment_method: storedPaymentMethod, // 🔥 USAR EL MÉTODO REAL, NO HARDCODEAR
             status: localWebhookResponse.data.payment_status,
@@ -488,7 +488,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   console.log('═══════════════════════════════════════════');
 
   // Calcular monto a mostrar
-  // 🔥 PRIORIDAD: localStorage > paymentData > default (1990)
+  // 🔥 PRIORIDAD: localStorage > paymentData > default (990)
   const storedAmount = localStorage.getItem('lastPaymentAmount');
   
   console.log('═══════════════════════════════════════════');
@@ -502,7 +502,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   
   const displayAmount = storedAmount 
     ? parseFloat(storedAmount) 
-    : (paymentData?.amount || 1990);
+    : (paymentData?.amount || 990);
   const displayCurrency = paymentData?.currency || 'MXN';
   
   console.log('💰 Cálculo de monto a mostrar:', {
@@ -802,7 +802,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           <div className={styles.eventDetails}>
             <div className={styles.eventDetailItem}>
               <span className={styles.eventIcon}>📅</span>
-              <span>{ingles ? 'November 14–15, 2025' : '14–15 de Noviembre, 2025'}</span>
+              <span>{ingles ? 'November 22, 2025' : '22 de Noviembre, 2025'}</span>
             </div>
             <div className={styles.eventDetailItem}>
               <span className={styles.eventIcon}>📍</span>
@@ -909,8 +909,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
                 <span className={styles.stepNumber}>3</span>
                 <span className={styles.stepText}>
                   {ingles 
-                    ? 'Arrive at the venue on November 14 at 8:00 AM' 
-                    : 'Llega a la sede el 14 de noviembre a las 8:00 AM'}
+                    ? 'Arrive at the venue on November 22 at 9:00 AM' 
+                    : 'Llega a la sede el 22 de noviembre a las 9:00 AM'}
                 </span>
               </li>
             </ul>

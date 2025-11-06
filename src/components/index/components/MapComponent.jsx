@@ -158,7 +158,7 @@ const MapComponent = ({ position, venueName, parkingPosition }) => {
               📍 Teatro Legaria (IMSS)
             </p>
             <p style={{ color: '#4A5568', fontSize: '0.85rem', marginTop: '4px' }}>
-              📅 14-15 Nov 2025 · 09:00-18:00 hrs
+              📅 22 Nov 2025 · 09:00-18:00 hrs
             </p>
           </div>
         </Popup>

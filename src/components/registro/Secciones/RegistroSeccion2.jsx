@@ -68,8 +68,8 @@ const RegistroSeccion2 = () => {
     
     // 💰 Establecer precio inicial para flujo general (nuevo registro)
     if (!isAcademic) {
-      localStorage.setItem('lastPaymentAmount', '1990.00');
-      console.log('💰 Nuevo registro - Precio general establecido: 1990.00');
+      localStorage.setItem('lastPaymentAmount', '990.00');
+      console.log('💰 Nuevo registro - Precio general establecido: 990.00');
     }
     
     console.log('✅ localStorage limpiado - Listo para nuevo registro');
@@ -91,8 +91,8 @@ const RegistroSeccion2 = () => {
     console.log('🎓 Estado académico guardado:', isAcademic);
     
     if (!isAcademic) {
-      localStorage.setItem('lastPaymentAmount', '1990.00');
-      console.log('💰 Toggle a flujo general - Monto actualizado: 1990.00');
+      localStorage.setItem('lastPaymentAmount', '990.00');
+      console.log('💰 Toggle a flujo general - Monto actualizado: 990.00');
     } else {
       // En flujo académico, el precio se calculará en el stepper
       console.log('🎓 Toggle a flujo académico - Precio se calculará al seleccionar rol');

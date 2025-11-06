@@ -48,7 +48,7 @@ const StripeModal = ({
   // Calcular monto dinámico (académico o general)
   const finalAmount = academicPriceData && isAcademic 
     ? academicPriceData.finalPrice 
-    : 1990;
+    : 990;
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
@@ -57,16 +57,11 @@ const StripeModal = ({
   // 🔥 Mapear rol académico a price_key
   const getPriceKey = () => {
     if (!isAcademic || !academicRole) {
-      return 'precio_lista_congreso';
+      return 'precio_lista_congreso'; // Precio general ($990 MXN)
     }
     
-    const roleMapping = {
-      'profesor': 'precio_prof_estud_pos',
-      'posgrado': 'precio_prof_estud_pos',
-      'licenciatura': 'precio_estudiante_lic',
-    };
-    
-    const priceKey = roleMapping[academicRole] || 'precio_lista_congreso';
+    // ✅ NUEVO ESQUEMA: Todos los roles académicos usan el mismo precio ($490 MXN)
+    const priceKey = 'precio_academico'; // Todos los académicos → $490 MXN (50% desc)
     console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
     return priceKey;
   };

@@ -331,7 +331,7 @@ export const translationsIndex = {
       questions: [
         {
           question: "¿Cómo obtengo mi certificado de participación?",
-          answer: "El certificado oficial se entrega de forma digital al finalizar el congreso (viernes 15 de noviembre). Deberás haber asistido al menos al 80% de las sesiones y registrar tu asistencia con el código QR proporcionado en cada conferencia. El certificado estará firmado por la Mesa Directiva de la Barra y avalado por nuestros ponentes magistrados."
+          answer: "El certificado oficial se entrega de forma digital al finalizar el congreso (viernes 22 de noviembre). Deberás haber asistido al menos al 80% de las sesiones y registrar tu asistencia con el código QR proporcionado en cada conferencia. El certificado estará firmado por la Mesa Directiva de la Barra y avalado por nuestros ponentes magistrados."
         },
         {
           question: "¿Habrá transmisión en línea o es solo presencial?",
@@ -721,7 +721,7 @@ export const translationsIndex = {
       questions: [
         {
           question: "How do I get my participation certificate?",
-          answer: "The official certificate is delivered digitally at the end of the congress (Friday, November 15). You must have attended at least 80% of sessions and register your attendance with the QR code provided at each conference. The certificate will be signed by the Bar's Board of Directors and endorsed by our magistrate speakers."
+          answer: "The official certificate is delivered digitally at the end of the congress (Friday, November 22). You must have attended at least 80% of sessions and register your attendance with the QR code provided at each conference. The certificate will be signed by the Bar's Board of Directors and endorsed by our magistrate speakers."
         },
         {
           question: "Will there be online streaming or is it only in-person?",
