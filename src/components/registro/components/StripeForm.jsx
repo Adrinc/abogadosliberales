@@ -40,8 +40,14 @@ const StripeForm = ({
       return 'precio_lista_congreso'; // Precio general ($990 MXN)
     }
     
-    // ✅ NUEVO ESQUEMA: Todos los roles académicos usan el mismo precio ($490 MXN)
-    const priceKey = 'precio_academico'; // Todos los académicos → $490 MXN (50% desc)
+    // ✅ NUEVO ESQUEMA: Licenciatura tiene precio especial ($250), otros roles $490
+    if (academicRole === 'licenciatura') {
+      const priceKey = 'precio_estudiante_licenciatura'; // Licenciatura → $250 MXN (75% desc)
+      console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
+      return priceKey;
+    }
+    
+    const priceKey = 'precio_academico'; // Profesor/Posgrado → $490 MXN (50% desc)
     console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
     return priceKey;
   };

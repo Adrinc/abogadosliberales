@@ -3,7 +3,8 @@
  * 
  * Reglas de negocio:
  * - Precio general: $990 MXN
- * - Cualquier rol académico (Profesor/Posgrado/Licenciatura): $490 MXN (50% desc)
+ * - Profesor/Posgrado: $490 MXN (50% desc)
+ * - Estudiante Licenciatura: $250 MXN (75% desc)
  * - Paquete 11 (Profesor/Posgrado): $4,900 MXN | 3/6/12 MSI
  * 
  * Mapeo a customer_category_fk:
@@ -13,14 +14,16 @@
  * 
  * Mapeo a price_key (backend):
  * - precio_lista_congreso: $990 MXN (general)
- * - precio_academico: $490 MXN (todos los roles académicos)
+ * - precio_academico: $490 MXN (profesor/posgrado)
+ * - precio_estudiante_licenciatura: $250 MXN (licenciatura)
  */
 
 // Precios base
 export const PRICES = {
   GENERAL: 990,
-  ACADEMICO: 490, // ✅ Precio unificado para todos los roles académicos (50% desc)
-  PAQUETE_11: 4900 // ✅ 11 entradas académicas: $490 × 10 = $4,900 (la 11ª gratis)
+  ACADEMICO: 490, // Profesor y Posgrado (50% desc)
+  LICENCIATURA: 250, // Estudiante Licenciatura (75% desc)
+  PAQUETE_11: 4900 // 11 entradas académicas: $490 × 10 = $4,900 (la 11ª gratis)
 };
 
 // Mapeo de roles académicos a customer_category_fk en la BD
@@ -39,7 +42,11 @@ export const getCustomerCategoryFk = (role) => {
 export const MSI_CONFIG = {
   ACADEMICO: {
     availableMonths: [3],
-    3: 163.33 // $490 / 3 = $163.33/mes (redondeado)
+    3: 163.33 // $490 / 3 = $163.33/mes (profesor/posgrado)
+  },
+  LICENCIATURA: {
+    availableMonths: [3],
+    3: 83.33 // $250 / 3 = $83.33/mes (licenciatura)
   },
   PAQUETE_11: {
     availableMonths: [3, 6, 12],
@@ -104,14 +111,19 @@ export function calculateAcademicPrice(academicData = {}) {
     msiConfig = MSI_CONFIG.PAQUETE_11;
     roleKey = 'PAQUETE_11';
   } 
-  // Cualquier rol académico (profesor, posgrado o licenciatura) → mismo precio
+  // Cualquier rol académico - precios diferenciados
+  else if (academicData.role === ACADEMIC_ROLES.LICENCIATURA) {
+    basePrice = PRICES.GENERAL;  // $990
+    finalPrice = PRICES.LICENCIATURA; // $250 (75% desc)
+    msiConfig = MSI_CONFIG.LICENCIATURA;
+    roleKey = 'LICENCIATURA';
+  }
   else if (
     academicData.role === ACADEMIC_ROLES.PROFESOR || 
-    academicData.role === ACADEMIC_ROLES.POSGRADO ||
-    academicData.role === ACADEMIC_ROLES.LICENCIATURA
+    academicData.role === ACADEMIC_ROLES.POSGRADO
   ) {
     basePrice = PRICES.GENERAL;  // $990
-    finalPrice = PRICES.ACADEMICO; // $490 (50% desc para todos)
+    finalPrice = PRICES.ACADEMICO; // $490 (50% desc)
     msiConfig = MSI_CONFIG.ACADEMICO;
     roleKey = 'ACADEMICO';
   }
@@ -159,8 +171,10 @@ export function getMSIOptions(role, isPaquete11 = false) {
 
   if (isPaquete11) {
     config = MSI_CONFIG.PAQUETE_11;
+  } else if (role === ACADEMIC_ROLES.LICENCIATURA) {
+    config = MSI_CONFIG.LICENCIATURA;
   } else {
-    // Todos los roles académicos usan la misma configuración MSI
+    // Profesor y Posgrado
     config = MSI_CONFIG.ACADEMICO;
   }
 

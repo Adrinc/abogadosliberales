@@ -65,8 +65,8 @@ export const translationsRegistro = {
             value: "licenciatura", 
             label: "Estudiante de Licenciatura",
             description: "Estudiante activo de pregrado",
-            price: "$490 MXN",
-            discount: "50% descuento"
+            price: "$250 MXN",
+            discount: "75% descuento"
           }
         ],
         paquete11: {
@@ -548,8 +548,8 @@ export const translationsRegistro = {
             value: "licenciatura", 
             label: "Undergraduate Student",
             description: "Active undergraduate student",
-            price: "$490 MXN",
-            discount: "50% discount"
+            price: "$250 MXN",
+            discount: "75% discount"
           }
         ],
         paquete11: {

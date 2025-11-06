@@ -74,8 +74,10 @@ const RevalidacionSeccion = () => {
               // 🔥 Calcular amount según customer_category_fk
               let amount = 990; // Default general (null o empty)
               
-              if (categoryFk === 7 || categoryFk === 6 || categoryFk === 5) {
-                amount = 490; // Precio académico unificado
+              if (categoryFk === 7) {
+                amount = 250; // Estudiante Licenciatura (75% desc)
+              } else if (categoryFk === 5 || categoryFk === 6) {
+                amount = 490; // Profesor (5) o Posgrado (6) (50% desc)
               }
 
               setCalculatedAmount(amount);
