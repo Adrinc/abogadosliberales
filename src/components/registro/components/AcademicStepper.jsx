@@ -13,13 +13,12 @@ import {
 import styles from '../css/academicStepper.module.css';
 
 // Import additional components for personal data and payment steps.
-import FormularioLead from './FormularioLead.jsx';
-import PayPalIframe from '../components/PayPalIframe';
-import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
-import StripeForm from './StripeForm'; // ✅ Revertido: Stripe Redirect (temporal)
-import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
-const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelectedMethod }) => {
+import StripeForm from './StripeForm'; // ✅ Stripe ÚNICO método de pago
+// 🚫 DESHABILITADO: ComprobantePagoForm (transferencia bancaria ya no se usa)
+// import ComprobantePagoForm from '../components/ComprobantePagoForm';
+
+const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props removidas: selectedMethod, setSelectedMethod
   const ingles = useStore(isEnglish);
   const t = ingles
     ? translationsRegistro.en.academicStepper
@@ -29,11 +28,10 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Datos del lead y método de pago para los pasos 4 y 5
+  // Datos del lead para el paso de pago (Step 4)
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
-  // selectedMethod ahora viene como prop desde RegistroSeccion2
-  // const [selectedMethod, setSelectedMethod] = useState('paypal'); // REMOVIDO - ahora es prop
+  // 🚫 selectedMethod ELIMINADO - Solo Stripe ahora (sin selector de métodos)
 
   // Referencia al formulario de datos personales (FormularioLead)
   const formRef = useRef(null);
@@ -101,7 +99,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
   // Helper para obtener la etiqueta de cada paso en la barra de progreso.
   const getStepLabel = (step) => {
     if (step === 4) {
-      return ingles ? 'Payment method' : 'Método de pago';
+      return ingles ? 'Payment data' : 'Datos de pago'; // 🔥 CAMBIO: "Método de pago" → "Datos de pago"
     }
     const key = `step${step}`;
     return (t[key] && t[key].title) || step;
@@ -1000,108 +998,41 @@ const AcademicStepper = ({ onComplete, onPriceChange, selectedMethod, setSelecte
           </div>
         )}
 
-        {/* STEP 4: Método de pago */}
+        {/* STEP 4: Datos de pago (SOLO Stripe - sin selector de métodos) */}
         {currentStep === 4 && (
           <div className={styles.step}>
        
             {leadData ? (
               <>
-                {/* Métodos de pago */}
+                {/* Solo StripeForm - sin tabs de métodos de pago */}
                 <div className={styles.paymentSection}>
                   <div className={styles.sectionHeader}>
                     <h2 className={styles.sectionTitle}>
                       {(t.paymentMethods && t.paymentMethods.title) ||
-                        (ingles ? 'Métodos de pago' : 'Métodos de pago')}
+                        (ingles ? 'Payment Data' : 'Datos de Pago')}
                     </h2>
                     <p className={styles.sectionSubtitle}>
                       {(t.paymentMethods && t.paymentMethods.subtitle) ||
-                        (ingles ? 'Elige cómo pagar' : 'Elige cómo pagar')}
+                        (ingles ? 'Complete your card details securely' : 'Complete los datos de su tarjeta de forma segura')}
                     </p>
                   </div>
-                  <div className={styles.tabs}>
-                    {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
-                    {/* <button
-                      className={`${styles.tab} ${
-                        selectedMethod === 'paypal' ? styles.tabActive : ''
-                      }`}
-                      type="button"
-                      onClick={() => setSelectedMethod('paypal')}
-                    >
-                      <div className={styles.tabIcon}>💳</div>
-                      <span className={styles.tabLabel}>
-                        {(t.paymentMethods &&
-                          t.paymentMethods.tabs &&
-                          t.paymentMethods.tabs.paypal) || 'PayPal'}
-                      </span>
-                      <div className={styles.tabIndicator}></div>
-                    </button> */}
-                    <button
-                      className={`${styles.tab} ${
-                        selectedMethod === 'creditCard' ? styles.tabActive : ''
-                      }`}
-                      type="button"
-                      onClick={() => setSelectedMethod('creditCard')}
-                    >
-                      <div className={styles.tabIcon}>💰</div>
-                      <span className={styles.tabLabel}>
-                        {(t.paymentMethods &&
-                          t.paymentMethods.tabs &&
-                          t.paymentMethods.tabs.creditCard) || 'Tarjeta'}
-                      </span>
-                      <div className={styles.tabIndicator}></div>
-                    </button>
-                    <button
-                      className={`${styles.tab} ${
-                        selectedMethod === 'bankTransfer' ? styles.tabActive : ''
-                      }`}
-                      type="button"
-                      onClick={() => setSelectedMethod('bankTransfer')}
-                    >
-                      <div className={styles.tabIcon}>🏦</div>
-                      <span className={styles.tabLabel}>
-                        {(t.paymentMethods &&
-                          t.paymentMethods.tabs &&
-                          t.paymentMethods.tabs.bankTransfer) || 'Transferencia'}
-                      </span>
-                      <div className={styles.tabIndicator}></div>
-                    </button>
-                  </div>
+                  
+                  {/* Solo StripeForm - sin selector de métodos */}
                   <div className={styles.paymentFormCard}>
-                    {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
-                    {/* {selectedMethod === 'paypal' && (
-                      <PayPalIframe
-                        leadId={leadId}
-                        leadData={leadData}
-                        academicPriceData={currentPrice}
-                        isAcademic={true}
-                        academicRole={academicData.role}
-                      />
-                    )} */}
-                    {selectedMethod === 'creditCard' && (
-                      <StripeForm
-                        leadId={leadId}
-                        leadData={leadData}
-                        academicPriceData={currentPrice}
-                        isAcademic={true}
-                        academicRole={academicData.role}
-                      />
-                    )}
-                    {selectedMethod === 'bankTransfer' && (
-                      <ComprobantePagoForm
-                        leadId={leadId}
-                        leadData={leadData}
-                        academicPriceData={currentPrice}
-                        isAcademic={true}
-                        academicRole={academicData.role}
-                      />
-                    )}
+                    <StripeForm
+                      leadId={leadId}
+                      leadData={leadData}
+                      academicPriceData={currentPrice}
+                      isAcademic={true}
+                      academicRole={academicData.role}
+                    />
                   </div>
                 </div>
               </>
             ) : (
               <p className={styles.hint}>
                 {ingles
-                  ? 'Por favor completa tus datos personales primero'
+                  ? 'Please complete your personal data first'
                   : 'Por favor completa tus datos personales primero'}
               </p>
             )}

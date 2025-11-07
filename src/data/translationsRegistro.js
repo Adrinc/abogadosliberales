@@ -9,7 +9,7 @@ export const translationsRegistro = {
         current: "Registro al Congreso"
       },
       title: "Registro al Congreso Nacional 2025",
-      subtitle: "Complete su registro y asegure su lugar en el evento jurídico del año. Elija su método de pago preferido: <strong>PayPal</strong>, <strong>tarjeta de crédito</strong> o <strong>transferencia bancaria</strong>."
+      subtitle: "Complete su registro y asegure su lugar en el evento jurídico del año. Pago seguro con tarjeta de crédito o débito."
     },
 
     // Toggle Académico
@@ -262,12 +262,13 @@ export const translationsRegistro = {
       savingButton: "Guardando..."
     },
 
-    // Selector de métodos de pago
+    // 🚫 MÉTODO DE PAGO: Textos actualizados - Solo Stripe ahora (sin selector de métodos)
     paymentMethods: {
-      title: "Método de pago",
-      subtitle: "Seleccione cómo desea realizar su pago",
+      title: "Datos de pago",
+      subtitle: "Complete los datos de su tarjeta de forma segura",
       
       tabs: {
+        // 🚫 Tabs deshabilitados - Solo mantenidos por compatibilidad
         paypal: "PayPal",
         creditCard: "Pago en línea",
         bankTransfer: "Pago por transferencia bancaria"
@@ -492,7 +493,7 @@ export const translationsRegistro = {
         current: "Congress Registration"
       },
       title: "National Congress Registration 2025",
-      subtitle: "Complete your registration and secure your place at the legal event of the year. Choose your preferred payment method: <strong>PayPal</strong>, <strong>credit card</strong>, or <strong>bank transfer</strong>."
+      subtitle: "Complete your registration and secure your place at the legal event of the year. Secure payment with credit or debit card."
     },
 
     // Academic Toggle
@@ -814,7 +815,7 @@ export const translationsRegistro = {
         current: "Congress Registration"
       },
       title: "National Congress Registration 2025",
-      subtitle: "Complete your registration and secure your place at the legal event of the year. Choose your preferred payment method: <strong>PayPal</strong>, <strong>credit card</strong>, or <strong>bank transfer</strong>."
+      subtitle: "Complete your registration and secure your place at the legal event of the year. Secure payment with credit or debit card."
     },
 
     // Lead Form (common to all methods)
@@ -889,12 +890,13 @@ export const translationsRegistro = {
       savingButton: "Saving..."
     },
 
-    // Payment method selector
+    // 🚫 PAYMENT METHOD: Updated texts - Only Stripe now (no method selector)
     paymentMethods: {
-      title: "Payment method",
-      subtitle: "Select how you want to make your payment",
+      title: "Payment data",
+      subtitle: "Complete your card details securely",
       
       tabs: {
+        // 🚫 Tabs disabled - Only kept for compatibility
         paypal: "PayPal",
         creditCard: "Credit/Debit Card",
         bankTransfer: "Bank Transfer"

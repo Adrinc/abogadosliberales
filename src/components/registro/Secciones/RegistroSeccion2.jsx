@@ -5,11 +5,9 @@ import { translationsRegistro } from '../../../data/translationsRegistro';
 import AcademicToggle from '../components/AcademicToggle';
 import AcademicStepper from '../components/AcademicStepper';
 import FormularioLead from '../components/FormularioLead';
-import PayPalIframe from '../components/PayPalIframe';
-import IPPayForm from '../components/IPPayForm';
-import IPPayTemporaryMessage from '../components/IPPayTemporaryMessage';
-import StripeForm from '../components/StripeForm'; // ✅ Revertido: Stripe Redirect (temporal)
-import ComprobantePagoForm from '../components/ComprobantePagoForm';
+import StripeForm from '../components/StripeForm'; // ✅ Stripe ÚNICO método de pago
+// 🚫 DESHABILITADO: ComprobantePagoForm (transferencia bancaria ya no se usa)
+// import ComprobantePagoForm from '../components/ComprobantePagoForm';
 import ResumenRegistro from '../ResumenRegistro';
 import styles from '../css/registroSeccion2.module.css';
 
@@ -23,8 +21,8 @@ const RegistroSeccion2 = () => {
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
 
-  // Método de pago seleccionado
-  const [selectedMethod, setSelectedMethod] = useState('creditCard'); // 'creditCard' | 'bankTransfer' (PayPal oculto)
+  // 🚫 MÉTODO DE PAGO: Solo Stripe ahora (bankTransfer y PayPal deshabilitados)
+  // const [selectedMethod, setSelectedMethod] = useState('creditCard'); // YA NO SE USA - Solo Stripe
 
   // Estado para el flujo académico
   const [isAcademic, setIsAcademic] = useState(false);
@@ -173,8 +171,7 @@ const RegistroSeccion2 = () => {
                     }
                   }
                 }}
-                selectedMethod={selectedMethod}
-                setSelectedMethod={setSelectedMethod}
+                // 🚫 selectedMethod YA NO SE USA - Solo Stripe ahora
               />
             ) : (
               <>
@@ -186,91 +183,24 @@ const RegistroSeccion2 = () => {
                   />
                 </div>
 
-                {/* PASO 2: Selector de Método de Pago (solo si lead está completo) */}
+                {/* PASO 2: Formulario de Pago con Stripe (solo si lead está completo) */}
+                {/* 🚫 SELECTOR DE MÉTODOS DESHABILITADO - Solo Stripe ahora */}
                 {leadData && (
-                  <>
-                    <div className={`${styles.paymentMethodsCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
-                      <div className={styles.sectionHeader}>
-                        <h2 className={styles.sectionTitle}>{t.paymentMethods.title}</h2>
-                        <p className={styles.sectionSubtitle}>{t.paymentMethods.subtitle}</p>
-                      </div>
-
-                      {/* Tabs de métodos de pago */}
-                      <div className={styles.tabs}>
-                        {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
-                        {/* <button
-                          className={`${styles.tab} ${selectedMethod === 'paypal' ? styles.tabActive : ''}`}
-                          onClick={() => {
-                            setSelectedMethod('paypal');
-                            localStorage.setItem('lastPaymentMethod', 'paypal');
-                            console.log('🎯 Método seleccionado: paypal (guardado en localStorage)');
-                          }}
-                        >
-                          <div className={styles.tabIcon}>💳</div>
-                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.paypal}</span>
-                          <div className={styles.tabIndicator}></div>
-                        </button> */}
-
-                        <button
-                          className={`${styles.tab} ${selectedMethod === 'creditCard' ? styles.tabActive : ''}`}
-                          onClick={() => {
-                            setSelectedMethod('creditCard');
-                            localStorage.setItem('lastPaymentMethod', 'stripe');
-                            console.log('🎯 Método seleccionado: creditCard → stripe (guardado en localStorage)');
-                          }}
-                        >
-                          <div className={styles.tabIcon}>💰</div>
-                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.creditCard}</span>
-                          <div className={styles.tabIndicator}></div>
-                        </button>
-
-                        <button
-                          className={`${styles.tab} ${selectedMethod === 'bankTransfer' ? styles.tabActive : ''}`}
-                          onClick={() => {
-                            setSelectedMethod('bankTransfer');
-                            localStorage.setItem('lastPaymentMethod', 'transfer');
-                            console.log('🎯 Método seleccionado: bankTransfer → transfer (guardado en localStorage)');
-                          }}
-                        >
-                          <div className={styles.tabIcon}>🏦</div>
-                          <span className={styles.tabLabel}>{t.paymentMethods.tabs.bankTransfer}</span>
-                          <div className={styles.tabIndicator}></div>
-                        </button>
-                      </div>
+                  <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>{t.paymentMethods?.title || 'Datos de Pago'}</h2>
+                      <p className={styles.sectionSubtitle}>{t.paymentMethods?.subtitle || 'Complete los datos de su tarjeta de forma segura'}</p>
                     </div>
-
-                    {/* PASO 3: Formulario de Pago (dependiendo del método seleccionado) */}
-                    <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
-                      {/* 🚫 PayPal OCULTO - No eliminar, solo comentar */}
-                      {/* {selectedMethod === 'paypal' && (
-                        <PayPalIframe 
-                          leadId={leadId} 
-                          leadData={leadData}
-                          academicPriceData={null}
-                          isAcademic={false}
-                          academicRole={null}
-                        />
-                      )} */}
-                      {selectedMethod === 'creditCard' && (
-                        <StripeForm 
-                          leadId={leadId} 
-                          leadData={leadData}
-                          academicPriceData={null}
-                          isAcademic={false}
-                          academicRole={null}
-                        />
-                      )}
-                      {selectedMethod === 'bankTransfer' && (
-                        <ComprobantePagoForm 
-                          leadId={leadId} 
-                          leadData={leadData}
-                          academicPriceData={null}
-                          isAcademic={false}
-                          academicRole={null}
-                        />
-                      )}
-                    </div>
-                  </>
+                    
+                    {/* Solo StripeForm - sin selector de métodos */}
+                    <StripeForm 
+                      leadId={leadId} 
+                      leadData={leadData}
+                      academicPriceData={null}
+                      isAcademic={false}
+                      academicRole={null}
+                    />
+                  </div>
                 )}
               </>
             )}
@@ -282,9 +212,9 @@ const RegistroSeccion2 = () => {
               <div className={`${styles.summaryCard} ${isVisible ? styles.fadeInRight : ''}`}>
                 <ResumenRegistro
                   leadData={leadData}
-                selectedPaymentMethod={selectedMethod}
-                academicPriceData={academicPriceData}
-                isAcademic={isAcademic}
+                  selectedPaymentMethod="creditCard" // 🚫 Hardcoded - Solo Stripe ahora
+                  academicPriceData={academicPriceData}
+                  isAcademic={isAcademic}
                 />
               </div>
             </div>
