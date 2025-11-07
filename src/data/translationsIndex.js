@@ -179,11 +179,11 @@ export const translationsIndex = {
             },
             {
               time: "13:20 - 14:00",
-              title: "Estrategias de defensa Jurídica ante los actos administrativos como pilar fundamental de los Derechos Humanos",
+              title: "Recursos Tecnológicos en el Litigio Estratégico",
               type: "Conferencia",
-              speaker: "Mtra. Diana Elda Pérez Medina",
-              expositorId: "mtra_diana_perez",
-              moderator: "Lic. Mariana Cruz"
+              speaker: "Dr. José Antonio García Cruz",
+              expositorId: "dr_jose_garcia",
+              moderator: "Dr. José Jacob Juárez Osorio"
             },
             {
               time: "14:00 - 15:00",
@@ -194,11 +194,10 @@ export const translationsIndex = {
             },
             {
               time: "15:00 - 15:40",
-              title: "Recursos Tecnológicos en el Litigio Estratégico",
+              title: "Estrategias de defensa Jurídica ante los actos administrativos como pilar fundamental de los Derechos Humanos",
               type: "Conferencia",
-              speaker: "Dr. José Antonio García Cruz",
-              expositorId: "dr_jose_garcia",
-              moderator: "Dr. José Jacob Juárez Osorio"
+              speaker: "Mtra. Diana Elda Pérez Medina",
+              expositorId: "mtra_diana_perez"
             },
             {
               time: "15:40 - 16:20",
@@ -238,6 +237,10 @@ export const translationsIndex = {
       currency: "MXN",
       priceDescription: "Cuota de recuperación por persona",
       badgeDiscount: "OFERTA ESPECIAL - Grupos de 3+ personas: 10% descuento",
+      imageOverlay: {
+        title: "Congreso Nacional de Amparo y Derechos Humanos",
+        subtitle: "22 de Noviembre, 2025"
+      },
       includes: {
         title: "Tu registro incluye:",
         items: [
@@ -569,11 +572,11 @@ export const translationsIndex = {
             },
             {
               time: "13:20 - 14:00",
-              title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
+              title: "Technological Resources in Strategic Litigation",
               type: "Conference",
-              speaker: "Mtra. Diana Elda Pérez Medina",
-              expositorId: "mtra_diana_perez",
-              moderator: "Lic. Mariana Cruz"
+              speaker: "Dr. José Antonio García Cruz",
+              expositorId: "dr_jose_garcia",
+              moderator: "Dr. José Jacob Juárez Osorio"
             },
             {
               time: "14:00 - 15:00",
@@ -584,11 +587,10 @@ export const translationsIndex = {
             },
             {
               time: "15:00 - 15:40",
-              title: "Technological Resources in Strategic Litigation",
+              title: "Legal Defense Strategies Against Administrative Acts as a Fundamental Pillar of Human Rights",
               type: "Conference",
-              speaker: "Dr. José Antonio García Cruz",
-              expositorId: "dr_jose_garcia",
-              moderator: "Dr. José Jacob Juárez Osorio"
+              speaker: "Mtra. Diana Elda Pérez Medina",
+              expositorId: "mtra_diana_perez"
             },
             {
               time: "15:40 - 16:20",
@@ -628,6 +630,10 @@ export const translationsIndex = {
       currency: "MXN",
       priceDescription: "Recovery fee per person",
       badgeDiscount: "SPECIAL OFFER - Groups of 3+ people: 10% discount",
+      imageOverlay: {
+        title: "National Congress on Amparo and Human Rights",
+        subtitle: "November 22, 2025"
+      },
       includes: {
         title: "Your registration includes:",
         items: [

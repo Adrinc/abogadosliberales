@@ -70,48 +70,46 @@ const IndexSeccion5 = () => {
           <p className={styles.subtitle}>{t.subtitle}</p>
         </div>
 
-        {/* Grid 2 columnas: Datos de pago (izq) + Pricing card (der) */}
-        <div className={styles.twoColumnGrid}>
+        {/* Grid 2 columnas balanceadas y elegantes para desktop */}
+        <div className={styles.pricingWrapper}>
           
-          {/* COLUMNA IZQUIERDA: Información de pago */}
-          <div className={styles.paymentInfoCard} id="payment-info">
-            <h3 className={styles.paymentTitle}>
-              <span className={styles.paymentIcon}>💳</span>
-              {t.paymentInfo.title}
-            </h3>
-            
-            <div className={styles.paymentDetails}>
-              <div className={styles.paymentRow}>
-                <span className={styles.paymentLabel}>Banco:</span>
-                <span className={styles.paymentValue}>{t.paymentInfo.bank}</span>
-              </div>
-              
-              <div className={styles.paymentRow}>
-                <span className={styles.paymentLabel}>CLABE:</span>
-                <div className={styles.clabeWrapper}>
-                  <span className={styles.paymentValue}>{t.paymentInfo.clabe}</span>
-                  <button 
-                    className={styles.copyButton}
-                    onClick={() => {
-                      navigator.clipboard.writeText(t.paymentInfo.clabe);
-                      alert('CLABE copiada al portapapeles');
-                    }}
-                    title="Copiar CLABE"
-                  >
-                    📋
-                  </button>
+          {/* Columna izquierda - Imagen hero con overlay refinado */}
+          <div className={styles.heroImageColumn}>
+            <div className={styles.imageWrapper}>
+              <img 
+                src="/image/backgrounds/bg_banner2.jpg" 
+                alt="Congreso Nacional de Amparo y Derechos Humanos"
+                className={styles.heroImage}
+              />
+              <div className={styles.imageOverlay}>
+                <div className={styles.overlayContent}>
+                  <div className={styles.overlayIconWrapper}>
+                    <div className={styles.overlayIcon}>⚖️</div>
+                  </div>
+                  <h3 className={styles.overlayTitle}>{t.imageOverlay?.title || "Congreso Nacional de Amparo"}</h3>
+                  <p className={styles.overlaySubtitle}>{t.imageOverlay?.subtitle || "22 de Noviembre, 2025"}</p>
+                  <div className={styles.overlayStats}>
+                    <div className={styles.statItem}>
+                      <span className={styles.statNumber}>9</span>
+                      <span className={styles.statLabel}>Conferencias</span>
+                    </div>
+                    <div className={styles.statDivider}></div>
+                    <div className={styles.statItem}>
+                      <span className={styles.statNumber}>9</span>
+                      <span className={styles.statLabel}>Expertos</span>
+                    </div>
+                    <div className={styles.statDivider}></div>
+                    <div className={styles.statItem}>
+                      <span className={styles.statNumber}>1</span>
+                      <span className={styles.statLabel}>Día Intenso</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-              
-              <div className={styles.paymentRow}>
-                <span className={styles.paymentLabel}>Nombre de la cuenta:</span>
-                <span className={styles.paymentValue}>{t.paymentInfo.accountName}</span>
-              </div>
             </div>
-
           </div>
 
-          {/* COLUMNA DERECHA: Card principal de pricing */}
+          {/* Columna derecha - Pricing card */}
           <div className={styles.pricingCard}>
 
             {/* Badge académico (descuento) */}
@@ -138,16 +136,18 @@ const IndexSeccion5 = () => {
             <div className={styles.includesWrapper}>
               <h3 className={styles.includesTitle}>{t.includes.title}</h3>
               <ul className={styles.includesList}>
-                {t.includes.items.map((item, index) => (
-                  <li 
-                    key={index} 
-                    className={styles.includeItem}
-                    style={{ animationDelay: `${index * 0.1}s` }}
-                  >
-                    <span className={styles.checkIcon}>✓</span>
-                    <span className={styles.includeText}>{item}</span>
-                  </li>
-                ))}
+                {t.includes.items
+                  .filter(item => !item.toLowerCase().includes('coffee') && !item.toLowerCase().includes('café'))
+                  .map((item, index) => (
+                    <li 
+                      key={index} 
+                      className={styles.includeItem}
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <span className={styles.checkIcon}>✓</span>
+                      <span className={styles.includeText}>{item}</span>
+                    </li>
+                  ))}
               </ul>
             </div>
 
@@ -159,7 +159,6 @@ const IndexSeccion5 = () => {
               >
                 {t.ctaPrimary}
               </button>
-      
             </div>
 
             {/* Trust badges */}
@@ -172,11 +171,14 @@ const IndexSeccion5 = () => {
                 <span className={styles.trustIcon}>⏳</span>
                 <span className={styles.trustText}>Cupo limitado</span>
               </div>
+              <div className={styles.trustBadge}>
+                <span className={styles.trustIcon}>🔒</span>
+                <span className={styles.trustText}>Pago 100% seguro</span>
+              </div>
             </div>
           </div>
 
         </div>
-        {/* Fin del grid de 2 columnas */}
 
       </div>
     </section>
