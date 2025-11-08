@@ -9,7 +9,9 @@ const ResumenRegistro = ({
   leadData = null, 
   selectedPaymentMethod = null,
   academicPriceData = null,
-  isAcademic = false
+  isAcademic = false,
+  barristaPriceData = null, // 🆕 Datos de precio barrista
+  isBarrista = false // 🆕 Flag de flujo barrista
 }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
@@ -19,7 +21,9 @@ const ResumenRegistro = ({
     leadData,
     selectedPaymentMethod,
     academicPriceData,
-    isAcademic
+    isAcademic,
+    barristaPriceData, // 🆕
+    isBarrista // 🆕
   });
   
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -28,10 +32,26 @@ const ResumenRegistro = ({
     setIsCollapsed(!isCollapsed);
   };
 
-  // Calcular precio a mostrar (académico o general)
-  const displayPrice = academicPriceData && isAcademic
-    ? academicPriceData.finalPrice
-    : 990;
+  // 🔥 NUEVA LÓGICA: Calcular precio según flujo
+  let displayPrice = 990; // Default: precio general
+  let priceLabel = ingles ? 'General Registration' : 'Inscripción General';
+  
+  if (barristaPriceData && isBarrista) {
+    // 🆕 FLUJO BARRISTA
+    displayPrice = barristaPriceData.finalPrice;
+    
+    if (barristaPriceData.type === 'vip') {
+      priceLabel = ingles ? 'VIP Access (FREE)' : 'Acceso VIP (GRATIS)';
+    } else if (barristaPriceData.type === 'barrista_activo') {
+      priceLabel = ingles ? 'Bar Member - Annual Fee' : 'Miembro Barra - Anualidad';
+    } else if (barristaPriceData.type === 'barrista_nuevo') {
+      priceLabel = ingles ? 'Bar Member - Registration + 1st Year' : 'Miembro Barra - Inscripción + 1er Año';
+    }
+  } else if (academicPriceData && isAcademic) {
+    // 🎓 FLUJO ACADÉMICO
+    displayPrice = academicPriceData.finalPrice;
+    priceLabel = ingles ? 'Academic Price' : 'Precio Académico';
+  }
 
   const formattedPrice = formatPrice(displayPrice);
 
@@ -95,7 +115,7 @@ const ResumenRegistro = ({
 
         {/* Precio destacado */}
         <div className={styles.priceSection}>
-          <div className={styles.priceLabel}>{t.price.label}</div>
+          <div className={styles.priceLabel}>{priceLabel}</div>
           <div className={styles.priceAmount}>{formattedPrice}</div>
           
           {/* Badge de descuento académico */}
@@ -106,6 +126,20 @@ const ResumenRegistro = ({
                 {ingles 
                   ? `${academicPriceData.discountPercentage}% Academic Discount` 
                   : `${academicPriceData.discountPercentage}% Descuento Académico`}
+              </span>
+            </div>
+          )}
+
+          {/* 🆕 Badge de membresía barrista */}
+          {isBarrista && barristaPriceData && (
+            <div className={styles.barristaBadge}>
+              <span className={styles.barristaBadgeIcon}>
+                {barristaPriceData.type === 'vip' ? '🎉' : '⚖️'}
+              </span>
+              <span className={styles.barristaBadgeText}>
+                {barristaPriceData.type === 'vip' && (ingles ? 'VIP Guest - Free Access' : 'Invitado VIP - Acceso Gratuito')}
+                {barristaPriceData.type === 'barrista_activo' && (ingles ? 'Bar Member - Annual Fee' : 'Miembro Barra - Anualidad')}
+                {barristaPriceData.type === 'barrista_nuevo' && (ingles ? 'New Member - Registration' : 'Nuevo Miembro - Inscripción')}
               </span>
             </div>
           )}

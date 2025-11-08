@@ -19,6 +19,61 @@ export const translationsRegistro = {
       activeMessage: "Accede a precios académicos especiales. Complete los datos adicionales a continuación."
     },
 
+    // Toggle Barrista
+    barristaToggle: {
+      title: "¿Eres miembro de la Barra Mexicana de Abogados Liberales?",
+      subtitle: "Miembros activos, inactivos, o deseas unirte",
+      activeMessage: "Registro de miembro habilitado",
+      disabledWarning: "No se puede combinar con descuento académico"
+    },
+
+    // Validador de Teléfono Barrista
+    barristaValidator: {
+      title: "Verificación de Membresía",
+      subtitle: "Ingresa tu teléfono para verificar tu estado",
+      placeholder: "+52 55 1234 5678",
+      buttonVerify: "Verificar Teléfono",
+      buttonVerifying: "Verificando...",
+      formatHelp: "Usa formato internacional con código de país",
+      
+      // Resultados de validación
+      results: {
+        blocked: {
+          title: "⚠️ Registro ya confirmado",
+          message: "Este teléfono ya tiene un registro confirmado para el evento. Si necesitas ayuda, contacta a soporte.",
+          contactEmail: "soporte@abogadosliberales.mx"
+        },
+        vip: {
+          title: "🎉 ¡Eres invitado especial!",
+          message: "Tu acceso al congreso es GRATUITO. Completa tus datos para generar tu código QR de entrada.",
+          price: "$0 MXN",
+          badge: "Acceso VIP"
+        },
+        barristaActivo: {
+          title: "⚖️ Miembro de la Barra",
+          message: "Eres miembro activo o inactivo. Solo pagas la anualidad del congreso.",
+          price: "$3,850 MXN",
+          badge: "Anualidad 2do año en adelante",
+          description: "Incluye acceso al congreso + renovación de membresía"
+        },
+        barristaNuevo: {
+          title: "🆕 ¡Bienvenido a la Barra!",
+          message: "No encontramos membresía previa. Pagas inscripción + primer año.",
+          price: "$3,850 MXN",
+          badge: "Inscripción + 1er año",
+          description: "Incluye acceso al congreso + membresía anual completa"
+        }
+      },
+
+      // Errores
+      errors: {
+        required: "El teléfono es obligatorio",
+        invalidFormat: "Formato inválido. Usa formato internacional: +52 55 1234 5678",
+        serverError: "Error al conectar con el servidor. Intenta nuevamente.",
+        unknownError: "Error desconocido. Por favor contacta a soporte."
+      }
+    },
+
     // Stepper Académico (4 pasos)
     academicStepper: {
       title: "Verificación académica",
@@ -446,7 +501,6 @@ export const translationsRegistro = {
         items: [
           "Acceso completo a las 2 jornadas del congreso",
           "Material didáctico digital (memorias del congreso)",
-          "Coffee breaks",
           "Networking con ponentes y asistentes",
           "Acceso a grupo exclusivo de seguimiento post-congreso"
         ]
@@ -501,6 +555,61 @@ export const translationsRegistro = {
       title: "Do you belong to an educational institution?",
       subtitle: "Get exclusive discounts from UVM, UAM or UNAM",
       activeMessage: "Access special academic pricing. Complete the additional information below."
+    },
+
+    // Barrista Toggle
+    barristaToggle: {
+      title: "Are you a member of the Mexican Bar of Liberal Lawyers?",
+      subtitle: "Active members, inactive members, or wish to join",
+      activeMessage: "Member registration enabled",
+      disabledWarning: "Cannot combine with academic discount"
+    },
+
+    // Barrista Phone Validator
+    barristaValidator: {
+      title: "Membership Verification",
+      subtitle: "Enter your phone number to verify your status",
+      placeholder: "+52 55 1234 5678",
+      buttonVerify: "Verify Phone",
+      buttonVerifying: "Verifying...",
+      formatHelp: "Use international format with country code",
+      
+      // Validation results
+      results: {
+        blocked: {
+          title: "⚠️ Registration Already Confirmed",
+          message: "This phone number already has a confirmed registration for the event. If you need help, contact support.",
+          contactEmail: "soporte@abogadosliberales.mx"
+        },
+        vip: {
+          title: "🎉 You're a Special Guest!",
+          message: "Your access to the congress is FREE. Complete your information to generate your entry QR code.",
+          price: "$0 MXN",
+          badge: "VIP Access"
+        },
+        barristaActivo: {
+          title: "⚖️ Bar Member",
+          message: "You are an active or inactive member. You only pay the congress annual fee.",
+          price: "$3,850 MXN",
+          badge: "Annual fee 2nd year onwards",
+          description: "Includes congress access + membership renewal"
+        },
+        barristaNuevo: {
+          title: "🆕 Welcome to the Bar!",
+          message: "No previous membership found. You pay registration + first year.",
+          price: "$3,850 MXN",
+          badge: "Registration + 1st year",
+          description: "Includes congress access + full annual membership"
+        }
+      },
+
+      // Errors
+      errors: {
+        required: "Phone number is required",
+        invalidFormat: "Invalid format. Use international format: +52 55 1234 5678",
+        serverError: "Error connecting to server. Please try again.",
+        unknownError: "Unknown error. Please contact support."
+      }
     },
 
     // Academic Stepper (4 steps)
@@ -765,7 +874,6 @@ export const translationsRegistro = {
           "Access to all conferences and workshops",
           "Official participation certificate",
           "Digital educational materials",
-          "Coffee break",
           "Networking with magistrates and litigators",
           "Access to event recordings"
         ]

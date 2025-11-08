@@ -9,8 +9,11 @@ const FormularioLead = React.forwardRef(({
   onSubmit, 
   isCompleted, 
   hideSubmitButton = false, 
-  customerCategoryFk = null,  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura)
-  isAcademicFlow = false  // TRUE cuando viene del flujo académico (AcademicStepper)
+  customerCategoryFk = null,  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura) | Para barrista: 4 (Miembro Barra) o 8 (VIP)
+  isAcademicFlow = false,  // TRUE cuando viene del flujo académico (AcademicStepper)
+  isBarristaFlow = false,  // 🆕 TRUE cuando viene del flujo barrista
+  prefilledPhone = null,  // 🆕 Teléfono pre-llenado desde validación barrista
+  rfcRequired = false  // 🆕 Si se requiere RFC (flujo barrista)
 }, ref) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
@@ -20,7 +23,8 @@ const FormularioLead = React.forwardRef(({
     last_name: '',
     email: '',
     email_confirm: '', // 🔥 NUEVO: Confirmación de email
-    mobile_phone: '',
+    mobile_phone: prefilledPhone || '', // 🆕 Pre-llenar si viene de barrista
+    rfc: '', // 🆕 RFC para flujo barrista
     // 🚫 ELIMINADOS: document_type y document_number ya no se usan en flujo general
     company: '',
     job_title: '',
@@ -72,6 +76,21 @@ const FormularioLead = React.forwardRef(({
     }
     if (!formData.mobile_phone.trim()) {
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
+    }
+
+    // 🆕 VALIDACIÓN RFC (solo si rfcRequired === true en flujo barrista)
+    if (rfcRequired && !formData.rfc.trim()) {
+      newErrors.rfc = ingles 
+        ? 'RFC is required for bar members' 
+        : 'El RFC es obligatorio para miembros de la Barra';
+    } else if (rfcRequired && formData.rfc.trim()) {
+      // Validar formato básico de RFC (puede ser 12 o 13 caracteres)
+      const rfcRegex = /^[A-ZÑ&]{3,4}\d{6}[A-Z0-9]{2,3}$/i;
+      if (!rfcRegex.test(formData.rfc.trim())) {
+        newErrors.rfc = ingles 
+          ? 'Invalid RFC format' 
+          : 'Formato de RFC inválido';
+      }
     }
 
     // 🚫 ELIMINADA validación de document_type y document_number (ya no se usan)
@@ -321,15 +340,49 @@ const FormularioLead = React.forwardRef(({
           onChange={handleChange}
           placeholder={t.leadForm.mobilePhone.placeholder}
           className={`${styles.input} ${errors.mobile_phone ? styles.inputError : ''}`}
+          readOnly={isBarristaFlow} // 🆕 Readonly si viene de flujo barrista
+          disabled={isBarristaFlow} // 🆕 Disabled si viene de flujo barrista
         />
         {errors.mobile_phone && <span className={styles.errorText}>{errors.mobile_phone}</span>}
-        <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>
+        {!isBarristaFlow && <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>}
+        {isBarristaFlow && (
+          <span className={styles.hintSuccess}>
+            {ingles 
+              ? '✓ Verified phone from membership validation' 
+              : '✓ Teléfono verificado desde validación de membresía'}
+          </span>
+        )}
       </div>
+
+      {/* 🆕 RFC - Solo visible en flujo barrista */}
+      {isBarristaFlow && rfcRequired && (
+        <div className={styles.formGroup}>
+          <label className={styles.label} htmlFor="rfc">
+            {ingles ? 'RFC (Tax ID)' : 'RFC'} <span className={styles.required}>*</span>
+          </label>
+          <input
+            type="text"
+            id="rfc"
+            name="rfc"
+            value={formData.rfc}
+            onChange={handleChange}
+            placeholder={ingles ? 'e.g. XAXX010101000' : 'ej. XAXX010101000'}
+            className={`${styles.input} ${errors.rfc ? styles.inputError : ''}`}
+            maxLength={13}
+          />
+          {errors.rfc && <span className={styles.errorText}>{errors.rfc}</span>}
+          <span className={styles.hint}>
+            {ingles 
+              ? '13 characters (legal entities) or 12 (individuals)' 
+              : '13 caracteres (personas morales) o 12 (físicas)'}
+          </span>
+        </div>
+      )}
 
       {/* 🚫 ELIMINADOS: Campos document_type y document_number */}
 
-      {/* Cupón - OCULTO en flujo académico (descuento ya aplicado) */}
-      {!isAcademicFlow && (
+      {/* Cupón - OCULTO en flujo académico Y barrista (descuento ya aplicado) */}
+      {!isAcademicFlow && !isBarristaFlow && (
         <div className={styles.formGroup}>
           <label className={styles.label} htmlFor="coupon">
             {t.leadForm.coupon.label}

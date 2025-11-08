@@ -64,6 +64,17 @@
   margin-top: 0.25rem;
 }
 
+/* 🆕 Hint de éxito (para teléfono verificado en flujo barrista) */
+.hintSuccess {
+  font-size: 0.8125rem;
+  color: #48BB78;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
 /* ============================================
    INPUTS MODERNOS
    ============================================ */

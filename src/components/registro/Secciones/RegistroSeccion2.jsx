@@ -4,6 +4,9 @@ import { isEnglish } from '../../../data/variables';
 import { translationsRegistro } from '../../../data/translationsRegistro';
 import AcademicToggle from '../components/AcademicToggle';
 import AcademicStepper from '../components/AcademicStepper';
+import BarristaToggle from '../components/BarristaToggle'; // 🆕 Toggle Barrista
+import BarristaPhoneValidator from '../components/BarristaPhoneValidator'; // 🆕 Validador de teléfono
+import BarristaValidationResult from '../components/BarristaValidationResult'; // 🆕 Resultado de validación
 import FormularioLead from '../components/FormularioLead';
 import StripeForm from '../components/StripeForm'; // ✅ Stripe ÚNICO método de pago
 // 🚫 DESHABILITADO: ComprobantePagoForm (transferencia bancaria ya no se usa)
@@ -28,6 +31,12 @@ const RegistroSeccion2 = () => {
   const [isAcademic, setIsAcademic] = useState(false);
   // Guardar el precio académico calculado (si se requiere en otras partes)
   const [academicPriceData, setAcademicPriceData] = useState(null);
+
+  // 🆕 Estado para el flujo barrista
+  const [isBarrista, setIsBarrista] = useState(false);
+  const [barristaValidation, setBarristaValidation] = useState(null);
+  const [barristaPriceData, setBarristaPriceData] = useState(null);
+  const [showBarristaForm, setShowBarristaForm] = useState(false);
 
   // 🧹 LIMPIEZA INTELIGENTE: Solo limpiar si NO venimos de confirmación
   useEffect(() => {
@@ -128,6 +137,87 @@ const RegistroSeccion2 = () => {
     setLeadId(id);
   };
 
+  // 🆕 Handlers para flujo Barrista
+  const handleBarristaToggle = () => {
+    if (isAcademic) {
+      alert(ingles 
+        ? '⚠️ Cannot combine academic and bar member discounts. Please disable academic mode first.' 
+        : '⚠️ No se pueden combinar descuentos académicos con membresía. Desactiva el modo académico primero.'
+      );
+      return;
+    }
+    
+    const newBarristaState = !isBarrista;
+    setIsBarrista(newBarristaState);
+    
+    // Limpiar datos al cambiar toggle
+    if (newBarristaState) {
+      setLeadData(null);
+      setLeadId(null);
+      setBarristaValidation(null);
+      setBarristaPriceData(null);
+      setShowBarristaForm(false);
+      console.log('🔄 Toggle Barrista activado - Datos limpiados');
+    } else {
+      // Si se desactiva, limpiar TODO el flujo barrista
+      setBarristaValidation(null);
+      setBarristaPriceData(null);
+      setShowBarristaForm(false);
+      setLeadData(null);
+      setLeadId(null);
+      console.log('🔄 Toggle Barrista desactivado - Volviendo a flujo general');
+    }
+  };
+
+  const handleAcademicToggle = () => {
+    if (isBarrista) {
+      alert(ingles 
+        ? '⚠️ Cannot combine bar member and academic discounts. Please disable bar member mode first.' 
+        : '⚠️ No se pueden combinar membresía con descuentos académicos. Desactiva el modo barrista primero.'
+      );
+      return;
+    }
+    
+    setIsAcademic(!isAcademic);
+    // Limpiar datos del lead al cambiar entre flujos
+    setLeadData(null);
+    setLeadId(null);
+    setAcademicPriceData(null);
+    console.log('🔄 Toggle académico cambiado - Datos de lead limpiados');
+  };
+
+  const handleBarristaValidationComplete = (validationResult) => {
+    console.log('✅ Validación completa:', validationResult);
+    setBarristaValidation(validationResult);
+    
+    // Guardar precio en estado
+    setBarristaPriceData({
+      finalPrice: validationResult.finalPrice,
+      priceKey: validationResult.priceKey,
+      type: validationResult.type,
+      customerCategoryId: validationResult.customerCategoryId
+    });
+
+    // Si es VIP (precio $0), no requiere pago
+    if (validationResult.type === 'vip') {
+      console.log('🎉 Usuario VIP - No requiere pago');
+      setShowBarristaForm(true); // Mostrar form para capturar datos (sin pago)
+    } else {
+      console.log('💰 Usuario requiere pago:', validationResult.finalPrice);
+    }
+  };
+
+  const handleBarristaValidationError = (errorResult) => {
+    console.error('❌ Error en validación:', errorResult);
+    setBarristaValidation(errorResult);
+    setShowBarristaForm(false);
+  };
+
+  const handleBarristaResultContinue = () => {
+    console.log('➡️ Continuar con formulario barrista');
+    setShowBarristaForm(true);
+  };
+
   return (
     <section
       id="formulario-registro"
@@ -141,26 +231,26 @@ const RegistroSeccion2 = () => {
             {/* Toggle académico siempre visible */}
             <AcademicToggle
               isAcademic={isAcademic}
-              onToggle={() => {
-                setIsAcademic(!isAcademic);
-                // Limpiar datos del lead al cambiar entre flujos
-                setLeadData(null);
-                setLeadId(null);
-                setAcademicPriceData(null);
-                console.log('🔄 Toggle cambiado - Datos de lead limpiados');
-                // El precio se actualizará automáticamente por el useEffect de isAcademic
-              }}
+              onToggle={handleAcademicToggle}
             />
 
+            {/* 🆕 Toggle Barrista siempre visible */}
+            <BarristaToggle
+              isBarrista={isBarrista}
+              onToggle={handleBarristaToggle}
+              isDisabled={isAcademic}
+            />
+
+            {/* 🔀 FLUJO CONDICIONAL: Académico, Barrista o General */}
             {isAcademic ? (
-              // Si el usuario pertenece a una institución educativa, mostramos el stepper completo
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              // 🎓 FLUJO ACADÉMICO (4 pasos)
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
               <AcademicStepper
                 onPriceChange={(priceData) => setAcademicPriceData(priceData)}
                 onComplete={(data) => {
-                  // Guardar datos del lead y cualquier otra información relevante
                   console.log('🎯 onComplete llamado en RegistroSeccion2 con data:', data);
                   if (data) {
-                    // Si el stepper nos devuelve datos del lead, almacenarlos localmente
                     if (data.leadData) {
                       console.log('✅ Actualizando leadData:', data.leadData);
                       setLeadData(data.leadData);
@@ -171,9 +261,70 @@ const RegistroSeccion2 = () => {
                     }
                   }
                 }}
-                // 🚫 selectedMethod YA NO SE USA - Solo Stripe ahora
               />
+            ) : isBarrista ? (
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              // ⚖️ FLUJO BARRISTA (Validación → Form → Pago)
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              <>
+                {/* PASO 1: Validador de Teléfono */}
+                {!barristaValidation && (
+                  <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
+                    <BarristaPhoneValidator
+                      onValidationComplete={handleBarristaValidationComplete}
+                      onValidationError={handleBarristaValidationError}
+                    />
+                  </div>
+                )}
+
+                {/* PASO 2: Resultado de Validación */}
+                {barristaValidation && !barristaValidation.blocked && (
+                  <BarristaValidationResult
+                    validationData={barristaValidation}
+                    onContinue={handleBarristaResultContinue}
+                  />
+                )}
+
+                {/* PASO 3: Formulario de Lead (si validación OK y continuó) */}
+                {showBarristaForm && barristaValidation && !barristaValidation.blocked && (
+                  <div className={`${styles.formCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
+                    <FormularioLead
+                      onSubmit={handleLeadSubmit}
+                      isCompleted={!!leadData}
+                      prefilledPhone={barristaValidation.phone}
+                      customerCategoryFk={barristaValidation.customerCategoryId}
+                      isBarristaFlow={true}
+                      rfcRequired={true}
+                    />
+                  </div>
+                )}
+
+                {/* PASO 4: Pago con Stripe (solo si NO es VIP y lead completo) */}
+                {showBarristaForm && leadData && barristaValidation && barristaValidation.requiresPayment && (
+                  <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.4s' }}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>{t.paymentMethods?.title || 'Datos de Pago'}</h2>
+                      <p className={styles.sectionSubtitle}>{t.paymentMethods?.subtitle || 'Complete los datos de su tarjeta de forma segura'}</p>
+                    </div>
+                    
+                    <StripeForm 
+                      leadId={leadId} 
+                      leadData={leadData}
+                      academicPriceData={null}
+                      isAcademic={false}
+                      academicRole={null}
+                      isBarrista={true}
+                      barristaPriceKey={barristaPriceData?.priceKey}
+                      barristaPrice={barristaPriceData?.finalPrice}
+                      barristaType={barristaPriceData?.type}
+                    />
+                  </div>
+                )}
+              </>
             ) : (
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+              // 📋 FLUJO GENERAL (Form → Pago)
+              // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
               <>
                 {/* PASO 1: Formulario de Lead */}
                 <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
@@ -215,6 +366,8 @@ const RegistroSeccion2 = () => {
                   selectedPaymentMethod="creditCard" // 🚫 Hardcoded - Solo Stripe ahora
                   academicPriceData={academicPriceData}
                   isAcademic={isAcademic}
+                  barristaPriceData={barristaPriceData} // 🆕 Datos de precio barrista
+                  isBarrista={isBarrista} // 🆕 Flag de flujo barrista
                 />
               </div>
             </div>

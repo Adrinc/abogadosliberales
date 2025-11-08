@@ -491,6 +491,31 @@
   letter-spacing: 0.02em;
 }
 
+/* 🆕 Badge Barrista */
+.barristaBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.15), rgba(2, 2, 102, 0.05));
+  border: 1px solid var(--al-blue-primary, #020266);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  margin-top: 0.75rem;
+  animation: slideDown 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.barristaBadgeIcon {
+  font-size: 1rem;
+}
+
+.barristaBadgeText {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--al-blue-primary, #020266);
+  letter-spacing: 0.02em;
+}
+
 .msiInfo {
   display: flex;
   align-items: center;
