@@ -819,7 +819,7 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           </div>
         </div>
 
-        {/* QR Code / Ticket */}
+        {/* QR Code / Ticket +*/}
         {ticketQRUrl && (
           <div className={styles.ticketBox}>
             <h3 className={styles.ticketTitle}>

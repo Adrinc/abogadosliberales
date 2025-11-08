@@ -1,0 +1,313 @@
+/* barristaValidationResult.module.css */
+
+.resultCard {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  background: white;
+  border-radius: var(--al-radius-lg, 16px);
+  box-shadow: var(--al-shadow-elevated, 0 12px 28px rgba(2, 2, 102, 0.15));
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  border-left: 6px solid transparent;
+  animation: slideIn 0.4s var(--al-ease-smooth, cubic-bezier(0.4, 0, 0.2, 1));
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Variantes por tipo */
+.resultCard.blocked {
+  border-left-color: #E53E3E;
+  background: linear-gradient(135deg, rgba(229, 62, 62, 0.05), white);
+}
+
+.resultCard.vip {
+  border-left-color: var(--al-gold-primary, #EECB00);
+  background: linear-gradient(135deg, rgba(238, 203, 0, 0.1), white);
+}
+
+.resultCard.barrista {
+  border-left-color: var(--al-blue-primary, #020266);
+  background: linear-gradient(135deg, rgba(2, 2, 102, 0.05), white);
+}
+
+.resultCard.nuevo {
+  border-left-color: #48BB78;
+  background: linear-gradient(135deg, rgba(72, 187, 120, 0.05), white);
+}
+
+/* Icon Wrapper */
+.iconWrapper {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.blocked .iconWrapper {
+  background: rgba(229, 62, 62, 0.15);
+}
+
+.vip .iconWrapper {
+  background: rgba(238, 203, 0, 0.2);
+}
+
+.barrista .iconWrapper {
+  background: rgba(2, 2, 102, 0.1);
+}
+
+.nuevo .iconWrapper {
+  background: rgba(72, 187, 120, 0.15);
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+}
+
+.blocked .icon {
+  color: #E53E3E;
+}
+
+.vip .icon {
+  color: var(--al-gold-primary, #EECB00);
+  fill: var(--al-gold-primary, #EECB00);
+}
+
+.barrista .icon {
+  color: var(--al-blue-primary, #020266);
+}
+
+.nuevo .icon {
+  color: #48BB78;
+}
+
+/* Content */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 6px 14px;
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 700;
+  border-radius: var(--al-radius-full, 999px);
+  width: fit-content;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.vip .badge {
+  background: rgba(238, 203, 0, 0.2);
+  color: #B8860B;
+  border: 1px solid var(--al-gold-primary, #EECB00);
+}
+
+.barrista .badge {
+  background: rgba(2, 2, 102, 0.1);
+  color: var(--al-blue-primary, #020266);
+  border: 1px solid var(--al-blue-primary, #020266);
+}
+
+.nuevo .badge {
+  background: rgba(72, 187, 120, 0.15);
+  color: #2F855A;
+  border: 1px solid #48BB78;
+}
+
+.title {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  margin: 0;
+  line-height: var(--al-leading-tight, 1.25);
+}
+
+.message {
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 1rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0;
+  line-height: var(--al-leading-normal, 1.5);
+}
+
+/* Price Wrapper */
+.priceWrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  background: var(--al-bg-soft, #F4F6FF);
+  border-radius: var(--al-radius-md, 12px);
+  border: 2px solid var(--al-border-light, #E2E8F0);
+}
+
+.priceLabel {
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--al-text-secondary, #4A5568);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.price {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+}
+
+.priceFree {
+  font-family: var(--al-font-headline, 'Merriweather', serif);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--al-gold-primary, #EECB00);
+}
+
+.description {
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 0.9375rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin: 0;
+  line-height: var(--al-leading-relaxed, 1.75);
+}
+
+/* Contact Info */
+.contactInfo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1rem;
+  background: var(--al-bg-light, #F8FAFC);
+  border-radius: var(--al-radius-md, 12px);
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 0.9375rem;
+  color: var(--al-text-primary, #1A202C);
+}
+
+/* Button Continue */
+.buttonContinue {
+  padding: 1rem 2.5rem;
+  font-family: var(--al-font-body, 'Inter', sans-serif);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--al-text-light, #FFFFFF);
+  background: var(--al-blue-primary, #020266);
+  border: none;
+  border-radius: var(--al-radius-md, 12px);
+  cursor: pointer;
+  transition: all 0.3s var(--al-ease-smooth, cubic-bezier(0.4, 0, 0.2, 1));
+  box-shadow: var(--al-shadow-card, 0 4px 12px rgba(2, 2, 102, 0.08));
+  align-self: flex-start;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.buttonContinue:hover {
+  background: var(--al-gold-primary, #EECB00);
+  color: var(--al-blue-primary, #020266);
+  transform: translateY(-3px);
+  box-shadow: var(--al-shadow-card-hover, 0 8px 20px rgba(2, 2, 102, 0.12));
+}
+
+.buttonContinue:active {
+  transform: translateY(-1px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .resultCard {
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.5rem;
+  }
+
+  .iconWrapper {
+    width: 64px;
+    height: 64px;
+    align-self: center;
+  }
+
+  .icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  .content {
+    align-items: center;
+    text-align: center;
+  }
+
+  .title {
+    font-size: 1.25rem;
+  }
+
+  .price,
+  .priceFree {
+    font-size: 1.75rem;
+  }
+
+  .buttonContinue {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+@media (max-width: 480px) {
+  .resultCard {
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .iconWrapper {
+    width: 56px;
+    height: 56px;
+  }
+
+  .icon {
+    width: 28px;
+    height: 28px;
+  }
+
+  .title {
+    font-size: 1.125rem;
+  }
+
+  .message {
+    font-size: 0.9375rem;
+  }
+
+  .priceWrapper {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .price,
+  .priceFree {
+    font-size: 1.5rem;
+  }
+
+  .badge {
+    font-size: 0.75rem;
+    padding: 4px 12px;
+  }
+}
