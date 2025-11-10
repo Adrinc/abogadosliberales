@@ -1779,3 +1779,116 @@
   margin-top: 0.5rem;
   font-weight: 600;
 }
+
+/* ============================================
+   PHONE VALIDATION STYLES
+   ============================================ */
+
+/* Wrapper para el prefijo +52 y el input */
+.phoneInputWrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  position: relative;
+}
+
+/* Prefijo +52 (azul institucional) */
+.phonePrefix {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  background: var(--al-blue-primary, #020266);
+  color: white;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  border: 2px solid var(--al-blue-primary, #020266);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  user-select: none;
+}
+
+/* Input de teléfono (solo borde derecho redondeado) */
+.phoneInput {
+  border-radius: 0 8px 8px 0 !important;
+  border-left: none !important;
+  flex: 1;
+  font-family: 'Inter', 'Roboto Mono', monospace;
+  letter-spacing: 0.5px;
+}
+
+/* Estado de validación exitosa (verde) */
+.inputSuccess {
+  border-color: #059669 !important;
+}
+
+/* Indicador de validación en proceso */
+.phoneValidating {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: var(--al-blue-primary, #020266);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* Mensaje de advertencia (naranja) - para baristas */
+.warningText {
+  display: block;
+  font-size: 0.8125rem;
+  color: #D97706;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  background: rgba(217, 119, 6, 0.1);
+  border-left: 3px solid #D97706;
+  border-radius: 4px;
+}
+
+/* Mensaje VIP (dorado) - para invitados especiales */
+.vipText {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--al-gold-primary, #EECB00);
+  margin-top: 0.5rem;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  background: rgba(238, 203, 0, 0.1);
+  border-left: 3px solid var(--al-gold-primary, #EECB00);
+  border-radius: 4px;
+}
+
+/* Hint para el campo de teléfono */
+.hint {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* Animación de pulse para el indicador de validación */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .phonePrefix {
+    padding: 0 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .phoneInput {
+    font-size: 0.875rem;
+  }
+}

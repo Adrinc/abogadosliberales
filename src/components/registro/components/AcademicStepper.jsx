@@ -18,7 +18,7 @@ import StripeForm from './StripeForm'; // ✅ Stripe ÚNICO método de pago
 // 🚫 DESHABILITADO: ComprobantePagoForm (transferencia bancaria ya no se usa)
 // import ComprobantePagoForm from '../components/ComprobantePagoForm';
 
-const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props removidas: selectedMethod, setSelectedMethod
+const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { // 🆕 Agregado onPhoneValidation
   const ingles = useStore(isEnglish);
   const t = ingles
     ? translationsRegistro.en.academicStepper
@@ -59,6 +59,14 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props remov
   const [selectedFile, setSelectedFile] = useState(null);
   const [filePreview, setFilePreview] = useState(null);
   const [fileError, setFileError] = useState('');
+
+  // 🆕 NUEVO: Estados para validación de teléfono
+  const [phoneValidation, setPhoneValidation] = useState({
+    isValidating: false,
+    isValidated: false,
+    validationResult: null,
+    error: null
+  });
 
   // Calcular precio en tiempo real
   useEffect(() => {
@@ -143,8 +151,21 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props remov
         } else if (academicData.email !== academicData.emailConfirm) {
           newErrors.emailConfirm = t.step3.emailConfirm.error;
         }
+        // Validar teléfono
         if (!academicData.phone.trim()) {
           newErrors.phone = t.step3.phone.error;
+        } else if (academicData.phone.length !== 10) {
+          newErrors.phone = ingles 
+            ? 'Phone must be exactly 10 digits' 
+            : 'El teléfono debe tener exactamente 10 dígitos';
+        }
+        // 🆕 NUEVO: Validar teléfono esté validado
+        if (!phoneValidation.isValidated) {
+          newErrors.phone = ingles 
+            ? 'Please wait for phone validation to complete' 
+            : 'Espere a que se complete la validación del teléfono';
+        } else if (phoneValidation.validationResult && !phoneValidation.validationResult.canProceed) {
+          newErrors.phone = phoneValidation.validationResult.message;
         }
         // Matrícula obligatoria
         if (!academicData.studentId.trim()) {
@@ -619,6 +640,172 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props remov
     if (fileInput) fileInput.value = '';
   };
 
+  // 🆕 NUEVO: Validación automática de teléfono
+  const validatePhone = async (phone) => {
+    if (!phone || phone.length !== 10) {
+      return;
+    }
+
+    console.log('📞 [Academic] Iniciando validación de teléfono:', phone);
+    
+    setPhoneValidation({
+      isValidating: true,
+      isValidated: false,
+      validationResult: null,
+      error: null
+    });
+
+    try {
+      const response = await fetch(
+        'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_search_phone',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone: phone,
+            event_id: 1
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ [Academic] Respuesta de validación:', data);
+
+      const result = Array.isArray(data) ? data[0] : data;
+      console.log('📦 [Academic] Resultado procesado:', result);
+
+      let validationResult = null;
+
+      if (result.valid === false) {
+        validationResult = {
+          status: 'blocked',
+          message: ingles 
+            ? '⚠️ This phone is already registered for the event.' 
+            : '⚠️ Este teléfono ya está registrado para el evento.',
+          canProceed: false
+        };
+      } else if (result.founded === true && result.list === 'baristas') {
+        validationResult = {
+          status: 'redirect_barista',
+          message: ingles 
+            ? '⚖️ This phone is registered as a Bar Member. Academic discount not available.' 
+            : '⚖️ Este teléfono está registrado como Miembro de la Barra. Descuento académico no disponible.',
+          canProceed: false
+        };
+      } else if (result.founded === true && result.list === 'invitados') {
+        try {
+          const freeTicketResponse = await fetch(
+            'https://u-n8n.virtalus.cbluna-dev.com/webhook-test/congreso_nacional_free_ticket',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                event_id: 1,
+                lead_id: result.customer_id
+              })
+            }
+          );
+
+          const freeTicketData = await freeTicketResponse.json();
+          console.log('🎟️ [Academic] Free ticket check:', freeTicketData);
+
+          if (freeTicketData.has_free_ticket === true) {
+            validationResult = {
+              status: 'free_ticket',
+              message: ingles 
+                ? '🎉 You are a VIP guest! Academic discount not needed.' 
+                : '🎉 ¡Eres invitado VIP! No necesitas descuento académico.',
+              canProceed: false
+            };
+          } else {
+            validationResult = {
+              status: 'new_customer',
+              message: ingles 
+                ? '✓ Phone validated successfully' 
+                : '✓ Teléfono validado correctamente',
+              canProceed: true
+            };
+          }
+        } catch (freeTicketError) {
+          console.warn('⚠️ [Academic] Error checking free ticket:', freeTicketError);
+          validationResult = {
+            status: 'new_customer',
+            message: ingles 
+              ? '✓ Phone validated successfully' 
+              : '✓ Teléfono validado correctamente',
+            canProceed: true
+          };
+        }
+      } else {
+        validationResult = {
+          status: 'new_customer',
+          message: ingles 
+            ? '✓ Phone validated successfully' 
+            : '✓ Teléfono validado correctamente',
+          canProceed: true
+        };
+      }
+
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: true,
+        validationResult,
+        error: null
+      });
+
+      // 🆕 NUEVO: Notificar al padre si detecta barista para redirección
+      if (validationResult?.status === 'redirect_barista' && onPhoneValidation) {
+        console.log('📞 [Academic] Notifying parent about barista detection');
+        onPhoneValidation(validationResult);
+      }
+
+    } catch (error) {
+      console.error('❌ [Academic] Error en validación de teléfono:', error);
+      
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: false,
+        validationResult: null,
+        error: ingles 
+          ? 'Could not validate phone. Please try again.' 
+          : 'No se pudo validar el teléfono. Intente nuevamente.'
+      });
+    }
+  };
+
+  // 🆕 NUEVO: Handler para campo de teléfono con validación
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, '');
+    const limitedValue = value.slice(0, 10);
+    
+    setAcademicData({ ...academicData, phone: limitedValue });
+    
+    if (errors.phone) {
+      setErrors({ ...errors, phone: '' });
+    }
+
+    if (limitedValue.length < 10) {
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: false,
+        validationResult: null,
+        error: null
+      });
+    }
+
+    if (limitedValue.length === 10) {
+      validatePhone(limitedValue);
+    }
+  };
+
   // Callback para el formulario de datos personales. Almacena los datos del lead y avanza al paso 5.
   const handleLeadSubmit = (data, id) => {
     setLeadData(data);
@@ -894,19 +1081,54 @@ const AcademicStepper = ({ onComplete, onPriceChange }) => { // 🚫 Props remov
                 {t.step3.phone.label}{' '}
                 <span className={styles.required}>*</span>
               </label>
-              <input
-                type="tel"
-                id="phone"
-                value={academicData.phone}
-                onChange={(e) => {
-                  setAcademicData({ ...academicData, phone: e.target.value });
-                  if (errors.phone) setErrors({ ...errors, phone: '' });
-                }}
-                placeholder={t.step3.phone.placeholder}
-                className={`${styles.input} ${errors.phone ? styles.inputError : ''}`}
-              />
+              
+              {/* 🆕 Campo de teléfono con prefijo +52 y validación */}
+              <div className={styles.phoneInputWrapper}>
+                <span className={styles.phonePrefix}>+52</span>
+                <input
+                  type="tel"
+                  id="phone"
+                  value={academicData.phone}
+                  onChange={handlePhoneChange}
+                  placeholder="1234567890"
+                  className={`${styles.input} ${styles.phoneInput} ${errors.phone ? styles.inputError : ''} ${phoneValidation.isValidated && phoneValidation.validationResult?.canProceed ? styles.inputSuccess : ''}`}
+                  maxLength={10}
+                />
+                
+                {/* Indicador de validación */}
+                {phoneValidation.isValidating && (
+                  <span className={styles.phoneValidating}>
+                    🔄 {ingles ? 'Validating...' : 'Validando...'}
+                  </span>
+                )}
+              </div>
+              
+              {/* Mensajes de error */}
               {errors.phone && (
                 <span className={styles.errorText}>{errors.phone}</span>
+              )}
+              
+              {/* Mensaje especial: Redirigir a membresía o VIP */}
+              {!errors.phone && phoneValidation.isValidated && (phoneValidation.validationResult?.status === 'redirect_barista' || phoneValidation.validationResult?.status === 'free_ticket') && (
+                <span className={styles.warningText}>
+                  {phoneValidation.validationResult.message}
+                </span>
+              )}
+              
+              {/* Mensaje de validación exitosa */}
+              {!errors.phone && phoneValidation.isValidated && phoneValidation.validationResult?.canProceed && (
+                <span className={styles.successText}>
+                  {phoneValidation.validationResult.message}
+                </span>
+              )}
+              
+              {/* Hint */}
+              {!phoneValidation.isValidated && (
+                <span className={styles.hint}>
+                  {ingles 
+                    ? 'Enter 10 digits (without country code)' 
+                    : 'Ingrese 10 dígitos (sin código de país)'}
+                </span>
               )}
             </div>
 

@@ -171,6 +171,7 @@ const RegistroSeccion2 = () => {
                     if (data.leadId) setLeadId(data.leadId);
                   }
                 }}
+                onPhoneValidation={handlePhoneValidation}
               />
             )}
 
@@ -180,8 +181,10 @@ const RegistroSeccion2 = () => {
                   <FormularioLead
                     onSubmit={handleLeadSubmit}
                     isCompleted={!!leadData}
-                    requiresPhoneValidation={false}
+                    requiresPhoneValidation={true}
+                    onPhoneValidation={handlePhoneValidation}
                     customerCategoryFk={4}
+                    isMembershipFlow={true}
                   />
                 </div>
 

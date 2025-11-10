@@ -12,6 +12,7 @@ const FormularioLead = React.forwardRef(({
   customerCategoryFk = null,  // Para flujo académico: 5 (profesor), 6 (posgrado), 7 (licenciatura) | Para barrista: 4 (Miembro Barra) o 8 (VIP)
   isAcademicFlow = false,  // TRUE cuando viene del flujo académico (AcademicStepper)
   isBarristaFlow = false,  // 🆕 TRUE cuando viene del flujo barrista
+  isMembershipFlow = false,  // 🆕 TRUE cuando está en la opción 3 (Membresía)
   prefilledPhone = null,  // 🆕 Teléfono pre-llenado desde validación barrista
   rfcRequired = false,  // 🆕 Si se requiere RFC (flujo barrista)
   requiresPhoneValidation = false,  // 🆕 TRUE cuando es flujo General (opción 1) - valida teléfono
@@ -118,16 +119,28 @@ const FormularioLead = React.forwardRef(({
           canProceed: false
         };
       } 
-      // 2️⃣ CASO: founded === true && list === "barista"
+      // 2️⃣ CASO: founded === true && list === "baristas"
       else if (result.founded === true && result.list === 'baristas') {
-        validationResult = {
-          status: 'redirect_barista',
-          message: ingles 
-            ? '⚖️ This phone is registered as a Bar Member. Please use the Membership registration option.' 
-            : '⚖️ Este teléfono está registrado como Miembro de la Barra. Por favor use la opción de Membresía.',
-          canProceed: false, // Bloquear flujo General
-          redirectTo: 'membresia' // Indicar que debe ir a opción 3
-        };
+        // 🔥 CRÍTICO: Si ya está en Membresía (opción 3), NO bloquear
+        if (isMembershipFlow) {
+          validationResult = {
+            status: 'barista_in_membership',
+            message: ingles 
+              ? '✓ Bar member phone validated' 
+              : '✓ Teléfono de miembro de la Barra validado',
+            canProceed: true // ✅ Permitir continuar
+          };
+        } else {
+          // Si está en otro flujo (General o Académico), redirigir
+          validationResult = {
+            status: 'redirect_barista',
+            message: ingles 
+              ? '⚖️ This phone is registered as a Bar Member. Please use the Membership registration option.' 
+              : '⚖️ Este teléfono está registrado como Miembro de la Barra. Por favor use la opción de Membresía.',
+            canProceed: false, // Bloquear flujo General/Académico
+            redirectTo: 'membresia' // Indicar que debe ir a opción 3
+          };
+        }
       }
       // 3️⃣ CASO: founded === true && list === "invitados" (VIP/Gratis)
       else if (result.founded === true && result.list === 'invitados') {
