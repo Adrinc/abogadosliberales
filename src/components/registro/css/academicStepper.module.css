@@ -723,7 +723,7 @@
 }
 
 /* ============================================
-   PROGRESS BAR
+   PROGRESS BAR (3 PASOS)
    ============================================ */
 
 .progressBar {
@@ -736,7 +736,7 @@
 
 
 .progressStep {
-  flex: 0 0 25%;
+  flex: 0 0 33.333%; /* 🔥 CAMBIO: 33.333% para 3 pasos (antes 25% para 4) */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -749,8 +749,8 @@
   content: '';
   position: absolute;
   top: 20px;
-  left: 10%;
-  right: 10%;
+  left: 16.666%; /* 🔥 CAMBIO: Ajustado para 3 pasos (50% del 33.333%) */
+  right: 16.666%; /* 🔥 CAMBIO: Ajustado para 3 pasos */
   height: 2px;
   background: #E2E8F0;
   z-index: 0;

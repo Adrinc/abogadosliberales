@@ -24,11 +24,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
     ? translationsRegistro.en.academicStepper
     : translationsRegistro.es.academicStepper;
 
-  // Estado del stepper
+  // Estado del stepper - 🔥 AHORA SOLO 3 PASOS
   const [currentStep, setCurrentStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Datos del lead para el paso de pago (Step 4)
+  // Datos del lead para el paso de pago (Step 3 - antes Step 4)
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
   // 🚫 selectedMethod ELIMINADO - Solo Stripe ahora (sin selector de métodos)
@@ -41,7 +41,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
     university: '',
     role: '',
     isPaquete11: false,
-    // Datos personales (antes en Step 4, ahora en Step 3)
+    // Datos personales (FUSIONADOS EN STEP 1)
     firstName: '',
     lastName: '',
     email: '',
@@ -106,31 +106,23 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
   // Helper para obtener la etiqueta de cada paso en la barra de progreso.
   const getStepLabel = (step) => {
-    if (step === 4) {
-      return ingles ? 'Payment data' : 'Datos de pago'; // 🔥 CAMBIO: "Método de pago" → "Datos de pago"
+    if (step === 3) {
+      return ingles ? 'Payment data' : 'Datos de pago'; // 🔥 STEP 3 (antes Step 4)
     }
     const key = `step${step}`;
     return (t[key] && t[key].title) || step;
   };
 
-  // Validación por paso
+  // Validación por paso - 🔥 AHORA SOLO 3 PASOS
   const validateStep = (step) => {
     const newErrors = {};
 
     switch (step) {
       case 1:
+        // 🔥 STEP 1 FUSIONADO: Universidad + Datos Personales + Credencial
         if (!academicData.university) {
           newErrors.university = t.step1.error;
         }
-        break;
-
-      case 2:
-        if (!academicData.role) {
-          newErrors.role = t.step2.error;
-        }
-        break;
-
-      case 3:
         // Validar datos personales
         if (!academicData.firstName.trim()) {
           newErrors.firstName = t.step3.firstName.error;
@@ -159,7 +151,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             ? 'Phone must be exactly 10 digits' 
             : 'El teléfono debe tener exactamente 10 dígitos';
         }
-        // 🆕 NUEVO: Validar teléfono esté validado
+        // 🆕 Validar teléfono esté validado
         if (!phoneValidation.isValidated) {
           newErrors.phone = ingles 
             ? 'Please wait for phone validation to complete' 
@@ -174,6 +166,13 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         // Archivo obligatorio
         if (!selectedFile && !academicData.proofFile) {
           newErrors.proofFile = t.step3.proofFile.error;
+        }
+        break;
+
+      case 2:
+        // 🔥 STEP 2: Rol Académico (antes Step 2)
+        if (!academicData.role) {
+          newErrors.role = t.step2.error;
         }
         break;
 
@@ -520,12 +519,12 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       return;
     }
 
-    // Si estamos en el paso 3 (datos personales + académicos), crear customer en BD
-    if (currentStep === 3) {
+    // Si estamos en el paso 1 (universidad + datos personales fusionados), crear customer en BD
+    if (currentStep === 1) {
       await handleCreateCustomer();
     } else {
       // Para los demás pasos, avanzar normalmente
-      if (currentStep < 4) {
+      if (currentStep < 3) { // 🔥 AHORA SOLO 3 PASOS
         setCurrentStep(currentStep + 1);
       } else {
         handleComplete();
@@ -535,9 +534,9 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
   const handlePrevious = () => {
     if (currentStep > 1) {
-      // Si venimos del step 4 (pago), volver al step 3
+      // Si venimos del step 3 (pago), volver al step 2
       // Limpiar leadData para permitir edición
-      if (currentStep === 4) {
+      if (currentStep === 3) { // 🔥 AHORA ES STEP 3 (antes Step 4)
         setLeadData(null);
         setLeadId(null);
         
@@ -548,7 +547,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             leadId: null
           });
         }
-        console.log('🧹 Retrocediendo del Step 4 → Step 3 - Datos limpiados');
+        console.log('🧹 Retrocediendo del Step 3 → Step 2 - Datos limpiados');
       }
       setCurrentStep(currentStep - 1);
     }
@@ -831,17 +830,15 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
   return (
     <div className={styles.stepperContainer}>
-      {/* Progress Bar */}
-      {/* Configuramos la barra de progreso para mostrar cuatro pasos en una sola línea.
-          Utilizamos flexbox y asignamos un ancho de 25% a cada paso. */}
+      {/* Progress Bar - 🔥 AHORA SOLO 3 PASOS */}
       <div
         className={styles.progressBar}
         style={{ display: 'flex', flexWrap: 'nowrap' }}
       >
-        {[1, 2, 3, 4].map((step) => (
+        {[1, 2, 3].map((step) => (
           <div
             key={step}
-            style={{ width: '25%' }}
+            style={{ width: '33.333%' }}
             className={`${styles.progressStep} ${
               step <= currentStep ? styles.progressStepActive : ''
             } ${step < currentStep ? styles.progressStepCompleted : ''}`}
@@ -858,12 +855,19 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
       {/* Step Content */}
       <div className={styles.stepContent}>
-        {/* STEP 1: Universidad */}
+        {/* STEP 1: Universidad + Datos Personales + Credencial (FUSIONADO) */}
         {currentStep === 1 && (
           <div className={styles.step}>
-            <h3 className={styles.stepTitle}>{t.step1.title}</h3>
-            <p className={styles.stepSubtitle}>{t.step1.subtitle}</p>
+            <h3 className={styles.stepTitle}>
+              {ingles ? 'Personal and Academic Data' : 'Datos Personales y Académicos'}
+            </h3>
+            <p className={styles.stepSubtitle}>
+              {ingles 
+                ? 'Enter your university, personal information, and upload your credential' 
+                : 'Ingrese su universidad, información personal y suba su credencial'}
+            </p>
 
+            {/* Universidad */}
             <div className={styles.formGroup}>
               <label className={styles.label} htmlFor="university">
                 {t.step1.label}{' '}
@@ -891,92 +895,22 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 <span className={styles.errorText}>{errors.university}</span>
               )}
             </div>
-          </div>
-        )}
 
-        {/* STEP 2: Rol Académico */}
-        {currentStep === 2 && (
-          <div className={styles.step}>
-            <h3 className={styles.stepTitle}>{t.step2.title}</h3>
-            <p className={styles.stepSubtitle}>{t.step2.subtitle}</p>
-
-            <div className={styles.roleOptions}>
-              {t.step2.options.map((option) => (
-                <label
-                  key={option.value}
-                  className={`${styles.roleCard} ${
-                    academicData.role === option.value && !academicData.isPaquete11
-                      ? styles.roleCardActive
-                      : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value={option.value}
-                    checked={academicData.role === option.value && !academicData.isPaquete11}
-                    onChange={(e) => {
-                      setAcademicData({
-                        ...academicData,
-                        role: e.target.value,
-                        isPaquete11: false,
-                      });
-                      if (errors.role) setErrors({ ...errors, role: '' });
-                    }}
-                    className={styles.roleRadio}
-                  />
-                  <div className={styles.roleContent}>
-                    <div className={styles.roleHeader}>
-                      <span className={styles.roleName}>{option.label}</span>
-                      <span className={styles.roleDiscount}>{option.discount}</span>
-                    </div>
-                    <p className={styles.roleDescription}>{option.description}</p>
-                    <p className={styles.rolePrice}>{option.price}</p>
-                  </div>
-                </label>
-              ))}
-
-              {/* Paquete 11 (solo para profesor y posgrado) - TEMPORALMENTE OCULTO */}
-              {/* {canAccessPaquete11(academicData.role) && (
-                <label
-                  className={`${styles.roleCard} ${styles.roleCardSpecial} ${
-                    academicData.isPaquete11 ? styles.roleCardActive : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="paquete11"
-                    checked={academicData.isPaquete11}
-                    onChange={() => {
-                      setAcademicData({
-                        ...academicData,
-                        isPaquete11: !academicData.isPaquete11,
-                      });
-                    }}
-                    className={styles.roleRadio}
-                  />
-                  <div className={styles.roleContent}>
-                    <div className={styles.roleHeader}>
-                      <span className={styles.roleName}>{t.step2.paquete11.label}</span>
-                      <span className={styles.roleDiscount}>{t.step2.paquete11.discount}</span>
-                    </div>
-                    <p className={styles.roleDescription}>{t.step2.paquete11.description}</p>
-                    <p className={styles.rolePrice}>{t.step2.paquete11.price}</p>
-                    <p className={styles.roleHint}>{t.step2.paquete11.hint}</p>
-                  </div>
-                </label>
-              )} */}
+            {/* Divisor visual */}
+            <div style={{ 
+              borderTop: '2px solid #E2E8F0', 
+              margin: '2rem 0 1.5rem 0',
+              paddingTop: '1.5rem'
+            }}>
+              <h4 style={{ 
+                fontSize: '1.125rem', 
+                fontWeight: 600, 
+                color: 'var(--al-blue-primary, #020266)',
+                marginBottom: '1.5rem'
+              }}>
+                {ingles ? 'Personal Information' : 'Información Personal'}
+              </h4>
             </div>
-
-            {errors.role && <span className={styles.errorText}>{errors.role}</span>}
-          </div>
-        )}
-
-        {/* STEP 3: Datos personales y verificación */}
-        {currentStep === 3 && (
-          <div className={styles.step}>
-            <h3 className={styles.stepTitle}>{t.step3.title}</h3>
-            <p className={styles.stepSubtitle}>{t.step3.subtitle}</p>
 
             {/* Nombre(s) */}
             <div className={styles.formGroup}>
@@ -1082,7 +1016,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 <span className={styles.required}>*</span>
               </label>
               
-              {/* 🆕 Campo de teléfono con prefijo +52 y validación */}
               <div className={styles.phoneInputWrapper}>
                 <span className={styles.phonePrefix}>+52</span>
                 <input
@@ -1095,7 +1028,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                   maxLength={10}
                 />
                 
-                {/* Indicador de validación */}
                 {phoneValidation.isValidating && (
                   <span className={styles.phoneValidating}>
                     🔄 {ingles ? 'Validating...' : 'Validando...'}
@@ -1103,26 +1035,22 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 )}
               </div>
               
-              {/* Mensajes de error */}
               {errors.phone && (
                 <span className={styles.errorText}>{errors.phone}</span>
               )}
               
-              {/* Mensaje especial: Redirigir a membresía o VIP */}
               {!errors.phone && phoneValidation.isValidated && (phoneValidation.validationResult?.status === 'redirect_barista' || phoneValidation.validationResult?.status === 'free_ticket') && (
                 <span className={styles.warningText}>
                   {phoneValidation.validationResult.message}
                 </span>
               )}
               
-              {/* Mensaje de validación exitosa */}
               {!errors.phone && phoneValidation.isValidated && phoneValidation.validationResult?.canProceed && (
                 <span className={styles.successText}>
                   {phoneValidation.validationResult.message}
                 </span>
               )}
               
-              {/* Hint */}
               {!phoneValidation.isValidated && (
                 <span className={styles.hint}>
                   {ingles 
@@ -1195,7 +1123,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 </div>
               )}
 
-              {/* Preview de la imagen cargada */}
               {filePreview && (
                 <div className={styles.filePreviewContainer}>
                   <img 
@@ -1220,8 +1147,86 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           </div>
         )}
 
-        {/* STEP 4: Datos de pago (SOLO Stripe - sin selector de métodos) */}
-        {currentStep === 4 && (
+        {/* STEP 2: Rol Académico (antes Step 2) */}
+        {currentStep === 2 && (
+          <div className={styles.step}>
+            <h3 className={styles.stepTitle}>{t.step2.title}</h3>
+            <p className={styles.stepSubtitle}>{t.step2.subtitle}</p>
+
+            <div className={styles.roleOptions}>
+              {t.step2.options.map((option) => (
+                <label
+                  key={option.value}
+                  className={`${styles.roleCard} ${
+                    academicData.role === option.value && !academicData.isPaquete11
+                      ? styles.roleCardActive
+                      : ''
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="role"
+                    value={option.value}
+                    checked={academicData.role === option.value && !academicData.isPaquete11}
+                    onChange={(e) => {
+                      setAcademicData({
+                        ...academicData,
+                        role: e.target.value,
+                        isPaquete11: false,
+                      });
+                      if (errors.role) setErrors({ ...errors, role: '' });
+                    }}
+                    className={styles.roleRadio}
+                  />
+                  <div className={styles.roleContent}>
+                    <div className={styles.roleHeader}>
+                      <span className={styles.roleName}>{option.label}</span>
+                      <span className={styles.roleDiscount}>{option.discount}</span>
+                    </div>
+                    <p className={styles.roleDescription}>{option.description}</p>
+                    <p className={styles.rolePrice}>{option.price}</p>
+                  </div>
+                </label>
+              ))}
+
+              {/* Paquete 11 (solo para profesor y posgrado) - TEMPORALMENTE OCULTO */}
+              {/* {canAccessPaquete11(academicData.role) && (
+                <label
+                  className={`${styles.roleCard} ${styles.roleCardSpecial} ${
+                    academicData.isPaquete11 ? styles.roleCardActive : ''
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paquete11"
+                    checked={academicData.isPaquete11}
+                    onChange={() => {
+                      setAcademicData({
+                        ...academicData,
+                        isPaquete11: !academicData.isPaquete11,
+                      });
+                    }}
+                    className={styles.roleRadio}
+                  />
+                  <div className={styles.roleContent}>
+                    <div className={styles.roleHeader}>
+                      <span className={styles.roleName}>{t.step2.paquete11.label}</span>
+                      <span className={styles.roleDiscount}>{t.step2.paquete11.discount}</span>
+                    </div>
+                    <p className={styles.roleDescription}>{t.step2.paquete11.description}</p>
+                    <p className={styles.rolePrice}>{t.step2.paquete11.price}</p>
+                    <p className={styles.roleHint}>{t.step2.paquete11.hint}</p>
+                  </div>
+                </label>
+              )} */}
+            </div>
+
+            {errors.role && <span className={styles.errorText}>{errors.role}</span>}
+          </div>
+        )}
+
+        {/* STEP 3: Datos de pago (antes Step 4) */}
+        {currentStep === 3 && (
           <div className={styles.step}>
        
             {leadData ? (
@@ -1275,8 +1280,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           </button>
         )}
 
-        {/* El botón "Continuar" se oculta en el Step 4 (método de pago) */}
-        {currentStep < 4 && (
+        {/* El botón "Continuar" se oculta en el Step 3 (método de pago) */}
+        {currentStep < 3 && (
           <button
             type="button"
             onClick={handleNext}
