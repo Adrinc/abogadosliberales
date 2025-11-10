@@ -157,6 +157,104 @@
   margin-top: 0.25rem;
 }
 
+/* 🆕 Mensaje de advertencia (redirigir a membresía) */
+.warningText {
+  font-size: 0.8125rem;
+  color: #D97706;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  background: rgba(217, 119, 6, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border-left: 3px solid #D97706;
+}
+
+/* 🆕 Mensaje VIP (ticket gratis) */
+.vipText {
+  font-size: 0.8125rem;
+  color: var(--al-gold-primary, #EECB00);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  background: rgba(238, 203, 0, 0.1);
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border-left: 3px solid var(--al-gold-primary, #EECB00);
+}
+
+/* ============================================
+   PHONE INPUT CON PREFIJO +52
+   ============================================ */
+
+.phoneInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.phonePrefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--al-blue-primary, #020266);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--al-blue-primary, #020266);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  min-width: 60px;
+  letter-spacing: 0.02em;
+}
+
+.phoneInput {
+  flex: 1;
+  border-radius: 0 8px 8px 0 !important;
+  border-left: none !important;
+  padding-left: 1rem !important;
+}
+
+.phoneInput:focus {
+  border-color: var(--al-blue-primary, #020266) !important;
+  box-shadow: 0 0 0 3px rgba(2, 2, 102, 0.1) !important;
+}
+
+/* Estado de éxito (validación exitosa) */
+.inputSuccess {
+  border-color: #48BB78 !important;
+  background: rgba(72, 187, 120, 0.03);
+}
+
+.inputSuccess:focus {
+  border-color: #48BB78 !important;
+  box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1) !important;
+}
+
+.phoneValidating {
+  position: absolute;
+  right: 1rem;
+  font-size: 0.8125rem;
+  color: var(--al-blue-primary, #020266);
+  font-weight: 600;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
 /* ============================================
    SUBMIT BUTTON
    ============================================ */

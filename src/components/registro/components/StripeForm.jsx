@@ -10,13 +10,20 @@ const StripeForm = ({
   leadData, 
   academicPriceData = null, 
   isAcademic = false,
-  academicRole = null // 🔥 NUEVO: Para determinar price_key
+  academicRole = null, // Para determinar price_key académico
+  isMembership = false, // 🆕 Flag de membresía anual
+  membershipPrice = 3850 // 🆕 Precio de membresía
 }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
-  // 🔍 Debug: Ver qué academicRole estamos recibiendo
-  console.log('🎓 StripeForm recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
+  // 🔍 Debug: Ver props recibidas
+  console.log('💳 StripeForm recibido:', { 
+    isAcademic, 
+    academicRole, 
+    isMembership, 
+    membershipPrice 
+  });
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // 'success' | 'error'
@@ -25,31 +32,42 @@ const StripeForm = ({
   // Constantes del evento
   const EVENT_ID = 1; // ID del Congreso Nacional de Amparo
   
-  // Calcular monto dinámico (académico o general)
-  const finalAmount = academicPriceData && isAcademic 
-    ? academicPriceData.finalPrice 
-    : 990;
+  // 🔥 Calcular monto dinámico (membresía, académico o general)
+  let finalAmount = 990; // Default: General
+  
+  if (isMembership) {
+    finalAmount = membershipPrice; // Membresía: $3,850
+  } else if (academicPriceData && isAcademic) {
+    finalAmount = academicPriceData.finalPrice; // Académico: $250-$490
+  }
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
   const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order';
   
-  // 🔥 Mapear rol académico a price_key
+  // 🔥 Mapear tipo de registro a price_key
   const getPriceKey = () => {
-    if (!isAcademic || !academicRole) {
-      return 'precio_lista_congreso'; // Precio general ($990 MXN)
+    // PRIORIDAD 1: Membresía anual
+    if (isMembership) {
+      console.log('🎯 getPriceKey() - Membresía → price_membresia_anual');
+      return 'price_membresia_anual'; // $3,850 MXN
     }
     
-    // ✅ NUEVO ESQUEMA: Licenciatura tiene precio especial ($250), otros roles $490
-    if (academicRole === 'licenciatura') {
-      const priceKey = 'precio_estudiante_licenciatura'; // Licenciatura → $250 MXN (75% desc)
-      console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
+    // PRIORIDAD 2: Académico
+    if (isAcademic && academicRole) {
+      if (academicRole === 'licenciatura') {
+        const priceKey = 'precio_estudiante_licenciatura'; // $250 MXN
+        console.log('🎯 getPriceKey() - Licenciatura → precio_estudiante_licenciatura');
+        return priceKey;
+      }
+      const priceKey = 'precio_academico'; // $490 MXN
+      console.log('🎯 getPriceKey() - Académico → precio_academico');
       return priceKey;
     }
     
-    const priceKey = 'precio_academico'; // Profesor/Posgrado → $490 MXN (50% desc)
-    console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
-    return priceKey;
+    // PRIORIDAD 3: General
+    console.log('🎯 getPriceKey() - General → precio_lista_congreso');
+    return 'precio_lista_congreso'; // $990 MXN
   };
 
   // Handler para iniciar el proceso de pago
@@ -191,6 +209,18 @@ const StripeForm = ({
               {ingles 
                 ? `${academicPriceData.discountPercentage}% Academic Discount Applied` 
                 : `${academicPriceData.discountPercentage}% Descuento Académico Aplicado`}
+            </span>
+          </div>
+        )}
+        
+        {/* 🆕 Badge de membresía anual */}
+        {isMembership && (
+          <div className={styles.academicBadge}>
+            <span className={styles.academicBadgeIcon}>⚖️</span>
+            <span className={styles.academicBadgeText}>
+              {ingles 
+                ? 'Annual Bar Membership' 
+                : 'Membresía Anual de la Barra'}
             </span>
           </div>
         )}

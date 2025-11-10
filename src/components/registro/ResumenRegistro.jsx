@@ -10,8 +10,7 @@ const ResumenRegistro = ({
   selectedPaymentMethod = null,
   academicPriceData = null,
   isAcademic = false,
-  barristaPriceData = null, // 🆕 Datos de precio barrista
-  isBarrista = false // 🆕 Flag de flujo barrista
+  selectedOption = 1 // 🆕 Opción seleccionada (1: General, 2: Académico, 3: Membresía)
 }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
@@ -22,8 +21,7 @@ const ResumenRegistro = ({
     selectedPaymentMethod,
     academicPriceData,
     isAcademic,
-    barristaPriceData, // 🆕
-    isBarrista // 🆕
+    selectedOption
   });
   
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -32,25 +30,22 @@ const ResumenRegistro = ({
     setIsCollapsed(!isCollapsed);
   };
 
-  // 🔥 NUEVA LÓGICA: Calcular precio según flujo
+  // 🔥 NUEVA LÓGICA: Calcular precio según selectedOption
   let displayPrice = 990; // Default: precio general
   let priceLabel = ingles ? 'General Registration' : 'Inscripción General';
   
-  if (barristaPriceData && isBarrista) {
-    // 🆕 FLUJO BARRISTA
-    displayPrice = barristaPriceData.finalPrice;
-    
-    if (barristaPriceData.type === 'vip') {
-      priceLabel = ingles ? 'VIP Access (FREE)' : 'Acceso VIP (GRATIS)';
-    } else if (barristaPriceData.type === 'barrista_activo') {
-      priceLabel = ingles ? 'Bar Member - Annual Fee' : 'Miembro Barra - Anualidad';
-    } else if (barristaPriceData.type === 'barrista_nuevo') {
-      priceLabel = ingles ? 'Bar Member - Registration + 1st Year' : 'Miembro Barra - Inscripción + 1er Año';
-    }
-  } else if (academicPriceData && isAcademic) {
-    // 🎓 FLUJO ACADÉMICO
+  if (selectedOption === 3) {
+    // 🆕 OPCIÓN 3: MEMBRESÍA ANUAL
+    displayPrice = 3850;
+    priceLabel = ingles ? 'Annual Membership' : 'Membresía Anual';
+  } else if (selectedOption === 2 && academicPriceData) {
+    // 🎓 OPCIÓN 2: ACADÉMICO
     displayPrice = academicPriceData.finalPrice;
     priceLabel = ingles ? 'Academic Price' : 'Precio Académico';
+  } else if (selectedOption === 1) {
+    // 📋 OPCIÓN 1: GENERAL
+    displayPrice = 990;
+    priceLabel = ingles ? 'General Registration' : 'Inscripción General';
   }
 
   const formattedPrice = formatPrice(displayPrice);
@@ -126,20 +121,6 @@ const ResumenRegistro = ({
                 {ingles 
                   ? `${academicPriceData.discountPercentage}% Academic Discount` 
                   : `${academicPriceData.discountPercentage}% Descuento Académico`}
-              </span>
-            </div>
-          )}
-
-          {/* 🆕 Badge de membresía barrista */}
-          {isBarrista && barristaPriceData && (
-            <div className={styles.barristaBadge}>
-              <span className={styles.barristaBadgeIcon}>
-                {barristaPriceData.type === 'vip' ? '🎉' : '⚖️'}
-              </span>
-              <span className={styles.barristaBadgeText}>
-                {barristaPriceData.type === 'vip' && (ingles ? 'VIP Guest - Free Access' : 'Invitado VIP - Acceso Gratuito')}
-                {barristaPriceData.type === 'barrista_activo' && (ingles ? 'Bar Member - Annual Fee' : 'Miembro Barra - Anualidad')}
-                {barristaPriceData.type === 'barrista_nuevo' && (ingles ? 'New Member - Registration' : 'Nuevo Miembro - Inscripción')}
               </span>
             </div>
           )}

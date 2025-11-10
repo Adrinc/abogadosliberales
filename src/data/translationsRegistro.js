@@ -12,6 +12,33 @@ export const translationsRegistro = {
       subtitle: "Complete su registro y asegure su lugar en el evento jurídico del año. Pago seguro con tarjeta de crédito o débito."
     },
 
+    // ═══════════════════════════════════════════════════════════════════════
+    // SELECTION CARDS - Sistema de 3 opciones
+    // ═══════════════════════════════════════════════════════════════════════
+    selectionCards: {
+      mainTitle: "Seleccione su tipo de registro",
+      mainSubtitle: "Elija la opción que mejor se adapte a su perfil profesional",
+
+      // OPCIÓN 1: General
+      generalBadge: "Más Popular",
+      generalTitle: "Entrada General",
+      generalDescription: "Acceso completo al congreso con certificado oficial de participación",
+
+      // OPCIÓN 2: Académico
+      academicBadge: "Descuento Académico",
+      academicTitle: "Tarifa Académica",
+      academicDescription: "Descuentos exclusivos UVM, UAM o UNAM",
+
+      // OPCIÓN 3: Membresía
+      membershipBadge: "Membresía Anual",
+      membershipTitle: "Membresía de la Barra",
+      membershipDescription: "Acceso a beneficios exclusivos durante todo el año",
+
+      // Botones
+      buttonSelect: "Seleccionar",
+      buttonSelected: "✓ Seleccionado"
+    },
+
     // Toggle Académico
     academicToggle: {
       title: "¿Perteneces a una institución educativa?",
@@ -548,6 +575,33 @@ export const translationsRegistro = {
       },
       title: "National Congress Registration 2025",
       subtitle: "Complete your registration and secure your place at the legal event of the year. Secure payment with credit or debit card."
+    },
+
+    // ═══════════════════════════════════════════════════════════════════════
+    // SELECTION CARDS - 3-option system
+    // ═══════════════════════════════════════════════════════════════════════
+    selectionCards: {
+      mainTitle: "Select your registration type",
+      mainSubtitle: "Choose the option that best suits your professional profile",
+
+      // OPTION 1: General
+      generalBadge: "Most Popular",
+      generalTitle: "General Entry",
+      generalDescription: "Full access to congress with official participation certificate",
+
+      // OPTION 2: Academic
+      academicBadge: "Academic Discount",
+      academicTitle: "Academic Rate",
+      academicDescription: "Exclusive discounts for UVM, UAM or UNAM",
+
+      // OPTION 3: Membership
+      membershipBadge: "Annual Membership",
+      membershipTitle: "Bar Membership",
+      membershipDescription: "Access to exclusive benefits throughout the year",
+
+      // Buttons
+      buttonSelect: "Select",
+      buttonSelected: "✓ Selected"
     },
 
     // Academic Toggle

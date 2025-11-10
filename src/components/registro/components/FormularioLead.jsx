@@ -13,7 +13,9 @@ const FormularioLead = React.forwardRef(({
   isAcademicFlow = false,  // TRUE cuando viene del flujo académico (AcademicStepper)
   isBarristaFlow = false,  // 🆕 TRUE cuando viene del flujo barrista
   prefilledPhone = null,  // 🆕 Teléfono pre-llenado desde validación barrista
-  rfcRequired = false  // 🆕 Si se requiere RFC (flujo barrista)
+  rfcRequired = false,  // 🆕 Si se requiere RFC (flujo barrista)
+  requiresPhoneValidation = false,  // 🆕 TRUE cuando es flujo General (opción 1) - valida teléfono
+  onPhoneValidation = null  // 🆕 Callback para notificar resultado de validación al padre
 }, ref) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
@@ -33,6 +35,14 @@ const FormularioLead = React.forwardRef(({
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // 🆕 NUEVO: Estados para validación de teléfono en flujo General
+  const [phoneValidation, setPhoneValidation] = useState({
+    isValidating: false,
+    isValidated: false,
+    validationResult: null, // null | { status, discount, message }
+    error: null
+  });
 
   // Expose an imperative submit method to parent components (e.g., steppers)
   // IMPORTANTE: Este hook DEBE estar aquí, SIEMPRE, no dentro de un return temprano
@@ -49,6 +59,193 @@ const FormularioLead = React.forwardRef(({
     // Limpiar error del campo al escribir
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
+    }
+  };
+
+  // 🆕 NUEVO: Validación automática de teléfono (solo flujo General)
+  const validatePhone = async (phone) => {
+    // Solo validar si requiresPhoneValidation está activo y tenemos 10 dígitos
+    if (!requiresPhoneValidation || !phone || phone.length !== 10) {
+      return;
+    }
+
+    console.log('📞 Iniciando validación de teléfono:', phone);
+    
+    setPhoneValidation({
+      isValidating: true,
+      isValidated: false,
+      validationResult: null,
+      error: null
+    });
+
+    try {
+      // 🔥 API call con event_id y phone (formato correcto)
+      const response = await fetch(
+        'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_search_phone',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            phone: phone, // Solo 10 dígitos sin prefijo
+            event_id: 1   // 🔥 CRÍTICO: Siempre enviar event_id
+          })
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+
+      const data = await response.json();
+      console.log('✅ Respuesta de validación:', data);
+
+      // 🔥 CRÍTICO: El API retorna un ARRAY, extraer primer elemento
+      const result = Array.isArray(data) ? data[0] : data;
+      console.log('📦 Resultado procesado:', result);
+
+      // 🔥 IMPORTANTE: Procesar respuesta según estructura del API
+      let validationResult = null;
+
+      // 1️⃣ CASO: valid === false (Cliente ya registrado con status != Lead)
+      if (result.valid === false) {
+        validationResult = {
+          status: 'blocked',
+          message: ingles 
+            ? '⚠️ This phone is already registered for the event.' 
+            : '⚠️ Este teléfono ya está registrado para el evento.',
+          canProceed: false
+        };
+      } 
+      // 2️⃣ CASO: founded === true && list === "barista"
+      else if (result.founded === true && result.list === 'baristas') {
+        validationResult = {
+          status: 'redirect_barista',
+          message: ingles 
+            ? '⚖️ This phone is registered as a Bar Member. Please use the Membership registration option.' 
+            : '⚖️ Este teléfono está registrado como Miembro de la Barra. Por favor use la opción de Membresía.',
+          canProceed: false, // Bloquear flujo General
+          redirectTo: 'membresia' // Indicar que debe ir a opción 3
+        };
+      }
+      // 3️⃣ CASO: founded === true && list === "invitados" (VIP/Gratis)
+      else if (result.founded === true && result.list === 'invitados') {
+        // 🎟️ Verificar si tiene ticket gratis
+        try {
+          const freeTicketResponse = await fetch(
+            'https://u-n8n.virtalus.cbluna-dev.com/webhook-test/congreso_nacional_free_ticket',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                event_id: 1,
+                lead_id: result.customer_id // Usar customer_id del primer endpoint
+              })
+            }
+          );
+
+          const freeTicketData = await freeTicketResponse.json();
+          console.log('🎟️ Free ticket check:', freeTicketData);
+
+          // Si tiene ticket gratis, mostrar mensaje especial
+          if (freeTicketData.has_free_ticket === true) {
+            validationResult = {
+              status: 'free_ticket',
+              message: ingles 
+                ? '🎉 You are a VIP guest! Your access is FREE.' 
+                : '🎉 ¡Eres invitado VIP! Tu acceso es GRATUITO.',
+              canProceed: true,
+              isFree: true
+            };
+          } else {
+            // Tiene cuenta en lista de invitados pero no ticket gratis activo
+            validationResult = {
+              status: 'new_customer',
+              message: ingles 
+                ? '✓ Phone validated successfully' 
+                : '✓ Teléfono validado correctamente',
+              canProceed: true
+            };
+          }
+        } catch (freeTicketError) {
+          console.warn('⚠️ Error checking free ticket:', freeTicketError);
+          // Si falla, continuar como cliente normal
+          validationResult = {
+            status: 'new_customer',
+            message: ingles 
+              ? '✓ Phone validated successfully' 
+              : '✓ Teléfono validado correctamente',
+            canProceed: true
+          };
+        }
+      }
+      // 4️⃣ CASO: valid === true (Cliente nuevo o con status "Lead")
+      else {
+        validationResult = {
+          status: 'new_customer',
+          message: ingles 
+            ? '✓ Phone validated successfully' 
+            : '✓ Teléfono validado correctamente',
+          canProceed: true
+        };
+      }
+
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: true,
+        validationResult,
+        error: null
+      });
+
+      // 🆕 NUEVO: Notificar al padre sobre el resultado de validación
+      if (onPhoneValidation) {
+        onPhoneValidation(validationResult);
+      }
+
+    } catch (error) {
+      console.error('❌ Error en validación de teléfono:', error);
+      
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: false,
+        validationResult: null,
+        error: ingles 
+          ? 'Could not validate phone. Please try again.' 
+          : 'No se pudo validar el teléfono. Intente nuevamente.'
+      });
+    }
+  };
+
+  // 🆕 NUEVO: Detectar cuando el teléfono tiene 10 dígitos para validar automáticamente
+  const handlePhoneChange = (e) => {
+    const value = e.target.value.replace(/\D/g, ''); // Solo números
+    
+    // Limitar a 10 dígitos
+    const limitedValue = value.slice(0, 10);
+    
+    setFormData(prev => ({ ...prev, mobile_phone: limitedValue }));
+    
+    // Limpiar error
+    if (errors.mobile_phone) {
+      setErrors(prev => ({ ...prev, mobile_phone: '' }));
+    }
+
+    // Resetear validación si el usuario borra caracteres
+    if (limitedValue.length < 10) {
+      setPhoneValidation({
+        isValidating: false,
+        isValidated: false,
+        validationResult: null,
+        error: null
+      });
+    }
+
+    // Validar automáticamente cuando llegue a 10 dígitos
+    if (limitedValue.length === 10) {
+      validatePhone(limitedValue);
     }
   };
 
@@ -76,6 +273,24 @@ const FormularioLead = React.forwardRef(({
     }
     if (!formData.mobile_phone.trim()) {
       newErrors.mobile_phone = t.leadForm.mobilePhone.error;
+    } else if (formData.mobile_phone.length !== 10) {
+      // Validar que tenga exactamente 10 dígitos
+      newErrors.mobile_phone = ingles 
+        ? 'Phone must be exactly 10 digits' 
+        : 'El teléfono debe tener exactamente 10 dígitos';
+    }
+
+    // 🆕 NUEVO: Validar teléfono en flujo General
+    if (requiresPhoneValidation) {
+      // Verificar que el teléfono esté validado
+      if (!phoneValidation.isValidated) {
+        newErrors.mobile_phone = ingles 
+          ? 'Please wait for phone validation to complete' 
+          : 'Espere a que se complete la validación del teléfono';
+      } else if (phoneValidation.validationResult && !phoneValidation.validationResult.canProceed) {
+        // Cliente bloqueado
+        newErrors.mobile_phone = phoneValidation.validationResult.message;
+      }
     }
 
     // 🆕 VALIDACIÓN RFC (solo si rfcRequired === true en flujo barrista)
@@ -332,19 +547,79 @@ const FormularioLead = React.forwardRef(({
         <label className={styles.label} htmlFor="mobile_phone">
           {t.leadForm.mobilePhone.label} <span className={styles.required}>*</span>
         </label>
-        <input
-          type="tel"
-          id="mobile_phone"
-          name="mobile_phone"
-          value={formData.mobile_phone}
-          onChange={handleChange}
-          placeholder={t.leadForm.mobilePhone.placeholder}
-          className={`${styles.input} ${errors.mobile_phone ? styles.inputError : ''}`}
-          readOnly={isBarristaFlow} // 🆕 Readonly si viene de flujo barrista
-          disabled={isBarristaFlow} // 🆕 Disabled si viene de flujo barrista
-        />
+        
+        {/* 🆕 Campo de teléfono con prefijo +52 para flujo General */}
+        {requiresPhoneValidation ? (
+          <div className={styles.phoneInputWrapper}>
+            <span className={styles.phonePrefix}>+52</span>
+            <input
+              type="tel"
+              id="mobile_phone"
+              name="mobile_phone"
+              value={formData.mobile_phone}
+              onChange={handlePhoneChange}
+              placeholder="1234567890"
+              className={`${styles.input} ${styles.phoneInput} ${errors.mobile_phone ? styles.inputError : ''} ${phoneValidation.isValidated && phoneValidation.validationResult?.canProceed ? styles.inputSuccess : ''}`}
+              maxLength={10}
+            />
+            
+            {/* Indicador de validación */}
+            {phoneValidation.isValidating && (
+              <span className={styles.phoneValidating}>
+                🔄 {ingles ? 'Validating...' : 'Validando...'}
+              </span>
+            )}
+          </div>
+        ) : (
+          // Campo de teléfono normal para otros flujos
+          <input
+            type="tel"
+            id="mobile_phone"
+            name="mobile_phone"
+            value={formData.mobile_phone}
+            onChange={handleChange}
+            placeholder={t.leadForm.mobilePhone.placeholder}
+            className={`${styles.input} ${errors.mobile_phone ? styles.inputError : ''}`}
+            readOnly={isBarristaFlow}
+            disabled={isBarristaFlow}
+          />
+        )}
+        
+        {/* Mensajes de error */}
         {errors.mobile_phone && <span className={styles.errorText}>{errors.mobile_phone}</span>}
-        {!isBarristaFlow && <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>}
+        
+        {/* 🔥 Mensaje especial: Redirigir a membresía */}
+        {!errors.mobile_phone && requiresPhoneValidation && phoneValidation.isValidated && phoneValidation.validationResult?.status === 'redirect_barista' && (
+          <span className={styles.warningText}>
+            {phoneValidation.validationResult.message}
+          </span>
+        )}
+        
+        {/* 🎟️ Mensaje especial: Ticket gratis */}
+        {!errors.mobile_phone && requiresPhoneValidation && phoneValidation.isValidated && phoneValidation.validationResult?.isFree && (
+          <span className={styles.vipText}>
+            {phoneValidation.validationResult.message}
+          </span>
+        )}
+        
+        {/* ✅ Mensaje de validación exitosa */}
+        {!errors.mobile_phone && requiresPhoneValidation && phoneValidation.isValidated && phoneValidation.validationResult?.canProceed && !phoneValidation.validationResult?.isFree && phoneValidation.validationResult?.status !== 'redirect_barista' && (
+          <span className={styles.successText}>
+            {phoneValidation.validationResult.message}
+          </span>
+        )}
+        
+        {/* Hint condicional */}
+        {!isBarristaFlow && !requiresPhoneValidation && (
+          <span className={styles.hint}>{t.leadForm.mobilePhone.hint}</span>
+        )}
+        {requiresPhoneValidation && !phoneValidation.isValidated && (
+          <span className={styles.hint}>
+            {ingles 
+              ? 'Enter 10 digits (without country code)' 
+              : 'Ingrese 10 dígitos (sin código de país)'}
+          </span>
+        )}
         {isBarristaFlow && (
           <span className={styles.hintSuccess}>
             {ingles 
