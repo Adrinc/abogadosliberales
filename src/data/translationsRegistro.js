@@ -26,7 +26,7 @@ export const translationsRegistro = {
 
       // OPCIÓN 2: Académico
       academicBadge: "Descuento Académico",
-      academicTitle: "Tarifa Académica",
+      academicTitle: "Tarifa Académica (Con credencial vigente)",
       academicDescription: "Descuentos exclusivos UVM, UAM o UNAM",
 
       // OPCIÓN 3: Membresía
@@ -598,7 +598,7 @@ export const translationsRegistro = {
 
       // OPTION 2: Academic
       academicBadge: "Academic Discount",
-      academicTitle: "Academic Rate",
+      academicTitle: "Academic Rate (With valid ID)",
       academicDescription: "Exclusive discounts for UVM, UAM or UNAM",
 
       // OPTION 3: Membership
