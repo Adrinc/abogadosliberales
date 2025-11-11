@@ -72,7 +72,6 @@ const BarristaPhoneValidator = ({ onValidationComplete, onValidationError }) => 
       }
 
       const data = await response.json();
-      console.log('✅ API Response:', data);
 
       // 3. Procesar respuesta con helper
       const validationResult = calculateBarristaData(data[0] || data);
@@ -88,7 +87,6 @@ const BarristaPhoneValidator = ({ onValidationComplete, onValidationError }) => 
       }
 
     } catch (err) {
-      console.error('❌ Error en validación de teléfono:', err);
       setError(
         ingles 
           ? 'Error connecting to server. Please try again.' 

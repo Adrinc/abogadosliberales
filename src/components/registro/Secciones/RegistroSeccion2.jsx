@@ -80,7 +80,6 @@ const RegistroSeccion2 = () => {
 
   // Manejar validación de teléfono desde FormularioLead/AcademicStepper
   const handlePhoneValidation = (validationResult) => {
-    console.log('📞 Phone validation result received:', validationResult);
     setPhoneValidationData(validationResult);
     
     // Nota: Redirección automática desactivada. 

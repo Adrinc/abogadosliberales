@@ -31,7 +31,6 @@ const StripeModal = ({
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
-  console.log('🎓 StripeModal recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
   
   const [isLoading, setIsLoading] = useState(true);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -63,12 +62,10 @@ const StripeModal = ({
     // ✅ NUEVO ESQUEMA: Licenciatura tiene precio especial ($250), otros roles $490
     if (academicRole === 'licenciatura') {
       const priceKey = 'precio_estudiante_licenciatura'; // Licenciatura → $250 MXN (75% desc)
-      console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
       return priceKey;
     }
     
     const priceKey = 'precio_academico'; // Profesor/Posgrado → $490 MXN (50% desc)
-    console.log('🎯 getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
     return priceKey;
   };
 
@@ -77,7 +74,6 @@ const StripeModal = ({
     const loadStripeSDK = async () => {
       // Si ya está cargado, no volver a cargar
       if (window.Stripe) {
-        console.log('✅ Stripe SDK already loaded');
         setStripeLoaded(true);
         setIsLoading(false);
         return;
@@ -86,9 +82,7 @@ const StripeModal = ({
       // Verificar si el script ya está en el DOM
       const existingScript = document.querySelector('script[src*="js.stripe.com/v3"]');
       if (existingScript) {
-        console.log('⏳ Stripe script found in DOM, waiting for load...');
         existingScript.addEventListener('load', () => {
-          console.log('✅ Stripe SDK loaded from existing script');
           setStripeLoaded(true);
           setIsLoading(false);
         });
@@ -96,17 +90,14 @@ const StripeModal = ({
       }
 
       // Cargar script dinámicamente
-      console.log('📥 Loading Stripe SDK...');
       const script = document.createElement('script');
       script.src = 'https://js.stripe.com/v3/';
       script.async = true;
       script.onload = () => {
-        console.log('✅ Stripe SDK loaded successfully');
         setStripeLoaded(true);
         setIsLoading(false);
       };
       script.onerror = () => {
-        console.error('❌ Failed to load Stripe SDK');
         setErrorMessage(ingles 
           ? 'Failed to load payment system. Please refresh the page.' 
           : 'Error al cargar el sistema de pago. Por favor recarga la página.');
@@ -122,7 +113,6 @@ const StripeModal = ({
   useEffect(() => {
     if (!stripe || !clientSecret || elements) return;
 
-    console.log('🎨 Montando Stripe Payment Element...');
 
     const appearance = {
       theme: 'stripe',
@@ -147,7 +137,6 @@ const StripeModal = ({
 
     setElements(elementsInstance);
 
-    console.log('✅ Stripe Payment Element montado');
 
     // Cleanup al desmontar
     return () => {
@@ -159,7 +148,6 @@ const StripeModal = ({
 
   // 3️⃣ Crear PaymentIntent en n8n y obtener clientSecret
   const initializePayment = async () => {
-    console.log('🎯 Inicializando pago con Stripe...');
     setIsProcessing(true);
     setPaymentStatus(null);
     setErrorMessage('');
@@ -176,7 +164,6 @@ const StripeModal = ({
       // Construir payload para n8n
       const priceKey = getPriceKey();
       
-      console.log('🎯 Stripe - Valores de pago:', {
         isAcademic,
         academicRole,
         academicPriceData,
@@ -193,7 +180,6 @@ const StripeModal = ({
         mode: 'embedded' // 🔥 NUEVO: Indicar que queremos modo embebido (no redirect)
       };
 
-      console.log('📤 Enviando solicitud a n8n:', payload);
 
       // Llamar al webhook de n8n (debe devolver clientSecret en vez de access_url)
       const response = await fetch(WEBHOOK_URL, {
@@ -204,11 +190,9 @@ const StripeModal = ({
         body: JSON.stringify(payload)
       });
 
-      console.log('📬 Respuesta de n8n - Status:', response.status);
 
       if (!response.ok) {
         const errorText = await response.text().catch(() => '');
-        console.error('❌ Error en respuesta de n8n:', errorText);
         throw new Error(ingles 
           ? 'Failed to create payment order. Please try again.' 
           : 'Error al crear la orden de pago. Por favor intente nuevamente.'
@@ -216,11 +200,9 @@ const StripeModal = ({
       }
 
       const data = await response.json();
-      console.log('✅ Respuesta de n8n:', data);
 
       // Validar respuesta (debe incluir client_secret)
       if (!data.success || !data.data?.client_secret) {
-        console.error('❌ Respuesta inválida de n8n:', data);
         throw new Error(data.message || (ingles 
           ? 'Invalid response from payment server.' 
           : 'Respuesta inválida del servidor de pagos.'
@@ -236,17 +218,14 @@ const StripeModal = ({
       localStorage.setItem('lastPaymentMethod', 'stripe');
       localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
       
-      console.log('💾 Datos guardados en localStorage (incluye monto)');
 
       // Inicializar Stripe
       const stripeInstance = window.Stripe(import.meta.env.PUBLIC_STRIPE_PUBLISHABLE_KEY);
       setStripe(stripeInstance);
 
-      console.log('✅ Stripe inicializado con clientSecret');
       setIsProcessing(false);
 
     } catch (error) {
-      console.error('❌ Error inicializando pago:', error);
       setPaymentStatus('error');
       setErrorMessage(error.message || (ingles 
         ? 'An error occurred while initializing payment.' 
@@ -261,11 +240,9 @@ const StripeModal = ({
     event.preventDefault();
     
     if (!stripe || !elements) {
-      console.error('❌ Stripe not initialized');
       return;
     }
 
-    console.log('💳 Procesando pago...');
     setIsProcessing(true);
 
     try {
@@ -279,7 +256,6 @@ const StripeModal = ({
       });
 
       if (error) {
-        console.error('❌ Error en pago:', error);
         setPaymentStatus('error');
         setErrorMessage(error.message || (ingles 
           ? 'Payment failed. Please try again.' 
@@ -289,7 +265,6 @@ const StripeModal = ({
         return;
       }
 
-      console.log('✅ Pago exitoso:', paymentIntent);
       
       // Guardar response en localStorage
       const webhookResponse = {
@@ -311,12 +286,10 @@ const StripeModal = ({
       
       // Esperar 2 segundos para mostrar mensaje y luego navegar
       setTimeout(() => {
-        console.log('🔄 Navegando a confirmación...');
         window.location.href = `/confirmacion?transaction_id=${paymentIntent.id}&lead_id=${leadId}&method=stripe&status=confirmed`;
       }, 2000);
 
     } catch (error) {
-      console.error('❌ Error inesperado en pago:', error);
       setPaymentStatus('error');
       setErrorMessage(error.message || (ingles 
         ? 'Unexpected error processing payment.' 

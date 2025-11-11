@@ -227,7 +227,6 @@ const IPPayForm = ({ leadId, leadData }) => {
       };
 
       // TODO: Llamar API real de IPPAY (simulación por ahora)
-      console.log('IPPAY Payment Payload:', ippayPayload);
       
       // Simulación de respuesta de IPPAY (remover en producción)
       await new Promise(resolve => setTimeout(resolve, 2000));
@@ -255,7 +254,6 @@ const IPPayForm = ({ leadId, leadData }) => {
         timestamp: new Date().toISOString()
       };
 
-      console.log('Webhook Payload:', webhookPayload);
 
       const webhookResponse = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -280,7 +278,6 @@ const IPPayForm = ({ leadId, leadData }) => {
       }, 3000);
 
     } catch (error) {
-      console.error('Error processing payment:', error);
       setPaymentStatus('error');
       setErrorMessage(ingles 
         ? 'Payment failed. Please check your card details and try again.'

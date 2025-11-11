@@ -82,18 +82,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         appliedDiscounts: ['academic_rate']
       };
 
-      console.log('═══════════════════════════════════════════');
-      console.log('💰 PRECIO ACADÉMICO FIJO EN STEPPER');
-      console.log('═══════════════════════════════════════════');
-      console.log('🎓 Universidad:', academicData.university);
-      console.log('🎓 Rol:', academicData.role);
-      console.log('💵 Precio Final: $490 MXN (FIJO)');
-      console.log('💵 Descuento: 50%');
-      console.log('═══════════════════════════════════════════');
-
       // 🔥 GUARDAR INMEDIATAMENTE EN LOCALSTORAGE
       localStorage.setItem('lastPaymentAmount', '490.00');
-      console.log('💾 Monto guardado en localStorage: 490.00');
 
       // Notificar al padre del cambio de precio
       if (onPriceChange) {
@@ -209,12 +199,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
   // Subir credencial al webhook de n8n
   const uploadCredential = async (customerId, file) => {
-    console.log('📤 Uploading credential to n8n webhook...');
-    console.log('📋 Customer ID:', customerId, '(type:', typeof customerId, ')');
-    console.log('📋 File name:', file.name);
-    console.log('📋 File type:', file.type);
-    console.log('📋 File size:', file.size);
-
     // Validar que customer_id sea numérico
     if (!customerId || typeof customerId !== 'number') {
       throw new Error('customer_id debe ser numérico. Recibido: ' + typeof customerId);
@@ -223,7 +207,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
     try {
       // Convertir archivo a base64
       const base64File = await fileToBase64(file);
-      console.log('✅ File converted to base64');
 
       // Determinar el tipo de credencial según el rol
       let credentialType = 'student_id'; // Por defecto
@@ -258,17 +241,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         }
       };
 
-      console.log('📦 Payload preparado:', {
-        customer_id: payload.customer_id,
-        credential_type: payload.credential_type,
-        institution_name: payload.institution_name,
-        event_id: payload.event_id,
-        file: {
-          ...payload.file,
-          file: `[base64 string with ${base64File.length} characters]`
-        }
-      });
-
       // Enviar al webhook
       const response = await fetch('https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_credential', {
         method: 'POST',
@@ -278,15 +250,10 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         body: JSON.stringify(payload)
       });
 
-      console.log('📡 Response status:', response.status);
-      console.log('📡 Response headers:', response.headers);
-
       // Leer el texto de respuesta primero
       const responseText = await response.text();
-      console.log('📡 Response text:', responseText);
 
       if (!response.ok) {
-        console.error('❌ Webhook error response:', responseText);
         throw new Error(`HTTP ${response.status}: ${responseText || 'Error desconocido del servidor'}`);
       }
 
@@ -294,17 +261,13 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       let result;
       try {
         result = JSON.parse(responseText);
-        console.log('✅ Credential uploaded successfully:', result);
       } catch (parseError) {
-        console.error('❌ Failed to parse response as JSON:', parseError);
-        console.error('❌ Raw response:', responseText);
         throw new Error('El servidor no respondió con un JSON válido. Por favor contacte al administrador.');
       }
 
       return result;
 
     } catch (error) {
-      console.error('❌ Error uploading credential:', error);
       throw new Error(ingles 
         ? 'Failed to upload credential. Please try again.' 
         : 'Error al subir la credencial. Por favor intente nuevamente.'
@@ -321,11 +284,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
     try {
       // 🔥 PASO 1: Crear/actualizar customer PRIMERO para obtener customer_id numérico
-      console.log('📤 Step 1: Creating/updating customer in Supabase...');
+     
       
       // Obtener la categoría correspondiente según el rol
       const customerCategoryFk = getCustomerCategoryFk(academicData.role, academicData.isPaquete11);
-      console.log('📋 Customer category FK:', customerCategoryFk);
+   
 
       // 1.1. Verificar si el email ya existe
       const { data: existingCustomer, error: selectError } = await supabase
@@ -340,13 +303,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       }
 
       if (existingCustomer) {
-        console.log('✅ Customer already exists:', existingCustomer.customer_id);
-        console.log('📊 Current status:', existingCustomer.status);
+    
 
         // 🔥 VALIDACIÓN CRÍTICA: Si el status NO es "Lead", NO permitir continuar
         if (existingCustomer.status !== 'Lead') {
-          console.error('❌ Customer status is NOT "Lead" (current:', existingCustomer.status, ')');
-          console.error('❌ User is already registered for the event - Registration blocked');
+   
           
           // Mostrar error al usuario
           setErrors({
@@ -360,7 +321,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         }
 
         // ✅ Status es "Lead" → Permitir actualización
-        console.log('✅ Status is "Lead" - Proceeding with update');
+
         customerId = existingCustomer.customer_id;
         isNewCustomer = false;
 
@@ -420,19 +381,18 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
         customerId = newCustomer.customer_id;
         isNewCustomer = true;
-        console.log('✅ New customer created with ID:', customerId);
-        console.log('✅ Metadata saved:', metadata);
+    
       }
 
       // 🔥 PASO 2: Subir credencial usando el customer_id numérico
-      console.log('📤 Step 2: Uploading credential with customer_id:', customerId);
+   
       
       if (selectedFile) {
         try {
           await uploadCredential(customerId, selectedFile);
-          console.log('✅ Credential uploaded successfully');
+      
         } catch (uploadError) {
-          console.error('❌ Error uploading credential:', uploadError);
+     
           
           // 🔥 CRÍTICO: Si falla la subida Y es un nuevo customer, BORRARLO
           if (isNewCustomer && customerId) {
@@ -466,7 +426,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       }
 
       // 🔥 PASO 3: TODO OK - Customer creado y credencial subida
-      console.log('🎉 Customer created AND credential uploaded successfully!');
+ 
 
       // 3. Guardar leadData y leadId
       setLeadId(customerId);
@@ -478,7 +438,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       };
       setLeadData(newLeadData);
 
-      console.log('🎉 Customer creation successful!');
+
       
       // 4. Notificar al componente padre que se creó el lead
       if (onComplete) {
@@ -523,13 +483,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       alert(errorMessage);
       
       // 🔥 NO AVANZAR AL STEP 4 - el usuario debe quedarse en Step 3
-      console.log('🛑 Stopping flow due to error - staying in Step 3');
+  
       
-      if (isNewCustomer) {
-        console.log('💡 NOTE: New customer was rolled back (deleted) due to credential upload failure');
-      }
-      
-      console.log('💡 TIP: If you see "Invalid JSON response", the webhook is not configured correctly in n8n');
     } finally {
       setIsSubmitting(false);
     }
@@ -570,7 +525,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             leadId: null
           });
         }
-        console.log('🧹 Retrocediendo del Step 3 → Step 2 - Datos limpiados');
+    
       }
       setCurrentStep(currentStep - 1);
     }
@@ -599,10 +554,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         });
       }
 
-      console.log('✅ Academic verification completed:', {
-        ...academicData,
-        finalPrice: finalPriceData.finalPrice,
-      });
+
     } catch (error) {
       console.error('❌ Error completing academic verification:', error);
     } finally {
@@ -668,7 +620,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       return;
     }
 
-    console.log('📞 [Academic] Iniciando validación de teléfono:', phone);
+
     
     setPhoneValidation({
       isValidating: true,
@@ -698,10 +650,10 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       }
 
       const data = await response.json();
-      console.log('✅ [Academic] Respuesta de validación:', data);
+   
 
       const result = Array.isArray(data) ? data[0] : data;
-      console.log('📦 [Academic] Resultado procesado:', result);
+
 
       let validationResult = null;
 
@@ -732,7 +684,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
       // 🆕 NUEVO: Notificar al padre sobre resultado de validación
       if (onPhoneValidation) {
-        console.log('📞 [Academic] Notifying parent about validation result');
+
         onPhoneValidation(validationResult);
       }
 

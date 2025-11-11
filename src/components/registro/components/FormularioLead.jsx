@@ -67,7 +67,6 @@ const FormularioLead = React.forwardRef(({
       return;
     }
 
-    console.log('📞 Iniciando validación de teléfono:', phone);
     
     setPhoneValidation({
       isValidating: true,
@@ -98,11 +97,9 @@ const FormularioLead = React.forwardRef(({
       }
 
       const data = await response.json();
-      console.log('✅ Respuesta de validación:', data);
 
       // 🔥 CRÍTICO: El API retorna un ARRAY, extraer primer elemento
       const result = Array.isArray(data) ? data[0] : data;
-      console.log('📦 Resultado procesado:', result);
 
       // 🔥 IMPORTANTE: Procesar respuesta según estructura del API
       let validationResult = null;
@@ -141,7 +138,6 @@ const FormularioLead = React.forwardRef(({
       }
 
     } catch (error) {
-      console.error('❌ Error en validación de teléfono:', error);
       
       setPhoneValidation({
         isValidating: false,
@@ -257,7 +253,6 @@ const FormularioLead = React.forwardRef(({
     setIsSubmitting(true);
 
     try {
-      console.log('📤 Submitting lead to Supabase...');
       
       // 1. Verificar si el email ya existe
       const { data: existingCustomer, error: selectError } = await supabase
@@ -268,19 +263,14 @@ const FormularioLead = React.forwardRef(({
         .maybeSingle();
 
       if (selectError) {
-        console.warn('⚠️ Error checking existing customer (non-fatal):', selectError.message);
       }
 
       let customerId = null;
 
       if (existingCustomer) {
-        console.log('✅ Customer already exists:', existingCustomer.customer_id);
-        console.log('📊 Current status:', existingCustomer.status);
 
         // 🔥 VALIDACIÓN CRÍTICA: Si el status NO es "Lead", NO permitir continuar
         if (existingCustomer.status !== 'Lead') {
-          console.error('❌ Customer status is NOT "Lead" (current:', existingCustomer.status, ')');
-          console.error('❌ User is already registered for the event - Registration blocked');
           
           // Mostrar error al usuario
           setErrors({
@@ -294,7 +284,6 @@ const FormularioLead = React.forwardRef(({
         }
 
         // ✅ Status es "Lead" → Permitir actualización
-        console.log('✅ Status is "Lead" - Proceeding with update');
         customerId = existingCustomer.customer_id;
 
         // ✅ Actualizar datos incluyendo customer_category_fk
@@ -307,7 +296,6 @@ const FormularioLead = React.forwardRef(({
 
         // Siempre actualizar customer_category_fk (null si no es académico, 5/6/7 si lo es)
         updatePayload.customer_category_fk = customerCategoryFk || null;
-        console.log('📋 Updating customer_category_fk:', customerCategoryFk || null, '(null = general)');
 
         const { error: updateError } = await supabase
           .from('customer')
@@ -315,9 +303,7 @@ const FormularioLead = React.forwardRef(({
           .eq('customer_id', customerId);
 
         if (updateError) {
-          console.warn('⚠️ Error updating customer (non-fatal):', updateError.message);
         } else {
-          console.log('✅ Customer data updated with category:', customerCategoryFk || null);
         }
       } else {
         // Cliente no existe, crear nuevo
@@ -332,7 +318,6 @@ const FormularioLead = React.forwardRef(({
           organization_fk: 14
         };
 
-        console.log('📥 Inserting new customer:', { 
           email: formData.email, 
           customer_category_fk: customerCategoryFk 
         });
@@ -344,7 +329,6 @@ const FormularioLead = React.forwardRef(({
           .single();
 
         if (insertError) {
-          console.error('❌ Error creating customer:', insertError.message);
           throw new Error(ingles 
             ? 'Failed to create customer. Please try again.' 
             : 'Error al crear el cliente. Por favor intente nuevamente.'
@@ -352,7 +336,6 @@ const FormularioLead = React.forwardRef(({
         }
 
         customerId = newCustomer.customer_id;
-        console.log('✅ New customer created with ID:', customerId, 'and category:', customerCategoryFk);
       }
 
       // 2. Preparar datos del lead para el componente padre
@@ -366,15 +349,11 @@ const FormularioLead = React.forwardRef(({
         customer_id: customerId
       };
 
-      console.log('🎉 Lead submission successful!');
-      console.log('📋 Lead data:', leadDataToSubmit);
-      console.log('🆔 Customer ID:', customerId);
 
       // 3. Notificar al componente padre (RegistroSeccion2)
       onSubmit(leadDataToSubmit, customerId);
 
     } catch (error) {
-      console.error('❌ Error during lead submission:', error);
       
       // Mostrar error al usuario (podrías agregar un estado para esto)
       alert(error.message || (ingles 

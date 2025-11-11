@@ -17,7 +17,6 @@ const ComprobantePagoForm = ({
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
   // 🔍 Debug: Ver qué academicRole estamos recibiendo
-  console.log('🎓 ComprobantePagoForm recibido - isAcademic:', isAcademic, 'academicRole:', academicRole);
 
   // Estados del formulario
   const [file, setFile] = useState(null);
@@ -59,12 +58,10 @@ const ComprobantePagoForm = ({
     // ✅ NUEVO ESQUEMA: Licenciatura tiene precio especial ($250), otros roles $490
     if (academicRole === 'licenciatura') {
       const priceKey = 'precio_estudiante_licenciatura'; // Licenciatura → $250 MXN (75% desc)
-      console.log('🎯 ComprobantePago getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
       return priceKey;
     }
     
     const priceKey = 'precio_academico'; // Profesor/Posgrado → $490 MXN (50% desc)
-    console.log('🎯 ComprobantePago getPriceKey() - Role:', academicRole, '→ Price Key:', priceKey);
     return priceKey;
   };
 
@@ -244,7 +241,6 @@ const ComprobantePagoForm = ({
       const email = leadData?.email || null;
       if (!email) return null;
 
-      console.log('🔎 Looking up customer by email in Supabase:', email);
       const { data: existing, error: selectError } = await supabase
         .from('customer')
         .select('customer_id')
@@ -253,11 +249,9 @@ const ComprobantePagoForm = ({
         .maybeSingle();
 
       if (selectError) {
-        console.warn('⚠️ Supabase select error (non-fatal):', selectError.message || selectError);
       }
 
       if (existing && existing.customer_id) {
-        console.log('✅ Found existing customer_id:', existing.customer_id);
         return existing.customer_id;
       }
 
@@ -273,7 +267,6 @@ const ComprobantePagoForm = ({
         organization_fk: leadData?.organization_fk || 14
       };
 
-      console.log('📥 Inserting new customer in Supabase:', { email });
       const { data: inserted, error: insertError } = await supabase
         .from('customer')
         .insert(insertPayload)
@@ -281,14 +274,11 @@ const ComprobantePagoForm = ({
         .single();
 
       if (insertError) {
-        console.warn('⚠️ Supabase insert error (continuing without lead_id):', insertError.message || insertError);
         return null;
       }
 
-      console.log('✅ New customer created with customer_id:', inserted.customer_id);
       return inserted.customer_id;
     } catch (err) {
-      console.error('❌ Unexpected Supabase error:', err);
       return null;
     }
   };
@@ -307,21 +297,16 @@ const ComprobantePagoForm = ({
     setIsUploading(true);
     setErrorMessage('');
     try {
-      console.log('📤 Starting receipt upload process...');
 
       // Obtener o crear customer en Supabase (lead_id)
       const resolvedCustomerId = await getOrCreateCustomer();
       const effectiveLeadId = resolvedCustomerId || (leadId ? parseInt(leadId) : null);
-      console.log('📋 Effective lead/customer id to use:', effectiveLeadId);
 
       // Convertir archivo a base64
-      console.log('🔄 Converting file to base64...');
       const base64File = await fileToBase64(file);
-      console.log('✅ File converted to base64');
 
       // 🔍 Debug: Verificar valores antes de construir payload
       const calculatedPriceKey = getPriceKey();
-      console.log('🎯 ComprobantePago - Valores de pago:', {
         isAcademic,
         academicRole,
         academicPriceData,
@@ -361,7 +346,6 @@ const ComprobantePagoForm = ({
         }
       };
 
-      console.log('📋 Payload prepared:', {
         customer_id: webhookPayload.customer_id,
         event_id: webhookPayload.event_id,
         price_key: webhookPayload.price_key, // 🔥 IMPORTANTE: Verificar que esté aquí
@@ -377,7 +361,6 @@ const ComprobantePagoForm = ({
         }
       });
 
-      console.log('📤 Sending to webhook:', WEBHOOK_URL);
 
       const webhookResponse = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -387,23 +370,19 @@ const ComprobantePagoForm = ({
         body: JSON.stringify(webhookPayload)
       });
 
-      console.log('📬 Webhook response status:', webhookResponse.status);
 
       if (!webhookResponse.ok) {
         const errorText = await webhookResponse.text();
-        console.error('❌ Webhook error response:', errorText);
         throw new Error(`Webhook error: ${webhookResponse.status}`);
       }
 
       const webhookResult = await webhookResponse.json();
-      console.log('✅ Webhook response:', webhookResult);
 
       // 🔥 NUEVO: Guardar en localStorage (igual que PayPal y Stripe)
       localStorage.setItem('lastLeadId', effectiveLeadId.toString());
       localStorage.setItem('lastTransactionId', referenceNumber); // Número de referencia como transaction ID
       localStorage.setItem('lastPaymentMethod', 'transfer'); // 🔥 CRÍTICO
       localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
-      console.log('💾 Saved to localStorage:', {
         lastLeadId: effectiveLeadId,
         lastTransactionId: referenceNumber,
         lastPaymentMethod: 'transfer',
@@ -414,13 +393,10 @@ const ComprobantePagoForm = ({
       setUploadStatus('success');
       setIsUploading(false);
 
-      console.log('🎉 Receipt uploaded successfully! Redirecting...');
 
       // 🔥 Redirigir SIEMPRE a /validacion (tanto académicos como generales con transferencia)
       // - Académicos: Requieren validación de credencial + comprobante
       // - Generales con transferencia: Requieren validación de comprobante
-      console.log('🔗 Redirigiendo a /validacion (requiere validación manual)');
-      console.log('🎓 isAcademic:', isAcademic);
       
       // Redirigir después de 3 segundos
       setTimeout(() => {
@@ -428,8 +404,6 @@ const ComprobantePagoForm = ({
       }, 3000);
 
     } catch (error) {
-      console.error('❌ Error uploading receipt:', error);
-      console.error('Error details:', {
         message: error.message,
         stack: error.stack,
         name: error.name

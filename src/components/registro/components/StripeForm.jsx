@@ -17,14 +17,6 @@ const StripeForm = ({
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
   
-  // 🔍 Debug: Ver props recibidas
-  console.log('💳 StripeForm recibido:', { 
-    isAcademic, 
-    academicRole, 
-    isMembership, 
-    membershipPrice 
-  });
-  
   const [isProcessing, setIsProcessing] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null); // 'success' | 'error'
   const [errorMessage, setErrorMessage] = useState('');
@@ -49,25 +41,21 @@ const StripeForm = ({
   const getPriceKey = () => {
     // PRIORIDAD 1: Membresía anual de la Barra
     if (isMembership) {
-      console.log('🎯 getPriceKey() - Membresía → precio_mem_anual_congreso');
       return 'precio_mem_anual_congreso'; // $3,850 MXN
     }
     
     // PRIORIDAD 2: Académico - 🔥 TODOS LOS ROLES USAN $490 (precio_prof_estud_pos)
     if (isAcademic && academicRole) {
       const priceKey = 'precio_prof_estud_pos'; // $490 MXN para TODOS (profesor, posgrado, licenciatura)
-      console.log(`🎯 getPriceKey() - Académico (${academicRole}) → precio_prof_estud_pos ($490)`);
       return priceKey;
     }
     
     // PRIORIDAD 3: Entrada General
-    console.log('🎯 getPriceKey() - General → precio_lista_congreso');
     return 'precio_lista_congreso'; // $990 MXN
   };
 
   // Handler para iniciar el proceso de pago
   const handlePayment = async () => {
-    console.log('🎯 Iniciando proceso de pago con Stripe...');
     setIsProcessing(true);
     setPaymentStatus(null);
     setErrorMessage('');
@@ -91,20 +79,8 @@ const StripeForm = ({
       
       const cancelUrl = window.location.href; // Volver a la página actual
 
-      console.log('🔗 Success URL:', successUrl);
-      console.log('🎓 isAcademic:', isAcademic, '→ Ruta:', isAcademic ? '/validacion' : '/confirmacion');
-
       // 3. Construir payload para n8n
       const priceKey = getPriceKey();
-      
-      // 🔍 Debug: Verificar valores antes de construir payload
-      console.log('🎯 Stripe - Valores de pago:', {
-        isAcademic,
-        academicRole,
-        academicPriceData,
-        finalAmount: AMOUNT,
-        calculatedPriceKey: priceKey
-      });
       
       const payload = {
         customer_id: parseInt(leadId),
@@ -116,8 +92,6 @@ const StripeForm = ({
         cancel_url: cancelUrl
       };
 
-      console.log('📤 Enviando solicitud a n8n:', payload);
-
       // 4. Llamar al webhook de n8n
       const response = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -127,11 +101,8 @@ const StripeForm = ({
         body: JSON.stringify(payload)
       });
 
-      console.log('📬 Respuesta de n8n - Status:', response.status);
-
       if (!response.ok) {
         const errorText = await response.text().catch(() => '');
-        console.error('❌ Error en respuesta de n8n:', errorText);
         throw new Error(ingles 
           ? 'Failed to create payment order. Please try again.' 
           : 'Error al crear la orden de pago. Por favor intente nuevamente.'
@@ -140,11 +111,9 @@ const StripeForm = ({
 
       // 5. Parsear respuesta
       const data = await response.json();
-      console.log('✅ Respuesta de n8n:', data);
 
       // 6. Validar respuesta
       if (!data.success || !data.data?.access_url) {
-        console.error('❌ Respuesta inválida de n8n:', data);
         throw new Error(data.message || (ingles 
           ? 'Invalid response from payment server.' 
           : 'Respuesta inválida del servidor de pagos.'
@@ -159,16 +128,11 @@ const StripeForm = ({
       localStorage.setItem('lastPaymentMethod', 'stripe');
       localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
       localStorage.setItem('stripeAccessUrl', access_url);
-      
-      console.log('💾 Datos guardados en localStorage (incluye monto)');
-      console.log('🔗 Access URL:', access_url);
 
       // 8. Redirigir en la MISMA ventana (como PayPal)
-      console.log('🔄 Redirigiendo a Stripe Checkout...');
       window.location.href = access_url;
 
     } catch (error) {
-      console.error('❌ Error en el proceso de pago:', error);
       setPaymentStatus('error');
       setErrorMessage(error.message || (ingles 
         ? 'An error occurred while processing your payment. Please try again.'

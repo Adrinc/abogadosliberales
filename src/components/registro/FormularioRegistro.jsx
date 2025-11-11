@@ -155,7 +155,6 @@ const FormularioRegistro = () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
       
     } catch (error) {
-      console.error('Error al enviar formulario:', error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);

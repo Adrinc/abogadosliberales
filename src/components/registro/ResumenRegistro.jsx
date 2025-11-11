@@ -15,15 +15,6 @@ const ResumenRegistro = ({
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en.summary : translationsRegistro.es.summary;
   
-  // Debug: Verificar props recibidas
-  console.log('🔍 ResumenRegistro - Props recibidas:', {
-    leadData,
-    selectedPaymentMethod,
-    academicPriceData,
-    isAcademic,
-    selectedOption
-  });
-  
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleCollapse = () => {

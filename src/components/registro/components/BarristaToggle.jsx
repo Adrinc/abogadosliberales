@@ -34,7 +34,6 @@ const BarristaToggle = ({ isBarrista, onToggle, isDisabled = false }) => {
       return;
     }
     
-    console.log('🔘 BarristaToggle clicked - Current state:', isBarrista);
     onToggle();
   };
 
@@ -89,7 +88,6 @@ const BarristaToggle = ({ isBarrista, onToggle, isDisabled = false }) => {
           onChange={(e) => {
             e.stopPropagation();
             if (!isDisabled) {
-              console.log('🔘 Switch input changed - New value:', e.target.checked);
               onToggle();
             }
           }}
