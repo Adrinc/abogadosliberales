@@ -109,11 +109,17 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
   // Helper para obtener la etiqueta de cada paso en la barra de progreso.
   const getStepLabel = (step) => {
-    if (step === 3) {
-      return ingles ? 'Payment data' : 'Datos de pago'; // 🔥 STEP 3 (antes Step 4)
+    // 🔥 Títulos personalizados para los 3 pasos
+    if (step === 1) {
+      return ingles ? 'Personal data' : 'Datos personales';
     }
-    const key = `step${step}`;
-    return (t[key] && t[key].title) || step;
+    if (step === 2) {
+      return ingles ? 'Academic data' : 'Datos académicos';
+    }
+    if (step === 3) {
+      return ingles ? 'Payment data' : 'Datos de pago';
+    }
+    return step;
   };
 
   // Validación por paso - 🔥 AHORA SOLO 3 PASOS
@@ -358,6 +364,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         customerId = existingCustomer.customer_id;
         isNewCustomer = false;
 
+        // 🔥 Preparar metadata JSONB con matrícula
+        const metadata = {
+          matricula: academicData.studentId
+        };
+
         const { error: updateError } = await supabase
           .from('customer')
           .update({
@@ -365,6 +376,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             last_name: academicData.lastName,
             mobile_phone: academicData.phone,
             customer_category_fk: customerCategoryFk,
+            metadata: metadata, // 🔥 NUEVO: Guardar matrícula en metadata JSONB
             status: 'Lead'
           })
           .eq('customer_id', customerId);
@@ -372,10 +384,16 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         if (updateError) {
           console.warn('⚠️ Error updating customer:', updateError.message);
         } else {
-          console.log('✅ Customer updated successfully');
+          console.log('✅ Customer updated successfully with metadata:', metadata);
         }
       } else {
         // Cliente no existe, crear nuevo
+        
+        // 🔥 Preparar metadata JSONB con matrícula
+        const metadata = {
+          matricula: academicData.studentId
+        };
+
         const { data: newCustomer, error: insertError } = await supabase
           .from('customer')
           .insert({
@@ -384,6 +402,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             email: academicData.email,
             mobile_phone: academicData.phone,
             customer_category_fk: customerCategoryFk,
+            metadata: metadata, // 🔥 NUEVO: Guardar matrícula en metadata JSONB
             status: 'Lead',
             customer_parent_id: null,
             organization_fk: 14
@@ -402,6 +421,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         customerId = newCustomer.customer_id;
         isNewCustomer = true;
         console.log('✅ New customer created with ID:', customerId);
+        console.log('✅ Metadata saved:', metadata);
       }
 
       // 🔥 PASO 2: Subir credencial usando el customer_id numérico
@@ -667,7 +687,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           },
           body: JSON.stringify({
             phone: phone,
-            event_id: 1
+            event_id: 1,
+            email: academicData.email
           })
         }
       );
@@ -692,60 +713,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
             : '⚠️ Este teléfono ya está registrado para el evento.',
           canProceed: false
         };
-      } else if (result.founded === true && result.list === 'baristas') {
-        validationResult = {
-          status: 'redirect_barista',
-          message: ingles 
-            ? '⚖️ This phone is registered as a Bar Member. Academic discount not available.' 
-            : '⚖️ Este teléfono está registrado como Miembro de la Barra. Descuento académico no disponible.',
-          canProceed: false
-        };
-      } else if (result.founded === true && result.list === 'invitados') {
-        try {
-          const freeTicketResponse = await fetch(
-            'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_free_ticket',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                event_id: 1,
-                lead_id: result.customer_id
-              })
-            }
-          );
-
-          const freeTicketData = await freeTicketResponse.json();
-          console.log('🎟️ [Academic] Free ticket check:', freeTicketData);
-
-          if (freeTicketData.has_free_ticket === true) {
-            validationResult = {
-              status: 'free_ticket',
-              message: ingles 
-                ? '🎉 You are a VIP guest! Academic discount not needed.' 
-                : '🎉 ¡Eres invitado VIP! No necesitas descuento académico.',
-              canProceed: false
-            };
-          } else {
-            validationResult = {
-              status: 'new_customer',
-              message: ingles 
-                ? '✓ Phone validated successfully' 
-                : '✓ Teléfono validado correctamente',
-              canProceed: true
-            };
-          }
-        } catch (freeTicketError) {
-          console.warn('⚠️ [Academic] Error checking free ticket:', freeTicketError);
-          validationResult = {
-            status: 'new_customer',
-            message: ingles 
-              ? '✓ Phone validated successfully' 
-              : '✓ Teléfono validado correctamente',
-            canProceed: true
-          };
-        }
       } else {
         validationResult = {
           status: 'new_customer',
@@ -763,9 +730,9 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         error: null
       });
 
-      // 🆕 NUEVO: Notificar al padre si detecta barista para redirección
-      if (validationResult?.status === 'redirect_barista' && onPhoneValidation) {
-        console.log('📞 [Academic] Notifying parent about barista detection');
+      // 🆕 NUEVO: Notificar al padre sobre resultado de validación
+      if (onPhoneValidation) {
+        console.log('📞 [Academic] Notifying parent about validation result');
         onPhoneValidation(validationResult);
       }
 

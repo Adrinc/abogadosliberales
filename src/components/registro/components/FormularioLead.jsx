@@ -27,11 +27,8 @@ const FormularioLead = React.forwardRef(({
     email: '',
     email_confirm: '', // 🔥 NUEVO: Confirmación de email
     mobile_phone: prefilledPhone || '', // 🆕 Pre-llenar si viene de barrista
-    rfc: '', // 🆕 RFC para flujo barrista
-    // 🚫 ELIMINADOS: document_type y document_number ya no se usan en flujo general
-    company: '',
-    job_title: '',
-    coupon: ''
+    rfc: '' // 🆕 RFC para flujo barrista
+    // 🚫 ELIMINADOS: document_type, document_number y coupon ya no se usan
   });
 
   const [errors, setErrors] = useState({});
@@ -120,83 +117,7 @@ const FormularioLead = React.forwardRef(({
           canProceed: false
         };
       } 
-      // 2️⃣ CASO: founded === true && list === "baristas"
-      else if (result.founded === true && result.list === 'baristas') {
-        // 🔥 CRÍTICO: Si ya está en Membresía (opción 3), NO bloquear
-        if (isMembershipFlow) {
-          validationResult = {
-            status: 'barista_in_membership',
-            message: ingles 
-              ? '✓ Bar member phone validated' 
-              : '✓ Teléfono de miembro de la Barra validado',
-            canProceed: true // ✅ Permitir continuar
-          };
-        } else {
-          // Si está en otro flujo (General o Académico), redirigir
-          validationResult = {
-            status: 'redirect_barista',
-            message: ingles 
-              ? '⚖️ This phone is registered as a Bar Member. Please use the Membership registration option.' 
-              : '⚖️ Este teléfono está registrado como Miembro de la Barra. Por favor use la opción de Membresía.',
-            canProceed: false, // Bloquear flujo General/Académico
-            redirectTo: 'membresia' // Indicar que debe ir a opción 3
-          };
-        }
-      }
-      // 3️⃣ CASO: founded === true && list === "invitados" (VIP/Gratis)
-      else if (result.founded === true && result.list === 'invitados') {
-        // 🎟️ Verificar si tiene ticket gratis
-        try {
-          const freeTicketResponse = await fetch(
-            'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_free_ticket',
-            {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                event_id: 1,
-                lead_id: result.customer_id // Usar customer_id del primer endpoint
-              })
-            }
-          );
-
-          const freeTicketData = await freeTicketResponse.json();
-          console.log('🎟️ Free ticket check:', freeTicketData);
-
-          // Si tiene ticket gratis, mostrar mensaje especial
-          if (freeTicketData.has_free_ticket === true) {
-            validationResult = {
-              status: 'free_ticket',
-              message: ingles 
-                ? '🎉 You are a VIP guest! Your access is FREE.' 
-                : '🎉 ¡Eres invitado VIP! Tu acceso es GRATUITO.',
-              canProceed: true,
-              isFree: true
-            };
-          } else {
-            // Tiene cuenta en lista de invitados pero no ticket gratis activo
-            validationResult = {
-              status: 'new_customer',
-              message: ingles 
-                ? '✓ Phone validated successfully' 
-                : '✓ Teléfono validado correctamente',
-              canProceed: true
-            };
-          }
-        } catch (freeTicketError) {
-          console.warn('⚠️ Error checking free ticket:', freeTicketError);
-          // Si falla, continuar como cliente normal
-          validationResult = {
-            status: 'new_customer',
-            message: ingles 
-              ? '✓ Phone validated successfully' 
-              : '✓ Teléfono validado correctamente',
-            canProceed: true
-          };
-        }
-      }
-      // 4️⃣ CASO: valid === true (Cliente nuevo o con status "Lead")
+      // 2️⃣ CASO: valid === true (Cliente nuevo o válido para registro)
       else {
         validationResult = {
           status: 'new_customer',
@@ -668,26 +589,7 @@ const FormularioLead = React.forwardRef(({
         </div>
       )}
 
-      {/* 🚫 ELIMINADOS: Campos document_type y document_number */}
-
-      {/* Cupón - OCULTO en flujo académico Y barrista (descuento ya aplicado) */}
-      {!isAcademicFlow && !isBarristaFlow && (
-        <div className={styles.formGroup}>
-          <label className={styles.label} htmlFor="coupon">
-            {t.leadForm.coupon.label}
-          </label>
-          <input
-            type="text"
-            id="coupon"
-            name="coupon"
-            value={formData.coupon}
-            onChange={handleChange}
-            placeholder={t.leadForm.coupon.placeholder}
-            className={styles.input}
-          />
-          <span className={styles.hint}>{t.leadForm.coupon.hint}</span>
-        </div>
-      )}
+      {/* 🚫 ELIMINADOS: Campos document_type, document_number y coupon */}
 
       {/* Botón Submit */}
       {!hideSubmitButton && (

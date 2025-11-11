@@ -18,8 +18,7 @@ const RegistroSeccion2 = () => {
   const [leadData, setLeadData] = useState(null);
   const [leadId, setLeadId] = useState(null);
   const [academicPriceData, setAcademicPriceData] = useState(null);
-  const [phoneValidationData, setPhoneValidationData] = useState(null); // 🆕 Para recibir datos de validación
-  const [isRedirecting, setIsRedirecting] = useState(false); // 🆕 Para mostrar mensaje de redirección
+  const [phoneValidationData, setPhoneValidationData] = useState(null);
 
   useEffect(() => {
     const referrer = document.referrer;
@@ -79,29 +78,13 @@ const RegistroSeccion2 = () => {
     setSelectedOption(optionId);
   };
 
-  // 🆕 NUEVO: Manejar validación de teléfono desde FormularioLead
+  // Manejar validación de teléfono desde FormularioLead/AcademicStepper
   const handlePhoneValidation = (validationResult) => {
     console.log('📞 Phone validation result received:', validationResult);
-    
     setPhoneValidationData(validationResult);
     
-    // Si detecta que es barista, redirigir automáticamente a opción 3
-    if (validationResult?.status === 'redirect_barista') {
-      console.log('🔄 Redirecting to Membership option (3)...');
-      
-      // Mostrar mensaje de redirección
-      setIsRedirecting(true);
-      
-      // Limpiar datos previos
-      setLeadData(null);
-      setLeadId(null);
-      
-      // Cambiar a opción 3 después de un pequeño delay para que el usuario vea el mensaje
-      setTimeout(() => {
-        setSelectedOption(3);
-        setIsRedirecting(false);
-      }, 3000); // 3 segundos para leer el mensaje
-    }
+    // Nota: Redirección automática desactivada. 
+    // La validación ahora solo bloquea duplicados (valid: false)
   };
 
   return (
@@ -111,23 +94,6 @@ const RegistroSeccion2 = () => {
           selectedOption={selectedOption} 
           onSelectOption={handleSelectOption} 
         />
-
-        {/* 🆕 Banner de redirección cuando detecta barista */}
-        {isRedirecting && (
-          <div className={styles.redirectBanner}>
-            <div className={styles.redirectIcon}>⚖️</div>
-            <div className={styles.redirectContent}>
-              <h3 className={styles.redirectTitle}>
-                {ingles ? 'Bar Member Detected' : 'Miembro de la Barra Detectado'}
-              </h3>
-              <p className={styles.redirectText}>
-                {ingles 
-                  ? 'Redirecting you to the Membership registration option...' 
-                  : 'Redirigiendo a la opción de Membresía...'}
-              </p>
-            </div>
-          </div>
-        )}
 
         <div className={styles.layout}>
           <div className={styles.formColumn}>
