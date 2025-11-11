@@ -164,13 +164,6 @@ const StripeModal = ({
       // Construir payload para n8n
       const priceKey = getPriceKey();
       
-        isAcademic,
-        academicRole,
-        academicPriceData,
-        finalAmount: AMOUNT,
-        calculatedPriceKey: priceKey
-      });
-      
       const payload = {
         customer_id: parseInt(leadId),
         event_id: EVENT_ID,

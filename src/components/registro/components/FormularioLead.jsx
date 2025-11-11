@@ -318,11 +318,7 @@ const FormularioLead = React.forwardRef(({
           organization_fk: 14
         };
 
-          email: formData.email, 
-          customer_category_fk: customerCategoryFk 
-        });
-
-        const { data: newCustomer, error: insertError } = await supabase
+        const { data: newCustomer, error: insertError} = await supabase
           .from('customer')
           .insert(customerPayload)
           .select('customer_id')

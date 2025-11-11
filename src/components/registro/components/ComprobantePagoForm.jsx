@@ -307,12 +307,6 @@ const ComprobantePagoForm = ({
 
       // 🔍 Debug: Verificar valores antes de construir payload
       const calculatedPriceKey = getPriceKey();
-        isAcademic,
-        academicRole,
-        academicPriceData,
-        finalAmount,
-        calculatedPriceKey
-      });
 
       // Preparar payload según el nuevo formato
       const webhookPayload = {
@@ -346,21 +340,6 @@ const ComprobantePagoForm = ({
         }
       };
 
-        customer_id: webhookPayload.customer_id,
-        event_id: webhookPayload.event_id,
-        price_key: webhookPayload.price_key, // 🔥 IMPORTANTE: Verificar que esté aquí
-        reference_number: webhookPayload.reference_number,
-        amount: webhookPayload.amount,
-        payment_date: webhookPayload.payment_date,
-        file_info: {
-          file_name: webhookPayload.file.file_name,
-          file_bucket: webhookPayload.file.file_bucket,
-          file_route: webhookPayload.file.file_route,
-          media_category_id: webhookPayload.file.media_category_id,
-          metadata: webhookPayload.file.metadata_json
-        }
-      });
-
 
       const webhookResponse = await fetch(WEBHOOK_URL, {
         method: 'POST',
@@ -383,11 +362,6 @@ const ComprobantePagoForm = ({
       localStorage.setItem('lastTransactionId', referenceNumber); // Número de referencia como transaction ID
       localStorage.setItem('lastPaymentMethod', 'transfer'); // 🔥 CRÍTICO
       localStorage.setItem('lastPaymentAmount', AMOUNT); // 🔥 GUARDAR MONTO
-        lastLeadId: effectiveLeadId,
-        lastTransactionId: referenceNumber,
-        lastPaymentMethod: 'transfer',
-        lastPaymentAmount: AMOUNT
-      });
 
       // Éxito
       setUploadStatus('success');
@@ -404,10 +378,6 @@ const ComprobantePagoForm = ({
       }, 3000);
 
     } catch (error) {
-        message: error.message,
-        stack: error.stack,
-        name: error.name
-      });
       setUploadStatus('error');
       setErrorMessage(ingles 
         ? 'Failed to upload receipt. Please try again or contact support.'

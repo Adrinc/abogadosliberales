@@ -224,12 +224,6 @@ const PayPalIframe = ({
               
               // 🔍 Debug: Verificar valores antes de construir payload mínimo
               const calculatedPriceKey = getPriceKey();
-                isAcademic,
-                academicRole,
-                academicPriceData,
-                finalAmount: AMOUNT,
-                calculatedPriceKey
-              });
               
               // Construir payload mínimo con solo orderID
               const webhookPayload = {
@@ -310,12 +304,6 @@ const PayPalIframe = ({
             const payerName = orderDetails.payer?.name?.given_name + ' ' + orderDetails.payer?.name?.surname;
             const payerId = orderDetails.payer?.payer_id;
 
-              transactionID,
-              payerEmail,
-              paymentAmount,
-              paymentStatus
-            });
-
             if (transactionID) setTransactionId(transactionID);
 
             // 3. Construir payload completo
@@ -325,12 +313,6 @@ const PayPalIframe = ({
 
             // 🔍 Debug: Verificar valores antes de construir payload completo
             const calculatedPriceKey = getPriceKey();
-              isAcademic,
-              academicRole,
-              academicPriceData,
-              finalAmount: AMOUNT,
-              calculatedPriceKey
-            });
 
             const webhookPayload = {
               lead_id: effectiveLeadId,
@@ -449,12 +431,10 @@ const PayPalIframe = ({
           );
         },
 
-        // Callback cuando se hace clic en el botón
         onClick: (data, actions) => {
           return actions.resolve();
         },
 
-        // Callback cuando el botón está listo
         onInit: (data, actions) => {
         }
 

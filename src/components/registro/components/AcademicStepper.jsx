@@ -299,7 +299,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         .maybeSingle();
 
       if (selectError) {
-        console.warn('⚠️ Error checking existing customer:', selectError.message);
+        // Error checking existing customer
       }
 
       if (existingCustomer) {
@@ -343,9 +343,9 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           .eq('customer_id', customerId);
 
         if (updateError) {
-          console.warn('⚠️ Error updating customer:', updateError.message);
+          // Error updating customer
         } else {
-          console.log('✅ Customer updated successfully with metadata:', metadata);
+          // Customer updated successfully
         }
       } else {
         // Cliente no existe, crear nuevo
@@ -372,7 +372,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           .single();
 
         if (insertError) {
-          console.error('❌ Error creating customer:', insertError.message);
           throw new Error(ingles 
             ? 'Failed to create customer. Please try again.' 
             : 'Error al crear el cliente. Por favor intente nuevamente.'
@@ -396,7 +395,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           
           // 🔥 CRÍTICO: Si falla la subida Y es un nuevo customer, BORRARLO
           if (isNewCustomer && customerId) {
-            console.warn('⚠️ Credential upload failed for NEW customer - rolling back...');
             try {
               const { error: deleteError } = await supabase
                 .from('customer')
@@ -404,12 +402,10 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 .eq('customer_id', customerId);
               
               if (deleteError) {
-                console.error('❌ Failed to rollback customer:', deleteError.message);
-              } else {
-                console.log('✅ Customer rollback successful - customer_id', customerId, 'deleted');
+                // Failed to rollback customer
               }
             } catch (rollbackError) {
-              console.error('❌ Rollback error:', rollbackError);
+              // Rollback error
             }
           }
           
@@ -422,7 +418,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
           throw uploadError;
         }
       } else {
-        console.warn('⚠️ No credential file to upload');
+        // No credential file to upload
       }
 
       // 🔥 PASO 3: TODO OK - Customer creado y credencial subida
@@ -452,7 +448,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       setCurrentStep(currentStep + 1);
 
     } catch (error) {
-      console.error('❌ Error during customer creation/upload:', error);
+      // Error during customer creation/upload
       
       // 🔥 Mensaje de error específico según el tipo
       let errorMessage = error.message;
@@ -554,9 +550,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         });
       }
 
-
     } catch (error) {
-      console.error('❌ Error completing academic verification:', error);
+      // Error completing academic verification
     } finally {
       setIsSubmitting(false);
     }
@@ -689,7 +684,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       }
 
     } catch (error) {
-      console.error('❌ [Academic] Error en validación de teléfono:', error);
+      // Error en validación de teléfono
       
       setPhoneValidation({
         isValidating: false,
@@ -1003,13 +998,11 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 value={academicData.role}
                 onChange={(e) => {
                   const selectedRole = e.target.value;
-                  console.log('🎓 ROL ACADÉMICO SELECCIONADO:', selectedRole);
                   setAcademicData({
                     ...academicData,
                     role: selectedRole,
                     isPaquete11: false,
                   });
-                  console.log('📝 academicData.role actualizado a:', selectedRole);
                   if (errors.role) setErrors({ ...errors, role: '' });
                 }}
                 className={`${styles.select} ${
