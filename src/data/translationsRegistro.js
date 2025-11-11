@@ -30,8 +30,8 @@ export const translationsRegistro = {
       academicDescription: "Descuentos exclusivos UVM, UAM o UNAM",
 
       // OPCIÓN 3: Membresía
-      membershipBadge: "Membresía Anual",
-      membershipTitle: "Membresía de la Barra",
+      membershipBadge: "Membresía Anual y Congreso",
+      membershipTitle: "Membresía Anual de la Barra y Congreso (Previa Aprobación)",
       membershipDescription: "Acceso a beneficios exclusivos durante todo el año",
 
       // Botones

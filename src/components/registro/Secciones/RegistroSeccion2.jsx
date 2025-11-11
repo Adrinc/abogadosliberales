@@ -158,7 +158,23 @@ const RegistroSeccion2 = () => {
                   <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
                     <div className={styles.sectionHeader}>
                       <h2 className={styles.sectionTitle}>
-                        {ingles ? 'Membership Payment' : 'Pago de Membresía'}
+                        {ingles ? (
+                          <>
+                            Membership and Congress Payment
+                            <br />
+                            <span style={{ fontSize: '0.875em', fontWeight: 600, color: 'var(--al-gold-primary, #EECB00)' }}>
+                              (Subject to Approval)
+                            </span>
+                          </>
+                        ) : (
+                          <>
+                            Pago de Membresía + Congreso
+                            <br />
+                            <span style={{ fontSize: '0.875em', fontWeight: 600, color: 'var(--al-gold-primary, #EECB00)' }}>
+                              (Previa Aprobación)
+                            </span>
+                          </>
+                        )}
                       </h2>
                       <p className={styles.sectionSubtitle}>
                         {ingles 
