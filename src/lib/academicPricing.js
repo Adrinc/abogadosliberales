@@ -12,10 +12,11 @@
  * 6 → Estudiante Posgrado
  * 7 → Estudiante Licenciatura
  * 
- * Mapeo a price_key (backend):
- * - precio_lista_congreso: $990 MXN (general)
- * - precio_academico: $490 MXN (profesor/posgrado)
- * - precio_estudiante_licenciatura: $250 MXN (licenciatura)
+ * Mapeo a price_key (backend/Stripe):
+ * - precio_lista_congreso: $990 MXN (entrada general)
+ * - precio_prof_estud_pos: $490 MXN (profesor/posgrado - personal académico)
+ * - precio_estudiante_lic: $250 MXN (estudiante licenciatura)
+ * - precio_mem_anual_congreso: $3,850 MXN (membresía anual de la barra)
  */
 
 // Precios base

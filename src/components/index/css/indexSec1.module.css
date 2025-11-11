@@ -97,6 +97,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   animation: badgePulse 2s ease-in-out infinite;
+  text-align: center;
 }
 
 .badgeDot {

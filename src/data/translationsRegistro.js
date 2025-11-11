@@ -147,8 +147,8 @@ export const translationsRegistro = {
             value: "licenciatura", 
             label: "Estudiante de Licenciatura",
             description: "Estudiante activo de pregrado",
-            price: "$250 MXN",
-            discount: "75% descuento"
+            price: "$490 MXN",
+            discount: "50% descuento"
           }
         ],
         paquete11: {
@@ -526,10 +526,17 @@ export const translationsRegistro = {
       benefits: {
         title: "Tu inscripción incluye",
         items: [
-          "Acceso completo a las 2 jornadas del congreso",
+          "Acceso completo a una jornada del congreso",
           "Material didáctico digital (memorias del congreso)",
           "Networking con ponentes y asistentes",
           "Acceso a grupo exclusivo de seguimiento post-congreso"
+        ],
+        membership: [
+          "Acceso completo a una jornada del congreso",
+          "Material didáctico digital (memorias del congreso)",
+          "Networking con ponentes y asistentes",
+          "Acceso a grupo exclusivo de seguimiento post-congreso",
+          "Precio especial por congreso"
         ]
       }
     },
@@ -712,8 +719,8 @@ export const translationsRegistro = {
             value: "licenciatura", 
             label: "Undergraduate Student",
             description: "Active undergraduate student",
-            price: "$250 MXN",
-            discount: "75% discount"
+            price: "$490 MXN",
+            discount: "50% discount"
           }
         ],
         paquete11: {
@@ -925,8 +932,7 @@ export const translationsRegistro = {
       benefits: {
         title: "Your registration includes",
         items: [
-          "Access to all conferences and workshops",
-          "Official participation certificate",
+          "Full access to one day of the conference.",
           "Digital educational materials",
           "Networking with magistrates and litigators",
           "Access to event recordings"
@@ -1184,11 +1190,17 @@ export const translationsRegistro = {
       benefits: {
         title: "Your registration includes",
         items: [
-          "Complete access to both congress days",
+          "Full access to one day of the conference.",
           "Digital educational materials (congress proceedings)",
-          "Coffee breaks",
           "Networking with speakers and attendees",
           "Access to exclusive post-congress follow-up group"
+        ],
+        membership: [
+          "Full access to one day of the conference.",
+          "Digital educational materials (congress proceedings)",
+          "Networking with speakers and attendees",
+          "Access to exclusive post-congress follow-up group",
+          "Special price for congress registration"
         ]
       }
     },

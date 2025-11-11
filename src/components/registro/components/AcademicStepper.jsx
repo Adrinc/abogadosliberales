@@ -68,29 +68,32 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
     error: null
   });
 
-  // Calcular precio en tiempo real
+  // Calcular precio en tiempo real - 🔥 PRECIO FIJO $490 PARA TODOS LOS ROLES ACADÉMICOS
   useEffect(() => {
     if (academicData.university && academicData.role) {
-      const priceData = calculateAcademicPrice({
-        isAcademic: true,
-        university: academicData.university,
-        role: academicData.role,
-        isPaquete11: academicData.isPaquete11,
-        paymentPlan: academicData.paymentPlan,
-      });
+      // 🔥 PRECIO FIJO: $490 para TODOS los roles académicos (profesor, posgrado, licenciatura)
+      const priceData = {
+        finalPrice: 490,
+        basePrice: 990,
+        discount: 500,
+        discountPercentage: 50,
+        monthlyAmount: null,
+        availableMSI: [],
+        appliedDiscounts: ['academic_rate']
+      };
 
       console.log('═══════════════════════════════════════════');
-      console.log('💰 PRECIO ACADÉMICO CALCULADO EN STEPPER');
+      console.log('💰 PRECIO ACADÉMICO FIJO EN STEPPER');
       console.log('═══════════════════════════════════════════');
       console.log('🎓 Universidad:', academicData.university);
       console.log('🎓 Rol:', academicData.role);
-      console.log('💵 Precio Final:', priceData.finalPrice);
-      console.log('💵 Descuento:', priceData.discountPercentage + '%');
+      console.log('💵 Precio Final: $490 MXN (FIJO)');
+      console.log('💵 Descuento: 50%');
       console.log('═══════════════════════════════════════════');
 
       // 🔥 GUARDAR INMEDIATAMENTE EN LOCALSTORAGE
-      localStorage.setItem('lastPaymentAmount', priceData.finalPrice.toFixed(2));
-      console.log('💾 Monto guardado en localStorage:', priceData.finalPrice.toFixed(2));
+      localStorage.setItem('lastPaymentAmount', '490.00');
+      console.log('💾 Monto guardado en localStorage: 490.00');
 
       // Notificar al padre del cambio de precio
       if (onPriceChange) {
@@ -119,10 +122,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
     switch (step) {
       case 1:
-        // 🔥 STEP 1 FUSIONADO: Universidad + Datos Personales + Credencial
-        if (!academicData.university) {
-          newErrors.university = t.step1.error;
-        }
+        // 🔥 STEP 1: Solo Datos Personales (SIN universidad, matrícula ni credencial)
         // Validar datos personales
         if (!academicData.firstName.trim()) {
           newErrors.firstName = t.step3.firstName.error;
@@ -159,6 +159,16 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         } else if (phoneValidation.validationResult && !phoneValidation.validationResult.canProceed) {
           newErrors.phone = phoneValidation.validationResult.message;
         }
+        break;
+
+      case 2:
+        // 🔥 STEP 2: Universidad + Rol Académico + Matrícula + Credencial + CREACIÓN EN BD
+        if (!academicData.university) {
+          newErrors.university = t.step1.error;
+        }
+        if (!academicData.role) {
+          newErrors.role = t.step2.error;
+        }
         // Matrícula obligatoria
         if (!academicData.studentId.trim()) {
           newErrors.studentId = t.step3.studentId.error;
@@ -166,13 +176,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
         // Archivo obligatorio
         if (!selectedFile && !academicData.proofFile) {
           newErrors.proofFile = t.step3.proofFile.error;
-        }
-        break;
-
-      case 2:
-        // 🔥 STEP 2: Rol Académico (antes Step 2)
-        if (!academicData.role) {
-          newErrors.role = t.step2.error;
         }
         break;
 
@@ -519,8 +522,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       return;
     }
 
-    // Si estamos en el paso 1 (universidad + datos personales fusionados), crear customer en BD
-    if (currentStep === 1) {
+    // 🔥 Si estamos en el paso 2 (rol + matrícula + credencial), crear customer en BD
+    if (currentStep === 2) {
       await handleCreateCustomer();
     } else {
       // Para los demás pasos, avanzar normalmente
@@ -700,7 +703,7 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
       } else if (result.founded === true && result.list === 'invitados') {
         try {
           const freeTicketResponse = await fetch(
-            'https://u-n8n.virtalus.cbluna-dev.com/webhook-test/congreso_nacional_free_ticket',
+            'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_free_ticket',
             {
               method: 'POST',
               headers: {
@@ -816,16 +819,18 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
   // Obtener opciones MSI disponibles (no utilizadas en el flujo de pago simplificado, pero se mantiene por compatibilidad)
   const availableMSI = getMSIOptions(academicData.role, academicData.isPaquete11);
 
-  // Calcular precio actual
+  // Calcular precio actual - 🔥 PRECIO FIJO $490 PARA TODOS LOS ROLES ACADÉMICOS
   const currentPrice =
     academicData.university && academicData.role
-      ? calculateAcademicPrice({
-          isAcademic: true,
-          university: academicData.university,
-          role: academicData.role,
-          isPaquete11: academicData.isPaquete11,
-          paymentPlan: academicData.paymentPlan,
-        })
+      ? {
+          finalPrice: 490,
+          basePrice: 990,
+          discount: 500,
+          discountPercentage: 50,
+          monthlyAmount: null,
+          availableMSI: [],
+          appliedDiscounts: ['academic_rate']
+        }
       : null;
 
   return (
@@ -855,62 +860,17 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
 
       {/* Step Content */}
       <div className={styles.stepContent}>
-        {/* STEP 1: Universidad + Datos Personales + Credencial (FUSIONADO) */}
+        {/* STEP 1: Solo Datos Personales (SIN universidad, matrícula ni credencial) */}
         {currentStep === 1 && (
           <div className={styles.step}>
             <h3 className={styles.stepTitle}>
-              {ingles ? 'Personal and Academic Data' : 'Datos Personales y Académicos'}
+              {ingles ? 'Personal Data' : 'Datos Personales'}
             </h3>
             <p className={styles.stepSubtitle}>
               {ingles 
-                ? 'Enter your university, personal information, and upload your credential' 
-                : 'Ingrese su universidad, información personal y suba su credencial'}
+                ? 'Enter your personal information' 
+                : 'Ingrese su información personal'}
             </p>
-
-            {/* Universidad */}
-            <div className={styles.formGroup}>
-              <label className={styles.label} htmlFor="university">
-                {t.step1.label}{' '}
-                <span className={styles.required}>*</span>
-              </label>
-              <select
-                id="university"
-                value={academicData.university}
-                onChange={(e) => {
-                  setAcademicData({ ...academicData, university: e.target.value });
-                  if (errors.university) setErrors({ ...errors, university: '' });
-                }}
-                className={`${styles.select} ${
-                  errors.university ? styles.inputError : ''
-                }`}
-              >
-                <option value="">{t.step1.placeholder}</option>
-                {t.step1.options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-              {errors.university && (
-                <span className={styles.errorText}>{errors.university}</span>
-              )}
-            </div>
-
-            {/* Divisor visual */}
-            <div style={{ 
-              borderTop: '2px solid #E2E8F0', 
-              margin: '2rem 0 1.5rem 0',
-              paddingTop: '1.5rem'
-            }}>
-              <h4 style={{ 
-                fontSize: '1.125rem', 
-                fontWeight: 600, 
-                color: 'var(--al-blue-primary, #020266)',
-                marginBottom: '1.5rem'
-              }}>
-                {ingles ? 'Personal Information' : 'Información Personal'}
-              </h4>
-            </div>
 
             {/* Nombre(s) */}
             <div className={styles.formGroup}>
@@ -1059,6 +1019,113 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
                 </span>
               )}
             </div>
+          </div>
+        )}
+
+        {/* STEP 2: Universidad + Rol Académico + Matrícula + Credencial */}
+        {currentStep === 2 && (
+          <div className={styles.step}>
+            <h3 className={styles.stepTitle}>{t.step2.title}</h3>
+            <p className={styles.stepSubtitle}>{t.step2.subtitle}</p>
+
+            {/* 🔥 NUEVO: Universidad (primer elemento del Step 2) */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="university">
+                {t.step1.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <select
+                id="university"
+                value={academicData.university}
+                onChange={(e) => {
+                  setAcademicData({ ...academicData, university: e.target.value });
+                  if (errors.university) setErrors({ ...errors, university: '' });
+                }}
+                className={`${styles.select} ${
+                  errors.university ? styles.inputError : ''
+                }`}
+              >
+                <option value="">{t.step1.placeholder}</option>
+                {t.step1.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.university && (
+                <span className={styles.errorText}>{errors.university}</span>
+              )}
+            </div>
+
+            {/* Divisor visual */}
+            <div style={{ 
+              borderTop: '2px solid #E2E8F0', 
+              margin: '2rem 0 1.5rem 0',
+              paddingTop: '1.5rem'
+            }}>
+              <h4 style={{ 
+                fontSize: '1.125rem', 
+                fontWeight: 600, 
+                color: 'var(--al-blue-primary, #020266)',
+                marginBottom: '1.5rem'
+              }}>
+                {ingles ? 'Academic Role' : 'Rol Académico'}
+              </h4>
+            </div>
+
+            {/* 🔥 DROPDOWN COMPACTO: Selección de rol académico */}
+            <div className={styles.formGroup}>
+              <label className={styles.label} htmlFor="role">
+                {t.step2.label}{' '}
+                <span className={styles.required}>*</span>
+              </label>
+              <select
+                id="role"
+                value={academicData.role}
+                onChange={(e) => {
+                  const selectedRole = e.target.value;
+                  console.log('🎓 ROL ACADÉMICO SELECCIONADO:', selectedRole);
+                  setAcademicData({
+                    ...academicData,
+                    role: selectedRole,
+                    isPaquete11: false,
+                  });
+                  console.log('📝 academicData.role actualizado a:', selectedRole);
+                  if (errors.role) setErrors({ ...errors, role: '' });
+                }}
+                className={`${styles.select} ${
+                  errors.role ? styles.inputError : ''
+                }`}
+              >
+                <option value="">
+                  {ingles ? 'Select your academic role' : 'Seleccione su rol académico'}
+                </option>
+                {t.step2.options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+              {errors.role && (
+                <span className={styles.errorText}>{errors.role}</span>
+              )}
+            </div>
+
+            {/* Divisor visual para matrícula y credencial */}
+            <div style={{ 
+              borderTop: '2px solid #E2E8F0', 
+              margin: '2rem 0 1.5rem 0',
+              paddingTop: '1.5rem'
+            }}>
+              <h4 style={{ 
+                fontSize: '1.125rem', 
+                fontWeight: 600, 
+                color: 'var(--al-blue-primary, #020266)',
+                marginBottom: '1.5rem'
+              }}>
+                {ingles ? 'Academic Verification' : 'Verificación Académica'}
+              </h4>
+            </div>
 
             {/* Matrícula o Número de empleado */}
             <div className={styles.formGroup}>
@@ -1109,8 +1176,8 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
               </div>
               {selectedFile && (
                 <div className={styles.selectedFile}>
-                  <span className={styles.selectedFileName}>{selectedFile.name}</span>
-                  <span className={styles.selectedFileSize}>
+                  <span className={styles.fileName}>{selectedFile.name}</span>
+                  <span className={styles.fileSize}>
                     ({(selectedFile.size / 1024).toFixed(1)} KB)
                   </span>
                   <button
@@ -1144,84 +1211,6 @@ const AcademicStepper = ({ onComplete, onPriceChange, onPhoneValidation }) => { 
               )}
               {fileError && <span className={styles.errorText}>{fileError}</span>}
             </div>
-          </div>
-        )}
-
-        {/* STEP 2: Rol Académico (antes Step 2) */}
-        {currentStep === 2 && (
-          <div className={styles.step}>
-            <h3 className={styles.stepTitle}>{t.step2.title}</h3>
-            <p className={styles.stepSubtitle}>{t.step2.subtitle}</p>
-
-            <div className={styles.roleOptions}>
-              {t.step2.options.map((option) => (
-                <label
-                  key={option.value}
-                  className={`${styles.roleCard} ${
-                    academicData.role === option.value && !academicData.isPaquete11
-                      ? styles.roleCardActive
-                      : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="role"
-                    value={option.value}
-                    checked={academicData.role === option.value && !academicData.isPaquete11}
-                    onChange={(e) => {
-                      setAcademicData({
-                        ...academicData,
-                        role: e.target.value,
-                        isPaquete11: false,
-                      });
-                      if (errors.role) setErrors({ ...errors, role: '' });
-                    }}
-                    className={styles.roleRadio}
-                  />
-                  <div className={styles.roleContent}>
-                    <div className={styles.roleHeader}>
-                      <span className={styles.roleName}>{option.label}</span>
-                      <span className={styles.roleDiscount}>{option.discount}</span>
-                    </div>
-                    <p className={styles.roleDescription}>{option.description}</p>
-                    <p className={styles.rolePrice}>{option.price}</p>
-                  </div>
-                </label>
-              ))}
-
-              {/* Paquete 11 (solo para profesor y posgrado) - TEMPORALMENTE OCULTO */}
-              {/* {canAccessPaquete11(academicData.role) && (
-                <label
-                  className={`${styles.roleCard} ${styles.roleCardSpecial} ${
-                    academicData.isPaquete11 ? styles.roleCardActive : ''
-                  }`}
-                >
-                  <input
-                    type="radio"
-                    name="paquete11"
-                    checked={academicData.isPaquete11}
-                    onChange={() => {
-                      setAcademicData({
-                        ...academicData,
-                        isPaquete11: !academicData.isPaquete11,
-                      });
-                    }}
-                    className={styles.roleRadio}
-                  />
-                  <div className={styles.roleContent}>
-                    <div className={styles.roleHeader}>
-                      <span className={styles.roleName}>{t.step2.paquete11.label}</span>
-                      <span className={styles.roleDiscount}>{t.step2.paquete11.discount}</span>
-                    </div>
-                    <p className={styles.roleDescription}>{t.step2.paquete11.description}</p>
-                    <p className={styles.rolePrice}>{t.step2.paquete11.price}</p>
-                    <p className={styles.roleHint}>{t.step2.paquete11.hint}</p>
-                  </div>
-                </label>
-              )} */}
-            </div>
-
-            {errors.role && <span className={styles.errorText}>{errors.role}</span>}
           </div>
         )}
 

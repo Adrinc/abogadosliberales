@@ -38,10 +38,10 @@ const ResumenRegistro = ({
     // 🆕 OPCIÓN 3: MEMBRESÍA ANUAL
     displayPrice = 3850;
     priceLabel = ingles ? 'Annual Membership' : 'Membresía Anual';
-  } else if (selectedOption === 2 && academicPriceData) {
-    // 🎓 OPCIÓN 2: ACADÉMICO
-    displayPrice = academicPriceData.finalPrice;
-    priceLabel = ingles ? 'Academic Price' : 'Precio Académico';
+  } else if (selectedOption === 2) {
+    // 🎓 OPCIÓN 2: ACADÉMICO - PRECIO FIJO $490 PARA TODOS LOS ROLES
+    displayPrice = 490;
+    priceLabel = ingles ? 'Academic Registration' : 'Inscripción Académica';
   } else if (selectedOption === 1) {
     // 📋 OPCIÓN 1: GENERAL
     displayPrice = 990;
@@ -194,7 +194,7 @@ const ResumenRegistro = ({
         <div className={styles.benefitsSection}>
           <h3 className={styles.benefitsTitle}>{t.benefits.title}</h3>
           <ul className={styles.benefitsList}>
-            {t.benefits.items.map((benefit, index) => (
+            {(selectedOption === 3 ? t.benefits.membership : t.benefits.items).map((benefit, index) => (
               <li key={index} className={styles.benefitItem}>
         
                 <span>{benefit}</span>

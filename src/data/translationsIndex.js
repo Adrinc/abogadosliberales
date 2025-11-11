@@ -5,7 +5,7 @@ export const translationsIndex = {
   es: {
     // SECCIÓN 1: HERO
     hero: {
-      badge: "EVENTO PRESENCIAL · CUPO LIMITADO",
+      badge: "Congreso Nacional de Amparo y Derechos Humanos",
       academicBadge: "Descuentos académicos disponibles · Hasta 50% para estudiantes UNAM, UVM y UAM",
       title: "Ponte un paso adelante en las estrategias, la jurisprudencia y las nuevas reformas al Juicio de Amparo",
       date: "22 de noviembre · Ciudad de México",
@@ -398,7 +398,7 @@ export const translationsIndex = {
   en: {
     // SECTION 1: HERO
     hero: {
-      badge: "IN-PERSON EVENT · LIMITED CAPACITY",
+      badge: "National Congress of Protection and Human Rights",
       academicBadge: "Academic discounts available · Up to 50% off for UNAM, UVM and UAM students",
       title: "Stay ahead of the curve on strategies, jurisprudence, and new reforms to the Amparo Trial",
       date: "November 22 · Mexico City",

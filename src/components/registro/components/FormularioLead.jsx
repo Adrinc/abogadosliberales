@@ -90,7 +90,8 @@ const FormularioLead = React.forwardRef(({
           },
           body: JSON.stringify({
             phone: phone, // Solo 10 dígitos sin prefijo
-            event_id: 1   // 🔥 CRÍTICO: Siempre enviar event_id
+            event_id: 1,  // 🔥 CRÍTICO: Siempre enviar event_id
+            email: formData.email
           })
         }
       );
@@ -147,7 +148,7 @@ const FormularioLead = React.forwardRef(({
         // 🎟️ Verificar si tiene ticket gratis
         try {
           const freeTicketResponse = await fetch(
-            'https://u-n8n.virtalus.cbluna-dev.com/webhook-test/congreso_nacional_free_ticket',
+            'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_free_ticket',
             {
               method: 'POST',
               headers: {

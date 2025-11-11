@@ -47,25 +47,20 @@ const StripeForm = ({
   
   // 🔥 Mapear tipo de registro a price_key
   const getPriceKey = () => {
-    // PRIORIDAD 1: Membresía anual
+    // PRIORIDAD 1: Membresía anual de la Barra
     if (isMembership) {
-      console.log('🎯 getPriceKey() - Membresía → price_membresia_anual');
-      return 'price_membresia_anual'; // $3,850 MXN
+      console.log('🎯 getPriceKey() - Membresía → precio_mem_anual_congreso');
+      return 'precio_mem_anual_congreso'; // $3,850 MXN
     }
     
-    // PRIORIDAD 2: Académico
+    // PRIORIDAD 2: Académico - 🔥 TODOS LOS ROLES USAN $490 (precio_prof_estud_pos)
     if (isAcademic && academicRole) {
-      if (academicRole === 'licenciatura') {
-        const priceKey = 'precio_estudiante_licenciatura'; // $250 MXN
-        console.log('🎯 getPriceKey() - Licenciatura → precio_estudiante_licenciatura');
-        return priceKey;
-      }
-      const priceKey = 'precio_academico'; // $490 MXN
-      console.log('🎯 getPriceKey() - Académico → precio_academico');
+      const priceKey = 'precio_prof_estud_pos'; // $490 MXN para TODOS (profesor, posgrado, licenciatura)
+      console.log(`🎯 getPriceKey() - Académico (${academicRole}) → precio_prof_estud_pos ($490)`);
       return priceKey;
     }
     
-    // PRIORIDAD 3: General
+    // PRIORIDAD 3: Entrada General
     console.log('🎯 getPriceKey() - General → precio_lista_congreso');
     return 'precio_lista_congreso'; // $990 MXN
   };
