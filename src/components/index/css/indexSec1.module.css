@@ -12,7 +12,7 @@
   justify-content: center;
   overflow: hidden;
   background: #020266;
-/*   margin-top: 80px; */
+  padding-top: 80px; /* 🔥 NUEVO: Espacio para el navbar */
 }
 
 /* Video de fondo */
@@ -462,7 +462,7 @@
 @media (min-width: 901px) and (max-width: 1440px) {
   .heroSection {
     min-height: 85vh; /* Reducido de 100vh a 85vh */
-    margin-top: 70px; /* Ajustado al nuevo navbar compacto */
+    padding-top: 90px; /* 🔥 Cambiado de margin-top a padding-top */
   }
 
   .heroContainer {
@@ -597,6 +597,149 @@
   .scrollIcon {
     width: 20px;
     height: 32px;
+  }
+}
+
+/* 🔥 NUEVO: Media query para pantallas con poca altura (900p, 768p, etc.) */
+@media (max-height: 900px) {
+  .heroSection {
+    min-height: auto;
+    padding-top: 90px; /* Más espacio para el navbar */
+    padding-bottom: 2rem;
+  }
+
+  .heroContainer {
+    padding: 1rem;
+  }
+
+  .heroCard {
+    padding: 1.5rem 1.75rem; /* Reducir padding interno */
+  }
+
+  .badgeWrapper {
+    margin-bottom: 0.75rem;
+  }
+
+  .badge {
+    padding: 0.35rem 1rem;
+    font-size: 0.65rem;
+  }
+
+  .academicBadgeWrapper {
+    margin-bottom: 1rem;
+  }
+
+  .academicBadge {
+    padding: 0.5rem 1.25rem;
+    font-size: 0.75rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+    margin-bottom: 0.75rem;
+  }
+
+  .heroDescription {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+
+  .eventInfo {
+    margin-bottom: 0.75rem;
+  }
+
+  .infoItem {
+    padding: 0.5rem 1.15rem;
+  }
+
+  .ctaGroup {
+    margin-bottom: 1rem;
+    gap: 0.75rem;
+  }
+
+  .ctaPrimary,
+  .ctaSecondary {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .priceTag {
+    padding: 0.7rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .priceAmount {
+    font-size: 1.5rem;
+  }
+
+  .trustSignals {
+    padding-top: 1rem;
+    gap: 1.25rem;
+  }
+
+  .trustIcon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .trustItem span {
+    font-size: 0.7rem;
+  }
+
+  .scrollIndicator {
+    bottom: 1rem;
+  }
+}
+
+/* 🔥 NUEVO: Para pantallas muy bajas (720p) - aún más compacto */
+@media (max-height: 768px) {
+  .heroSection {
+    padding-top: 100px;
+    padding-bottom: 1.5rem;
+  }
+
+  .heroCard {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .badgeWrapper {
+    margin-bottom: 0.5rem;
+  }
+
+  .academicBadgeWrapper {
+    margin-bottom: 0.75rem;
+  }
+
+  .heroTitle {
+    font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .heroDescription {
+    font-size: 0.9rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .eventInfo {
+    margin-bottom: 0.5rem;
+  }
+
+  .ctaGroup {
+    margin-bottom: 0.75rem;
+  }
+
+  .priceTag {
+    margin-bottom: 0.75rem;
+  }
+
+  .trustSignals {
+    padding-top: 0.75rem;
+    gap: 1rem;
+  }
+
+  .scrollIndicator {
+    display: none; /* Ocultar en pantallas muy bajas */
   }
 }
 
