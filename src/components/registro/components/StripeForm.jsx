@@ -49,7 +49,7 @@ const StripeForm = ({
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
-  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order_test';
+  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order';
   
   // 🔥 Mapear tipo de registro a price_key
   const getPriceKey = () => {

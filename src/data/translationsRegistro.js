@@ -36,7 +36,7 @@ export const translationsRegistro = {
 
       // OPCIÓN 4: Miembros Activos
       activeMemberBadge: "MEMBRESÍA ACTIVA",
-      activeMemberTitle: "Miembros de la Barra Activos",
+      activeMemberTitle: "Miembros de la Barra Activos (Previa Aprobación)",
       activeMemberDescription: "Tarifa especial para miembros activos",
 
       // Botones
@@ -82,7 +82,7 @@ export const translationsRegistro = {
           badge: "Acceso VIP"
         },
         barristaActivo: {
-          title: "⚖️ Miembro de la Barra",
+          title: "⚖️ Miembro de la Barra (Previa validación)",
           message: "Eres miembro activo o inactivo. Solo pagas la anualidad del congreso.",
           price: "$3,850 MXN",
           badge: "Anualidad 2do año en adelante",
@@ -620,7 +620,7 @@ export const translationsRegistro = {
 
       // OPTION 4: Active Members
       activeMemberBadge: "ACTIVE MEMBERSHIP",
-      activeMemberTitle: "Active Bar Members",
+      activeMemberTitle: "Active Bar Members (Subject to Approval)",
       activeMemberDescription: "Special rate for active members",
 
       // Buttons
