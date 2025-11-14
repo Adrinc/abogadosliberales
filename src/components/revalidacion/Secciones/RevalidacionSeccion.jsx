@@ -46,7 +46,7 @@ const RevalidacionSeccion = () => {
         setRejectedType(rejectedTypeParam);
 
         const hasParams = !!(customerIdParam && rejectedTypeParam);
-        const isValid = rejectedTypeParam === 'credential' || rejectedTypeParam === 'receipt';
+        const isValid = rejectedTypeParam === 'credential' || rejectedTypeParam === 'receipt' || rejectedTypeParam === 'comprobante_membresia';
 
         setHasRequiredParams(hasParams);
         setIsValidRejectedType(isValid);
@@ -280,11 +280,38 @@ const RevalidacionSeccion = () => {
           }
         };
 
-        console.log('🧾 Payload para comprobante:', {
+     
+
+      } else if (rejectedType === 'comprobante_membresia') {
+        // 🏛️ COMPROBANTE DE MEMBRESÍA RECHAZADO - Usar congreso_nacional_upload_comprobante_membresia
+        webhookUrl = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_upload_comprobante_membresia';
+        
+        payload = {
+          customer_id: parseInt(customerId, 10), // ✅ Número puro
+          event_id: 1, // Congreso Nacional de Amparo
+          file: {
+            file_name: `membership_proof_revalidation_${customerId}`,
+            file_bucket: 'customer_document',
+            file_route: `membership_proofs/${customerId}`,
+            file_title: 'Comprobante de Membresía Re-subido',
+            file_description: 'Comprobante de membresía re-subido después de rechazo',
+            metadata_json: {
+              customer_id: parseInt(customerId, 10),
+              upload_source: 'revalidation_page',
+              original_file_name: file.name,
+              file_type: file.type,
+              file_size: file.size,
+              uploaded_at: new Date().toISOString(),
+              is_reupload: true // ✅ Marcar como re-subida
+            },
+            media_category_id: 8, // Categoría de comprobantes de membresía
+            file: base64File // String base64 puro
+          }
+        };
+
+        console.log('🏛️ Payload para comprobante de membresía:', {
           customer_id: payload.customer_id,
           event_id: payload.event_id,
-          amount: payload.amount, // 🔥 IMPORTANTE: Verificar que se envíe
-          customer_category_fk: customerCategoryFk,
           file: {
             ...payload.file,
             file: `[base64 string with ${base64File.length} characters]`
@@ -421,14 +448,14 @@ const RevalidacionSeccion = () => {
             <p className={styles.footerText}>{content.footer}</p>
 
             {/* Debug Info (Solo en desarrollo) */}
-            <div className={styles.debugInfo}>
+      {/*       <div className={styles.debugInfo}>
               <small>
                 🔧 Debug: Customer ID = {customerId} | Rejected Type = {rejectedType}
               </small>
               <small>
                 📡 Webhook: [PENDIENTE - Integración con n8n]
               </small>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
