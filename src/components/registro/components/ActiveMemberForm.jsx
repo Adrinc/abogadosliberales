@@ -19,6 +19,7 @@ const ActiveMemberForm = ({ onSubmit, onPhoneValidation }) => {
 
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
   
   // Estados para validación de teléfono
   const [phoneValidation, setPhoneValidation] = useState({
@@ -368,9 +369,17 @@ const ActiveMemberForm = ({ onSubmit, onPhoneValidation }) => {
         onSubmit({
           name: `${formData.first_name} ${formData.last_name}`,
           email: formData.email,
-          phone: formData.mobile_phone
+          phone: formData.mobile_phone,
+          mobile_phone: formData.mobile_phone,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          customer_id: customerId,
+          status: 'Lead'
         }, customerId);
       }
+
+      console.log('✅ [ActiveMember] Formulario completado exitosamente');
+      setIsCompleted(true);
 
     } catch (error) {
       console.error('❌ [ActiveMember] Error en submit:', error);
@@ -383,6 +392,23 @@ const ActiveMemberForm = ({ onSubmit, onPhoneValidation }) => {
       setIsSubmitting(false);
     }
   };
+
+  // Mostrar banner de completado (igual que FormularioLead)
+  if (isCompleted) {
+    return (
+      <div className={styles.completedBanner}>
+        <div className={styles.completedIcon}>✓</div>
+        <div>
+          <h3 className={styles.completedTitle}>
+            {ingles ? 'Information Saved' : 'Información guardada'}
+          </h3>
+          <p className={styles.completedText}>
+            {formData.first_name} {formData.last_name} - {formData.email}
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className={styles.formContainer}>
