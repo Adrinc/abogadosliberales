@@ -12,7 +12,9 @@ const StripeForm = ({
   isAcademic = false,
   academicRole = null, // Para determinar price_key académico
   isMembership = false, // 🆕 Flag de membresía anual
-  membershipPrice = 3850 // 🆕 Precio de membresía
+  membershipPrice = 3850, // 🆕 Precio de membresía
+  isActiveMember = false, // 🆕 Flag de miembro activo
+  activeMemberPrice = 490 // 🆕 Precio de miembro activo
 }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRegistro.en : translationsRegistro.es;
@@ -22,7 +24,9 @@ const StripeForm = ({
     isAcademic, 
     academicRole, 
     isMembership, 
-    membershipPrice 
+    membershipPrice,
+    isActiveMember,
+    activeMemberPrice
   });
   
   const [isProcessing, setIsProcessing] = useState(false);
@@ -32,18 +36,20 @@ const StripeForm = ({
   // Constantes del evento
   const EVENT_ID = 1; // ID del Congreso Nacional de Amparo
   
-  // 🔥 Calcular monto dinámico (membresía, académico o general)
+  // 🔥 Calcular monto dinámico (membresía, académico, miembro activo o general)
   let finalAmount = 990; // Default: General
   
   if (isMembership) {
     finalAmount = membershipPrice; // Membresía: $3,850
+  } else if (isActiveMember) {
+    finalAmount = activeMemberPrice; // Miembro Activo: $490
   } else if (academicPriceData && isAcademic) {
     finalAmount = academicPriceData.finalPrice; // Académico: $250-$490
   }
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
-  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order';
+  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order_test';
   
   // 🔥 Mapear tipo de registro a price_key
   const getPriceKey = () => {
@@ -53,14 +59,20 @@ const StripeForm = ({
       return 'precio_mem_anual_congreso'; // $3,850 MXN
     }
     
-    // PRIORIDAD 2: Académico - 🔥 TODOS LOS ROLES USAN $490 (precio_prof_estud_pos)
+    // PRIORIDAD 2: Miembro Activo de la Barra
+    if (isActiveMember) {
+      console.log('🎯 getPriceKey() - Miembro Activo → precio_miembro_barra_activo');
+      return 'precio_miembro_barra_activo'; // $490 MXN
+    }
+    
+    // PRIORIDAD 3: Académico - 🔥 TODOS LOS ROLES USAN $490 (precio_prof_estud_pos)
     if (isAcademic && academicRole) {
       const priceKey = 'precio_prof_estud_pos'; // $490 MXN para TODOS (profesor, posgrado, licenciatura)
       console.log(`🎯 getPriceKey() - Académico (${academicRole}) → precio_prof_estud_pos ($490)`);
       return priceKey;
     }
     
-    // PRIORIDAD 3: Entrada General
+    // PRIORIDAD 4: Entrada General
     console.log('🎯 getPriceKey() - General → precio_lista_congreso');
     return 'precio_lista_congreso'; // $990 MXN
   };
@@ -83,16 +95,16 @@ const StripeForm = ({
 
       // 2. Construir URLs de éxito y cancelación
       // 🔥 Redirigir según tipo de compra:
-      // - ACADÉMICO → /validacion (siempre requiere validación manual)
+      // - ACADÉMICO o MIEMBRO ACTIVO → /validacion (requiere validación manual)
       // - GENERAL → /confirmacion (pago confirmado inmediatamente)
-      const successUrl = isAcademic
+      const successUrl = (isAcademic || isActiveMember)
         ? `${window.location.origin}/validacion?lead_id=${leadId}&method=stripe&status=pending`
         : `${window.location.origin}/confirmacion?lead_id=${leadId}&method=stripe&status=confirmed`;
       
       const cancelUrl = window.location.href; // Volver a la página actual
 
       console.log('🔗 Success URL:', successUrl);
-      console.log('🎓 isAcademic:', isAcademic, '→ Ruta:', isAcademic ? '/validacion' : '/confirmacion');
+      console.log('🎓 isAcademic:', isAcademic, 'isActiveMember:', isActiveMember, '→ Ruta:', (isAcademic || isActiveMember) ? '/validacion' : '/confirmacion');
 
       // 3. Construir payload para n8n
       const priceKey = getPriceKey();

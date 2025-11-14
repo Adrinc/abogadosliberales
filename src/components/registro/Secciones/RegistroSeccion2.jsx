@@ -5,6 +5,7 @@ import { translationsRegistro } from '../../../data/translationsRegistro';
 import SelectionCards from '../components/SelectionCards';
 import AcademicStepper from '../components/AcademicStepper';
 import FormularioLead from '../components/FormularioLead';
+import ActiveMemberForm from '../components/ActiveMemberForm';
 import StripeForm from '../components/StripeForm';
 import ResumenRegistro from '../ResumenRegistro';
 import styles from '../css/registroSeccion2.module.css';
@@ -45,6 +46,10 @@ const RegistroSeccion2 = () => {
     } else if (selectedOption === 3) {
       localStorage.setItem('lastPaymentAmount', '3850.00');
       localStorage.setItem('isAcademicPurchase', 'false');
+    } else if (selectedOption === 4) {
+      localStorage.setItem('lastPaymentAmount', '490.00');
+      localStorage.setItem('isAcademicPurchase', 'false');
+      localStorage.setItem('isActiveMemberPurchase', 'true');
     }
   }, [selectedOption]);
 
@@ -191,6 +196,44 @@ const RegistroSeccion2 = () => {
                       academicRole={null}
                       isMembership={true}
                       membershipPrice={3850}
+                    />
+                  </div>
+                )}
+              </>
+            )}
+
+            {selectedOption === 4 && (
+              <>
+                <div className={`${styles.formCard} ${isVisible ? styles.fadeInLeft : ''}`}>
+                  <ActiveMemberForm
+                    onSubmit={handleLeadSubmit}
+                    onPhoneValidation={handlePhoneValidation}
+                  />
+                </div>
+
+                {leadData && (
+                  <div className={`${styles.paymentFormCard} ${styles.fadeInLeft}`} style={{ animationDelay: '0.2s' }}>
+                    <div className={styles.sectionHeader}>
+                      <h2 className={styles.sectionTitle}>
+                        {ingles 
+                          ? 'Active Member Registration Payment' 
+                          : 'Pago de Inscripción - Miembro Activo'}
+                      </h2>
+                      <p className={styles.sectionSubtitle}>
+                        {ingles 
+                          ? 'Special rate for active bar members' 
+                          : 'Tarifa especial para miembros activos de la barra'}
+                      </p>
+                    </div>
+                    
+                    <StripeForm 
+                      leadId={leadId} 
+                      leadData={leadData}
+                      academicPriceData={null}
+                      isAcademic={false}
+                      academicRole={null}
+                      isActiveMember={true}
+                      activeMemberPrice={490}
                     />
                   </div>
                 )}

@@ -1,0 +1,350 @@
+/* activeMemberForm.module.css - Estilos para el formulario de Miembros Activos */
+
+.formContainer {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 12px rgba(2, 2, 102, 0.08);
+}
+
+.header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.formTitle {
+  font-size: clamp(1.5rem, 2.5vw, 1.875rem);
+  font-weight: 700;
+  color: var(--al-blue-primary, #020266);
+  line-height: 1.25;
+  margin-bottom: 0;
+}
+
+.formSubtitle {
+  font-size: 1rem;
+  color: var(--al-text-secondary, #4A5568);
+  margin-top: 0.5rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gridRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.label {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--al-text-primary, #1A202C);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  letter-spacing: 0.01em;
+}
+
+.required {
+  color: #DC2626;
+  font-size: 1.125rem;
+  line-height: 1;
+}
+
+.hint {
+  font-size: 0.8125rem;
+  color: var(--al-text-secondary, #4A5568);
+  font-style: italic;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--al-border-light, #E2E8F0);
+  border-radius: 8px;
+  font-size: 1rem;
+  color: var(--al-text-primary, #1A202C);
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--al-blue-primary, #020266);
+  box-shadow: 0 0 0 3px rgba(2, 2, 102, 0.1);
+}
+
+.input::placeholder {
+  color: #A0AEC0;
+}
+
+.inputError {
+  border-color: #E53E3E;
+}
+
+.errorText {
+  font-size: 0.8125rem;
+  color: #DC2626;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.errorText::before {
+  content: '⚠';
+  font-size: 1rem;
+}
+
+.successText {
+  font-size: 0.8125rem;
+  color: #059669;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.phoneValidating {
+  font-size: 0.8125rem;
+  color: var(--al-blue-primary, #020266);
+  font-weight: 600;
+  margin-top: 0.25rem;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Estilos para input de teléfono con prefijo +52 */
+.phoneInputWrapper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+
+.phonePrefix {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--al-blue-primary, #020266);
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 0.875rem 1rem;
+  border: 2px solid var(--al-blue-primary, #020266);
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  min-width: 60px;
+  letter-spacing: 0.02em;
+}
+
+.phoneInput {
+  flex: 1;
+  border-radius: 0 8px 8px 0 !important;
+  border-left: none !important;
+  padding-left: 1rem !important;
+}
+
+.phoneInput:focus {
+  border-color: var(--al-blue-primary, #020266) !important;
+  box-shadow: 0 0 0 3px rgba(2, 2, 102, 0.1) !important;
+}
+
+/* File input */
+.fileInput {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.fileInputHidden {
+  display: none;
+}
+
+.fileInputLabel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  border: 2px dashed var(--al-border-light, #E2E8F0);
+  border-radius: 12px;
+  background: var(--al-bg-light, #F8FAFC);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fileInputLabel:hover {
+  border-color: var(--al-blue-primary, #020266);
+  background: rgba(2, 2, 102, 0.02);
+}
+
+.fileInputIcon {
+  font-size: 1.5rem;
+}
+
+.fileInputText {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--al-blue-primary, #020266);
+}
+
+/* File preview */
+.filePreview {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+  border: 2px solid var(--al-border-light, #E2E8F0);
+  border-radius: 12px;
+  background: var(--al-bg-light, #F8FAFC);
+}
+
+.previewImage {
+  width: 100%;
+  max-height: 300px;
+  object-fit: contain;
+  border-radius: 8px;
+  border: 1px solid var(--al-border-light, #E2E8F0);
+}
+
+.fileInfo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fileName {
+  font-size: 0.875rem;
+  color: var(--al-text-secondary, #4A5568);
+  word-break: break-word;
+  flex: 1;
+}
+
+.removeButton {
+  padding: 0.5rem 1rem;
+  background: #E53E3E;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.removeButton:hover {
+  background: #C53030;
+  transform: translateY(-1px);
+}
+
+/* Submit button */
+.submitButton {
+  width: 100%;
+  padding: 1rem 2rem;
+  background: var(--al-blue-primary, #020266);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1.125rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submitButton:hover:not(:disabled) {
+  background: var(--al-gold-primary, #EECB00);
+  color: var(--al-blue-primary, #020266);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(238, 203, 0, 0.3);
+}
+
+.submitButton:disabled,
+.submitButtonDisabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.submitError {
+  padding: 1rem;
+  background: rgba(229, 62, 62, 0.1);
+  border: 1px solid #E53E3E;
+  border-radius: 8px;
+  color: #E53E3E;
+  font-size: 0.9375rem;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .formContainer {
+    padding: 1.5rem;
+  }
+
+  .gridRow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .form {
+    gap: 1.25rem;
+  }
+
+  .submitButton {
+    padding: 0.875rem 1.5rem;
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .formContainer {
+    padding: 1.25rem;
+    border-radius: 12px;
+  }
+
+  .formTitle {
+    font-size: 1.5rem;
+  }
+
+  .formSubtitle {
+    font-size: 0.9375rem;
+  }
+
+  .fileInputLabel {
+    padding: 1.25rem;
+  }
+
+  .previewImage {
+    max-height: 200px;
+  }
+}

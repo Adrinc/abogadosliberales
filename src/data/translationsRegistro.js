@@ -34,6 +34,11 @@ export const translationsRegistro = {
       membershipTitle: "Membresía Anual de la Barra y Congreso (Previa Aprobación)",
       membershipDescription: "Acceso a beneficios exclusivos durante todo el año",
 
+      // OPCIÓN 4: Miembros Activos
+      activeMemberBadge: "MEMBRESÍA ACTIVA",
+      activeMemberTitle: "Miembros de la Barra Activos",
+      activeMemberDescription: "Tarifa especial para miembros activos",
+
       // Botones
       buttonSelect: "Seleccionar",
       buttonSelected: "✓ Seleccionado"
@@ -537,6 +542,13 @@ export const translationsRegistro = {
           "Networking con ponentes y asistentes",
           "Acceso a grupo exclusivo de seguimiento post-congreso",
           "Precio especial por congreso"
+        ],
+        activeMember: [
+          "Acceso completo a una jornada del congreso",
+          "Material didáctico digital (memorias del congreso)",
+          "Networking con ponentes y asistentes",
+          "Acceso a grupo exclusivo de seguimiento post-congreso",
+          "Precio especial por congreso"
         ]
       }
     },
@@ -605,6 +617,11 @@ export const translationsRegistro = {
       membershipBadge: "Annual Membership",
       membershipTitle: "Bar Membership",
       membershipDescription: "Access to exclusive benefits throughout the year",
+
+      // OPTION 4: Active Members
+      activeMemberBadge: "ACTIVE MEMBERSHIP",
+      activeMemberTitle: "Active Bar Members",
+      activeMemberDescription: "Special rate for active members",
 
       // Buttons
       buttonSelect: "Select",
@@ -1196,6 +1213,13 @@ export const translationsRegistro = {
           "Access to exclusive post-congress follow-up group"
         ],
         membership: [
+          "Full access to one day of the conference.",
+          "Digital educational materials (congress proceedings)",
+          "Networking with speakers and attendees",
+          "Access to exclusive post-congress follow-up group",
+          "Special price for congress registration"
+        ],
+        activeMember: [
           "Full access to one day of the conference.",
           "Digital educational materials (congress proceedings)",
           "Networking with speakers and attendees",

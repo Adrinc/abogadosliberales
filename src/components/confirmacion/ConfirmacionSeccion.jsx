@@ -184,10 +184,12 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           }
           console.log('═══════════════════════════════════════════');
         } else {
-          // 🎓 FLUJO SIN QR: Compra académica O transferencia bancaria
+          // 🎓 FLUJO SIN QR: Compra académica O miembro activo O transferencia bancaria
           console.log('═══════════════════════════════════════════');
           if (isAcademicPurchase) {
             console.log('🎓 COMPRA ACADÉMICA DETECTADA');
+          } else if (isActiveMemberPurchase) {
+            console.log('🏛️ COMPRA DE MIEMBRO ACTIVO DETECTADA');
           } else {
             console.log('🏦 TRANSFERENCIA BANCARIA DETECTADA');
           }
@@ -352,7 +354,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
           'lastTransactionId',
           'stripeAccessUrl',
           'lastWebhookResponse', // 🔥 Limpiar QR URL
-          'isAcademicPurchase' // 🎓 Estado de compra académica
+          'isAcademicPurchase', // 🎓 Estado de compra académica
+          'isActiveMemberPurchase' // 🏛️ Estado de compra miembro activo
         ];
         
         keysToClean.forEach(key => {
@@ -638,9 +641,11 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
   const isConfirmed = status === 'confirmed';
   const isPending = status === 'pending';
   
-  // 🎓 LEER ESTADO ACADÉMICO para condicionales de renderizado
+  // 🎓 LEER ESTADO ACADÉMICO Y MIEMBRO ACTIVO para condicionales de renderizado
   const isAcademicPurchase = localStorage.getItem('isAcademicPurchase') === 'true';
+  const isActiveMemberPurchase = localStorage.getItem('isActiveMemberPurchase') === 'true';
   console.log('🎓 Renderizado - isAcademicPurchase:', isAcademicPurchase);
+  console.log('🏛️ Renderizado - isActiveMemberPurchase:', isActiveMemberPurchase);
 
   return (
     <div className={styles.container}>
@@ -851,8 +856,8 @@ const ConfirmacionSeccion = ({ transactionId, leadId, paymentMethod, status, has
         )}
 
         {/* 🔄 Botón de Reintentar si NO hay QR después de agotar intentos automáticos */}
-        {/* ⚠️ SOLO para compras que DEBERÍAN tener QR: General (NO académica) + Stripe */}
-        {!isAcademicPurchase && paymentData?.payment_method === 'stripe' && !ticketQRUrl && retryCount >= 5 && (
+        {/* ⚠️ SOLO para compras que DEBERÍAN tener QR: General (NO académica ni miembro activo) + Stripe */}
+        {!isAcademicPurchase && !isActiveMemberPurchase && paymentData?.payment_method === 'stripe' && !ticketQRUrl && retryCount >= 5 && (
           <div className={styles.retryBox}>
             <div className={styles.retryIcon}>⏳</div>
             <h3 className={styles.retryTitle}>

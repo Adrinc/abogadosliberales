@@ -29,6 +29,13 @@ const SelectionCards = ({ selectedOption, onSelectOption }) => {
       badge: t.selectionCards.membershipBadge,
       title: t.selectionCards.membershipTitle,
       description: t.selectionCards.membershipDescription
+    },
+    {
+      id: 4,
+      icon: '🏛️',
+      badge: t.selectionCards.activeMemberBadge,
+      title: t.selectionCards.activeMemberTitle,
+      description: t.selectionCards.activeMemberDescription
     }
   ];
 

@@ -46,6 +46,10 @@ const ResumenRegistro = ({
     // 📋 OPCIÓN 1: GENERAL
     displayPrice = 990;
     priceLabel = ingles ? 'General Registration' : 'Inscripción General';
+  } else if (selectedOption === 4) {
+    // 🏛️ OPCIÓN 4: MIEMBRO ACTIVO 
+    displayPrice = 490;
+    priceLabel = ingles ? 'Active Member Registration' : 'Inscripción Miembro Activo';
   }
 
   const formattedPrice = formatPrice(displayPrice);
@@ -194,7 +198,10 @@ const ResumenRegistro = ({
         <div className={styles.benefitsSection}>
           <h3 className={styles.benefitsTitle}>{t.benefits.title}</h3>
           <ul className={styles.benefitsList}>
-            {(selectedOption === 3 ? t.benefits.membership : t.benefits.items).map((benefit, index) => (
+            {(selectedOption === 3 || selectedOption === 4 
+              ? t.benefits.activeMember 
+              : t.benefits.items
+            ).map((benefit, index) => (
               <li key={index} className={styles.benefitItem}>
         
                 <span>{benefit}</span>

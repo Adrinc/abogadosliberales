@@ -52,7 +52,7 @@ const StripeModal = ({
   
   const AMOUNT = finalAmount.toFixed(2);
   const CURRENCY = 'MXN';
-  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order';
+  const WEBHOOK_URL = 'https://u-n8n.virtalus.cbluna-dev.com/webhook/congreso_nacional_stripe_create_order_test';
   
   // 🔥 Mapear rol académico a price_key
   const getPriceKey = () => {
