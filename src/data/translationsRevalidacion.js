@@ -77,6 +77,35 @@ export const translationsRevalidacion = {
       footer: 'Recibirá un correo electrónico en las próximas 24-48 horas con la confirmación una vez validado su pago.'
     },
 
+    // Pantalla principal - Comprobante de Membresía
+    comprobante_membresia: {
+      badge: 'Verificación Requerida',
+      title: 'Verificación de Comprobante de Membresía',
+      subtitle: 'Su comprobante de membresía no pudo ser validado',
+      description: 'Por favor, suba una imagen clara del comprobante de membresía activa de la Barra Mexicana de Abogados Liberales.',
+      requirements: {
+        title: 'Requisitos de la imagen:',
+        items: [
+          'Comprobante de membresía activa',
+          'Nombre completo visible',
+          'Monto: $490 MXN',
+          'Vigencia actual',
+          'Formato: JPG, PNG o PDF',
+          'Tamaño máximo: 5MB'
+        ]
+      },
+      fileUploader: {
+        placeholder: 'Cargar comprobante de membresía',
+        dragText: 'Arrastra tu comprobante aquí',
+        orText: 'o haz clic para seleccionar',
+        formats: 'JPG, PNG, PDF (máx. 5MB)',
+        changeButton: 'Cambiar archivo'
+      },
+      submitButton: 'Enviar para Validación',
+      submittingButton: 'Enviando...',
+      footer: 'Recibirá un correo electrónico en las próximas 24-48 horas con la confirmación una vez validada su membresía.'
+    },
+
     // Pantalla de éxito
     success: {
       icon: '✅',
@@ -176,6 +205,35 @@ export const translationsRevalidacion = {
       submitButton: 'Submit for Validation',
       submittingButton: 'Submitting...',
       footer: 'You will receive an email within 24-48 hours with confirmation once your payment is validated.'
+    },
+
+    // Main screen - Membership Proof
+    comprobante_membresia: {
+      badge: 'Verification Required',
+      title: 'Membership Proof Verification',
+      subtitle: 'Your membership proof could not be validated',
+      description: 'Please upload a clear image of your active membership proof from the Barra Mexicana de Abogados Liberales.',
+      requirements: {
+        title: 'Image requirements:',
+        items: [
+          'Active membership proof',
+          'Full name visible',
+          'Amount: $490 MXN',
+          'Current validity',
+          'Format: JPG, PNG or PDF',
+          'Maximum size: 5MB'
+        ]
+      },
+      fileUploader: {
+        placeholder: 'Upload membership proof',
+        dragText: 'Drag your proof here',
+        orText: 'or click to select',
+        formats: 'JPG, PNG, PDF (max. 5MB)',
+        changeButton: 'Change file'
+      },
+      submitButton: 'Submit for Validation',
+      submittingButton: 'Submitting...',
+      footer: 'You will receive an email within 24-48 hours with confirmation once your membership is validated.'
     },
 
     // Success screen

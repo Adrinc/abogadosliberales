@@ -8,9 +8,17 @@ const RevalidacionSuccess = ({ rejectedType }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRevalidacion.en : translationsRevalidacion.es;
 
-  const message = rejectedType === 'credential' 
-    ? t.success.credentialMessage 
-    : t.success.receiptMessage;
+  // Determinar mensaje según tipo de rechazo
+  let message;
+  if (rejectedType === 'credential') {
+    message = t.success.credentialMessage;
+  } else if (rejectedType === 'comprobante_membresia') {
+    message = ingles 
+      ? 'Your membership proof has been received and is being validated by our team.'
+      : 'Su comprobante de membresía ha sido recibido y está siendo validado por nuestro equipo.';
+  } else {
+    message = t.success.receiptMessage;
+  }
 
   return (
     <section className={styles.successSection}>

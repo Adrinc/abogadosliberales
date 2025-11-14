@@ -158,7 +158,14 @@ const RevalidacionSeccion = () => {
   }
 
   // Obtener traducciones según tipo de rechazo
-  const content = rejectedType === 'credential' ? t.credential : t.receipt;
+  let content;
+  if (rejectedType === 'credential') {
+    content = t.credential;
+  } else if (rejectedType === 'comprobante_membresia') {
+    content = t.comprobante_membresia;
+  } else {
+    content = t.receipt;
+  }
 
   // Handler para cambio de archivo
   const handleFileChange = (newFile) => {

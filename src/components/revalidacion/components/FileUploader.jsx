@@ -7,7 +7,16 @@ import styles from '../css/fileUploader.module.css';
 const FileUploader = ({ file, filePreview, onFileChange, rejectedType }) => {
   const ingles = useStore(isEnglish);
   const t = ingles ? translationsRevalidacion.en : translationsRevalidacion.es;
-  const content = rejectedType === 'credential' ? t.credential : t.receipt;
+  
+  // Determinar contenido según tipo de rechazo
+  let content;
+  if (rejectedType === 'credential') {
+    content = t.credential;
+  } else if (rejectedType === 'comprobante_membresia') {
+    content = t.comprobante_membresia;
+  } else {
+    content = t.receipt;
+  }
 
   const fileInputRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
