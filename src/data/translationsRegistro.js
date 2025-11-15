@@ -36,7 +36,7 @@ export const translationsRegistro = {
 
       // OPCIÓN 4: Miembros Activos
       activeMemberBadge: "MEMBRESÍA ACTIVA",
-      activeMemberTitle: "Miembros de la Barra Activos (Previa Aprobación)",
+      activeMemberTitle: "Entrada para Miembros activos (Previa Aprobación)",
       activeMemberDescription: "Tarifa especial para miembros activos",
 
       // Botones
@@ -620,7 +620,7 @@ export const translationsRegistro = {
 
       // OPTION 4: Active Members
       activeMemberBadge: "ACTIVE MEMBERSHIP",
-      activeMemberTitle: "Active Bar Members (Subject to Approval)",
+      activeMemberTitle: "Entry for Active Members (Subject to Approval)",
       activeMemberDescription: "Special rate for active members",
 
       // Buttons
