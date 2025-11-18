@@ -337,29 +337,90 @@ const ActiveMemberForm = ({ onSubmit, onPhoneValidation }) => {
     setIsSubmitting(true);
 
     try {
-      console.log('📝 [ActiveMember] Creando customer en Supabase...');
+      console.log('📝 [ActiveMember] Verificando si el email ya existe...');
 
-      // Crear customer en Supabase
-      const { data: customer, error: customerError } = await supabase
+      // 1️⃣ Verificar si el email ya existe
+      const { data: existingCustomer, error: selectError } = await supabase
         .from('customer')
-        .insert({
-          first_name: formData.first_name,
-          last_name: formData.last_name,
-          email: formData.email,
-          mobile_phone: formData.mobile_phone,
-          customer_category_fk: 4, // Miembro Barra
-          status: 'Lead',
-          organization_fk: 14
-        })
-        .select('customer_id')
-        .single();
+        .select('customer_id, email, status')
+        .eq('email', formData.email)
+        .limit(1)
+        .maybeSingle();
 
-      if (customerError) {
-        throw new Error(`Supabase error: ${customerError.message}`);
+      if (selectError) {
+        console.warn('⚠️ [ActiveMember] Error checking existing customer (non-fatal):', selectError.message);
       }
 
-      const customerId = customer.customer_id;
-      console.log('✅ [ActiveMember] Customer creado:', customerId);
+      let customerId = null;
+
+      if (existingCustomer) {
+        console.log('✅ [ActiveMember] Customer already exists:', existingCustomer.customer_id);
+        console.log('📊 [ActiveMember] Current status:', existingCustomer.status);
+
+        // 🔥 VALIDACIÓN CRÍTICA: Si el status NO es "Lead", NO permitir continuar
+        if (existingCustomer.status !== 'Lead') {
+          console.error('❌ [ActiveMember] Customer status is NOT "Lead" (current:', existingCustomer.status, ')');
+          console.error('❌ [ActiveMember] User is already registered for the event - Registration blocked');
+          
+          // Mostrar error al usuario
+          setErrors({
+            email: ingles 
+              ? '⚠️ This email is already registered for the event. If you need assistance, please contact support.' 
+              : '⚠️ Este correo ya está registrado para el evento. Si necesita asistencia, por favor contacte a soporte.'
+          });
+          
+          setIsSubmitting(false);
+          return; // ⚠️ CRÍTICO: Salir SIN continuar, base de datos intacta
+        }
+
+        // ✅ Status es "Lead" → Permitir actualización
+        console.log('✅ [ActiveMember] Status is "Lead" - Proceeding with update');
+        customerId = existingCustomer.customer_id;
+
+        // ✅ Actualizar datos del customer
+        const updatePayload = {
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          mobile_phone: formData.mobile_phone,
+          customer_category_fk: 4, // Miembro Barra
+          status: 'Lead'
+        };
+
+        const { error: updateError } = await supabase
+          .from('customer')
+          .update(updatePayload)
+          .eq('customer_id', customerId);
+
+        if (updateError) {
+          console.warn('⚠️ [ActiveMember] Error updating customer (non-fatal):', updateError.message);
+        } else {
+          console.log('✅ [ActiveMember] Customer data updated:', customerId);
+        }
+      } else {
+        // 2️⃣ Cliente no existe, crear nuevo
+        console.log('📝 [ActiveMember] Creando nuevo customer en Supabase...');
+
+        const { data: customer, error: customerError } = await supabase
+          .from('customer')
+          .insert({
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            email: formData.email,
+            mobile_phone: formData.mobile_phone,
+            customer_category_fk: 4, // Miembro Barra
+            status: 'Lead',
+            organization_fk: 14
+          })
+          .select('customer_id')
+          .single();
+
+        if (customerError) {
+          throw new Error(`Supabase error: ${customerError.message}`);
+        }
+
+        customerId = customer.customer_id;
+        console.log('✅ [ActiveMember] Nuevo customer creado:', customerId);
+      }
 
       // Subir comprobante de membresía
       await uploadMembershipProof(customerId, membershipProof.file);
@@ -522,8 +583,8 @@ const ActiveMemberForm = ({ onSubmit, onPhoneValidation }) => {
           {phoneValidation.validationResult?.status === 'blocked' && (
             <span className={styles.errorText}>
               {ingles 
-                ? 'This phone is already registered for this event' 
-                : 'Este teléfono ya está registrado para este evento'}
+                ? 'This user is already registered for this event' 
+                : 'Esta persona ya está registrada para este evento'}
             </span>
           )}
           {errors.mobile_phone && <span className={styles.errorText}>{errors.mobile_phone}</span>}
